@@ -1,8 +1,8 @@
-(ns quo.components.inputs.input.view
+(ns xtatus-quo.components.inputs.input.view
   (:require [oops.core :as oops]
             [quo.components.icon :as icon]
-            [quo.components.inputs.input.style :as style]
-            [quo.components.markdown.text :as text]
+            [xtatus-quo.components.inputs.input.style :as style]
+            [xtatus-quo.components.markdown.text :as text]
             [quo.context :as quo.context]
             [react-native.core :as rn]
             [react-native.platform :as platform]))

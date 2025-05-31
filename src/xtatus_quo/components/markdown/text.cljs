@@ -1,10 +1,10 @@
-(ns quo.components.markdown.text
+(ns xtatus-quo.components.markdown.text
   (:require
-    [quo.context :as quo.context]
-    [quo.foundations.colors :as colors]
-    [quo.foundations.typography :as typography]
-    [react-native.core :as rn]
-    [react-native.utils :as rn.utils]))
+   [quo.context :as quo.context]
+   [quo.foundations.colors :as colors]
+   [xtatus-quo.foundations.typography :as typography]
+   [react-native.core :as rn]
+   [react-native.utils :as rn.utils]))
 
 (defn text-style
   [{:keys [size align weight style]} theme]

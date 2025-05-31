@@ -1,8 +1,8 @@
-(ns quo.components.inputs.input.style
+(ns xtatus-quo.components.inputs.input.style
   (:require
-    [quo.components.markdown.text :as text]
-    [quo.foundations.colors :as colors]
-    [react-native.platform :as platform]))
+   [xtatus-quo.components.markdown.text :as text]
+   [quo.foundations.colors :as colors]
+   [react-native.platform :as platform]))
 
 (defn variants-colors
   [blur? theme]

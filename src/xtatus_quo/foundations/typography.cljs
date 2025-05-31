@@ -1,4 +1,4 @@
-(ns quo.foundations.typography)
+(ns xtatus-quo.foundations.typography)
 
 (defn- tracking-fn
   "Check inter dynamic metric https://rsms.me/inter/dynmetrics/"
