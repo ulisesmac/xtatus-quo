@@ -1,4 +1,4 @@
-(ns quo.components.icon
+(ns xtatus-quo.components.icon
   (:require
     [clojure.string :as string]
     [quo.components.icons.icons :as icons]
