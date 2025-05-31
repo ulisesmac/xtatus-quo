@@ -4,6 +4,8 @@ This project is based on [status-im/status-mobile](https://github.com/status-im/
 
 This repository starts with the Quo Component Library used by Status-mobile. This project aims to make them reusable and improve them or extend them. Feel free to submit any suggestion/issue/PR to contribute. 
 
+⚠️ This Project is not ready to be used ⚠️
+
 ## License
 
 This project remains under the [MPL-2.0](LICENSE.md) license.
