@@ -61,9 +61,10 @@
           color      (or (:color style)
                          (assoc style
                            :color (if (= theme :dark) colors/white colors/neutral-100)))]
-      (assoc font-type
-        :text-align text-align
-        :color color))
+      [(assoc font-type
+         :text-align text-align
+         :color color)
+       (dissoc style :color)])
     (let [font-weight (case (or weight :regular)
                         :regular typography/font-regular
                         :medium typography/font-medium

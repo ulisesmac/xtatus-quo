@@ -2,7 +2,7 @@
   (:require
     ["@react-native-community/blur" :as blur]
     ["react-native" :as rn]
-    ["react-native-fast-image" :as FastImage]
+   ;["react-native-fast-image" :as FastImage]
     ["react-native-linear-gradient" :default LinearGradient]
     ["react-native-reanimated" :default reanimated :refer
      (useSharedValue useAnimatedStyle
@@ -20,7 +20,6 @@
                      useAnimatedScrollHandler
                      scrollTo
                      useAnimatedRef)]
-    ["react-native-redash" :refer (withPause)]
     [react-native.flat-list :as rn-flat-list]
     [react-native.platform :as platform]
     [reagent.core :as reagent]
@@ -48,7 +47,7 @@
 
 (def touchable-opacity (create-animated-component (.-TouchableOpacity ^js rn)))
 (def linear-gradient (create-animated-component LinearGradient))
-(def fast-image (create-animated-component FastImage))
+(def fast-image (create-animated-component rn/Image))
 (def blur-view (if platform/ios? (create-animated-component (.-BlurView blur)) view))
 
 (def scroll-to scrollTo)
@@ -64,7 +63,6 @@
 (def with-decay withDecay)
 (def with-repeat withRepeat)
 (def with-sequence withSequence)
-(def with-pause withPause)
 (def cancel-animation cancelAnimation)
 
 

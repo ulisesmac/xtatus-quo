@@ -8,7 +8,6 @@
 (ns utils.image-server
   (:require
     [quo.foundations.colors :as colors]
-    [react-native.fs :as utils.fs]
     [react-native.platform :as platform]
     [schema.core :as schema]))
 
@@ -26,7 +25,7 @@
   for android, it's located in the assets dir which can not be accessed by status-go
                so we copy one to the cache directory"
   [font-file-name callback]
-  (if platform/android?
+  #_(if platform/android?
     (let [cache-dir      (utils.fs/cache-dir)
           font-file-name font-file-name
           src            (str "fonts/" font-file-name)

@@ -1,7 +1,6 @@
 (ns react-native.cameraroll
   (:require
     ["@react-native-camera-roll/camera-roll" :refer [CameraRoll]]
-    [react-native.fs :as fs]
     [mock.timbre :as log]
     [utils.transforms :as transforms]))
 
@@ -20,8 +19,8 @@
 (defn save-image
   [path]
   (-> (.save CameraRoll (clj->js path))
-      (.then #(fs/unlink path))
-      (.catch #(fs/unlink path))))
+      (.then (fn []))
+      (.catch (fn []))))
 
 (defn get-photos-count-ios
   [cb]

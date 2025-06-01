@@ -32,7 +32,7 @@
            :height size-number)))
 
 (def ^:private b64-png-image-prefix "data:image/png;base64,")
-(def ^:const default-token-image (js/require "../resources/images/tokens/default-token.png"))
+(def ^:const default-token-image nil)
 
 (defn- normalize-b64-string
   [b64-image]

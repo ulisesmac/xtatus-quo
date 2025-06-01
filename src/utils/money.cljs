@@ -1,6 +1,6 @@
 (ns utils.money
   (:require
-    ["bignumber.js" :as BigNumber]
+   ;["bignumber.js" :as BigNumber]
     [clojure.string :as string]
     [schema.core :as schema]
     [utils.i18n :as i18n]))
@@ -34,13 +34,14 @@
   [n]
   (when n
     (try
-      (new BigNumber (normalize (str n)))
+      ;(new BigNumber (normalize (str n)))
       (catch :default _ nil))))
 
 (defn bignumber?
   "Check if the value is a bignumber."
   [x]
-  (instance? BigNumber x))
+  ;(instance? BigNumber x)
+  )
 
 (defn ->bignumber
   [n]
@@ -72,21 +73,21 @@
   (when-let [[^js bn1 ^js bn2] (->bignumbers n1 n2)]
     (.eq ^js bn1 bn2)))
 
-(extend-type BigNumber
- IEquiv
-   (-equiv [this other]
-     (if (or (number? other)
-             (string? other)
-             (instance? BigNumber other))
-       (equal-to this other)
-       false))
-
- IComparable
-   (-compare [this other]
-     (cond
-       (less-than this other)    -1
-       (greater-than this other) 1
-       :else                     0)))
+;(extend-type BigNumber
+; IEquiv
+;   (-equiv [this other]
+;     (if (or (number? other)
+;             (string? other)
+;             (instance? BigNumber other))
+;       (equal-to this other)
+;       false))
+;
+; IComparable
+;   (-compare [this other]
+;     (cond
+;       (less-than this other)    -1
+;       (greater-than this other) 1
+;       :else                     0)))
 
 (defn sub
   [n1 n2]
@@ -149,7 +150,7 @@
 (defn from-hex
   [hex-str]
   (try
-    (new BigNumber hex-str 16)
+    ;(new BigNumber hex-str 16)
     (catch :default _ nil)))
 
 (defn wei->ether
