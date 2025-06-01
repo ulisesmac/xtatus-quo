@@ -1,6 +1,6 @@
 (ns react-native.blob
   (:require ["react-native-blob-util" :default ReactNativeBlobUtil]
-            [taoensso.timbre :as log]))
+            [mock.timbre :as log]))
 
 (defn fetch
   [base64-uri config on-success]

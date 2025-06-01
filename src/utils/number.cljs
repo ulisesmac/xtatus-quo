@@ -1,7 +1,5 @@
 (ns utils.number
   (:require [clojure.string :as string]
-            [native-module.core :as native-module]
-            [utils.hex :as utils.hex]
             [utils.money :as money]))
 
 (defn naive-round
@@ -67,14 +65,6 @@
     (-> (money/div amount-bn divisor-bn)
         (money/to-fixed decimals)
         remove-trailing-zeroes)))
-
-(defn hex->whole
-  [num decimals]
-  (-> num
-      utils.hex/normalize-hex
-      native-module/hex-to-number
-      (convert-to-whole-number decimals)
-      money/bignumber))
 
 (defn to-fixed
   [num decimals]

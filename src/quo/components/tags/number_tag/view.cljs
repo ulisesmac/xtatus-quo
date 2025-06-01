@@ -1,7 +1,7 @@
 (ns quo.components.tags.number-tag.view
   (:require
-    [quo.components.icon :as icons]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.icon :as icons]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.components.tags.number-tag.style :as style]
     [quo.context :as quo.context]
     [react-native.core :as rn]))

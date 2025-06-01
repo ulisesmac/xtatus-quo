@@ -13,7 +13,7 @@
   [{:keys [image size on-load-start on-load-end on-error] :or {size :size-24}}]
   (let [theme (quo.context/use-theme)]
     [rn/view {:style (style/collection-avatar-container theme size)}
-     [fast-image/fast-image
+     [rn/image
       {:accessibility-label :collection-avatar
        :source              image
        :on-load-start       on-load-start

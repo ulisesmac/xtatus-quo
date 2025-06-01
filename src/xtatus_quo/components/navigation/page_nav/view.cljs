@@ -1,15 +1,15 @@
-(ns quo.components.navigation.page-nav.view
+(ns xtatus-quo.components.navigation.page-nav.view
   (:require
     [quo.components.avatars.account-avatar.view :as account-avatar]
     [quo.components.avatars.group-avatar.view :as group-avatar]
     [quo.components.buttons.button.properties :as button-properties]
-    [quo.components.buttons.button.view :as button]
+    [xtatus-quo.components.buttons.button.view :as button]
     [quo.components.dropdowns.dropdown.properties :as dropdown-properties]
     [quo.components.dropdowns.dropdown.view :as dropdown]
     [quo.components.dropdowns.network-dropdown.view :as network-dropdown]
-    [quo.components.icon :as icons]
-    [quo.components.markdown.text :as text]
-    [quo.components.navigation.page-nav.style :as style]
+    [xtatus-quo.components.icon :as icons]
+    [xtatus-quo.components.markdown.text :as text]
+    [xtatus-quo.components.navigation.page-nav.style :as style]
     [quo.context]
     [react-native.core :as rn]
     [react-native.reanimated :as reanimated]

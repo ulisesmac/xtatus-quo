@@ -16,7 +16,7 @@
       {:on-press            on-press
        :accessibility-label :wallet-card}
       [rn/view {:style style/top-container}
-       [fast-image/fast-image
+       [rn/image
         {:style               style/image
          :source              image
          :accessibility-label :image}]

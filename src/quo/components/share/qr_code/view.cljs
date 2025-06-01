@@ -70,7 +70,7 @@
     :or   {avatar :none}
     :as   props}]
   [rn/view {:style (style/container size)}
-   [fast-image/fast-image
+   [rn/image
     {:style  (style/qr-image size)
      :source {:uri qr-image-uri}}]
    (when-not (= avatar :none)

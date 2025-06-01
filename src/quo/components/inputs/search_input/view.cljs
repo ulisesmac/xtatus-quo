@@ -1,7 +1,7 @@
 (ns quo.components.inputs.search-input.view
   (:require
     [oops.core :as oops]
-    [quo.components.icon :as icon]
+    [xtatus-quo.components.icon :as icon]
     [quo.components.inputs.search-input.style :as style]
     [quo.context]
     [quo.foundations.colors :as colors]

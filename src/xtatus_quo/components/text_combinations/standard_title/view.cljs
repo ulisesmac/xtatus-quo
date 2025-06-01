@@ -1,10 +1,10 @@
-(ns quo.components.text-combinations.standard-title.view
+(ns xtatus-quo.components.text-combinations.standard-title.view
   (:require [clojure.string :as string]
-            [quo.components.buttons.button.view :as button]
+            [xtatus-quo.components.buttons.button.view :as button]
             [quo.components.counter.fraction-counter.view :as fraction-counter]
-            [quo.components.markdown.text :as text]
+            [xtatus-quo.components.markdown.text :as text]
             [quo.components.tags.tag :as tag]
-            [quo.components.text-combinations.standard-title.style :as style]
+            [xtatus-quo.components.text-combinations.standard-title.style :as style]
             [quo.context]
             [react-native.core :as rn]
             [utils.number]))

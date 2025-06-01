@@ -61,4 +61,4 @@
      {:style  (token-style style size)
       :source token-image}]))
 
-(def view (schema/instrument #'view-internal ?schema))
+(def view #'view-internal)

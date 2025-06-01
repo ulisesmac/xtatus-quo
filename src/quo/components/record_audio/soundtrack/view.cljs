@@ -8,7 +8,7 @@
     [react-native.core :as rn]
     [react-native.platform :as platform]
     [react-native.slider :as slider]
-    [taoensso.timbre :as log]))
+    [mock.timbre :as log]))
 
 (def ^:private thumb-light (icons/icon-source :thumb-light12))
 (def ^:private thumb-dark (icons/icon-source :thumb-dark12))

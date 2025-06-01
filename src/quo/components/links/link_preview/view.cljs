@@ -9,7 +9,7 @@
     [react-native.core :as rn]
     [react-native.platform :as platform]
     [react-native.svg :as svg]
-    [taoensso.timbre :as log]))
+    [mock.timbre :as log]))
 
 (defn- button-disabled
   [disabled-text on-enable]

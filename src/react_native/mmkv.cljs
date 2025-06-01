@@ -4,7 +4,7 @@
     [cognitect.transit :as transit]
     [native-module.core :as native-module]
     [oops.core :as oops]
-    [taoensso.timbre :as log])
+    [mock.timbre :as log])
   (:refer-clojure :exclude [set]))
 
 ;; Create a single MMKV instance to be used throughout the app with the path from native code

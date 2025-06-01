@@ -15,7 +15,7 @@
    (if placeholder?
      [rn/view {:style styles/image-placeholder}]
      [rn/view {:style styles/image-container}
-      [fast-image/fast-image
+      [rn/image
        {:style  styles/image
         :source image}]])
    [rn/view {:style styles/text-container}

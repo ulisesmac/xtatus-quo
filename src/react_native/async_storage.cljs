@@ -3,7 +3,7 @@
     ["@react-native-async-storage/async-storage" :default async-storage]
     [cognitect.transit :as transit]
     goog.functions
-    [taoensso.timbre :as log]))
+    [mock.timbre :as log]))
 
 (def ^:private debounce-ms 250)
 

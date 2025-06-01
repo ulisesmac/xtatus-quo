@@ -1,4 +1,4 @@
-(ns quo.components.text-combinations.page-top.view
+(ns xtatus-quo.components.text-combinations.page-top.view
   (:require [clojure.string :as string]
             [quo.components.avatars.channel-avatar.view :as channel-avatar]
             [quo.components.avatars.collection-avatar.view :as collection-avatar]
@@ -6,10 +6,10 @@
             [quo.components.inputs.address-input.view :as address-input]
             [quo.components.inputs.recovery-phrase.view :as recovery-phrase]
             [quo.components.inputs.search-input.view :as search-input]
-            [quo.components.markdown.text :as text]
+            [xtatus-quo.components.markdown.text :as text]
             [quo.components.tags.context-tag.view :as context-tag]
-            [quo.components.text-combinations.page-top.style :as style]
-            [quo.components.text-combinations.standard-title.view :as standard-title]
+            [xtatus-quo.components.text-combinations.page-top.style :as style]
+            [xtatus-quo.components.text-combinations.standard-title.view :as standard-title]
             [quo.context]
             [react-native.core :as rn]
             [react-native.fast-image :as fast-image]
@@ -73,7 +73,7 @@
 (defn- community-logo
   [image]
   [rn/view {:accessibility-label :community-logo}
-   [fast-image/fast-image
+   [rn/image
     {:source image
      :style  style/community-logo}]
    [rn/view {:style style/community-logo-ring}]])

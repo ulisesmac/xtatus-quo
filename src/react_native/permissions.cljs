@@ -6,7 +6,7 @@
     [clojure.string :as string]
     [promesa.core :as promesa]
     [react-native.platform :as platform]
-    [taoensso.timbre :as log]))
+    [mock.timbre :as log]))
 
 (def permissions-map
   {:read-external-storage  (cond

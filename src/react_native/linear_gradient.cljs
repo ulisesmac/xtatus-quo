@@ -4,7 +4,7 @@
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]
     [reagent.core :as reagent]
-    [taoensso.timbre :as log]))
+    [mock.timbre :as log]))
 
 (def ^:private linear-gradient* (reagent/adapt-react-class LinearGradient))
 

@@ -22,7 +22,7 @@
       :on-press-out        on-press-out}
      [rn/view {:style style/container-info}
       (if (:avatar dapp)
-        [fast-image/fast-image
+        [rn/image
          {:source (:avatar dapp)
           :style  style/image-avatar}]
         [rn/view {:style style/initials-avatar-container}

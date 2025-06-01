@@ -1,4 +1,4 @@
-(ns quo.components.text-combinations.standard-title.style
+(ns xtatus-quo.components.text-combinations.standard-title.style
   (:require [quo.foundations.colors :as colors]))
 
 (def container

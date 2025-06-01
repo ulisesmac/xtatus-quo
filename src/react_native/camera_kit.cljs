@@ -3,7 +3,7 @@
     ["react-native-camera-kit" :refer (Camera CameraType)]
     [oops.core :as oops]
     [reagent.core :as reagent]
-    [taoensso.timbre :as log]))
+    [mock.timbre :as log]))
 
 (def camera (reagent/adapt-react-class Camera))
 

@@ -2,7 +2,7 @@
   (:require [oops.core :as oops]
             [quo.components.record-audio.record-audio.constants :as record-audio.constants]
             [react-native.audio-toolkit :as audio]
-            [taoensso.timbre :as log]
+            [mock.timbre :as log]
             [utils.datetime :as datetime]))
 
 (def get-reload-player

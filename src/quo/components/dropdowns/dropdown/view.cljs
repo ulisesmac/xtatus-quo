@@ -3,8 +3,8 @@
     [quo.components.blur.view :as blur]
     [quo.components.dropdowns.dropdown.properties :as properties]
     [quo.components.dropdowns.dropdown.style :as style]
-    [quo.components.icon :as icon]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.icon :as icon]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.context]
     [quo.foundations.customization-colors :as customization-colors]
     [react-native.core :as rn]))

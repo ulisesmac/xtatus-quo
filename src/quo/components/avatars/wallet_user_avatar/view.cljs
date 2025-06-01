@@ -1,7 +1,7 @@
 (ns quo.components.avatars.wallet-user-avatar.view
   (:require [clojure.string :as string]
             [quo.components.avatars.wallet-user-avatar.style :as style]
-            [quo.components.markdown.text :as text]
+            [xtatus-quo.components.markdown.text :as text]
             [quo.context :as quo.context]
             [react-native.core :as rn]
             utils.string))

@@ -1,4 +1,4 @@
-(ns quo.components.navigation.page-nav.style
+(ns xtatus-quo.components.navigation.page-nav.style
   (:require
     [quo.foundations.colors :as colors]))
 

@@ -52,7 +52,7 @@
    {:style {:flex-direction  :row
             :justify-content :center
             :align-items     :center}}
-   [fast-image/fast-image
+   [rn/image
     {:source {:uri
               "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg"}
      :style  {:width         32

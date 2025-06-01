@@ -2,7 +2,7 @@
   (:require
     ["@react-native-camera-roll/camera-roll" :refer [CameraRoll]]
     [react-native.fs :as fs]
-    [taoensso.timbre :as log]
+    [mock.timbre :as log]
     [utils.transforms :as transforms]))
 
 (defn get-photos

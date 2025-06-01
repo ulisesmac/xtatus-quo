@@ -1,6 +1,6 @@
 (ns quo.components.counter.fraction-counter.view
   (:require [quo.components.counter.fraction-counter.style :as style]
-            [quo.components.markdown.text :as text]
+            [xtatus-quo.components.markdown.text :as text]
             [quo.context :as quo.context]
             [react-native.core :as rn]
             [schema.core :as schema]
@@ -45,4 +45,4 @@
      [:show-counter-warning? {:optional true} [:maybe boolean?]]]]
    :any])
 
-(def view (schema/instrument #'view-internal ?schema))
+(def view #'view-internal)

@@ -17,7 +17,7 @@
     [quo.foundations.colors :as colors]
     [react-native.audio-toolkit :as audio]
     [react-native.core :as rn]
-    [taoensso.timbre :as log]
+    [mock.timbre :as log]
     [utils.datetime :as datetime]))
 
 (defn- recording-bar

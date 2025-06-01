@@ -1,6 +1,6 @@
 (ns quo.components.inputs.recovery-phrase.style
   (:require
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.foundations.colors :as colors]))
 
 (defn container

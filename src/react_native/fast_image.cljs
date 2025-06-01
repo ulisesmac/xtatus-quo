@@ -1,6 +1,7 @@
 (ns react-native.fast-image
+  ;; TODO: remove
   (:require
-    ["react-native-fast-image" :as FastImage]
+   ;["react-native-fast-image" :as FastImage]
     [clojure.string :as string]
     [react-native.core :as rn]
     [reagent.core :as reagent]
@@ -47,7 +48,7 @@
                           (reset! loaded? true)
                           (reset! error? false))]
     (fn [{:keys [source fallback-content on-error on-load] :as props}]
-      [:> FastImage
+      [rn/image
        (assoc props
               :source   (build-source source)
               :on-error #(on-image-error % on-error)

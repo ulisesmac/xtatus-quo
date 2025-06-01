@@ -43,7 +43,7 @@
                                     (colors/theme-colors colors/white colors/neutral-95 theme))
               :margin-top       (when platform/ios? (- top-inset))}}
      (when cover-uri
-       [fast-image/fast-image
+       [rn/image
         {:style  {:width  "100%"
                   :height cover-height}
          :source {:uri cover-uri}}])

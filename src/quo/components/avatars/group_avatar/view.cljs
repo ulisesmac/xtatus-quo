@@ -1,8 +1,8 @@
 (ns quo.components.avatars.group-avatar.view
   (:require
     [quo.components.avatars.group-avatar.style :as style]
-    [quo.components.icon :as icon]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.icon :as icon]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]
@@ -35,7 +35,7 @@
                                              :customization-color customization-color
                                              :theme               theme})}
      (if picture
-       [fast-image/fast-image
+       [rn/image
         {:source picture
          :style  {:width  container-size
                   :height container-size}}]

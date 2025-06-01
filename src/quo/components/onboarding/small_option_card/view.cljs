@@ -15,7 +15,7 @@
     :underlay-color      colors/white-opa-5
     :on-press            on-press}
    [rn/view {:style style/icon-variant-image-container}
-    [fast-image/fast-image
+    [rn/image
      {:accessibility-label :small-option-card-icon-image
       :style               style/icon-variant-image
       :resize-mode         :contain
@@ -50,7 +50,7 @@
       :weight          :regular
       :number-of-lines 1}
      subtitle]]
-   [fast-image/fast-image
+   [rn/image
     {:accessibility-label :small-option-card-main-image
      :style               (style/main-variant-image max-height)
      :resize-mode         :contain

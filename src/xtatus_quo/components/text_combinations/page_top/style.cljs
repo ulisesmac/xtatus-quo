@@ -1,4 +1,4 @@
-(ns quo.components.text-combinations.page-top.style
+(ns xtatus-quo.components.text-combinations.page-top.style
   (:require [quo.foundations.colors :as colors]))
 
 (def top-container

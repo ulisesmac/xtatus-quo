@@ -5,9 +5,9 @@
     [quo.components.avatars.group-avatar.view :as group-avatar]
     [quo.components.avatars.user-avatar.view :as user-avatar]
     [quo.components.avatars.wallet-user-avatar.view :as wallet-user-avatar]
-    [quo.components.icon :as icons]
+    [xtatus-quo.components.icon :as icons]
     [quo.components.list-items.preview-list.view :as preview-list]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.components.tags.context-tag.schema :as component-schema]
     [quo.components.tags.context-tag.style :as style]
     [quo.components.utilities.token.view :as token]
@@ -40,7 +40,7 @@
         text-size (if (= size 24) :paragraph-2 :paragraph-1)
         icon-size (if (= size 24) 16 20)]
     [rn/view {:style (style/tag-container size)}
-     [fast-image/fast-image {:style (style/circle-logo size) :source community-logo}]
+     [rn/image {:style (style/circle-logo size) :source community-logo}]
      [rn/view {:style (style/tag-spacing size false)}
       [text/text
        {:style  (style/text theme)
@@ -198,4 +198,4 @@
 
         nil)]]))
 
-(def view (schema/instrument #'view-internal component-schema/?schema))
+(def view #'view-internal)

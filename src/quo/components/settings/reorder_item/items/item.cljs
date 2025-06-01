@@ -28,7 +28,7 @@
       {:style style/body-container}
       [rn/view
        {:style style/image-container}
-       [fast-image/fast-image
+       [rn/image
         {:source image
          :style  (style/image image-size)}]]
       [rn/view

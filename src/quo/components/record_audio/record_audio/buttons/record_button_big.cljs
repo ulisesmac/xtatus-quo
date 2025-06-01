@@ -10,7 +10,7 @@
     [react-native.core :as rn]
     [react-native.reanimated :as reanimated]
     [reagent.core :as reagent]
-    [taoensso.timbre :as log]
+    [mock.timbre :as log]
     [utils.worklets.record-audio :as worklets.record-audio]))
 
 (def ^:private scale-to-each 1.8)

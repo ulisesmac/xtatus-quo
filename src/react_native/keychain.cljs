@@ -2,7 +2,7 @@
   (:require
     ["react-native-keychain" :as react-native-keychain]
     [clojure.string :as string]
-    [taoensso.timbre :as log]))
+    [mock.timbre :as log]))
 
 ;; ********************************************************************************
 ;; Storing / Retrieving a user password to/from Keychain

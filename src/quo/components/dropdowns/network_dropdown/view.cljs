@@ -2,9 +2,9 @@
   (:require
     [quo.components.common.new-feature-dot :as new-feature-dot]
     [quo.components.dropdowns.network-dropdown.style :as style]
-    [quo.components.icon :as icon]
+    [xtatus-quo.components.icon :as icon]
     [quo.components.list-items.preview-list.view :as preview-list]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.context]
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]
@@ -13,7 +13,7 @@
 (defn single-network-preview
   [item]
   [rn/view {:style style/single-network-container}
-   [fast-image/fast-image
+   [rn/image
     {:source (or (:source item) item)
      :style  style/single-network-image}]
    [text/text

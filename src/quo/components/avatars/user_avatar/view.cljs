@@ -3,7 +3,7 @@
     [quo.components.avatars.user-avatar.schema :as component-schema]
     [quo.components.avatars.user-avatar.style :as style]
     [quo.components.common.no-flicker-image :as no-flicker-image]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.context]
     [react-native.core :as rn]
     [react-native.fast-image :as fast-image]
@@ -42,7 +42,7 @@
         ;; Once image is loaded, fast image re-renders view with the help of reagent atom,
         ;; But dynamic updates don't work when user-avatar is used inside hole-view
         ;; https://github.com/status-im/status-mobile/issues/15553
-        image-view      (if static? no-flicker-image/image fast-image/fast-image)
+        image-view      (if static? no-flicker-image/image rn/image)
         font-size       (get-in style/sizes [size :font-size])
         amount-initials (if (#{:xs :xxs :xxxs} size) 1 2)
         sizes           (get style/sizes size)
@@ -83,4 +83,4 @@
 
                :else {:uri profile-picture})}])]))
 
-(def user-avatar (schema/instrument #'user-avatar-internal component-schema/?schema))
+(def user-avatar #'user-avatar-internal)

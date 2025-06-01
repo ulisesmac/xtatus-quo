@@ -2,8 +2,8 @@
   (:require
     [clojure.string :as string]
     [quo.components.avatars.channel-avatar.style :as style]
-    [quo.components.icon :as icons]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.icon :as icons]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]

@@ -41,7 +41,7 @@
         gradient-colors [(colors/alpha line-color 0.1) (colors/alpha line-color 0)]
         fill-color      (colors/theme-colors colors/white colors/neutral-95 theme)]
     (if (= time-frame :empty)
-      [fast-image/fast-image
+      [rn/image
        {:style               style/empty-state
         :source              (resources/get-themed-image :no-funds theme)
         :accessibility-label :illustration}]

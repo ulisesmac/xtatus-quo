@@ -1,7 +1,7 @@
 (ns quo.components.inputs.address-input.view
   (:require
-    [quo.components.buttons.button.view :as button]
-    [quo.components.icon :as icon]
+    [xtatus-quo.components.buttons.button.view :as button]
+    [xtatus-quo.components.icon :as icon]
     [quo.components.inputs.address-input.style :as style]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]

@@ -1,7 +1,7 @@
 (ns quo.components.tags.tag
   (:require
-    [quo.components.icon :as icons]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.icon :as icons]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.components.tags.base-tag :as base-tag]
     [quo.context]
     [quo.foundations.colors :as colors]

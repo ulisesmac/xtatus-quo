@@ -24,7 +24,7 @@
       :accounts                    [account-avatar/view
                                     (assoc item :size size)]
 
-      (:communities :collectibles) [fast-image/fast-image
+      (:communities :collectibles) [rn/image
                                     {:source (or (:source item) item)
                                      :style  {:width         size
                                               :height        size
@@ -35,7 +35,7 @@
                                      :size  size
                                      :style {:border-radius border-radius}}]
 
-      (:network :dapps)            [fast-image/fast-image
+      (:network :dapps)            [rn/image
                                     {:source (or (:source item) item)
                                      :style  {:width         size
                                               :height        size
