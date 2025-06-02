@@ -25,7 +25,8 @@
   {:margin-horizontal (if image? 12 0)
    :flex              1
    :height            "100%"
-   :justify-content   :flex-start})
+   :justify-content   :flex-start
+   :row-gap           2})
 
 (defn image-container
   [description tag image]
@@ -48,10 +49,12 @@
                        (colors/theme-colors colors/danger-50 colors/danger-60 theme))})
 
 (defn icon-color
-  [blur? theme]
-  {:color (if blur?
-            colors/white-opa-70
-            (colors/theme-colors colors/neutral-50 colors/neutral-40 theme))})
+  [blur? theme no-color-icon?]
+  (if no-color-icon?
+    {:no-color true}
+    {:color (if blur?
+              colors/white-opa-70
+              (colors/theme-colors colors/neutral-50 colors/neutral-40 theme))}))
 
 (defn color
   [blur? theme]

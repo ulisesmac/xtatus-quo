@@ -1,6 +1,6 @@
 (ns quo.components.selectors.selectors.view
   (:require
-    [quo.components.icon :as icons]
+    [xtatus-quo.components.icon :as icons]
     [quo.components.selectors.selectors.style :as style]
     [quo.context :as quo.context]
     [react-native.core :as rn]))

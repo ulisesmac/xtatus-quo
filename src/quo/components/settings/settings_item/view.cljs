@@ -3,11 +3,11 @@
     [clojure.string :as string]
     [quo.components.avatars.icon-avatar :as icon-avatar]
     [quo.components.avatars.user-avatar.view :as user-avatar]
-    [quo.components.buttons.button.view :as button]
+    [xtatus-quo.components.buttons.button.view :as button]
     [quo.components.common.new-feature-gradient :as new-feature-gradient]
-    [quo.components.icon :as icon]
+    [xtatus-quo.components.icon :as icon]
     [quo.components.list-items.preview-list.view :as preview-list]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.components.selectors.selectors.view :as selectors]
     [quo.components.settings.settings-item.style :as style]
     [quo.components.tags.context-tag.view :as context-tag]
@@ -47,9 +47,8 @@
 (defn description-component
   [{:keys [description] :as props}]
   (case description
-    :text           [text-description props]
-    :text-plus-icon [text-description props]
-    :status         [status-description props]
+    (:text :text-plus-icon) [text-description props]
+    :status                 [status-description props]
     nil))
 
 (defn emoji-component
@@ -58,11 +57,11 @@
    (when image-props (string/trim image-props))])
 
 (defn image-component
-  [{:keys [image image-props description tag blur?]}]
+  [{:keys [image image-props no-color-icon? description tag blur?]}]
   (let [theme (quo.context/use-theme)]
     [rn/view {:style (style/image-container description tag image)}
      (case image
-       :icon        [icon/icon image-props (style/icon-color blur? theme)]
+       :icon        [icon/icon image-props (style/icon-color blur? theme no-color-icon?)]
        :avatar      [user-avatar/user-avatar image-props]
        :icon-avatar [icon-avatar/icon-avatar image-props]
        :token       [token/view image-props]
@@ -70,7 +69,7 @@
        nil)]))
 
 (defn tag-component
-  [{:keys [tag tag-props]}]
+  [{:keys [tag tag-props blur?]}]
   (case tag
     :positive [status-tags/status-tag
                {:status          {:type :positive}
@@ -83,7 +82,8 @@
                       {:type            :icon
                        :size            24
                        :container-style {:margin-top 8
-                                         :align-self :flex-start}})]
+                                         :align-self :flex-start}
+                       :blur?           blur?})]
     nil))
 
 (defn label-component
@@ -96,12 +96,12 @@
                {:style (style/label-dot label-props)}]
      :preview [preview-list/view {:type (:type label-props) :size (or preview-size :size-24)}
                (:data label-props)]
-     :icon    [icon/icon label-props label-icon-props]
+     :icon    [icon/icon label-props (or label-icon-props (style/icon-color blur? theme nil))]
      nil)])
 
 (defn action-component
-  [{:keys [action action-props blur? theme customization-color]}]
-  [rn/view {:style {:margin-left 12}}
+  [{:keys [action action-props blur? theme customization-color] :as props}]
+  [rn/view {:style {:margin-left (if (= (:label props) :icon) 4 12)}}
    (case action
      :arrow    [icon/icon (or (:icon action-props) :i/chevron-right) (style/color blur? theme)]
      :button   [button/button
@@ -126,7 +126,7 @@
     [rn/view {:style (style/left-sub-container props)}
      [image-component props]
      [rn/view {:style (style/left-container (:image props))}
-      [rn/view {:flex-direction :row}
+      [rn/view {:style {:flex-direction :row}}
        [text/text
         {:weight :medium
          :style  {:color (when blur? colors/white)}}
@@ -140,7 +140,8 @@
             :style  style/new-feature-tag-text}
            (string/upper-case (i18n/label :t/new))]])]
       [description-component props]
-      [tag-component props]]]
+      [tag-component props]]
+     ]
     [rn/view {:style (style/sub-container (:alignment action-props))}
      [label-component props]
      [action-component props]]]

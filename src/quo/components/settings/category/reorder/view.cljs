@@ -1,6 +1,6 @@
 (ns quo.components.settings.category.reorder.view
   (:require
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.components.settings.category.style :as style]
     [quo.components.settings.reorder-item.types :as types]
     [quo.components.settings.reorder-item.view :as reorder-item]

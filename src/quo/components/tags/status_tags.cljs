@@ -1,7 +1,7 @@
 (ns quo.components.tags.status-tags
   (:require
-    [quo.components.icon :as icon]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.icon :as icon]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]))

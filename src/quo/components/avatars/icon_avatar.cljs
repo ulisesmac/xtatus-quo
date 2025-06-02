@@ -1,6 +1,6 @@
 (ns quo.components.avatars.icon-avatar
   (:require
-    [quo.components.icon :as icons]
+    [xtatus-quo.components.icon :as icons]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]))
