@@ -140,8 +140,7 @@
             :style  style/new-feature-tag-text}
            (string/upper-case (i18n/label :t/new))]])]
       [description-component props]
-      [tag-component props]]
-     ]
+      [tag-component props]]]
     [rn/view {:style (style/sub-container (:alignment action-props))}
      [label-component props]
      [action-component props]]]

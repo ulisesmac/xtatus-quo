@@ -32,10 +32,7 @@
 
 (defn bignumber
   [n]
-  (when n
-    (try
-      ;(new BigNumber (normalize (str n)))
-      (catch :default _ nil))))
+  nil)
 
 (defn bignumber?
   "Check if the value is a bignumber."
@@ -149,9 +146,7 @@
 
 (defn from-hex
   [hex-str]
-  (try
-    ;(new BigNumber hex-str 16)
-    (catch :default _ nil)))
+  nil)
 
 (defn wei->ether
   [n]
