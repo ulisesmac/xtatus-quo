@@ -3,7 +3,7 @@
     [quo.core :as quo]
     [test-helpers.component :as h]))
 
-(def ^:private theme :light)
+(def ^:private theme :theme/light)
 
 (h/describe "account origin tests"
   (h/test "component renders"

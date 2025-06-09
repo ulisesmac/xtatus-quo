@@ -5,7 +5,7 @@
 
 (defn- render
   [component]
-  (h/render-with-theme-provider component :light))
+  (h/render-with-theme-provider component :theme/light))
 
 (def props
   {:state               :default
@@ -25,12 +25,12 @@
     (render [network-list/view props])
     (h/fire-event :on-press-in (h/get-by-label-text ::network-list))
     (h/wait-for #(h/has-style (h/query-by-label-text ::network-list)
-                              {:backgroundColor (colors/resolve-color :blue :light 5)})))
+                              {:backgroundColor (colors/resolve-color :blue :theme/light 5)})))
 
   (h/test "Active state"
     (render [network-list/view (assoc props :state :active)])
     (h/has-style (h/query-by-label-text ::network-list)
-                 {:backgroundColor (colors/resolve-color :blue :light 10)}))
+                 {:backgroundColor (colors/resolve-color :blue :theme/light 10)}))
 
   (h/test "Call on-press"
     (let [on-press (h/mock-fn)]

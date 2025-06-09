@@ -7,14 +7,14 @@
     [react-native.core :as rn]))
 
 (def themes
-  {:light {:default     {:bg           colors/neutral-10
+  {:theme/light {:default     {:bg           colors/neutral-10
                          :account-text colors/neutral-100
                          :label-text   colors/neutral-50}
            :transparent {:bg           colors/neutral-80-opa-5
                          :account-text colors/neutral-100
                          :label-text   colors/neutral-80-opa-40}}
 
-   :dark  {:default     {:bg           colors/neutral-80-opa-80
+   :theme/dark  {:default     {:bg           colors/neutral-80-opa-80
                          :account-text colors/white
                          :label-text   colors/neutral-40}
            :transparent {:bg           colors/white-opa-5

@@ -75,7 +75,7 @@
     :border-color        colors/success-50-opa-20
     :label               label
     ;; The positive tag uses the same color for `light` and `dark blur` variant
-    :text-color          (if (= theme :dark) colors/success-60 colors/success-50)}])
+    :text-color          (if (= theme :theme/dark) colors/success-60 colors/success-50)}])
 
 (defn- negative
   [size theme label _ no-icon? container-style]
@@ -100,7 +100,7 @@
     :icon                (when-not no-icon?
                            (if blur?
                              :i/pending-dark-blur
-                             (if (= theme :light) :i/pending-light :i/pending-dark)))
+                             (if (= theme :theme/light) :i/pending-light :i/pending-dark)))
     :background-color    (if blur?
                            colors/white-opa-5
                            (colors/theme-colors colors/neutral-10 colors/neutral-80-opa-40 theme))

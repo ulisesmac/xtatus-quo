@@ -9,8 +9,8 @@
     [react-native.linear-gradient :as linear-gradient]))
 
 (def ^:private gradients
-  {:light [(colors/alpha colors/neutral-40 0.05) (colors/alpha colors/neutral-40 0)]
-   :dark  [(colors/alpha colors/neutral-80 0.7) (colors/alpha colors/neutral-80 0)]
+  {:theme/light [(colors/alpha colors/neutral-40 0.05) (colors/alpha colors/neutral-40 0)]
+   :theme/dark  [(colors/alpha colors/neutral-80 0.7) (colors/alpha colors/neutral-80 0)]
    :blur  [colors/white-opa-5 colors/white-opa-0]})
 
 (defn- word-component
@@ -33,7 +33,7 @@
    - `text`  error/info text.
    - `words` List of words to display in the keyboard.
    - `on-press` Callback called when a word is pressed `(fn [word])`
-   - `theme` :light or :dark, received from with-theme HOC."
+   - `theme` :theme/light or :theme/dark, received from with-theme HOC."
   [{:keys [type blur? text words on-press container-style] :or {container-style {}}}]
   (let [theme (quo.context/use-theme)]
     [linear-gradient/linear-gradient
@@ -41,7 +41,7 @@
       :accessibility-label :predictive-keyboard
       :colors              (if blur?
                              (gradients :blur)
-                             (colors/theme-colors (gradients :light) (gradients :dark) theme))}
+                             (colors/theme-colors (gradients :theme/light) (gradients :theme/dark) theme))}
      [rn/view {:style (style/wrapper type)}
       (case type
         :words

@@ -59,7 +59,7 @@
              {:opacity tab-background-opacity}))))
 
 (def themes
-  {:light {:default  {:background-color colors/neutral-10
+  {:theme/light {:default  {:background-color colors/neutral-10
                       :icon-color       colors/neutral-50
                       :label            {:style {:color colors/neutral-100}}}
            :active   {:background-color colors/neutral-50
@@ -68,7 +68,7 @@
            :disabled {:background-color colors/neutral-10
                       :icon-color       colors/neutral-50
                       :label            {:style {:color colors/neutral-100}}}}
-   :dark  {:default  {:background-color colors/neutral-90
+   :theme/dark  {:default  {:background-color colors/neutral-90
                       :icon-color       colors/neutral-40
                       :label            {:style {:color colors/white}}}
            :active   {:background-color colors/neutral-60
@@ -79,7 +79,7 @@
                       :label            {:style {:color colors/white}}}}})
 
 (def themes-for-blur-background
-  {:light {:default  {:background-color colors/neutral-80-opa-5
+  {:theme/light {:default  {:background-color colors/neutral-80-opa-5
                       :icon-color       colors/neutral-80-opa-40
                       :label            {:style {:color colors/neutral-100}}}
            :active   {:background-color colors/neutral-80-opa-60
@@ -88,7 +88,7 @@
            :disabled {:background-color colors/neutral-80-opa-5
                       :icon-color       colors/neutral-80-opa-40
                       :label            {:style {:color colors/neutral-100}}}}
-   :dark  {:default  {:background-color colors/white-opa-5
+   :theme/dark  {:default  {:background-color colors/white-opa-5
                       :icon-color       colors/white
                       :label            {:style {:color colors/white}}}
            :active   {:background-color colors/white-opa-20

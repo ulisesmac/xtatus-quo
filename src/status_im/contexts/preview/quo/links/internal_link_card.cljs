@@ -45,7 +45,7 @@
                 :active-members-count 12
                 :loading?             false
                 :customization-color  :purple
-                :banner               :light-blur-background
+                :banner               :theme/light-blur-background
                 :type                 :user
                 :subtitle             "Web 3.0 Designer @ethstatus - DJ, Producer - Dad - YouTuber"})]
     (fn []

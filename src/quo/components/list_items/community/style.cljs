@@ -15,7 +15,7 @@
   {:width            8
    :height           8
    :border-radius    4
-   :background-color (if (and (= :dark theme) blur?)
+   :background-color (if (and (= :theme/dark theme) blur?)
                        colors/white-opa-40
                        (colors/theme-colors colors/neutral-40 colors/neutral-60 theme))})
 
@@ -28,7 +28,7 @@
             (and (= type :engage) (= info :default) (not blur?))
             (colors/theme-colors colors/neutral-50 colors/neutral-40 theme)
 
-            (and (= type :engage) (= info :default) (= :dark theme) blur?)
+            (and (= type :engage) (= info :default) (= :theme/dark theme) blur?)
             colors/white-70-blur
 
             :else
@@ -36,7 +36,7 @@
 
 (defn subtitle
   [blur? theme]
-  {:color (if (and (= :dark theme) blur?)
+  {:color (if (and (= :theme/dark theme) blur?)
             colors/white-opa-40
             (colors/theme-colors colors/neutral-50 colors/neutral-40 theme))})
 
@@ -48,7 +48,7 @@
           :flex-direction     :row
           :align-items        :center
           :background-color   (cond
-                                (and pressed? (= type :engage) (= info :default) (= :dark theme) blur?)
+                                (and pressed? (= type :engage) (= info :default) (= :theme/dark theme) blur?)
                                 colors/white-opa-5
 
                                 (and pressed? (#{:engage :share} type))
@@ -57,7 +57,7 @@
                                 (and (not pressed?) (= type :discover) (not blur?))
                                 (colors/theme-colors colors/white colors/neutral-90 theme)
 
-                                (and (not pressed?) (= type :discover) (= :dark theme) blur?)
+                                (and (not pressed?) (= type :discover) (= :theme/dark theme) blur?)
                                 colors/white-opa-5
 
                                 (and pressed? (= type :discover))

@@ -5,9 +5,9 @@
 (defn get-label-color
   [disabled? theme blur?]
   (cond
-    (and disabled? (or (= :dark theme) blur?))  colors/white-opa-30
-    (and disabled? (or (= :light theme) blur?)) colors/neutral-30
-    (or (= :dark theme) blur?)                  colors/white
+    (and disabled? (or (= :theme/dark theme) blur?))  colors/white-opa-30
+    (and disabled? (or (= :theme/light theme) blur?)) colors/neutral-30
+    (or (= :theme/dark theme) blur?)                  colors/white
     :else                                       colors/neutral-100))
 
 (defn toggle-background-color
@@ -15,8 +15,8 @@
   (if pressed-in?
     (cond
       blur?            colors/white-opa-10
-      (= :light theme) colors/neutral-10
-      (= :dark theme)  colors/neutral-80)
+      (= :theme/light theme) colors/neutral-10
+      (= :theme/dark theme)  colors/neutral-80)
     :transparent))
 
 (defn container

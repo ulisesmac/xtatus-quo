@@ -349,7 +349,7 @@
                :border-radius 16
                :overflow      :hidden}}
       [rn/image
-       {:source (or image (resources/get-mock-image :dark-blur-bg))
+       {:source (or image (resources/get-mock-image :theme/dark-blur-bg))
         :style  {:height "100%" :width "100%"}}]
       [quo/blur
        (merge {:style         {:position :absolute
@@ -378,8 +378,8 @@
     (rn/use-effect (fn []
                      (when blur-dark-only?
                        (if blur?
-                         (rf/dispatch [:theme/switch {:theme :dark}])
-                         (rf/dispatch [:theme/switch {:theme :light}]))))
+                         (rf/dispatch [:theme/switch {:theme :theme/dark}])
+                         (rf/dispatch [:theme/switch {:theme :theme/light}]))))
                    [blur? blur-dark-only?])
     [rn/view
      {:style {:top  safe-area/top

@@ -57,7 +57,7 @@
     - :type - :token / :user / :collectible / :saved-address / :network / :account / :dapp
     - :emoji - string - emoji used for displaying account avatar
     - :image-source - resource - image to display on :network, :collectible and :user
-    - :theme - :light / :dark"
+    - :theme - :theme/light / :theme/dark"
   [{:keys [label customization-color type container-style]
     :as   props
     :or   {customization-color colors/neutral-80-opa-5}}]

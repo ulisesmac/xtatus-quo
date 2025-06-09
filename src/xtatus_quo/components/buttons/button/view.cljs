@@ -16,7 +16,7 @@
    {on-press callback
     on-long-press callback
     disabled? boolean
-    :type   :primary/:positive/:grey/:dark-grey/:outline/:ghost/
+    :type   :primary/:positive/:grey/:theme/dark-grey/:outline/:ghost/
             :danger/:black
     background :photo/:blur or nil
     :size   40 [default] /32/24/56
@@ -25,7 +25,7 @@
     :icon-left :icon-keyword
     :icon-right  :icon-keyword}
     :customization-color keyword or hexstring
-    :theme :light/:dark
+    :theme :theme/light/:theme/dark
    only icon
    [button {:icon-only? true} :i/close-circle]"
   [{:keys [on-press on-long-press disabled? type background size icon-left icon-left-color icon-right
@@ -114,7 +114,7 @@
            :weight          :medium
            :number-of-lines 1
            :style           {:color   label-color
-                             :opacity (when (and disabled? (= theme :dark)) 0.3)}}
+                             :opacity (when (and disabled? (= theme :theme/dark)) 0.3)}}
           children]
 
          (vector? children)

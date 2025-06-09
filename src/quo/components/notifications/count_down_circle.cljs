@@ -45,8 +45,8 @@
         :else                                                     0))
 
 (def ^:private themes
-  {:color {:dark  colors/neutral-80-opa-40
-           :light colors/white-opa-40}})
+  {:color {:theme/dark  colors/neutral-80-opa-40
+           :theme/light colors/white-opa-40}})
 
 (defn circle-timer
   [{:keys [color duration size stroke-width trail-color rotation initial-remaining-time]}]

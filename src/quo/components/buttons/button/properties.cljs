@@ -4,7 +4,7 @@
 
 (def backgrounds #{:photo :blur})
 
-;; Note: We hardcode the :light theme for the background-color and apply an overlay when necessary, such
+;; Note: We hardcode the :theme/light theme for the background-color and apply an overlay when necessary, such
 ;; as for dark themes and pressed states. This approach is taken because, for communities, we only have
 ;; one color available, which is the light theme version.
 ;; For more information, see the related issue: https://github.com/status-im/status-mobile/issues/16396
@@ -12,7 +12,7 @@
   [customization-color icon-only?]
   {:icon-color                  colors/white-opa-70
    :label-color                 colors/white
-   :background-color            (colors/resolve-color customization-color :light)
+   :background-color            (colors/resolve-color customization-color :theme/light)
    :border-radius               (when icon-only? 24)
    :overlay-customization-color customization-color})
 
@@ -27,7 +27,7 @@
                          (colors/theme-colors colors/white-opa-40
                                               colors/neutral-80-opa-40
                                               theme))
-   :blur-type          (if (= theme :light) :light :dark)})
+   :blur-type          (if (= theme :theme/light) :theme/light :theme/dark)})
 
 (defn- grey-blur
   [theme pressed?]
@@ -96,7 +96,7 @@
       (and (= :blur background) (= type :grey))      (grey-blur theme pressed?)
       (and (= :blur background) (= type :outline))   (outline-blur theme pressed?)
       (= type :grey)                                 (grey theme pressed?)
-      (= type :dark-grey)                            (dark-grey theme pressed?)
+      (= type :theme/dark-grey)                            (dark-grey theme pressed?)
       (= type :outline)                              (outline theme pressed?)
       (= type :ghost)                                (ghost theme pressed?)
       (= type :black)                                (black pressed?))))

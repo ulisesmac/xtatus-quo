@@ -158,7 +158,7 @@
   [{:keys [blur? card? right-icon right-content status size on-press container-style]
     :as   props}]
   (let [theme      (quo.context/use-theme)
-        icon-color (if (or blur? (= :dark theme))
+        icon-color (if (or blur? (= :theme/dark theme))
                      colors/neutral-40
                      colors/neutral-50)]
     [rn/pressable

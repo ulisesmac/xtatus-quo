@@ -17,9 +17,9 @@
 
 (def ^:private button-type
   {:white       :grey
-   :neutral-5   :dark-grey
+   :neutral-5   :theme/dark-grey
    :neutral-90  :grey
-   :neutral-95  :dark-grey
+   :neutral-95  :theme/dark-grey
    :neutral-100 :black
    :photo       :grey
    :blur        :grey})
@@ -120,7 +120,7 @@
   (let [theme          (quo.context/use-theme)
         dropdown-type  (cond
                          (= background :photo)                      :grey
-                         (and (= theme :dark) (= background :blur)) :grey
+                         (and (= theme :theme/dark) (= background :blur)) :grey
                          :else                                      :ghost)
         dropdown-state (if dropdown-selected? :active :default)]
     [reanimated/view {:style center-content-container-style}

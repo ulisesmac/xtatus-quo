@@ -20,7 +20,7 @@
 
 (defn complete-background-color
   [customization-color]
-  (colors/resolve-color customization-color :light))
+  (colors/resolve-color customization-color :theme/light))
 
 (defn container
   [{:keys [size type in-blur-view? theme customization-color]}]

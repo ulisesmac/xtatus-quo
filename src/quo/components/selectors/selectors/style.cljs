@@ -6,14 +6,14 @@
   [customization-color theme]
   {:normal {:checked   (colors/resolve-color customization-color theme)
             :unchecked (colors/theme-colors colors/neutral-30 colors/neutral-80 theme)}
-   :blur   {:checked   (colors/resolve-color customization-color :light)
+   :blur   {:checked   (colors/resolve-color customization-color :theme/light)
             :unchecked (colors/theme-colors colors/neutral-80-opa-20 colors/white-opa-10 theme)}})
 
 (defn- radio-border-color
   [customization-color theme]
   {:normal {:checked   (colors/resolve-color customization-color theme)
             :unchecked (colors/theme-colors colors/neutral-30 colors/neutral-70 theme)}
-   :blur   {:checked   (colors/resolve-color customization-color :light)
+   :blur   {:checked   (colors/resolve-color customization-color :theme/light)
             :unchecked (colors/theme-colors colors/neutral-80-opa-20 colors/white-opa-40 theme)}})
 
 (defn- radio-background-unchecked-color
@@ -25,7 +25,7 @@
   [customization-color theme]
   {:normal {:checked   (colors/resolve-color customization-color theme)
             :unchecked nil}
-   :blur   {:checked   (colors/resolve-color customization-color :light)
+   :blur   {:checked   (colors/resolve-color customization-color :theme/light)
             :unchecked nil}})
 
 (defn- checkbox-border-unchecked-color
@@ -125,4 +125,3 @@
   [checked? _blur? theme]
   {:size  20
    :color (when checked? (colors/theme-colors colors/neutral-100 colors/white theme))})
-

@@ -31,7 +31,7 @@
 (defn container
   [props theme]
   (merge {:align-self       :flex-start
-          :flex-direcrion   :row
+          ;:flex-direcrion   :row
           :justify-content  :center
           :border-radius    999
           :background-color (get-background-color props theme)}

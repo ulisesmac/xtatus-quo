@@ -9,10 +9,10 @@
 
 ;;; helpers
 (def themes
-  {:light {:icon       colors/neutral-40
+  {:theme/light {:icon       colors/neutral-40
            :time       colors/neutral-50
            :background colors/neutral-5}
-   :dark  {:icon       colors/neutral-60
+   :theme/dark  {:icon       colors/neutral-60
            :time       colors/neutral-40
            :background colors/neutral-95}})
 
@@ -21,10 +21,10 @@
   (get-in themes [theme k]))
 
 (def ui-images
-  {:light {:horizontal (js/require "../resources/images/ui/message-gap-hborder-light.png")
+  {:theme/light {:horizontal (js/require "../resources/images/ui/message-gap-hborder-light.png")
            :vertical   (js/require "../resources/images/ui/message-gap-vborder-light.png")
            :circles    (js/require "../resources/images/ui/message-gap-circle-bg-light.png")}
-   :dark  {:horizontal (js/require "../resources/images/ui/message-gap-hborder-dark.png")
+   :theme/dark  {:horizontal (js/require "../resources/images/ui/message-gap-hborder-dark.png")
            :circles    (js/require "../resources/images/ui/message-gap-circle-bg-dark.png")}})
 
 (defn get-image

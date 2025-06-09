@@ -37,11 +37,11 @@
         matcher [theme-with-blur type]
         color
         (case matcher
-          ([:dark :main] [:light :main])     (colors/theme-colors colors/neutral-100
+          ([:theme/dark :main] [:theme/light :main])     (colors/theme-colors colors/neutral-100
                                                                   colors/white
                                                                   theme)
           [:blur :main]                      colors/white-70-blur
-          ([:dark :danger] [:light :danger]) (colors/theme-colors colors/danger-50
+          ([:theme/dark :danger] [:theme/light :danger]) (colors/theme-colors colors/danger-50
                                                                   colors/danger-60
                                                                   theme)
           [:blur :danger]                    colors/danger-60)]
@@ -63,9 +63,9 @@
   (let [theme-with-blur (if blur? :blur theme)
         matcher         [theme-with-blur type]]
     (case matcher
-      ([:dark :main] [:light :main])     (colors/theme-colors colors/neutral-50 colors/neutral-40 theme)
+      ([:theme/dark :main] [:theme/light :main])     (colors/theme-colors colors/neutral-50 colors/neutral-40 theme)
       [:blur :main]                      colors/white-70-blur
-      ([:dark :danger] [:light :danger]) (colors/theme-colors colors/danger-50 colors/danger-60 theme)
+      ([:theme/dark :danger] [:theme/light :danger]) (colors/theme-colors colors/danger-50 colors/danger-60 theme)
       [:blur :danger]                    colors/danger-60)))
 
 (defn desc

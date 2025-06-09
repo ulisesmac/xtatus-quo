@@ -12,7 +12,7 @@
 
 (defn container-border-color
   [pressed? blur? theme]
-  (let [dark? (= :dark theme)]
+  (let [dark? (= :theme/dark theme)]
     (cond
       (and (not pressed?) (not dark?) (not blur?))
       colors/neutral-20
@@ -56,6 +56,6 @@
 (defn icon-color
   [pressed? theme]
   (if (and (not pressed?)
-           (= :light theme))
+           (= :theme/light theme))
     colors/neutral-100
     colors/white))

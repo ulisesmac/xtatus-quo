@@ -81,7 +81,7 @@
       [icon/icon :i/options {:size 20 :color (colors/theme-colors colors/black colors/white theme)}]]
      [reanimated/blur-view
       {:blurAmount   32
-       :blurType     :light
+       :blurType     :theme/light
        :overlayColor (if platform/ios? colors/white-opa-70 :transparent)
        :style        (style/blur-view opacity-animation theme)}
       [reanimated/view {:style (style/header-comp translate-animation title-opacity-animation)}

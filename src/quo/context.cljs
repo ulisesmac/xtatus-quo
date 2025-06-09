@@ -16,7 +16,7 @@
   []
   (if-let [data (rn/use-context context)]
     (:theme (oops/oget data :cljData))
-    :light))
+    :theme/light))
 
 (defn use-screen-id
   "A hook that returns the current screen id."

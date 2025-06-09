@@ -34,7 +34,7 @@
       (reset! scroll-index index)
       (when @small-list-ref
         (.scrollToIndex ^js @small-list-ref #js {:animated true :index index}))
-      (rf/dispatch [:lightbox/update-animation-shared-element-id
+      (rf/dispatch [:theme/lightbox/update-animation-shared-element-id
                     (:id (oops/oget changed :item))]))))
 
 (defn image-view
@@ -57,7 +57,7 @@
                                         (+ (:height window) (:top insets))
                                         (:height window))
                                       alert-banners-top-margin)
-        curr-orientation           (or (rf/sub [:lightbox/orientation]) orientation/portrait)
+        curr-orientation           (or (rf/sub [:theme/lightbox/orientation]) orientation/portrait)
         landscape?                 (string/includes? curr-orientation orientation/landscape)
         horizontal?                (or platform/android? (not landscape?))
         inverted?                  (and platform/ios? (= curr-orientation orientation/landscape-right))

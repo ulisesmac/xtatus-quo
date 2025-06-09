@@ -25,7 +25,7 @@
     (h/render-with-theme-provider [list/view
                                    {:type        :step
                                     :step-number 1}]
-                                  :dark)
+                                  :theme/dark)
     (h/is-truthy (h/get-by-label-text :step-counter)))
 
   (h/test "renders decription with a context tag component and description after the tag"

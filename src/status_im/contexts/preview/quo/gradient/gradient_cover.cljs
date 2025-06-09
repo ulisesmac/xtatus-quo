@@ -50,7 +50,7 @@
      (fn []
        (rn/use-effect (fn []
                         (when @blur?
-                          (rf/dispatch [:theme/switch {:theme :dark}])))
+                          (rf/dispatch [:theme/switch {:theme :theme/dark}])))
                       [@blur?])
        [preview/preview-container {:state state :descriptor descriptor}
         [rn/view
@@ -61,11 +61,11 @@
          (when @blur?
            [rn/image
             {:style  {:height 332}
-             :source (resources/get-mock-image :dark-blur-bg)}])
+             :source (resources/get-mock-image :theme/dark-blur-bg)}])
          [(if @blur? quo/blur rn/view)
           {:style     {:height           332
                        :padding-vertical 40}
-           :blur-type :dark}
+           :blur-type :theme/dark}
           [quo/gradient-cover @state]]]
         [quo/button
          {:container-style {:margin-horizontal 40}

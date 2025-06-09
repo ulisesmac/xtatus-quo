@@ -6,7 +6,7 @@
   [type theme]
   (if (and (or (= :missing-keypair type)
                (= :watch-only type))
-           (= :light theme))
+           (= :theme/light theme))
     colors/neutral-100
     colors/white))
 
@@ -72,7 +72,7 @@
   [type theme]
   {:color (if (and (or (= :missing-keypair type)
                        (= :watch-only type))
-                   (= :light theme))
+                   (= :theme/light theme))
             colors/neutral-80-opa-60
             colors/white-opa-70)})
 
@@ -83,7 +83,7 @@
    :border-radius     20
    :background-color  (if (and (or (= :missing-keypair type)
                                    (= :watch-only type))
-                               (= :light theme))
+                               (= :theme/light theme))
                         colors/neutral-80-opa-20
                         colors/white-opa-40)
    :margin-horizontal 4})
@@ -112,7 +112,7 @@
   [{:keys [width height watch-only? theme missing-keypair?]}]
   {:width            width
    :height           height
-   :background-color (if (and (or missing-keypair? watch-only?) (= :light theme))
+   :background-color (if (and (or missing-keypair? watch-only?) (= :theme/light theme))
                        colors/neutral-80-opa-5
                        colors/white-opa-10)
    :border-radius    6})

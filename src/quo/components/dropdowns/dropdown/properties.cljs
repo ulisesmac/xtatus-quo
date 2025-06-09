@@ -39,7 +39,7 @@
    :right-icon-color   colors/white-opa-20
    :right-icon-color-2 colors/white
    :label-color        colors/white
-   :background-color   (colors/resolve-color customization-color :light)})
+   :background-color   (colors/resolve-color customization-color :theme/light)})
 
 (def sizes-to-exclude-blur-in-photo-bg #{:size-40})
 
@@ -49,14 +49,14 @@
    :right-icon-color   (colors/theme-colors colors/neutral-80-opa-10 colors/white-opa-10 theme)
    :right-icon-color-2 (colors/theme-colors colors/neutral-100 colors/white theme)
    :label-color        (colors/theme-colors colors/neutral-100 colors/white theme)
-   :blur-overlay-color (when (and (= theme :dark) (nil? (sizes-to-exclude-blur-in-photo-bg size)))
+   :blur-overlay-color (when (and (= theme :theme/dark) (nil? (sizes-to-exclude-blur-in-photo-bg size)))
                          (if active? colors/neutral-80-opa-50 colors/neutral-80-opa-40))
-   :blur-type          (if (= theme :light) :light :dark)
+   :blur-type          (if (= theme :theme/light) :theme/light :theme/dark)
    :background-color   (cond
-                         (= theme :light)
+                         (= theme :theme/light)
                          (if active? colors/white-opa-50 colors/white-opa-40)
 
-                         (and (= theme :dark) (sizes-to-exclude-blur-in-photo-bg size))
+                         (and (= theme :theme/dark) (sizes-to-exclude-blur-in-photo-bg size))
                          (if active? colors/neutral-80-opa-50 colors/neutral-80-opa-40))})
 
 (defn- grey-blur

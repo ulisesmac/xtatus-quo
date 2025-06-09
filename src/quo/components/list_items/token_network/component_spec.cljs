@@ -25,12 +25,12 @@
     (h/render-with-theme-provider [token-network/view props])
     (h/fire-event :on-press-in (h/get-by-label-text :token-network))
     (h/wait-for #(h/has-style (h/query-by-label-text :token-network)
-                              {:backgroundColor (colors/resolve-color :blue :light 5)})))
+                              {:backgroundColor (colors/resolve-color :blue :theme/light 5)})))
 
   (h/test "Active state"
     (h/render-with-theme-provider [token-network/view (assoc props :state :active)])
     (h/has-style (h/query-by-label-text :token-network)
-                 {:backgroundColor (colors/resolve-color :blue :light 10)}))
+                 {:backgroundColor (colors/resolve-color :blue :theme/light 10)}))
 
   (h/test "Selected state"
     (h/render-with-theme-provider [token-network/view (assoc props :state :selected)])

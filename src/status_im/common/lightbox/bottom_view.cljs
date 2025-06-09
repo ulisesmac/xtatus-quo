@@ -27,7 +27,7 @@
     [rn/touchable-opacity
      {:active-opacity 1
       :on-press       (fn []
-                        (rf/dispatch [:lightbox/zoom-out-signal @scroll-index])
+                        (rf/dispatch [:theme/lightbox/zoom-out-signal @scroll-index])
                         (reset! scroll-index-lock? true)
                         (js/setTimeout #(reset! scroll-index-lock? false) 500)
                         (js/setTimeout
@@ -38,7 +38,7 @@
                            (.scrollToIndex ^js @flat-list-ref
                                            #js {:animated true :index index}))
                          (if platform/ios? 50 150))
-                        (rf/dispatch [:lightbox/update-animation-shared-element-id (:id item)]))}
+                        (rf/dispatch [:theme/lightbox/update-animation-shared-element-id (:id item)]))}
      [reanimated/fast-image
       {:source {:uri (:image item)}
        :style  (reanimated/apply-animations-to-style {:width  size-value

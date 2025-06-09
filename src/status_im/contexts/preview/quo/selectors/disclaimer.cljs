@@ -22,10 +22,10 @@
     (fn []
       (let [{:keys [blur? checked? text icon customization-color]} @state
             theme                                                  (quo.context/use-theme)
-            blur?                                                  (if (= :light theme) false blur?)]
+            blur?                                                  (if (= :theme/light theme) false blur?)]
         [preview/preview-container
          {:state                     state
-          :descriptor                (if (= :light theme)
+          :descriptor                (if (= :theme/light theme)
                                        descriptor
                                        (vec (conj descriptor {:key :blur? :type :boolean})))
           :blur?                     blur?

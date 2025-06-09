@@ -182,7 +182,7 @@
                       (on-init reset-top-animation))))
     [reanimated/view {:style (style/outer-container height border-radius container-style)}
      [blur/view
-      {:blur-type   :dark
+      {:blur-type   :theme/dark
        :blur-amount 10
        :style       style/blur-view-style}
       [rn/view

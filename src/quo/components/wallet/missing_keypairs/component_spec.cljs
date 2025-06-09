@@ -3,7 +3,7 @@
     [quo.components.wallet.missing-keypairs.view :as missing-keypairs]
     [test-helpers.component :as h]))
 
-(def ^:private theme :dark)
+(def ^:private theme :theme/dark)
 
 (def props
   {:blur?            true

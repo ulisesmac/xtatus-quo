@@ -133,8 +133,8 @@
         {:style         style/category-blur-container
          :blur-radius   (if platform/android? 20 10)
          :blur-amount   (if platform/ios? 20 10)
-         :blur-type     (if (= theme :light) (if platform/ios? :light :xlight) :dark)
-         :overlay-color (if (= theme :light) colors/white-70-blur colors/neutral-95-opa-70-blur)}
+         :blur-type     (if (= theme :theme/light) (if platform/ios? :theme/light :xlight) :theme/dark)
+         :overlay-color (if (= theme :theme/light) colors/white-70-blur colors/neutral-95-opa-70-blur)}
         [quo/showcase-nav
          {:state     :scroll
           :active-id @active-category

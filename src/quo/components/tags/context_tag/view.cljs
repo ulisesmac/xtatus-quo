@@ -134,7 +134,7 @@
          [group-avatar/view
           {:icon-name           :i/members
            :size                (if (= size 24) :size-20 :size-28)
-           :customization-color (colors/resolve-color customization-color :light)}]]
+           :customization-color (colors/resolve-color customization-color :theme/light)}]]
 
         (:channel :community)
         [communities-tag (assoc props :channel? (= type :channel))]

@@ -82,8 +82,8 @@
     :shell?          shell?
     :on-press-button #(swap! expanded? not)}
    (if @expanded?
-     [documentation-content-full (when shell? :dark)]
-     [documentation-content (when shell? :dark)])])
+     [documentation-content-full (when shell? :theme/dark)]
+     [documentation-content (when shell? :theme/dark)])])
 
 (defn view
   []

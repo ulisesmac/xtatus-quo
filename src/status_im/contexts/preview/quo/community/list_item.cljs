@@ -76,7 +76,7 @@
                             (into [descriptor-unread-count]))
                 :share    descriptors-type-share
                 nil)]
-    (if (= :dark theme)
+    (if (= :theme/dark theme)
       (into [descriptor-blur] descs)
       descs)))
 

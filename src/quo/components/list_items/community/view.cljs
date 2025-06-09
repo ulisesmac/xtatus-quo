@@ -90,7 +90,7 @@
 
   :title - string
   :logo - image resource
-  :theme - :light/dark
+  :theme - :theme/light/dark
 
   :container-style - style map - Override styles in top-level view component.
 

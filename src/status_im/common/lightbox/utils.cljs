@@ -46,7 +46,7 @@
                       (if platform/ios? 250 100)))
      (swap! timers assoc :mount-index-lock (js/setTimeout #(reset! scroll-index-lock? false) 300))
      (fn []
-       (rf/dispatch [:lightbox/zoom-out-signal nil])
+       (rf/dispatch [:theme/lightbox/zoom-out-signal nil])
        (when platform/android?
          (rf/dispatch [:chat.ui/lightbox-scale 1]))
        (clear-timers timers)))))
@@ -69,7 +69,7 @@
         landscape?    (string/includes? result orientation/landscape)
         item-width    (if (and landscape? platform/ios?) screen-height screen-width)]
     (when (or landscape? (= result orientation/portrait))
-      (rf/dispatch [:lightbox/orientation-change result]))
+      (rf/dispatch [:theme/lightbox/orientation-change result]))
     (cond
       landscape?
       (orientation/lock-to-landscape "lightbox")

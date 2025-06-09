@@ -9,7 +9,7 @@
   "Opts:
 
     :image - collection image
-    :theme - keyword -> :light/:dark"
+    :theme - keyword -> :theme/light/:theme/dark"
   [{:keys [image size on-load-start on-load-end on-error] :or {size :size-24}}]
   (let [theme (quo.context/use-theme)]
     [rn/view {:style (style/collection-avatar-container theme size)}

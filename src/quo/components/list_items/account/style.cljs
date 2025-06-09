@@ -5,9 +5,9 @@
 (defn- background-color
   [{:keys [state pressed? blur? customization-color]}]
   (cond (or pressed? (= state :selected))
-        (if blur? colors/white-opa-5 (colors/resolve-color customization-color :light 5))
+        (if blur? colors/white-opa-5 (colors/resolve-color customization-color :theme/light 5))
         (= state :active)
-        (if blur? colors/white-opa-10 (colors/resolve-color customization-color :light 10))
+        (if blur? colors/white-opa-10 (colors/resolve-color customization-color :theme/light 10))
         (and pressed? blur?) colors/white-opa-10
         :else :transparent))
 

@@ -25,7 +25,7 @@
   :label - string (default nil) - Text to display above the input
   :icon - keyword (default nil) - Icon to display in the info box
   :container-style - style map (default nil) - Override style for the container
-  :theme - :light/:dark (passed from with-theme HOC)
+  :theme - :theme/light/:theme/dark (passed from with-theme HOC)
 
   :value - string (default nil) - value to display in the info box"
   [{:keys [label icon container-style]} value]

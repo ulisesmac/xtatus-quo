@@ -15,8 +15,8 @@
     :type :boolean}
    {:key     :theme
     :type    :select
-    :options [{:key :dark}
-              {:key :light}
+    :options [{:key :theme/dark}
+              {:key :theme/light}
               {:key nil :value "System"}]}])
 
 (def options-with-consequences

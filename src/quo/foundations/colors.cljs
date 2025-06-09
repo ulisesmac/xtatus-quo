@@ -40,7 +40,7 @@
      ([color light-opacity dark-opacity theme]
       (theme-alpha color light-opacity color dark-opacity theme))
      ([light-color light-opacity dark-color dark-opacity theme]
-      (if (= :dark theme)
+      (if (= :theme/dark theme)
         (alpha light-color light-opacity)
         (alpha dark-color dark-opacity))))))
 
@@ -337,7 +337,7 @@
   ([color theme opacity]
    (let [suffix (cond
                   (not (keyword? color))        nil
-                  (or opacity (= theme :light)) 50
+                  (or opacity (= theme :theme/light)) 50
                   :else                         60)]
      (cond-> color
        suffix  (get-from-colors-map suffix)
@@ -361,14 +361,14 @@
 (def override-color
   "(override-color color opacity suffix)
    color    hex string or keyword - (resolves from custom, network and semantic colors)
-   opacity  0-100 (optional) 
+   opacity  0-100 (optional)
    suffix   optionally override the color suffix to use when retrieving the color"
   (memoize override-color*))
 
 (def resolve-color
   "(resolve-color color theme opacity)
    color   hex string or keyword (resolves from custom, network and semantic colors)
-   theme  :light/:dark
+   theme  :theme/light/:theme/dark
    opacity 0-100 (optional) - if set theme is ignored and goes to 50 suffix internally"
   (memoize resolve-color*))
 
@@ -377,11 +377,11 @@
 (defn theme-colors
   "(theme-colors light dark override-theme)"
   [light dark theme]
-  (if (= theme :light) light dark))
+  (if (= theme :theme/light) light dark))
 
 (defn invert-theme
   [theme]
   (case theme
-    :light :dark
-    :dark  :light
+    :theme/light :theme/dark
+    :theme/dark  :theme/light
     nil))

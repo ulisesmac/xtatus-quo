@@ -72,7 +72,7 @@
   (let [theme (quo.context/use-theme)]
     [permission/tag
      {:accessibility-label :permission-tag
-      :background-color    (if (and (= :dark theme) blur?)
+      :background-color    (if (and (= :theme/dark theme) blur?)
                              colors/white-opa-10
                              (colors/theme-colors colors/neutral-10 colors/neutral-80 theme))
       :locked?             locked?

@@ -5,7 +5,7 @@
 
 (defn- render
   [component]
-  (h/render-with-theme-provider component :light))
+  (h/render-with-theme-provider component :theme/light))
 
 (def user-props
   {:title               "Some title"

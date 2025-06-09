@@ -12,5 +12,5 @@
      :on-denied   #(rf/dispatch
                     [:toasts/upsert
                      {:type  :negative
-                      :theme :dark
+                      :theme :theme/dark
                       :text  (i18n/label :t/camera-permission-denied)}])}]))

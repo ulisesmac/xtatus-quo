@@ -74,10 +74,10 @@
     :or   {type :neutral icon :i/placeholder}}]
   (let [theme     (or theme (quo.context/use-theme))
         icon-name (case type
-                    :positive (if (= theme :light)
+                    :positive (if (= theme :theme/light)
                                 :i/correct
                                 :i/correct-dark)
-                    :negative (if (= theme :light)
+                    :negative (if (= theme :theme/light)
                                 :i/incorrect
                                 :i/incorrect-dark)
                     :neutral  icon)]
@@ -95,4 +95,3 @@
                             :undo-on-press undo-on-press}]
                           action)
        :container-style container-style}]]))
-

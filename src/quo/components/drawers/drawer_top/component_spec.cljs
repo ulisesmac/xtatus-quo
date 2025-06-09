@@ -3,7 +3,7 @@
     [quo.core :as quo]
     [test-helpers.component :as h]))
 
-(def ^:private theme :light)
+(def ^:private theme :theme/light)
 
 (h/describe "drawer top tests"
   (h/test "component renders in default type"

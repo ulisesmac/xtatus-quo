@@ -6,12 +6,12 @@
     [react-native.core :as rn]))
 
 (def themes-for-blur
-  {:light {:background-color colors/neutral-80-opa-5}
-   :dark  {:background-color colors/white-opa-5}})
+  {:theme/light {:background-color colors/neutral-80-opa-5}
+   :theme/dark  {:background-color colors/white-opa-5}})
 
 (def themes
-  {:light {:background-color colors/neutral-10}
-   :dark  {:background-color colors/neutral-90}})
+  {:theme/light {:background-color colors/neutral-10}
+   :theme/dark  {:background-color colors/neutral-90}})
 
 (defn segmented-control
   [{:keys [data size blur? container-style item-container-style

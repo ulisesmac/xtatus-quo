@@ -4,7 +4,7 @@
     [quo.foundations.colors :as colors]
     [test-helpers.component :as h]))
 
-(def ^:private theme :light)
+(def ^:private theme :theme/light)
 
 (def ^:private default-props
   {:account-props {:name                "Account name"
@@ -25,7 +25,7 @@
     (h/render-with-theme-provider [account/view (with-defaults)] theme)
     (h/fire-event :on-press-in (h/get-by-label-text :container))
     (h/wait-for #(h/has-style (h/query-by-label-text :container)
-                              {:backgroundColor (colors/resolve-color :blue :light 5)})))
+                              {:backgroundColor (colors/resolve-color :blue :theme/light 5)})))
 
   (h/test "on-press-in changes state to :pressed with blur? enabled"
     (h/render-with-theme-provider [account/view (with-defaults {:blur? true})] theme)
@@ -36,7 +36,7 @@
   (h/test "render with state :active"
     (h/render-with-theme-provider [account/view (with-defaults {:state :active})] theme)
     (h/has-style (h/query-by-label-text :container)
-                 {:backgroundColor (colors/resolve-color :blue :light 10)}))
+                 {:backgroundColor (colors/resolve-color :blue :theme/light 10)}))
 
   (h/test "render with state :active and blur? enabled"
     (h/render-with-theme-provider [account/view

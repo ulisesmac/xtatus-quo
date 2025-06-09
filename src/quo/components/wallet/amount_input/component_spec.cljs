@@ -7,7 +7,7 @@
 
 (defn- render
   [component]
-  (h/render-with-theme-provider component :light))
+  (h/render-with-theme-provider component :theme/light))
 
 (h/describe "Amount input component"
   (h/test "Renders with default value"
@@ -31,5 +31,5 @@
 
   (h/test "Renders the error state"
     (render [amount-input/view {:status :error :value 10}])
-    (h/is-equal (colors/resolve-color :danger :light)
+    (h/is-equal (colors/resolve-color :danger :theme/light)
                 (oops/oget (h/get-by-label-text :amount-input) "props" "style" "color"))))

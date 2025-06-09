@@ -32,6 +32,6 @@
 (defn set-legacy-theme
   [value]
   (reset! legacy-colors/theme (case value
-                                :dark legacy-colors/dark-theme
+                                :theme/dark legacy-colors/dark-theme
                                 legacy-colors/light-theme))
   (legacy-colors/set-legacy-theme-type value))

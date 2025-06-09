@@ -132,7 +132,7 @@
          :auto-correct           false
          :cursor-color           (cursor-color customization-color theme)
          :editable               (not disabled?)
-         :keyboard-appearance    (colors/theme-colors :light :dark theme)
+         :keyboard-appearance    (colors/theme-colors :theme/light :theme/dark theme)
          :keyboard-type          :web-search
          :on-blur                on-blur
          :on-change-text         on-change-text

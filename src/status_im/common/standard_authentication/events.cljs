@@ -28,7 +28,7 @@
                  (utils/payloads-for-different-keypairs? keypairs sign-payload))
             [:dispatch
              [:keycard/feature-unavailable-show
-              {:theme :dark
+              {:theme :theme/dark
                :feature-name
                :standard-auth/multiple-keypair-signing}]]
 

@@ -4,7 +4,7 @@
 
 (defn get-colors-map
   [customization-color-hex]
-  {:light {:default      {:bg     colors/neutral-5
+  {:theme/light {:default      {:bg     colors/neutral-5
                           :border colors/neutral-20
                           :icon   colors/neutral-50
                           :text   colors/neutral-100}
@@ -17,7 +17,7 @@
                           :icon   colors/danger-50
                           :text   colors/danger-50}
            :close-button colors/neutral-100}
-   :dark  {:default      {:bg     colors/neutral-80-opa-40
+   :theme/dark  {:default      {:bg     colors/neutral-80-opa-40
                           :border colors/neutral-80
                           :icon   colors/neutral-40
                           :text   colors/white}

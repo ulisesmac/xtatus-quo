@@ -27,7 +27,7 @@
   "This component based on the following properties:
   - :holder-name - Can be owner's name. Default is Empty
   - :locked? - Boolean to specify whether the keycard is locked or not
-  - :theme :light/:dark
+  - :theme :theme/light/:theme/dark
   "
   [{:keys [holder-name locked? blur?]}]
   (let [theme (quo.context/use-theme)]
@@ -37,7 +37,7 @@
        :style  (style/keycard-logo locked? theme)}]
      [rn/image
       {:source (resources/get-image
-                (if (or locked? (= :dark theme)) :keycard-chip-dark :keycard-chip-light))
+                (if (or locked? (= :theme/dark theme)) :keycard-chip-dark :keycard-chip-light))
        :style  style/keycard-chip}]
      (when-not (string/blank? holder-name)
        [tag/tag
@@ -49,4 +49,4 @@
          :resource            (when locked? :i/locked)
          :accessibility-label :holder-name
          :icon-color          colors/white-70-blur
-         :override-theme      (when locked? :dark)}])]))
+         :override-theme      (when locked? :theme/dark)}])]))

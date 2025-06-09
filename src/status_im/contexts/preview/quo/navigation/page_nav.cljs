@@ -179,7 +179,7 @@
   [{:keys [theme]}]
   (let [state (reagent/atom
                {:type               :title-description
-                :background         (if (= theme :light) :white :neutral-90)
+                :background         (if (= theme :theme/light) :white :neutral-90)
                 :icon-name          :i/placeholder
                 :on-press           #(js/alert "Left icon pressed!")
                 :right-side         [{:icon-name :i/save :on-press #(js/alert "SAVE")}

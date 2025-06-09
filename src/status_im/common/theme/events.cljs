@@ -11,16 +11,16 @@
 
 (defn- appearance-type->theme
   "Converts appearance type identifier to a theme keyword.
-  Returns `:light` or `:dark` based on `appearance-type`:
+  Returns `:theme/light` or `:theme/dark` based on `appearance-type`:
   - `appearance-type-light` (1): Light theme.
   - `appearance-type-dark` (2): Dark theme.
   - `appearance-type-system` (0): Uses system preference."
   [appearance-type]
   (condp = appearance-type
-    constants/appearance-type-dark   :dark
-    constants/appearance-type-light  :light
-    constants/appearance-type-system (if (theme/device-theme-dark?) :dark :light)
-    :dark))
+    constants/appearance-type-dark   :theme/dark
+    constants/appearance-type-light  :theme/light
+    constants/appearance-type-system (if (theme/device-theme-dark?) :theme/dark :theme/light)
+    :theme/dark))
 
 ;; Switches the theme and triggers related effects.
 ;;

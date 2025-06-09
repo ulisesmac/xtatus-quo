@@ -97,7 +97,7 @@
         (rescale constants/min-scale true)
         (js/setTimeout #(rf/dispatch [:navigate-back]) 70))
       (rf/dispatch [:navigate-back]))
-    (js/setTimeout #(rf/dispatch [:lightbox/exit-lightbox-signal nil]) 500)))
+    (js/setTimeout #(rf/dispatch [:theme/lightbox/exit-lightbox-signal nil]) 500)))
 
 (defn handle-zoom-out-signal
   "Zooms out when pressing on another photo from the small bottom list"

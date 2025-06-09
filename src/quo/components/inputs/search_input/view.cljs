@@ -79,7 +79,7 @@
                  :placeholder-text-color (style/placeholder-color state blur? theme)
                  :editable               (not disabled?)
                  :on-key-press           on-key-press
-                 :keyboard-appearance    (colors/theme-colors :light :dark theme)
+                 :keyboard-appearance    (colors/theme-colors :theme/light :theme/dark theme)
                  :on-change-text         on-change-text
                  :on-focus               on-focus
                  :on-blur                on-blur}

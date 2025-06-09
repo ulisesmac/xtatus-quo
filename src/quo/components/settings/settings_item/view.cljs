@@ -109,7 +109,9 @@
                        {:type :outline
                         :size 24})
                 (:button-text action-props)]
-     :selector [selectors/view (assoc action-props :customization-color customization-color)]
+     :selector [selectors/view (assoc action-props
+                                 :customization-color customization-color
+                                 :blur? blur?)]
      nil)])
 
 (defn view

@@ -5,7 +5,7 @@
 
 (defn render
   [component]
-  (h/render-with-theme-provider component :dark))
+  (h/render-with-theme-provider component :theme/dark))
 
 (h/describe "collectible counter component"
   (h/test "default render of component"

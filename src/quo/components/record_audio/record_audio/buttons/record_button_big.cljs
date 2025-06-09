@@ -58,7 +58,7 @@
         translate-y (reanimated/use-shared-value 0)
         translate-x (reanimated/use-shared-value 0)
         button-color colors/primary-50
-        icon-color (if (and (not (= :dark theme)) ready-to-lock?) colors/black colors/white)
+        icon-color (if (and (not (= :theme/dark theme)) ready-to-lock?) colors/black colors/white)
         icon-opacity (reanimated/use-shared-value 1)
         red-overlay-opacity (reanimated/use-shared-value 0)
         gray-overlay-opacity (reanimated/use-shared-value 0)

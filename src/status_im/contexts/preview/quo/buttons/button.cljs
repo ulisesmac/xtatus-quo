@@ -12,7 +12,7 @@
     :options [{:key :primary}
               {:key :positive}
               {:key :grey}
-              {:key :dark-grey}
+              {:key :theme/dark-grey}
               {:key :outline}
               {:key :ghost}
               {:key :danger}

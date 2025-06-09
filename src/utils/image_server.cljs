@@ -44,8 +44,8 @@
 (defn current-theme-index
   [theme]
   (case theme
-    :light 1
-    :dark  2))
+    :theme/light 1
+    :theme/dark  2))
 
 (defn correction-level->index
   [level]

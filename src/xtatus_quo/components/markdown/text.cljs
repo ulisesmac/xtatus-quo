@@ -29,7 +29,7 @@
            style
            (assoc style
                   :color
-                  (if (= theme :dark) colors/white colors/neutral-100)))))
+                  (if (= theme :theme/dark) colors/white colors/neutral-100)))))
 
 (def font-type-style
   (memoize
@@ -59,8 +59,7 @@
     (let [font-type  (font-type-style font-style)
           text-align (or align :auto)
           color      (or (:color style)
-                         (assoc style
-                           :color (if (= theme :dark) colors/white colors/neutral-100)))]
+                         (if (= theme :theme/dark) colors/white colors/neutral-100))]
       [(assoc font-type
          :text-align text-align
          :color color)
@@ -83,7 +82,7 @@
           text-align  {:text-align (or align :auto)}
           color       (or (:color style)
                           (assoc style
-                            :color (if (= theme :dark) colors/white colors/neutral-100)))]
+                            :color (if (= theme :theme/dark) colors/white colors/neutral-100)))]
       [font-weight font-size text-align color style])))
 
 (defn text

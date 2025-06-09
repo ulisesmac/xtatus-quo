@@ -14,7 +14,7 @@
     - :options - false / :add / :hold (default false)
     - :size - :size-24 / :size-32 (default :size-24)
     - :blur? - boolean (default false)
-    - :theme - :light / :dark
+    - :theme - :theme/light / :theme/dark
     - :token-value - string - token value
     - :token-symbol - string"
   [{:keys [options size blur? token-value token-img-src token-symbol]

@@ -240,8 +240,8 @@
   (let [state (utils/init-state)]
     (fn [{:keys [image-width image-height image id]} index render-data]
       (let [animation-shared-element-id                 (rf/sub [:animation-shared-element-id])
-            exit-lightbox-signal                        (rf/sub [:lightbox/exit-signal])
-            zoom-out-signal                             (rf/sub [:lightbox/zoom-out-signal])
+            exit-lightbox-signal                        (rf/sub [:theme/lightbox/exit-signal])
+            zoom-out-signal                             (rf/sub [:theme/lightbox/zoom-out-signal])
             {:keys [set-full-height? curr-orientation]} render-data
             focused?                                    (= animation-shared-element-id id)
             ;; TODO - remove `image-dimensions` check, once

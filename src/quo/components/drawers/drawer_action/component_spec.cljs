@@ -13,13 +13,13 @@
     (h/render-with-theme-provider [drawer-action/view {:accessibility-label :container}])
     (h/fire-event :on-press-in (h/get-by-label-text :container))
     (h/wait-for #(h/has-style (h/query-by-label-text :container)
-                              {:backgroundColor (colors/resolve-color :blue :light 5)})))
+                              {:backgroundColor (colors/resolve-color :blue :theme/light 5)})))
 
   (h/test "render default action with state :selected"
     (h/render-with-theme-provider [drawer-action/view
                                    {:state :selected :accessibility-label :container}])
     (h/has-style (h/query-by-label-text :container)
-                 {:backgroundColor (colors/resolve-color :blue :light 5)})
+                 {:backgroundColor (colors/resolve-color :blue :theme/light 5)})
     (h/is-truthy (h/query-by-label-text :check-icon)))
 
   (h/test "call on-press"

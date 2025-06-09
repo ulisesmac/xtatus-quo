@@ -61,65 +61,65 @@
 
 (def ui-themed
   {:angry-man
-   {:light (js/require "../resources/images/ui2/angry-man-light.png")
-    :dark  (js/require "../resources/images/ui2/angry-man-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/angry-man-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/angry-man-dark.png")}
    :cat-in-box
-   {:light (js/require "../resources/images/ui2/cat-in-box-light.png")
-    :dark  (js/require "../resources/images/ui2/cat-in-box-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/cat-in-box-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/cat-in-box-dark.png")}
    :no-contacts
-   {:light (js/require "../resources/images/ui2/no-contacts-light.png")
-    :dark  (js/require "../resources/images/ui2/no-contacts-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-contacts-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-contacts-dark.png")}
    :no-contacts-to-chat
-   {:light (js/require "../resources/images/ui2/no-contacts-to-chat-light.png")
-    :dark  (js/require "../resources/images/ui2/no-contacts-to-chat-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-contacts-to-chat-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-contacts-to-chat-dark.png")}
    :keycard-chip
-   {:light (js/require "../resources/images/ui2/keycard-chip-light.png")
-    :dark  (js/require "../resources/images/ui2/keycard-chip-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/keycard-chip-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/keycard-chip-dark.png")}
    :no-group-chats
-   {:light (js/require "../resources/images/ui2/no-group-chats-light.png")
-    :dark  (js/require "../resources/images/ui2/no-group-chats-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-group-chats-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-group-chats-dark.png")}
    :no-sent-requests
-   {:light (js/require "../resources/images/ui2/no-sent-requests-light.png")
-    :dark  (js/require "../resources/images/ui2/no-sent-requests-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-sent-requests-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-sent-requests-dark.png")}
    :no-received-requests
-   {:light (js/require "../resources/images/ui2/no-received-requests-light.png")
-    :dark  (js/require "../resources/images/ui2/no-received-requests-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-received-requests-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-received-requests-dark.png")}
    :no-communities
-   {:light (js/require "../resources/images/ui2/no-communities-light.png")
-    :dark  (js/require "../resources/images/ui2/no-communities-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-communities-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-communities-dark.png")}
    :no-pending-communities
-   {:light (js/require "../resources/images/ui2/no-pending-communities-light.png")
-    :dark  (js/require "../resources/images/ui2/no-pending-communities-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-pending-communities-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-pending-communities-dark.png")}
    :no-opened-communities
-   {:light (js/require "../resources/images/ui2/no-opened-communities-light.png")
-    :dark  (js/require "../resources/images/ui2/no-opened-communities-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-opened-communities-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-opened-communities-dark.png")}
    :no-contacts-to-invite
-   {:light (js/require "../resources/images/ui2/no-contacts-to-invite-light.png")
-    :dark  (js/require "../resources/images/ui2/no-contacts-to-invite-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-contacts-to-invite-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-contacts-to-invite-dark.png")}
    :no-notifications
-   {:light (js/require "../resources/images/ui2/no-notifications-light.png")
-    :dark  (js/require "../resources/images/ui2/no-notifications-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-notifications-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-notifications-dark.png")}
    :no-activity
-   {:light (js/require "../resources/images/ui2/no-activity-light.png")
-    :dark  (js/require "../resources/images/ui2/no-activity-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-activity-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-activity-dark.png")}
    :no-collectibles
-   {:light (js/require "../resources/images/ui2/no-collectibles-light.png")
-    :dark  (js/require "../resources/images/ui2/no-collectibles-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-collectibles-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-collectibles-dark.png")}
    :no-dapps
-   {:light (js/require "../resources/images/ui2/no-dapps-light.png")
-    :dark  (js/require "../resources/images/ui2/no-dapps-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-dapps-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-dapps-dark.png")}
    :no-permissions
-   {:light (js/require "../resources/images/ui2/no-permissions-light.png")
-    :dark  (js/require "../resources/images/ui2/no-permissions-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-permissions-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-permissions-dark.png")}
    :sweating-man
-   {:light (js/require "../resources/images/ui2/sweating-man-light.png")
-    :dark  (js/require "../resources/images/ui2/sweating-man-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/sweating-man-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/sweating-man-dark.png")}
    :no-pinned-messages
-   {:light (js/require "../resources/images/ui2/no-pinned-messages-light.png")
-    :dark  (js/require "../resources/images/ui2/no-pinned-messages-dark.png")}
+   {:theme/light (js/require "../resources/images/ui2/no-pinned-messages-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-pinned-messages-dark.png")}
    :no-assets
-   {:light (js/require "../resources/images/ui2/no-assets-light.png")
-    :dark  (js/require "../resources/images/ui2/no-assets-dark.png")}})
+   {:theme/light (js/require "../resources/images/ui2/no-assets-light.png")
+    :theme/dark  (js/require "../resources/images/ui2/no-assets-dark.png")}})
 
 (def mock-images
   {:bored-ape             (js/require "../resources/images/mock2/bored-ape.png")
@@ -136,13 +136,13 @@
    :community-banner      (js/require "../resources/images/mock2/community-banner.png")
    :community-logo        (js/require "../resources/images/mock2/community-logo.png")
    :community-cover       (js/require "../resources/images/mock2/community-cover.png")
-   :dark-blur-bg          (js/require "../resources/images/mock2/dark_blur_bg.png")
-   :dark-blur-background  (js/require "../resources/images/mock2/dark-blur-background.png")
+   :theme/dark-blur-bg          (js/require "../resources/images/mock2/dark_blur_bg.png")
+   :theme/dark-blur-background  (js/require "../resources/images/mock2/dark-blur-background.png")
    :decentraland          (js/require "../resources/images/mock2/decentraland.png")
    :diamond               (js/require "../resources/images/mock2/diamond.png")
    :gif                   (js/require "../resources/images/mock2/gif.png")
    :monkey                (js/require "../resources/images/mock2/monkey.png")
-   :light-blur-background (js/require "../resources/images/mock2/light-blur-background.png")
+   :theme/light-blur-background (js/require "../resources/images/mock2/light-blur-background.png")
    :photo1                (js/require "../resources/images/mock2/photo1.png")
    :photo2                (js/require "../resources/images/mock2/photo2.png")
    :photo3                (js/require "../resources/images/mock2/photo3.png")

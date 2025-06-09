@@ -27,7 +27,7 @@
                        :overflow         :hidden
                        :justify-content  :center
                        :align-items      :center
-                       :background-color :lightblue)}
+                       :background-color :theme/lightblue)}
         [text/text "SVG Content"]]
 
        (or (string/blank? resource) (string/blank? (:uri resource)))
@@ -37,7 +37,7 @@
                        :overflow         :hidden
                        :justify-content  :center
                        :align-items      :center
-                       :background-color :lightgray)}
+                       :background-color :theme/lightgray)}
         [text/text "Missing image"]]
 
        :else

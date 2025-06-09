@@ -12,7 +12,7 @@
      :button-border (colors/theme-colors colors/neutral-80-opa-30 colors/white-opa-10 theme)
      :password-icon (colors/theme-colors colors/neutral-100 colors/white-opa-70 theme)
      :clear-icon    (colors/theme-colors colors/neutral-80-opa-30 colors/white-opa-10 theme)
-     :cursor        (colors/theme-colors (colors/resolve-color :blue :light)
+     :cursor        (colors/theme-colors (colors/resolve-color :blue :theme/light)
                                          colors/white
                                          theme)}
     {:label         (colors/theme-colors colors/neutral-50 colors/neutral-40 theme)

@@ -39,7 +39,7 @@
       :on-sliding-start         on-sliding-start
       :on-sliding-complete      on-sliding-complete
       :on-value-change          on-value-change
-      :thumb-image              (if (= theme :light) thumb-light thumb-dark)
+      :thumb-image              (if (= theme :theme/light) thumb-light thumb-dark)
       :minimum-track-tint-color (colors/theme-colors colors/primary-50 colors/primary-60 theme)
       :maximum-track-tint-color (colors/theme-colors
                                  (if platform/ios? colors/neutral-20 colors/neutral-40)

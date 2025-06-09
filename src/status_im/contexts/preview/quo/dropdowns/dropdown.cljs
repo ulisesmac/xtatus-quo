@@ -69,7 +69,7 @@
          :show-blur-background?     true}
         (when (= :photo (:background @state))
           [rn/image
-           {:source (resources/get-mock-image :dark-blur-bg)
+           {:source (resources/get-mock-image :theme/dark-blur-bg)
             :style  {:position      :absolute
                      :top           12
                      :left          20

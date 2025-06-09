@@ -49,7 +49,7 @@
           :padding-vertical 60
           :border-radius    16
           :background-color (when (= :pinned (:use-case @state))
-                              (colors/resolve-color :blue :light 10))
+                              (colors/resolve-color :blue :theme/light 10))
           :justify-content  :space-evenly
           :flex-direction   :row
           :align-items      :center}

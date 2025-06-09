@@ -97,7 +97,7 @@
                                   :height "100%"})
         skeleton-height         (get-in constants/layout-dimensions [content :height])
         number-of-skeletons     (int (Math/ceil (/ parent-height skeleton-height)))
-        color                   (if (and blur? (= theme :dark))
+        color                   (if (and blur? (= theme :theme/dark))
                                   colors/white-opa-5
                                   (colors/theme-colors colors/neutral-5 colors/neutral-90 theme))
         component               (if animated? animated-skeleton-view static-skeleton-view)]
@@ -114,4 +114,3 @@
                 :translate-x     translate-x
                 :skeleton-height skeleton-height
                 :style           animated-gradient-style})])]))
-

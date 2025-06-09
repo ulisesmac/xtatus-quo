@@ -3,7 +3,7 @@
     [quo.components.wallet.keypair.view :as keypair]
     [test-helpers.component :as h]))
 
-(def ^:private theme :light)
+(def ^:private theme :theme/light)
 
 (def accounts
   [{:account-props {:customization-color :turquoise

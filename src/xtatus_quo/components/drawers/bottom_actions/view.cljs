@@ -1,15 +1,14 @@
-(ns quo.components.drawers.bottom-actions.view
+(ns xtatus-quo.components.drawers.bottom-actions.view
   (:require
-    [quo.components.buttons.button.view :as button]
+    [xtatus-quo.components.buttons.button.view :as button]
     [quo.components.drawers.bottom-actions.style :as style]
-    [quo.components.icon :as icon]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.icon :as icon]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.components.tags.context-tag.schema :as context-tag.schema]
     [quo.components.tags.context-tag.view :as context-tag]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]
-    [schema.core :as schema]
     [utils.i18n :as i18n]))
 
 (def ?schema
@@ -41,7 +40,7 @@
    :token-master :i/token-master
    :owner        :i/crown})
 
-(defn- view-internal
+(defn- view
   [{:keys [actions description description-text description-top-text error-message role button-one-label
            button-two-label blur? button-one-props button-two-props scroll? container-style
            buttons-container-style buttons-style context-tag-props]}]
@@ -103,5 +102,3 @@
           {:size  :paragraph-2
            :style (style/description-bottom scroll? blur? theme)} description-text]
          description-text))]))
-
-(def view (schema/instrument #'view-internal ?schema))

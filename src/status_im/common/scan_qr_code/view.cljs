@@ -151,7 +151,7 @@
         (debounce/debounce-and-dispatch
          [:toasts/upsert
           {:type  :negative
-           :theme :dark
+           :theme :theme/dark
            :text  error-message}]
          300)))))
 

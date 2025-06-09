@@ -7,7 +7,8 @@
    xtatus-quo.components.text-combinations.page-top.view
    xtatus-quo.components.text-combinations.standard-title.view
    xtatus-quo.components.settings.category.view
-   xtatus-quo.components.overlay.view))
+   xtatus-quo.components.overlay.view
+   xtatus-quo.components.drawers.bottom-actions.view))
 
 (def input xtatus-quo.components.inputs.input.view/input)
 
@@ -23,3 +24,6 @@
 
 ;; Navigation
 (def page-nav xtatus-quo.components.navigation.page-nav.view/page-nav)
+
+;; Drawer
+(def bottom-actions xtatus-quo.components.drawers.bottom-actions.view/view)

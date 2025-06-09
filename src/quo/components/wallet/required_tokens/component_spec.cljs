@@ -5,7 +5,7 @@
 
 (defn render
   [component]
-  (h/render-with-theme-provider component :light))
+  (h/render-with-theme-provider component :theme/light))
 
 (h/describe "Wallet: Required Tokens"
   (h/test "basic render"

@@ -62,7 +62,7 @@
       :type                :grey
       :size                40
       :container-style     style/main-button
-      :theme               :dark
+      :theme               :theme/dark
       :background          :blur}
      button-props)
     button-label]])

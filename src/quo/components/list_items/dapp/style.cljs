@@ -5,14 +5,14 @@
 (defn get-background-color
   [{:keys [pressed? state blur? customization-color theme]}]
   (cond
-    (and pressed? (= theme :dark) blur?)          colors/white-opa-5
+    (and pressed? (= theme :theme/dark) blur?)          colors/white-opa-5
 
     pressed?                                      (colors/theme-colors
                                                    (colors/override-color customization-color 5 50)
                                                    (colors/override-color customization-color 5 60)
                                                    theme)
 
-    (and (= state :active) (= theme :dark) blur?) colors/white-opa-10
+    (and (= state :active) (= theme :theme/dark) blur?) colors/white-opa-10
 
     (= state :active)                             (colors/theme-colors
                                                    (colors/override-color customization-color 10 50)

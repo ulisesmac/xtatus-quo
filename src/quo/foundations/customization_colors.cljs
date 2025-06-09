@@ -6,7 +6,7 @@
 (defn get-overlay-color
   [theme pressed? customization-color]
   (let [community-color (string? customization-color)]
-    (if (or community-color (= theme :light))
+    (if (or community-color (= theme :theme/light))
       (colors/alpha colors/black (if pressed? 0.2 0))
       (colors/alpha colors/black (if pressed? 0 0.2)))))
 

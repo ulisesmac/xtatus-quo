@@ -8,7 +8,7 @@
     [react-native.core :as rn]))
 
 (def themes
-  {:light {:default  {:border-color         colors/neutral-20
+  {:theme/light {:default  {:border-color         colors/neutral-20
                       :blurred-border-color colors/neutral-80-opa-5
                       :text-color           {:style {:color colors/neutral-100}}}
            :active   {:border-color         colors/neutral-30
@@ -17,7 +17,7 @@
            :disabled {:border-color         colors/neutral-20
                       :blurred-border-color colors/neutral-80-opa-5
                       :text-color           {:style {:color colors/neutral-100}}}}
-   :dark  {:default  {:border-color         colors/neutral-70
+   :theme/dark  {:default  {:border-color         colors/neutral-70
                       :blurred-border-color colors/white-opa-10
                       :text-color           {:style {:color colors/white}}}
            :active   {:border-color         colors/neutral-60

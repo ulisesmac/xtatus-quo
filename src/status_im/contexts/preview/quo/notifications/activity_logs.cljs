@@ -174,7 +174,7 @@
           {:flex    1
            :padding 16}
           [preview/customizer state descriptor theme]]
-         [quo.context/provider {:theme :dark}
+         [quo.context/provider {:theme :theme/dark}
           [rn/view
            {:background-color colors/neutral-90
             :flex-direction   :row

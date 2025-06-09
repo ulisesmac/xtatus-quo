@@ -70,8 +70,8 @@
                                   (update-in [:medium :shadow-offset :height] -)
                                   (update-in [:intense :shadow-offset :height] -)
                                   (update-in [:strong :shadow-offset :height] -))]
-    {:dark  {:normal dark-normal :inverted dark-normal-inverted}
-     :light {:normal light-normal :inverted light-normal-inverted}}))
+    {:theme/dark  {:normal dark-normal :inverted dark-normal-inverted}
+     :theme/light {:normal light-normal :inverted light-normal-inverted}}))
 
 (defn get
   "Get the appropriate shadow map for a given shadow `weight`, `theme`, and `scale-type`.
@@ -79,7 +79,7 @@
   Return nil if no shadow is found.
 
   `weight` - int (required) from 1 to 4.
-  `theme` - :light/:dark (optional).
+  `theme` - :theme/light/:theme/dark (optional).
   `scale-type` - :normal/:inverted (optional).
   "
   ([weight theme]

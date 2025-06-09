@@ -39,7 +39,7 @@
    :size            32
    :container-style {:margin-left 12}
    :type            (cond
-                      (and (not blur?) (= :dark theme)) :dark-grey
+                      (and (not blur?) (= :theme/dark theme)) :theme/dark-grey
                       :else                             :grey)
    :background      (when blur? :blur)})
 
@@ -126,7 +126,7 @@
   ":container-style style map merged with outer view for margins/paddings
    :customization-color custom colors
    :blur? true/false
-   :theme :light/:dark
+   :theme :theme/light/:theme/dark
    :notification :mention/:seen/:notification (TODO :mention-seen temporarily used while resolving https://github.com/status-im/status-mobile/issues/17102 )
    :avatar-props qu2/user-avatar props
    :avatar-on-press callback

@@ -69,7 +69,7 @@
              :resource            :i/check
              :accessibility-label :logged-in-tag
              :icon-color          colors/success-50
-             :override-theme      :dark
+             :override-theme      :theme/dark
              :label               (i18n/label :t/logged-in)}])
          (when show-options-button?
            [button/button

@@ -43,7 +43,7 @@
   [images index]
   (let [{:keys [image]} (nth images index)
         uri             (url/replace-port image (rf/sub [:mediaserver/port]))]
-    (rf/dispatch [:lightbox/share-image uri])))
+    (rf/dispatch [:theme/lightbox/share-image uri])))
 
 (defn top-view
   [images insets index animations derived landscape? screen-width on-options-press]
@@ -70,7 +70,7 @@
                     (anim/animate opacity 0)
                     (anim/animate overlay-opacity 0)
                     (rf/dispatch (if platform/ios?
-                                   [:lightbox/exit-lightbox-signal @index]
+                                   [:theme/lightbox/exit-lightbox-signal @index]
                                    [:navigate-back])))
         :style    style/close-container}
        [quo/icon :close {:size 20 :color colors/white}]]

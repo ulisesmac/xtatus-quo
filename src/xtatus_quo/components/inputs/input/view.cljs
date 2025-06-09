@@ -197,7 +197,7 @@
   "This input supports the following properties:
   - :type - Can be `:text`(default) or `:password`.
   - :blur? - Boolean to set the blur color variant.
-  - :theme - Can be `light` or `:dark`.
+  - :theme - Can be `light` or `:theme/dark`.
   - :small? - Boolean to specify if this input is rendered in its small version.
   - :multiline? - Boolean to specify if this input support multiple lines.
   - :icon-name - The name of an icon to display at the left of the input.

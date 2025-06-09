@@ -5,9 +5,9 @@
 (defn- background-color
   [{:keys [state customization-color]}]
   (cond (or (= state :pressed) (= state :selected))
-        (colors/resolve-color customization-color :light 5)
+        (colors/resolve-color customization-color :theme/light 5)
         (= state :active)
-        (colors/resolve-color customization-color :light 10)
+        (colors/resolve-color customization-color :theme/light 10)
         :else :transparent))
 
 (defn container

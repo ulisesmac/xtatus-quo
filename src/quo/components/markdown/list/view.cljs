@@ -11,8 +11,8 @@
 
 (defn get-colors
   [theme blur?]
-  (cond (and blur? (= theme :dark)) colors/white-opa-40
-        (= theme :dark)             colors/neutral-50
+  (cond (and blur? (= theme :theme/dark)) colors/white-opa-40
+        (= theme :theme/dark)             colors/neutral-50
         :else                       colors/neutral-40))
 
 (defn description-text

@@ -8,5 +8,5 @@
    {:preview?  true
     :language  language
     :max-lines 0
-    :theme     :dark}
+    :theme     :theme/dark}
    children])

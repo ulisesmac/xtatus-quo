@@ -45,5 +45,5 @@
   (let [active? (= state :active)]
     (cond
       blur?            (grey-blur theme active?)
-      (= theme :dark)  (outline theme active?)
-      (= theme :light) (grey theme active?))))
+      (= theme :theme/dark)  (outline theme active?)
+      (= theme :theme/light) (grey theme active?))))

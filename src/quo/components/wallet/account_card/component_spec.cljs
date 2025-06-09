@@ -5,7 +5,7 @@
 
 (def username "Alisher account")
 (def empty-username "Account 1")
-(def ^:private theme :light)
+(def ^:private theme :theme/light)
 
 (defn get-test-data
   [{:keys [type watch-only? empty-type? loading? no-metrics?]}]

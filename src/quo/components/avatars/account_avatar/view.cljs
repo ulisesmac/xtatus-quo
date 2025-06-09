@@ -7,16 +7,16 @@
 
 (defn view
   "Opts:
-   
+
     :type  - keyword -> :default/:watch-only
 
     :emoji - string -> 🍑 [default]
-   
+
     :size  - number -> 80 [default] /48/32/28/24/20/16
-   
+
     :customization-color - keyword or hexstring -> :blue/:army/... or #ABCEDF
-   
-    :theme - keyword -> :light/:dark"
+
+    :theme - keyword -> :theme/light/:theme/dark"
   [{:keys [size emoji]
     :or   {size  style/default-size
            emoji "🍑"}
