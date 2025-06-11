@@ -1,4 +1,4 @@
-(ns quo.components.notifications.toast.style
+(ns xtatus-quo.components.notifications.toast.style
   (:require
     [quo.foundations.colors :as colors]
     [quo.foundations.shadows :as shadows]

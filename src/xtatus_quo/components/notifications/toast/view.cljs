@@ -1,11 +1,11 @@
-(ns quo.components.notifications.toast.view
+(ns xtatus-quo.components.notifications.toast.view
   (:require
     [quo.components.avatars.user-avatar.view :as user-avatar]
     [quo.components.blur.view :as blur]
-    [quo.components.icon :as icon]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.icon :as icon]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.components.notifications.count-down-circle :as count-down-circle]
-    [quo.components.notifications.toast.style :as style]
+    [xtatus-quo.components.notifications.toast.style :as style]
     [quo.context]
     [react-native.core :as rn]
     [utils.i18n :as i18n]))
@@ -73,20 +73,19 @@
   [{:keys [type icon title text action undo-duration undo-on-press container-style theme user]
     :or   {type :neutral icon :i/placeholder}}]
   (let [theme     (or theme (quo.context/use-theme))
-        icon-name (case type
-                    :positive (if (= theme :theme/light)
-                                :i/correct
-                                :i/correct-dark)
-                    :negative (if (= theme :theme/light)
-                                :i/incorrect
-                                :i/incorrect-dark)
-                    :neutral  icon)]
+        icon-name (cond
+                    (= type :positive) (if (= theme :theme/light)
+                                         :i/correct
+                                         :i/correct-dark)
+                    (= type :negative) (if (= theme :theme/light)
+                                         :i/incorrect
+                                         :i/incorrect-dark)
+                    (= type :neutral) icon)]
     [quo.context/provider {:theme theme}
      [toast-container
-      {:left            (cond user
-                              [user-avatar/user-avatar user]
-                              icon-name
-                              [icon/icon icon-name (style/icon type theme)])
+      {:left            (cond
+                          user [user-avatar/user-avatar user]
+                          icon-name [icon/icon icon-name (style/icon type theme)])
        :title           title
        :text            text
        :right           (if undo-duration

@@ -1,14 +1,15 @@
 (ns xtatus-quo.core
   (:require
    xtatus-quo.components.buttons.button.view
+   xtatus-quo.components.drawers.bottom-actions.view
    xtatus-quo.components.inputs.input.view
    xtatus-quo.components.markdown.text
    xtatus-quo.components.navigation.page-nav.view
-   xtatus-quo.components.text-combinations.page-top.view
-   xtatus-quo.components.text-combinations.standard-title.view
-   xtatus-quo.components.settings.category.view
+   xtatus-quo.components.notifications.toast.view
    xtatus-quo.components.overlay.view
-   xtatus-quo.components.drawers.bottom-actions.view))
+   xtatus-quo.components.settings.category.view
+   xtatus-quo.components.text-combinations.page-top.view
+   xtatus-quo.components.text-combinations.standard-title.view))
 
 (def input xtatus-quo.components.inputs.input.view/input)
 
@@ -27,3 +28,6 @@
 
 ;; Drawer
 (def bottom-actions xtatus-quo.components.drawers.bottom-actions.view/view)
+
+;; Notifications
+(def toast xtatus-quo.components.notifications.toast.view/toast)

@@ -1,4 +1,4 @@
-(ns quo.components.notifications.notification.style
+(ns xtatus-quo.components.notifications.notification.style
   (:require
     [quo.foundations.colors :as colors]
     [quo.foundations.shadows :as shadows]
