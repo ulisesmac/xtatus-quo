@@ -34,12 +34,12 @@
              :text-size        :paragraph-2}})
 
 (defn- custom-color-type
-  [customization-color]
+  [customization-color theme]
   {:left-icon-color    colors/white-opa-70
    :right-icon-color   colors/white-opa-20
    :right-icon-color-2 colors/white
    :label-color        colors/white
-   :background-color   (colors/resolve-color customization-color :theme/light)})
+   :background-color   (colors/resolve-color customization-color theme)})
 
 (def sizes-to-exclude-blur-in-photo-bg #{:size-40})
 
@@ -118,4 +118,4 @@
       (= type :outline)                            (outline theme active?)
       (= type :grey)                               (grey theme active?)
       (= type :ghost)                              (ghost theme active?)
-      (= type :customization)                      (custom-color-type customization-color))))
+      (= type :customization)                      (custom-color-type customization-color theme))))

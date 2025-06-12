@@ -1,4 +1,4 @@
-(ns quo.components.tags.context-tag.style
+(ns xtatus-quo.components.tags.context-tag.style
   (:require
     [quo.foundations.colors :as colors]))
 

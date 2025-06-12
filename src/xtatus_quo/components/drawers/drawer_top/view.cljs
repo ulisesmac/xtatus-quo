@@ -1,18 +1,20 @@
-(ns quo.components.drawers.drawer-top.view
+(ns xtatus-quo.components.drawers.drawer-top.view
   (:require
-    [quo.components.avatars.account-avatar.view :as account-avatar]
-    [quo.components.avatars.icon-avatar :as icon-avatar]
-    [quo.components.avatars.user-avatar.view :as user-avatar]
-    [quo.components.buttons.button.view :as button]
-    [quo.components.drawers.drawer-top.style :as style]
-    [quo.components.icon :as icons]
-    [quo.components.markdown.text :as text]
-    [quo.components.tags.context-tag.view :as context-tag]
-    [quo.components.wallet.address-text.view :as address-text]
-    [quo.context :as quo.context]
-    [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
-    [utils.i18n :as i18n]))
+   [quo.components.avatars.account-avatar.view :as account-avatar]
+   [quo.components.avatars.icon-avatar :as icon-avatar]
+   [quo.components.avatars.user-avatar.view :as user-avatar]
+   [xtatus-quo.components.buttons.button.view :as button]
+   [xtatus-quo.components.drawers.drawer-top.style :as style]
+   [xtatus-quo.components.icon :as icons]
+   [xtatus-quo.components.markdown.text :as text]
+   [xtatus-quo.components.tags.context-tag.view :as context-tag]
+   [quo.components.wallet.address-text.view :as address-text]
+   [quo.context :as quo.context]
+   [quo.foundations.colors :as colors]
+   [react-native.core :as rn]
+   [utils.i18n :as i18n]))
+
+;; TODO: improve the API of this component
 
 (def ^:private left-image-supported-types #{:account :keypair :default-keypair})
 
@@ -184,7 +186,7 @@
      [text/text
       {:size   :heading-2
        :weight :semi-bold
-       :style  {:color (when blur? colors/white)}}
+       :style  (when blur? {:color colors/white})}
       title]
      (when title-icon
        [icons/icon title-icon
@@ -199,48 +201,49 @@
            account-name emoji context-tag-type button-type container-style
            on-button-press on-button-long-press profile-picture stored label full-name
            button-disabled? account-avatar-emoji account-avatar-type customization-color icon-avatar
-           context icon]}]
-  (let [theme (quo.context/use-theme)]
-    [rn/view {:style [style/container container-style]}
-     (when (left-image-supported-types type)
-       [rn/view {:style style/left-container}
-        [left-image
-         {:type                 type
-          :blur?                blur?
-          :customization-color  customization-color
-          :account-avatar-emoji account-avatar-emoji
-          :account-avatar-type  account-avatar-type
-          :icon-avatar          icon-avatar
-          :profile-picture      profile-picture}]])
-     [rn/view {:style style/body-container}
-      [left-title
-       {:type       type
-        :label      label
-        :title      title
-        :title-icon title-icon
-        :theme      theme
-        :blur?      blur?}]
-      [subtitle
-       {:type                type
-        :theme               theme
-        :blur?               blur?
-        :stored              stored
-        :description         description
-        :community-name      community-name
-        :community-logo      community-logo
-        :context-tag-type    context-tag-type
-        :customization-color customization-color
-        :account-name        account-name
-        :emoji               emoji
-        :full-name           full-name
-        :profile-picture     profile-picture
-        :context             context
-        :icon                icon}]]
-     [right-icon
-      {:theme                theme
-       :type                 type
-       :button-type          button-type
-       :on-button-press      on-button-press
-       :on-button-long-press on-button-long-press
-       :button-disabled?     button-disabled?
-       :button-icon          button-icon}]]))
+           context icon theme]}]
+  (let [actual-theme (or theme (quo.context/use-theme))]
+    [quo.context/provider {:theme actual-theme}
+     [rn/view {:style [style/container container-style]}
+      (when (left-image-supported-types type)
+        [rn/view {:style style/left-container}
+         [left-image
+          {:type                 type
+           :blur?                blur?
+           :customization-color  customization-color
+           :account-avatar-emoji account-avatar-emoji
+           :account-avatar-type  account-avatar-type
+           :icon-avatar          icon-avatar
+           :profile-picture      profile-picture}]])
+      [rn/view {:style style/body-container}
+       [left-title
+        {:type       type
+         :label      label
+         :title      title
+         :title-icon title-icon
+         :theme      actual-theme
+         :blur?      blur?}]
+       [subtitle
+        {:type                type
+         :theme               actual-theme
+         :blur?               blur?
+         :stored              stored
+         :description         description
+         :community-name      community-name
+         :community-logo      community-logo
+         :context-tag-type    context-tag-type
+         :customization-color customization-color
+         :account-name        account-name
+         :emoji               emoji
+         :full-name           full-name
+         :profile-picture     profile-picture
+         :context             context
+         :icon                icon}]]
+      [right-icon
+       {:theme                actual-theme
+        :type                 type
+        :button-type          button-type
+        :on-button-press      on-button-press
+        :on-button-long-press on-button-long-press
+        :button-disabled?     button-disabled?
+        :button-icon          button-icon}]]]))

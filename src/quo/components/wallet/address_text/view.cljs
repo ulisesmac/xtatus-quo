@@ -1,12 +1,9 @@
 (ns quo.components.wallet.address-text.view
   (:require [clojure.string :as string]
-            [quo.components.markdown.text :as text]
-            [quo.components.wallet.address-text.schema :as component-schema]
+            [xtatus-quo.components.markdown.text :as text]
             [quo.components.wallet.address-text.style :as style]
             [quo.context]
-            [quo.foundations.colors :as colors]
-            [schema.core :as schema]
-            [utils.address :as utils]))
+            [quo.foundations.colors :as colors]))
 
 (defn- colored-network-text
   [{:keys [theme network size weight]}]
@@ -16,7 +13,7 @@
     :style  {:color (colors/resolve-color (keyword network) theme)}}
    (str network ":")])
 
-(defn- view-internal
+(defn- view
   [{:keys [networks address blur? format full-address? size weight]
     :or   {size :paragraph-2}}]
   (let [theme                                (quo.context/use-theme)
@@ -39,10 +36,8 @@
                                                :weight (or weight :monospace)
                                                :style  (style/address-text format blur? theme)}
                                               (if (= format :short)
-                                                (utils/get-short-wallet-address address-internal)
+                                                ;(utils/get-short-wallet-address address-internal)
                                                 address-internal)]]
     (as-> networks-internal $
       (into [text/text] network-colored-text $)
       (conj $ address-text))))
-
-(def view (schema/instrument #'view-internal component-schema/?schema))

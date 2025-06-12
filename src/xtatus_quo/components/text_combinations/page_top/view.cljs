@@ -7,7 +7,7 @@
             [quo.components.inputs.recovery-phrase.view :as recovery-phrase]
             [quo.components.inputs.search-input.view :as search-input]
             [xtatus-quo.components.markdown.text :as text]
-            [quo.components.tags.context-tag.view :as context-tag]
+            [xtatus-quo.components.tags.context-tag.view :as context-tag]
             [xtatus-quo.components.text-combinations.page-top.style :as style]
             [xtatus-quo.components.text-combinations.standard-title.view :as standard-title]
             [quo.context]

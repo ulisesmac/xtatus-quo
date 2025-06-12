@@ -1,6 +1,5 @@
-(ns quo.components.drawers.drawer-top.style
-  (:require
-    [quo.foundations.colors :as colors]))
+(ns xtatus-quo.components.drawers.drawer-top.style
+  (:require [quo.foundations.colors :as colors]))
 
 (def container
   {:padding-horizontal 20

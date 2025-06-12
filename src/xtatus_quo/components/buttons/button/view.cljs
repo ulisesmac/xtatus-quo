@@ -74,7 +74,7 @@
                                        :icon-left        icon-left
                                        :icon-right       icon-right
                                        :inner-style      inner-style})}
-      (when overlay-customization-color
+      #_(when overlay-customization-color
         [customization-colors/overlay
          {:customization-color overlay-customization-color
           :theme               theme

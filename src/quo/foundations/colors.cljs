@@ -57,18 +57,18 @@
 ;;Solid
 
 (def neutral-2_5 "#FAFBFC")
-(def neutral-5 "#F5F6F8")
-(def neutral-10 "#F0F2F5")
-(def neutral-20 "#E7EAEE")
-(def neutral-30 "#DCE0E5")
-(def neutral-40 "#A1ABBD")
-(def neutral-50 "#647084")
-(def neutral-60 "#303D55")
-(def neutral-70 "#202C42")
-(def neutral-80 "#1B273D")
-(def neutral-90 "#131D2F")
-(def neutral-95 "#0D1625")
-(def neutral-100 "#09101C")
+(def neutral-5   "#F5F6F8")
+(def neutral-10  "#F0F2F5")
+(def neutral-20  "#E7EAEE")
+(def neutral-30  "#DCE0E5")
+(def neutral-40  "#9AA3B0")
+(def neutral-50  "#616C7A")
+(def neutral-60  "#2E3844")
+(def neutral-70  "#1D2630")
+(def neutral-80  "#141A21")
+(def neutral-90  "#0A1017")
+(def neutral-95  "#070F17") ; darker but not tinted green
+(def neutral-100 "#04090C")
 
 (def neutral-50-opa-40 (alpha neutral-50 0.4))
 
@@ -142,12 +142,12 @@
 (def neutral-10-opa-10-blur (alpha neutral-10 0.1))
 (def neutral-10-opa-40-blur (alpha neutral-10 0.4))
 ;; https://github.com/status-im/status-mobile/issues/14903
-(def neutral-80-opa-80-blur (if platform/android? (alpha "#192438" 0.8) "#1E2430CC"))
+(def neutral-80-opa-80-blur neutral-80-opa-80)
 (def neutral-90-opa-10-blur (alpha neutral-90 0.1))
 (def neutral-90-opa-40-blur (alpha neutral-90 0.4))
 (def neutral-90-opa-70-blur (alpha neutral-90 0.7))
 (def neutral-95-opa-70-blur neutral-95-opa-70)
-(def neutral-100-opa-70-blur (if platform/android? neutral-100-opa-70 "#0D1014B3"))
+(def neutral-100-opa-70-blur neutral-100-opa-70)
 
 (def overlay-background-blur (if platform/android? (alpha "#192438" 0.8) "#242830cc"))
 (def bottom-sheet-background-blur (if platform/ios? "#ED9D1D0D" neutral-100-opa-90))
@@ -165,9 +165,9 @@
   "#475060")
 ;;;;Primary
 
-;;Solid
-(def primary-50 "#4360DF")
-(def primary-60 "#354DB2")
+;;;; Primary brand – Green
+(def primary-50 "#01B77B")
+(def primary-60 "#017E55")
 
 ;;50 with transparency
 (def primary-50-opa-5 (alpha primary-50 0.05))
@@ -178,9 +178,9 @@
 
 ;;;;Success
 
-;;Solid
-(def success-50 "#23ADA0")
-(def success-60 "#1C8A80")
+;;;; Success  (refreshed)
+(def success-50 "#26C298")   ; L* ≈ 56
+(def success-60 "#1F9B73")   ; L* ≈ 44
 
 ;;50 with transparency
 (def success-50-opa-5 (alpha success-50 0.05))
@@ -227,28 +227,33 @@
 
 ;; Colors for customizing users account
 (def customization
-  {:blue      {50 "#2A4AF5"
-               60 "#223BC4"}
-   :yellow    {50 "#F6B03C"
-               60 "#C58D30"}
-   :turquoise {50 "#2A799B"
-               60 "#22617C"}
-   :copper    {50 "#CB6256"
-               60 "#A24E45"}
-   :sky       {50 "#1992D7"
-               60 "#1475AC"}
-   :camel     {50 "#C78F67"
-               60 "#9F7252"}
-   :orange    {50 "#FF7D46"
-               60 "#CC6438"}
-   :army      {50 "#216266"
-               60 "#1A4E52"}
-   :pink      {50 "#F66F8F"
-               60 "#C55972"}
-   :purple    {50 "#7140FD"
-               60 "#5A33CA"}
-   :magenta   {50 "#EC266C"
-               60 "#BD1E56"}})
+  {:blue      {50 "#01B77B" 60 "#017E55"} ; brand ⬆
+   :yellow    {50 "#F6B03C" 60 "#C58D30"}
+   :turquoise {50 "#2E9AB3" 60 "#23798A"}
+   :copper    {50 "#CF6A5C" 60 "#A65548"}
+   :sky       {50 "#2FA4E8" 60 "#1E80B3"}
+   :camel     {50 "#C89A6C" 60 "#A17854"}
+   :orange    {50 "#FF884F" 60 "#CC6E40"}
+   :army      {50 "#2A6F68" 60 "#1E554E"}
+   :pink      {50 "#F67893" 60 "#C55E75"}
+   :purple    {50 "#7A4BFF" 60 "#5D3ACB"}
+   :magenta   {50 "#EE3272" 60 "#BF285B"}
+   :lime      {50 "#A7D759" 60 "#85AE46"}
+   :indigo    {50 "#4C6AA9" 60 "#405A8D"}
+   :brown     {50 "#9E6C55" 60 "#7F5743"}
+   :red       {50 "#F46666" 60 "#CD5656"}
+   :green     {50 "#01B77B" 60 "#017E55"}
+   ;; ✨ New additions (10) ---------------------------------------
+   :teal      {50 "#13B4A5" 60 "#0F8F84"}
+   :mint      {50 "#5ED7A7" 60 "#4AB388"}
+   :aqua      {50 "#33C5DD" 60 "#279EB2"}
+   :coral     {50 "#FF867E" 60 "#CC6B64"}
+   :peach     {50 "#FFB38A" 60 "#CC8F6E"}
+   :gold      {50 "#FFD54F" 60 "#CCAB3F"}
+   :steel     {50 "#6F8FAF" 60 "#56728A"}
+   :slate     {50 "#7C8EA5" 60 "#637185"}
+   :lavender  {50 "#A38BFF" 60 "#8270CC"}
+   :charcoal  {50 "#4A5666" 60 "#3B4452"}})
 
 ;;;; Networks
 (def ^:private networks

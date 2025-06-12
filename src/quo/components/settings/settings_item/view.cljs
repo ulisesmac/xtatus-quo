@@ -10,7 +10,7 @@
     [xtatus-quo.components.markdown.text :as text]
     [quo.components.selectors.selectors.view :as selectors]
     [quo.components.settings.settings-item.style :as style]
-    [quo.components.tags.context-tag.view :as context-tag]
+    [xtatus-quo.components.tags.context-tag.view :as context-tag]
     [quo.components.tags.status-tags :as status-tags]
     [quo.components.utilities.token.view :as token]
     [quo.context :as quo.context]

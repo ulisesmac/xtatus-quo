@@ -1,4 +1,4 @@
-(ns quo.components.tags.context-tag.view
+(ns xtatus-quo.components.tags.context-tag.view
   (:require
     [clojure.string :as string]
     [quo.components.avatars.account-avatar.view :as account-avatar]
@@ -8,14 +8,13 @@
     [xtatus-quo.components.icon :as icons]
     [quo.components.list-items.preview-list.view :as preview-list]
     [xtatus-quo.components.markdown.text :as text]
-    [quo.components.tags.context-tag.schema :as component-schema]
-    [quo.components.tags.context-tag.style :as style]
+    [xtatus-quo.components.tags.context-tag.style :as style]
     [quo.components.utilities.token.view :as token]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
-    [react-native.fast-image :as fast-image]
-    [schema.core :as schema]))
+    [react-native.core :as rn]))
+
+;; TODO: improve error handling and API
 
 (defn- tag-skeleton
   [{:keys [size text theme shrinkable? gray-text?]
@@ -86,7 +85,7 @@
         :size   (if (= size 24) :paragraph-2 :paragraph-1)}
        context]]]))
 
-(defn- view-internal
+(defn view
   [{:keys [type theme size state blur? customization-color profile-picture full-name users
            group-name amount token network-logo network-name networks
            account-name emoji collectible collectible-name collectible-number
@@ -134,7 +133,7 @@
          [group-avatar/view
           {:icon-name           :i/members
            :size                (if (= size 24) :size-20 :size-28)
-           :customization-color (colors/resolve-color customization-color :theme/light)}]]
+           :customization-color (colors/resolve-color customization-color theme)}]]
 
         (:channel :community)
         [communities-tag (assoc props :channel? (= type :channel))]
@@ -153,11 +152,11 @@
         :collectible
         (let [gray-text?       (string/blank? collectible-name)
               collectible-text (cond
-                                 gray-text?         "UNKNOWN"
+                                 gray-text? "UNKNOWN"
                                  collectible-number (str collectible-name
                                                          " #"
                                                          collectible-number)
-                                 :else              collectible-name)
+                                 :else collectible-name)
               nft-placeholder? (or image-error? (string/blank? collectible))]
           [tag-skeleton
            {:theme       theme
@@ -197,5 +196,3 @@
          [rn/image {:style (style/circle-logo size) :source dapp-logo}]]
 
         nil)]]))
-
-(def view #'view-internal)

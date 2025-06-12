@@ -5,7 +5,7 @@
     [xtatus-quo.components.icon :as icon]
     [xtatus-quo.components.markdown.text :as text]
     [quo.components.tags.context-tag.schema :as context-tag.schema]
-    [quo.components.tags.context-tag.view :as context-tag]
+    [xtatus-quo.components.tags.context-tag.view :as context-tag]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]

@@ -9,10 +9,10 @@
 ;; one color available, which is the light theme version.
 ;; For more information, see the related issue: https://github.com/status-im/status-mobile/issues/16396
 (defn- custom-color-type
-  [customization-color icon-only?]
+  [customization-color icon-only? theme]
   {:icon-color                  colors/white-opa-70
    :label-color                 colors/white
-   :background-color            (colors/resolve-color customization-color :theme/light)
+   :background-color            (colors/resolve-color customization-color theme)
    :border-radius               (when icon-only? 24)
    :overlay-customization-color customization-color})
 
@@ -91,7 +91,8 @@
                                  type)]
     (cond
       (contains? #{:primary :positive :danger} type) (custom-color-type customization-color
-                                                                        icon-only?)
+                                                                        icon-only?
+                                                                        theme)
       (and (= :photo background) (= type :grey))     (grey-photo theme pressed?)
       (and (= :blur background) (= type :grey))      (grey-blur theme pressed?)
       (and (= :blur background) (= type :outline))   (outline-blur theme pressed?)
