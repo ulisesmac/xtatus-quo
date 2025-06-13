@@ -1,4 +1,4 @@
-(ns quo.components.info.info-message.style)
+(ns xtatus-quo.components.info.info-message.style)
 
 (def container
   {:flex-direction :row

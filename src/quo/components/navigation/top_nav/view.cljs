@@ -39,7 +39,7 @@
    :size            32
    :container-style {:margin-left 12}
    :type            (cond
-                      (and (not blur?) (= :theme/dark theme)) :theme/dark-grey
+                      (and (not blur?) (= :theme/dark theme)) :dark-grey
                       :else                             :grey)
    :background      (when blur? :blur)})
 

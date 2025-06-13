@@ -17,9 +17,9 @@
 
 (def ^:private button-type
   {:white       :grey
-   :neutral-5   :theme/dark-grey
+   :neutral-5   :dark-grey
    :neutral-90  :grey
-   :neutral-95  :theme/dark-grey
+   :neutral-95  :dark-grey
    :neutral-100 :black
    :photo       :grey
    :blur        :grey})
@@ -63,6 +63,15 @@
 (defmethod add-button :default
   [{:keys [background behind-overlay? button-props]}]
   (let [{:keys [label icon-name]} button-props]
+    (def --b
+      (assoc button-props
+        :type (button-type background)
+        :icon-only? (boolean icon-name)
+        :size 32
+        :accessible true
+        :background (if behind-overlay?
+                      :blur
+                      (when (button-properties/backgrounds background) background))))
     [button/button
      (assoc button-props
             :type       (button-type background)

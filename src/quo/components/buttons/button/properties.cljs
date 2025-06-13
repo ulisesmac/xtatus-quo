@@ -97,7 +97,7 @@
       (and (= :blur background) (= type :grey))      (grey-blur theme pressed?)
       (and (= :blur background) (= type :outline))   (outline-blur theme pressed?)
       (= type :grey)                                 (grey theme pressed?)
-      (= type :theme/dark-grey)                            (dark-grey theme pressed?)
+      (= type :dark-grey)                            (dark-grey theme pressed?)
       (= type :outline)                              (outline theme pressed?)
       (= type :ghost)                                (ghost theme pressed?)
       (= type :black)                                (black pressed?))))

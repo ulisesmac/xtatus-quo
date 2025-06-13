@@ -8,7 +8,7 @@
     [xtatus-quo.components.icon :as icon]
     [quo.components.list-items.preview-list.view :as preview-list]
     [xtatus-quo.components.markdown.text :as text]
-    [quo.components.selectors.selectors.view :as selectors]
+    [xtatus-quo.components.selectors.selectors.view :as selectors]
     [quo.components.settings.settings-item.style :as style]
     [xtatus-quo.components.tags.context-tag.view :as context-tag]
     [quo.components.tags.status-tags :as status-tags]

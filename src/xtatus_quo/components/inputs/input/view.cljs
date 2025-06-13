@@ -73,7 +73,8 @@
   [{:keys [blur? error? right-icon left-icon disabled? small? button
            label char-limit multiline? clearable? on-focus on-blur container-style input-container-style
            on-change-text on-char-limit-reach weight default-value on-clear placeholder label-right]
-    :as   props}]
+    :as   props}
+   text-node]
   (let [theme                  (quo.context/use-theme)
         ref                    (rn/use-ref-atom nil)
         on-ref                 (rn/use-callback (fn [value]
@@ -155,7 +156,8 @@
          :always    (merge clean-props)
          multiline? (assoc :multiline              true
                            :on-content-size-change on-content-size-change)
-         char-limit (assoc :on-change-text on-change-text))]
+         char-limit (assoc :on-change-text on-change-text))
+       text-node]
       (when-let [{:keys [on-press icon-name style-fn]} right-icon]
         [right-accessory
          {:variant-colors variant-colors
@@ -220,9 +222,10 @@
   "
   [{:keys [type icon-name]
     :or   {type :text}
-    :as   props}]
+    :as   props}
+   text-node]
   (let [base-props (cond-> props
                      icon-name (assoc-in [:left-icon :icon-name] icon-name))]
     (if (= type :password)
       [password-input base-props]
-      [base-input base-props])))
+      [base-input base-props text-node])))

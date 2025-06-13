@@ -16,7 +16,7 @@
    {on-press callback
     on-long-press callback
     disabled? boolean
-    :type   :primary/:positive/:grey/:theme/dark-grey/:outline/:ghost/
+    :type   :primary/:positive/:grey/:dark-grey/:outline/:ghost/
             :danger/:black
     background :photo/:blur or nil
     :size   40 [default] /32/24/56

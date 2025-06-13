@@ -8,10 +8,13 @@
    xtatus-quo.components.notifications.toast.view
    xtatus-quo.components.overlay.view
    xtatus-quo.components.settings.category.view
+   xtatus-quo.components.selectors.selectors.view
    xtatus-quo.components.text-combinations.page-top.view
    xtatus-quo.components.text-combinations.standard-title.view
    xtatus-quo.components.drawers.drawer-top.view
-   xtatus-quo.components.tags.context-tag.view))
+   xtatus-quo.components.selectors.selector-button
+   xtatus-quo.components.tags.context-tag.view
+   quo.components.info.info-message.view))
 
 (def input xtatus-quo.components.inputs.input.view/input)
 
@@ -40,3 +43,10 @@
 
 ;; Icon
 (def icon xtatus-quo.components.icon/icon)
+
+;; Selectors
+(def selector xtatus-quo.components.selectors.selectors.view/view)
+(def selector-button xtatus-quo.components.selectors.selector-button/view)
+
+;; info
+(def info-message quo.components.info.info-message.view/view)

@@ -65,10 +65,16 @@
 (def neutral-50  "#616C7A")
 (def neutral-60  "#2E3844")
 (def neutral-70  "#1D2630")
-(def neutral-80  "#141A21")
-(def neutral-90  "#0A1017")
-(def neutral-95  "#070F17") ; darker but not tinted green
-(def neutral-100 "#04090C")
+;; --- Deep neutrals (v3) --------------------------------------
+;(def neutral-80  "#1A1F26") ; L* ≈ 13   (raised cards / inner sheets)
+;(def neutral-90  "#12161C") ; L* ≈  9   (default dark background)
+;(def neutral-95  "#0A0D10") ; L* ≈  5½ (focus ring / modal overlay)
+;(def neutral-100 "#040506") ; L* ≈  3   (scrim / deepest strokes)
+;; --- Deep neutrals (v4) --------------------------------------
+(def neutral-80  "#1F272F") ; L* ≈ 16   raised cards / input & radio borders
+(def neutral-90  "#13181D") ; L* ≈ 10   default dark background
+(def neutral-95  "#090B0E") ; L* ≈  6   focus ring / modal overlay
+(def neutral-100 "#040506") ; L* ≈  3   scrim / deepest strokes
 
 (def neutral-50-opa-40 (alpha neutral-50 0.4))
 

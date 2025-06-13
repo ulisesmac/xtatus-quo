@@ -1,11 +1,10 @@
 (ns quo.components.info.info-message.view
-  (:require [quo.components.icon :as icons]
-            [quo.components.info.info-message.style :as style]
-            [quo.components.markdown.text :as text]
+  (:require [xtatus-quo.components.icon :as icons]
+            [xtatus-quo.components.info.info-message.style :as style]
+            [xtatus-quo.components.markdown.text :as text]
             [quo.context :as quo.context]
             [quo.foundations.colors :as colors]
-            [react-native.core :as rn]
-            [schema.core :as schema]))
+            [react-native.core :as rn]))
 
 (def ?schema
   [:=>
@@ -29,25 +28,30 @@
   [status theme blur?]
   (case status
     :success (if blur? colors/success-60 (colors/resolve-color :success theme))
-    :error   (if blur? colors/danger-60 (colors/resolve-color :danger theme))
+    :error   (if blur? colors/danger-60  (colors/resolve-color :danger theme))
     :warning (if blur? colors/warning-60 (colors/resolve-color :warning theme))
     (if blur? colors/white-opa-40 (colors/theme-colors colors/neutral-50 colors/neutral-40 theme))))
 
-(defn view-internal
+;; TODO: improve API and error handling
+;; TODO: REDO
+(defn view
   [{:keys [status size blur? icon color icon-color text-color no-icon-color? container-style
-           accessibility-label]} message]
+           accessibility-label]
+    :or {icon :i/info}}
+   message]
   (let [theme         (quo.context/use-theme)
         default-color (get-color status theme blur?)
         text-color    (or text-color color default-color)
         icon-color    (or icon-color color default-color)]
-    [rn/view {:style (merge style/container container-style)}
-     [icons/icon icon
-      {:size      (if (= size :tiny) 12 16)
-       :color     icon-color
-       :no-color? no-icon-color?}]
-     [text/text
-      {:size                (if (= size :tiny) :label :paragraph-2)
-       :accessibility-label accessibility-label
-       :style               {:color text-color}} message]]))
-
-(def view (schema/instrument #'view-internal ?schema))
+    [rn/view {:style [style/container container-style]}
+     (when (seq message)
+       [icons/icon icon
+        {:size      (if (= size :tiny) 12 16)
+         :color     icon-color
+         :no-color? no-icon-color?}])
+     [:rn/view {:style {:flex 1}} ;; Needed to avoid text overflows
+      [text/text
+       {:size                (if (= size :tiny) :label :paragraph-2)
+        :accessibility-label accessibility-label
+        :style               {:color text-color}}
+       message]]]))
