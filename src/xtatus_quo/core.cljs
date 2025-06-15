@@ -12,14 +12,34 @@
    xtatus-quo.components.text-combinations.page-top.view
    xtatus-quo.components.text-combinations.standard-title.view
    xtatus-quo.components.drawers.drawer-top.view
+   xtatus-quo.components.selectors.disclaimer.view
    xtatus-quo.components.selectors.selector-button
    xtatus-quo.components.tags.context-tag.view
-   quo.components.info.info-message.view))
+   xtatus-quo.components.inputs.title-input.view
+   quo.components.info.info-message.view
+   xtatus-quo.components.dividers.divider-line.view
+   xtatus-quo.components.colors.color-picker.view))
 
+;; Avatars
+(def account-avatar xtatus-quo.components.avatars.account-avatar.view/view)
+
+;; Colors
+(def color-picker xtatus-quo.components.colors.color-picker.view/view)
+
+;; Dividers
+(def divider-line xtatus-quo.components.dividers.divider-line.view/view)
+
+;; Inputs
 (def input xtatus-quo.components.inputs.input.view/input)
+(def title-input xtatus-quo.components.inputs.title-input.view/view)
 
 (def text xtatus-quo.components.markdown.text/text)
 (def button xtatus-quo.components.buttons.button.view/button)
+
+;; Selectors
+(def selector xtatus-quo.components.selectors.selectors.view/view)
+(def selector-button xtatus-quo.components.selectors.selector-button/view)
+(def disclaimer xtatus-quo.components.selectors.disclaimer.view/view)
 
 ;; Settings
 (def category xtatus-quo.components.settings.category.view/category)
@@ -43,10 +63,6 @@
 
 ;; Icon
 (def icon xtatus-quo.components.icon/icon)
-
-;; Selectors
-(def selector xtatus-quo.components.selectors.selectors.view/view)
-(def selector-button xtatus-quo.components.selectors.selector-button/view)
 
 ;; info
 (def info-message quo.components.info.info-message.view/view)

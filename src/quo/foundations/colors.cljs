@@ -5,7 +5,8 @@
     [react-native.platform :as platform]))
 
 (def account-colors
-  [:blue :yellow :purple :turquoise :magenta :sky :orange :army :pink :camel :copper])
+  [:red :orange :gold :yellow :lime :mint #_:green :blue :army :teal :turquoise :aqua :sky
+   :steel :slate :charcoal :indigo :lavender :purple :magenta :pink :copper :camel :brown])
 
 (defn alpha
   [value opacity]
@@ -233,33 +234,32 @@
 
 ;; Colors for customizing users account
 (def customization
-  {:blue      {50 "#01B77B" 60 "#017E55"} ; brand ⬆
-   :yellow    {50 "#F6B03C" 60 "#C58D30"}
-   :turquoise {50 "#2E9AB3" 60 "#23798A"}
-   :copper    {50 "#CF6A5C" 60 "#A65548"}
-   :sky       {50 "#2FA4E8" 60 "#1E80B3"}
-   :camel     {50 "#C89A6C" 60 "#A17854"}
-   :orange    {50 "#FF884F" 60 "#CC6E40"}
-   :army      {50 "#2A6F68" 60 "#1E554E"}
-   :pink      {50 "#F67893" 60 "#C55E75"}
-   :purple    {50 "#7A4BFF" 60 "#5D3ACB"}
-   :magenta   {50 "#EE3272" 60 "#BF285B"}
-   :lime      {50 "#A7D759" 60 "#85AE46"}
-   :indigo    {50 "#4C6AA9" 60 "#405A8D"}
-   :brown     {50 "#9E6C55" 60 "#7F5743"}
+  {:blue      {50 "#01B77B" 60 "#017E55"} ; brand accent
    :red       {50 "#F46666" 60 "#CD5656"}
-   :green     {50 "#01B77B" 60 "#017E55"}
-   ;; ✨ New additions (10) ---------------------------------------
-   :teal      {50 "#13B4A5" 60 "#0F8F84"}
-   :mint      {50 "#5ED7A7" 60 "#4AB388"}
-   :aqua      {50 "#33C5DD" 60 "#279EB2"}
    :coral     {50 "#FF867E" 60 "#CC6B64"}
+   :copper    {50 "#CF6A5C" 60 "#A65548"}
+   :brown     {50 "#9E6C55" 60 "#7F5743"}
+   :orange    {50 "#FF884F" 60 "#CC6E40"}
    :peach     {50 "#FFB38A" 60 "#CC8F6E"}
+   :camel     {50 "#C89A6C" 60 "#A17854"}
+   :yellow    {50 "#F6B03C" 60 "#C58D30"}
    :gold      {50 "#FFD54F" 60 "#CCAB3F"}
+   :lime      {50 "#A7D759" 60 "#85AE46"}
+   :mint      {50 "#5ED7A7" 60 "#4AB388"}
+   :green     {50 "#01B77B" 60 "#017E55"} ; alias
+   :army      {50 "#2A6F68" 60 "#1E554E"}
+   :teal      {50 "#13B4A5" 60 "#0F8F84"}
+   :aqua      {50 "#33C5DD" 60 "#279EB2"}
+   :turquoise {50 "#2E9AB3" 60 "#23798A"}
+   :sky       {50 "#2FA4E8" 60 "#1E80B3"}
    :steel     {50 "#6F8FAF" 60 "#56728A"}
    :slate     {50 "#7C8EA5" 60 "#637185"}
+   :charcoal  {50 "#4A5666" 60 "#3B4452"}
+   :indigo    {50 "#4C6AA9" 60 "#405A8D"}
    :lavender  {50 "#A38BFF" 60 "#8270CC"}
-   :charcoal  {50 "#4A5666" 60 "#3B4452"}})
+   :purple    {50 "#7A4BFF" 60 "#5D3ACB"}
+   :magenta   {50 "#EE3272" 60 "#BF285B"}
+   :pink      {50 "#F67893" 60 "#C55E75"}})
 
 ;;;; Networks
 (def ^:private networks

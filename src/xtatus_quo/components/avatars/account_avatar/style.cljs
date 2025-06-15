@@ -1,4 +1,4 @@
-(ns quo.components.avatars.account-avatar.style
+(ns xtatus-quo.components.avatars.account-avatar.style
   (:require
     [quo.foundations.colors :as colors]))
 
@@ -75,4 +75,3 @@
       watch-only?
       (assoc :border-width     (get-border-width size)
              :background-color (colors/resolve-color customization-color theme 10)))))
-

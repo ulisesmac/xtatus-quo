@@ -1,9 +1,9 @@
-(ns quo.components.avatars.account-avatar.view
+(ns xtatus-quo.components.avatars.account-avatar.view
   (:require
-    [clojure.string :as string]
-    [quo.components.avatars.account-avatar.style :as style]
-    [quo.context :as quo.context]
-    [react-native.core :as rn]))
+   [clojure.string :as string]
+   [xtatus-quo.components.avatars.account-avatar.style :as style]
+   [quo.context :as quo.context]
+   [react-native.core :as rn]))
 
 (defn view
   "Opts:
@@ -14,9 +14,7 @@
 
     :size  - number -> 80 [default] /48/32/28/24/20/16
 
-    :customization-color - keyword or hexstring -> :blue/:army/... or #ABCEDF
-
-    :theme - keyword -> :theme/light/:theme/dark"
+    :customization-color - keyword or hexstring -> :blue/:army/... or #ABCEDF"
   [{:keys [size emoji]
     :or   {size  style/default-size
            emoji "🍑"}

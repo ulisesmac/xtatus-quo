@@ -1,4 +1,4 @@
-(ns quo.components.dividers.divider-line.style
+(ns xtatus-quo.components.dividers.divider-line.style
   (:require
     [quo.foundations.colors :as colors]))
 

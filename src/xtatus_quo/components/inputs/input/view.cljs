@@ -38,11 +38,11 @@
          count-text]]))])
 
 (defn- left-accessory
-  [{:keys [variant-colors small? icon-name]}]
+  [{:keys [variant-colors small? icon-name no-color-icon?]}]
   [rn/view
    {:accessibility-label :input-icon
     :style               (style/left-icon-container small?)}
-   [icon/icon icon-name (style/icon variant-colors)]])
+   [icon/icon icon-name (style/icon variant-colors no-color-icon?)]])
 
 (defn- right-accessory
   [{:keys [variant-colors small? disabled? on-press icon-style-fn icon-name]}]
@@ -67,12 +67,13 @@
   "Custom properties that must be removed from properties map passed to InputText."
   [:type :blur? :error? :right-icon :left-icon :disabled? :small? :button
    :label :char-limit :on-char-limit-reach :icon-name :multiline? :on-focus :on-blur
-   :container-style :input-container-style :ref :placeholder])
+   :container-style :input-container-style :ref :placeholder :no-color-icon?] )
 
 (defn- base-input
   [{:keys [blur? error? right-icon left-icon disabled? small? button
            label char-limit multiline? clearable? on-focus on-blur container-style input-container-style
-           on-change-text on-char-limit-reach weight default-value on-clear placeholder label-right]
+           on-change-text on-char-limit-reach weight default-value on-clear placeholder label-right
+           no-color-icon?]
     :as   props}
    text-node]
   (let [theme                  (quo.context/use-theme)
@@ -131,13 +132,13 @@
          :current-chars  char-count
          :char-limit     char-limit
          :theme          theme}])
-     [rn/view
-      {:style [(style/input-container colors-by-status small? disabled?) input-container-style]}
+     [rn/view {:style [(style/input-container colors-by-status small? disabled?) input-container-style]}
       (when-let [{:keys [icon-name]} left-icon]
         [left-accessory
          {:variant-colors variant-colors
           :small?         small?
-          :icon-name      icon-name}])
+          :icon-name      icon-name
+          :no-color-icon? no-color-icon?}])
       [rn/text-input
        (cond-> {:ref                    on-ref
                 :style                  (style/input colors-by-status small? multiple-lines? weight)

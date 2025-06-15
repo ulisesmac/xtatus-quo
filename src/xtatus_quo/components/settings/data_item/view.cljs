@@ -1,13 +1,13 @@
 (ns xtatus-quo.components.settings.data-item.view
   (:require
-   [quo.components.avatars.account-avatar.view :as account-avatar]
-   [xtatus-quo.components.icon :as icons]
    [quo.components.list-items.preview-list.view :as preview-list]
-   [xtatus-quo.components.markdown.text :as text]
    [quo.components.settings.data-item.style :as style]
    [quo.context :as quo.context]
    [quo.foundations.colors :as colors]
-   [react-native.core :as rn]))
+   [react-native.core :as rn]
+   [xtatus-quo.components.avatars.account-avatar.view :as account-avatar]
+   [xtatus-quo.components.icon :as icons]
+   [xtatus-quo.components.markdown.text :as text]))
 
 (defn- left-loading
   [{:keys [size blur?]}]

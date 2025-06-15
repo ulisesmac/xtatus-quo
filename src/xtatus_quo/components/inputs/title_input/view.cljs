@@ -1,10 +1,10 @@
-(ns quo.components.inputs.title-input.view
+(ns xtatus-quo.components.inputs.title-input.view
   (:require
-    [quo.components.icon :as icon]
-    [quo.components.inputs.title-input.style :as style]
-    [quo.components.markdown.text :as text]
-    [quo.context :as quo.context]
-    [react-native.core :as rn]))
+   [xtatus-quo.components.icon :as icon]
+   [xtatus-quo.components.inputs.title-input.style :as style]
+   [xtatus-quo.components.markdown.text :as text]
+   [quo.context :as quo.context]
+   [react-native.core :as rn]))
 
 (defn- pad-0
   [value]
@@ -38,8 +38,7 @@
                                 (fn []
                                   (when (fn? on-blur) (on-blur))
                                   (set-focused false)))]
-    [rn/view
-     {:style (merge (style/container disabled?) container-style)}
+    [rn/view {:style [(style/container disabled?) container-style]}
      [rn/view {:style style/text-input-container}
       [rn/text-input
        {:style                  (text/text-style
@@ -64,8 +63,7 @@
         :placeholder-text-color (if focused?
                                   (style/get-focused-placeholder-color blur? theme)
                                   (style/get-placeholder-color blur? theme))}]]
-     [rn/view
-      {:style (style/counter-container focused?)}
+     [rn/view {:style (style/counter-container focused?)}
       (if focused?
         [text/text
          [text/text

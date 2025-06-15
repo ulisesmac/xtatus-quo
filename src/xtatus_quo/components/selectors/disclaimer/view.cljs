@@ -1,9 +1,9 @@
-(ns quo.components.selectors.disclaimer.view
+(ns xtatus-quo.components.selectors.disclaimer.view
   (:require
-    [quo.components.icon :as icons]
-    [quo.components.markdown.text :as text]
-    [quo.components.selectors.disclaimer.style :as style]
-    [quo.components.selectors.selectors.view :as selectors]
+    [xtatus-quo.components.icon :as icons]
+    [xtatus-quo.components.markdown.text :as text]
+    [xtatus-quo.components.selectors.disclaimer.style :as style]
+    [xtatus-quo.components.selectors.selectors.view :as selectors]
     [quo.context]
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]))

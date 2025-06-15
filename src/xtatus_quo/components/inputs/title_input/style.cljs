@@ -1,4 +1,4 @@
-(ns quo.components.inputs.title-input.style
+(ns xtatus-quo.components.inputs.title-input.style
   (:require
     [quo.foundations.colors :as colors]
     [react-native.platform :as platform]))

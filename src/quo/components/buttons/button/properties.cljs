@@ -27,7 +27,7 @@
                          (colors/theme-colors colors/white-opa-40
                                               colors/neutral-80-opa-40
                                               theme))
-   :blur-type          (if (= theme :theme/light) :theme/light :theme/dark)})
+   :blur-type          (if (= theme :theme/light) :light :dark)})
 
 (defn- grey-blur
   [theme pressed?]

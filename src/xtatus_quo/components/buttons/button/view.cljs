@@ -80,11 +80,10 @@
           :theme               theme
           :pressed?            (if pressed? pressed? pressed-state?)}])
       (when (= background :photo)
-        [blur/view
-         {:blur-radius   20
-          :blur-type     blur-type
-          :overlay-color blur-overlay-color
-          :style         style/blur-view}])
+        [:blur/blur-view {:style         style/blur-view
+                          :blur-radius   25
+                          :blur-type     :light
+                          :overlay-color blur-overlay-color}])
       (when icon-top
         [rn/view
          [quo.icons/icon icon-top

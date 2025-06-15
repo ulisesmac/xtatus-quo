@@ -1,18 +1,18 @@
 (ns xtatus-quo.components.drawers.drawer-top.view
   (:require
-   [quo.components.avatars.account-avatar.view :as account-avatar]
    [quo.components.avatars.icon-avatar :as icon-avatar]
    [quo.components.avatars.user-avatar.view :as user-avatar]
-   [xtatus-quo.components.buttons.button.view :as button]
-   [xtatus-quo.components.drawers.drawer-top.style :as style]
-   [xtatus-quo.components.icon :as icons]
-   [xtatus-quo.components.markdown.text :as text]
-   [xtatus-quo.components.tags.context-tag.view :as context-tag]
    [quo.components.wallet.address-text.view :as address-text]
    [quo.context :as quo.context]
    [quo.foundations.colors :as colors]
    [react-native.core :as rn]
-   [utils.i18n :as i18n]))
+   [utils.i18n :as i18n]
+   [xtatus-quo.components.avatars.account-avatar.view :as account-avatar]
+   [xtatus-quo.components.buttons.button.view :as button]
+   [xtatus-quo.components.drawers.drawer-top.style :as style]
+   [xtatus-quo.components.icon :as icons]
+   [xtatus-quo.components.markdown.text :as text]
+   [xtatus-quo.components.tags.context-tag.view :as context-tag]))
 
 ;; TODO: improve the API of this component
 

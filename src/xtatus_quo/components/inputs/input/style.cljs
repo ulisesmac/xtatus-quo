@@ -78,9 +78,12 @@
    :width       20})
 
 (defn icon
-  [colors-by-variant]
-  {:color (:icon colors-by-variant)
-   :size  20})
+  [colors-by-variant no-color-icon?]
+  (if no-color-icon?
+    {:size     20
+     :no-color true}
+    {:color (:icon colors-by-variant)
+     :size  20}))
 
 (defn input
   [colors-by-status small? multiple-lines? weight]

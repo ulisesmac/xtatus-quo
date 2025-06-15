@@ -1,7 +1,7 @@
 (ns quo.components.colors.color.view
   (:require
     [quo.components.colors.color.style :as style]
-    [quo.components.icon :as icon]
+   [xtatus-quo.components.icon :as icon]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]))

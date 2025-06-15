@@ -1,6 +1,6 @@
-(ns quo.components.dividers.divider-line.view
+(ns xtatus-quo.components.dividers.divider-line.view
   (:require
-    [quo.components.dividers.divider-line.style :as style]
+    [xtatus-quo.components.dividers.divider-line.style :as style]
     [quo.context :as quo.context]
     [react-native.core :as rn]))
 

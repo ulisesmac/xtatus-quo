@@ -26,28 +26,28 @@
     :always
     (merge container-style)))
 
-(def memo-icon-fn
-  (fn [{:keys [color color-2 container-style size accessibility-label]
-        :or   {accessibility-label :icon}
-        :as   props}
-       icon-name
-       theme]
-    (let [size (or size 20)]
-      (with-meta
-        (if-let [svg-icon (icons.svg/get-icon icon-name size)]
-          [svg-icon
-           (cond-> {:size                size
-                    :accessibility-label accessibility-label
-                    :style               container-style}
-             (valid-color? color)   (assoc :color color)
-             (valid-color? color-2) (assoc :color-2 color-2))]
-          [rn/image
-           {:style               (image-icon-style (assoc props :size size) theme)
-            :accessibility-label accessibility-label
-            :source              (icons/icon-source (str (name icon-name) size))}])
-        {:key icon-name}))))
+(defn memo-icon-fn
+  [{:keys [color color-2 container-style size accessibility-label]
+    :or   {accessibility-label :icon}
+    :as   props}
+   icon-name
+   theme]
+  (let [size (or size 20)]
+    (with-meta
+     (if-let [svg-icon (icons.svg/get-icon icon-name size)]
+       [svg-icon
+        (cond-> {:size                size
+                 :accessibility-label accessibility-label
+                 :style               container-style}
+          (valid-color? color) (assoc :color color)
+          (valid-color? color-2) (assoc :color-2 color-2))]
+       [rn/image
+        {:style               (image-icon-style (assoc props :size size) theme)
+         :accessibility-label accessibility-label
+         :source              (icons/icon-source (str (name icon-name) size))}])
+     {:key icon-name})))
 
-(def ^:private memoized-icon (memoize memo-icon-fn))
+(def ^:private memoized-icon memo-icon-fn)
 
 (defn icon
   ([icon-name] (icon icon-name nil))

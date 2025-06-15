@@ -1,12 +1,11 @@
 (ns quo.components.list-items.preview-list.view
   (:require
-    [quo.components.avatars.account-avatar.view :as account-avatar]
+    [xtatus-quo.components.avatars.account-avatar.view :as account-avatar]
     [quo.components.avatars.user-avatar.view :as user-avatar]
     [quo.components.list-items.preview-list.properties :as properties]
     [quo.components.tags.number-tag.view :as number-tag]
     [quo.components.utilities.token.view :as token]
     [react-native.core :as rn]
-    [react-native.fast-image :as fast-image]
     [react-native.hole-view :as hole-view]))
 
 (defn- preview-item

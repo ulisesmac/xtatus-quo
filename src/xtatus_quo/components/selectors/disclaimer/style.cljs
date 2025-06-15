@@ -1,4 +1,4 @@
-(ns quo.components.selectors.disclaimer.style
+(ns xtatus-quo.components.selectors.disclaimer.style
   (:require
     [quo.foundations.colors :as colors]))
 

@@ -1,4 +1,4 @@
-(ns quo.components.colors.color-picker.view
+(ns xtatus-quo.components.colors.color-picker.view
   (:require
     [quo.components.colors.color.constants :as constants]
     [quo.components.colors.color.view :as color]

@@ -1,4 +1,4 @@
-(ns quo.components.icons.icons
+(ns ^:dev/always quo.components.icons.icons
   (:require
     [clojure.java.io :as io]
     [clojure.string :as string]))

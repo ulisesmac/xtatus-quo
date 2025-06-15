@@ -1,7 +1,7 @@
 (ns xtatus-quo.components.tags.context-tag.view
   (:require
     [clojure.string :as string]
-    [quo.components.avatars.account-avatar.view :as account-avatar]
+    [xtatus-quo.components.avatars.account-avatar.view :as account-avatar]
     [quo.components.avatars.group-avatar.view :as group-avatar]
     [quo.components.avatars.user-avatar.view :as user-avatar]
     [quo.components.avatars.wallet-user-avatar.view :as wallet-user-avatar]

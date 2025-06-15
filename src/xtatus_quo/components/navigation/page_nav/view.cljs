@@ -1,19 +1,19 @@
 (ns xtatus-quo.components.navigation.page-nav.view
   (:require
-    [quo.components.avatars.account-avatar.view :as account-avatar]
-    [quo.components.avatars.group-avatar.view :as group-avatar]
-    [quo.components.buttons.button.properties :as button-properties]
-    [xtatus-quo.components.buttons.button.view :as button]
-    [quo.components.dropdowns.dropdown.properties :as dropdown-properties]
-    [quo.components.dropdowns.dropdown.view :as dropdown]
-    [quo.components.dropdowns.network-dropdown.view :as network-dropdown]
-    [xtatus-quo.components.icon :as icons]
-    [xtatus-quo.components.markdown.text :as text]
-    [xtatus-quo.components.navigation.page-nav.style :as style]
-    [quo.context]
-    [react-native.core :as rn]
-    [react-native.reanimated :as reanimated]
-    [utils.worklets.profile-header :as header-worklet]))
+   [quo.components.avatars.group-avatar.view :as group-avatar]
+   [quo.components.buttons.button.properties :as button-properties]
+   [quo.components.dropdowns.dropdown.properties :as dropdown-properties]
+   [quo.components.dropdowns.dropdown.view :as dropdown]
+   [quo.components.dropdowns.network-dropdown.view :as network-dropdown]
+   [quo.context]
+   [react-native.core :as rn]
+   [react-native.reanimated :as reanimated]
+   [utils.worklets.profile-header :as header-worklet]
+   [xtatus-quo.components.avatars.account-avatar.view :as account-avatar]
+   [xtatus-quo.components.buttons.button.view :as button]
+   [xtatus-quo.components.icon :as icons]
+   [xtatus-quo.components.markdown.text :as text]
+   [xtatus-quo.components.navigation.page-nav.style :as style]))
 
 (def ^:private button-type
   {:white       :grey
@@ -99,7 +99,7 @@
            behind-overlay? centered-content?]
     :or   {support-account-switcher? true
            centered-content?         true}}]
-  [rn/view (style/right-content min-size? centered-content?)
+  [rn/view (style/right-content min-size? centered-content? (= :none content))
    (when (coll? content)
      (into [rn/view {:style style/right-actions-container}]
            (add-right-buttons-xf max-actions background behind-overlay? support-account-switcher?)
@@ -275,11 +275,7 @@
                                          :title                       (= text-align :center)
                                          (:dropdown :wallet-networks) true
                                          false)
-        center-content-container-style (reanimated/apply-animations-to-style
-                                        (if center-opacity
-                                          {:opacity center-opacity}
-                                          nil)
-                                        (style/center-content-container centered-content?))
+        center-content-container-style (style/center-content-container centered-content?)
         props-with-style               (assoc props
                                               :center-content-container-style
                                               center-content-container-style)]
