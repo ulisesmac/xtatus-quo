@@ -1,7 +1,7 @@
 (ns quo.components.counter.counter.view
   (:require
     [quo.components.counter.counter.style :as style]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]

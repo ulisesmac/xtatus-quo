@@ -37,9 +37,10 @@
    children]
   (let [[pressed-state? set-pressed-state] (rn/use-state false)
         theme (quo.context/use-theme)
+        color (quo.context/use-color)
         {:keys [icon-color background-color label-color border-color blur-type
                 blur-overlay-color border-radius overlay-customization-color]}
-        (button-properties/get-values {:customization-color customization-color
+        (button-properties/get-values {:customization-color color
                                        :background          background
                                        :type                type
                                        :theme               theme
@@ -108,13 +109,18 @@
            :size  icon-size}]
 
          (string? children)
-         [text/text
-          {:size            (when (#{56 24} size) :paragraph-2)
-           :weight          :medium
-           :number-of-lines 1
-           :style           {:color   label-color
-                             :opacity (when (and disabled? (= theme :theme/dark)) 0.3)}}
-          children]
+         [:rn/view {:style {:flex-grow   0
+                            :flex-direction :row
+                            :flex-shrink 1
+                            }}
+          [text/text
+           {:size            (when (#{56 24} size) :paragraph-2)
+            :weight          :medium
+            :number-of-lines 1
+            :ellipsize-mode :tail
+            :style           {:color   label-color
+                              :opacity (when (and disabled? (= theme :theme/dark)) 0.3)}}
+           children]]
 
          (vector? children)
          children)]

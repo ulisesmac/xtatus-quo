@@ -17,7 +17,9 @@
    xtatus-quo.components.tags.context-tag.view
    xtatus-quo.components.inputs.title-input.view
    quo.components.info.info-message.view
+   xtatus-quo.components.profile.showcase-nav.view
    xtatus-quo.components.dividers.divider-line.view
+   xtatus-quo.components.dividers.divider-label.view
    xtatus-quo.components.colors.color-picker.view))
 
 ;; Avatars
@@ -28,6 +30,7 @@
 
 ;; Dividers
 (def divider-line xtatus-quo.components.dividers.divider-line.view/view)
+(def divider-label xtatus-quo.components.dividers.divider-label.view/view)
 
 ;; Inputs
 (def input xtatus-quo.components.inputs.input.view/input)
@@ -36,10 +39,14 @@
 (def text xtatus-quo.components.markdown.text/text)
 (def button xtatus-quo.components.buttons.button.view/button)
 
+;; Profile
+(def showcase-nav xtatus-quo.components.profile.showcase-nav.view/view)
+
 ;; Selectors
 (def selector xtatus-quo.components.selectors.selectors.view/view)
 (def selector-button xtatus-quo.components.selectors.selector-button/view)
 (def disclaimer xtatus-quo.components.selectors.disclaimer.view/view)
+(def multi-disclaimer xtatus-quo.components.selectors.disclaimer.view/multi-disclaimer)
 
 ;; Settings
 (def category xtatus-quo.components.settings.category.view/category)

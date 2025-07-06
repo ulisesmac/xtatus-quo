@@ -105,9 +105,9 @@
    (case action
      :arrow    [icon/icon (or (:icon action-props) :i/chevron-right) (style/color blur? theme)]
      :button   [button/button
-                (merge action-props
-                       {:type :outline
-                        :size 24})
+                (assoc action-props
+                  :type :outline
+                  :size 24)
                 (:button-text action-props)]
      :selector [selectors/view (assoc action-props
                                  :customization-color customization-color
@@ -118,33 +118,35 @@
   [{:keys [title show-new-feature-tag? on-press action-props accessibility-label blur?
            container-style content]
     :as   props}]
-  [rn/pressable
-   {:style               (merge style/container container-style)
-    :on-press            (or on-press (:on-change action-props))
-    :accessibility-label accessibility-label}
-   [rn/view
-    {:style {:flex-direction  :row
-             :justify-content :space-between}}
-    [rn/view {:style (style/left-sub-container props)}
-     [image-component props]
-     [rn/view {:style (style/left-container (:image props))}
-      [rn/view {:style {:flex-direction :row}}
-       [text/text
-        {:weight :medium
-         :style  {:color (when blur? colors/white)}}
-        title]
-       (when show-new-feature-tag?
-         [rn/view {:style style/new-feature-tag-container}
-          [new-feature-gradient/view {:style style/new-feature-tag-gradient}]
-          [text/text
-           {:weight :semi-bold
-            :size   :label
-            :style  style/new-feature-tag-text}
-           (string/upper-case (i18n/label :t/new))]])]
-      [description-component props]
-      [tag-component props]]]
-    [rn/view {:style (style/sub-container (:alignment action-props))}
-     [label-component props]
-     [action-component props]]]
-   (when content
-     content)])
+  (let [theme (quo.context/use-theme)]
+    [rn/pressable
+     {:style               (merge style/container container-style)
+      :on-press            (or on-press (:on-change action-props))
+      :accessibility-label accessibility-label}
+     [rn/view
+      {:style {:flex-direction  :row
+               :justify-content :space-between}}
+      [rn/view {:style (style/left-sub-container props)}
+       [image-component props]
+       [rn/view {:style (style/left-container (:image props))}
+        [rn/view {:style {:flex-direction :row}}
+         [text/text
+          {:weight :medium
+           :style  {:color (when (or blur? (= theme :theme/dark))
+                             colors/white)}}
+          title]
+         (when show-new-feature-tag?
+           [rn/view {:style style/new-feature-tag-container}
+            [new-feature-gradient/view {:style style/new-feature-tag-gradient}]
+            [text/text
+             {:weight :semi-bold
+              :size   :label
+              :style  style/new-feature-tag-text}
+             (string/upper-case (i18n/label :t/new))]])]
+        [description-component props]
+        [tag-component props]]]
+      [rn/view {:style (style/sub-container (:alignment action-props))}
+       [label-component props]
+       [action-component props]]]
+     (when content
+       content)]))

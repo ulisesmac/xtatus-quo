@@ -36,7 +36,7 @@
      [quo/blur
       {:style         style/fill-space
        :blur-amount   (if platform/ios? 20 10)
-       :blur-type     (if (= theme :theme/light) (if platform/ios? :theme/light :xlight) :theme/dark)
+       :blur-type     (if (= theme :theme/light) (if platform/ios? :light :xlight) :dark)
        :overlay-color (if open-sheet?
                         (colors/theme-colors colors/white colors/neutral-95-opa-70 theme)
                         (if (= theme :theme/light) nil colors/neutral-95-opa-70))}

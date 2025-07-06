@@ -1,9 +1,9 @@
-(ns quo.components.dividers.divider-label.view
+(ns xtatus-quo.components.dividers.divider-label.view
   (:require
     [quo.components.counter.counter.view :as counter]
-    [quo.components.dividers.divider-label.style :as style]
-    [quo.components.icon :as icons]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.dividers.divider-label.style :as style]
+    [xtatus-quo.components.icon :as icons]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.context :as quo.context]
     [react-native.core :as rn]))
 
@@ -29,8 +29,7 @@
       :accessibility-label :divider-label
       :style               (merge (style/container blur? tight? chevron theme)
                                   container-style)}
-     [rn/view
-      {:style (style/content chevron)}
+     [rn/view {:style (style/content chevron)}
       (when chevron
         [icons/icon (or chevron-icon :i/chevron-right)
          {:color           (style/get-content-color blur? theme)

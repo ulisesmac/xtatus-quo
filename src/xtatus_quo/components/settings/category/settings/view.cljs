@@ -9,6 +9,7 @@
 (defn settings-category
   [{:keys [label data blur? container-style customization-color]}]
   (let [theme          (quo.context/use-theme)
+        color          (or customization-color (quo.context/use-color))
         settings-items (remove nil? data)
         last-index     (dec (count settings-items))]
     [rn/view {:style [(style/container label) container-style]}
@@ -25,8 +26,8 @@
          [:<>
           [settings-item/view
            (assoc item
-                  :customization-color customization-color
-                  :blur?               blur?)]
+             :customization-color color
+             :blur? blur?)]
           (when-not (= last-index index)
             [rn/view {:style (style/settings-separator blur? theme)}])])
        settings-items)]]))

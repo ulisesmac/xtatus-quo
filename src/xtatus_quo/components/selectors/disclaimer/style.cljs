@@ -21,3 +21,19 @@
 (def icon-container
   {:align-items :flex-end
    :flex        1})
+
+(defn multi-container
+  [blur? theme]
+  (let [dark-background (if blur? colors/white-opa-5 colors/neutral-80-opa-40)
+        dark-border     (if blur? colors/white-opa-10 colors/neutral-70)]
+    {:row-gap          12
+     :background-color (colors/theme-colors colors/neutral-5 dark-background theme)
+     :padding          11
+     :border-radius    12
+     :border-width     1
+     :border-color     (colors/theme-colors colors/neutral-20 dark-border theme)}))
+
+(defn label [theme]
+  {:margin-bottom 1
+   :margin-left   4
+   :color         (colors/theme-colors colors/neutral-50 colors/neutral-40 theme)})

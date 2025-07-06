@@ -1,7 +1,7 @@
 (ns status-im.common.emoji-picker.data
   (:require
-    [status-im.common.emoji-picker.constants :as constants]
-    [utils.transforms :as transforms]))
+   [status-im.common.emoji-picker.constants :as constants]
+   [utils.transforms :as transforms]))
 
 ;; Emoji data is pulled from the `emojibase` (https://emojibase.dev).
 ;;
@@ -22,19 +22,19 @@
 ;; - The emoji components (https://symbl.cc/en/emoji/component) which are group 2 are not used
 ;;   in the app and are removed from the dataset.
 
-(def ^:const emoji-data (transforms/js->clj (js/require "../resources/data/emojis/en.json")))
+(def emoji-data (transforms/js->clj (js/require "../resources/data/emojis/en.json")))
 
-(def ^:const group-smileys-emotion 0)
-(def ^:const group-people-body 1)
-(def ^:const group-animals-nature 3)
-(def ^:const group-food-drink 4)
-(def ^:const group-travel-places 5)
-(def ^:const group-activity 6)
-(def ^:const group-objects 7)
-(def ^:const group-symbols 8)
-(def ^:const group-flags 9)
+(def group-smileys-emotion 0)
+(def group-people-body 1)
+(def group-animals-nature 3)
+(def group-food-drink 4)
+(def group-travel-places 5)
+(def group-activity 6)
+(def group-objects 7)
+(def group-symbols 8)
+(def group-flags 9)
 
-(def ^:const categories
+(def categories
   [{:title :t/emoji-people ;; 0 and 1
     :icon  :i/faces
     :id    :people
@@ -91,10 +91,11 @@
                  (conj acc (assoc item :data (partition-all constants/emojis-per-row data))))
                [])))
 
-(def ^:const flatten-data
+(def flatten-data
   (mapcat (fn [{:keys [title id data]}]
             (into [{:title title :id id :header? true}] data))
-   categorized-and-partitioned))
+          categorized-and-partitioned))
+
 
 (def ^:private filter-section-header-index
   (keep-indexed #(when (:header? %2) %1) flatten-data))

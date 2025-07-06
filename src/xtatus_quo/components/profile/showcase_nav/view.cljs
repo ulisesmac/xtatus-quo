@@ -1,9 +1,9 @@
-(ns quo.components.profile.showcase-nav.view
+(ns xtatus-quo.components.profile.showcase-nav.view
   (:require
-    [quo.components.buttons.button.view :as button]
-    [quo.components.profile.showcase-nav.style :as style]
-    [quo.context :as quo.context]
-    [react-native.core :as rn]))
+   [xtatus-quo.components.buttons.button.view :as button]
+   [xtatus-quo.components.profile.showcase-nav.style :as style]
+   [quo.context :as quo.context]
+   [react-native.core :as rn]))
 
 (defn- render-button
   [{:keys [icon id]} index _ {:keys [state on-press active-id]}]

@@ -14,16 +14,14 @@
 (defn view [_ _]
   (let [initial-content-height (atom nil)
         animate-above!         #(set! (.-value %1) (withSpring %2 animation-params))]
-    (def --initial initial-content-height)
-    (fn [{:keys [above above-container-style above-offset]} child]
+    (fn [{:keys [content-ref above above-container-style offset]} child]
       (let [above-ref       ^js (useRef)
-            content-ref     ^js (useRef)
+            ^js content-ref (or content-ref (useRef))
             above-position  ^js (useSharedValue 0)
             measure-layout! (useCallback
                              ;; TODO: check double re-render
                              ;; TODO: refactor
                              (fn [^js e]
-                               (prn "CALCULATED HEIGHT:" (.. e -nativeEvent -layout -height))
                                (let [keyboard-up? (< (.-value above-position) 0)]
                                  (if keyboard-up?
                                    (animate-above! above-position 0)
@@ -40,7 +38,7 @@
                                                      0
                                                      (+ (- (.. e -nativeEvent -layout -height)
                                                            @initial-content-height)
-                                                        above-offset))))))
+                                                        offset))))))
                              #js[])
             [extra-padding set-extra-padding!] (useState 0)]
         (useLayoutEffect
@@ -54,7 +52,7 @@
                                      :behavior :padding}
          [:rn/scroll-view {:style                           {:flex 1}
                            :ref                             content-ref
-                           :content-container-style         {:padding-bottom (- extra-padding above-offset)}
+                           :content-container-style         {:padding-bottom (- extra-padding offset)}
                            :shows-vertical-scroll-indicator false
                            :on-layout                       measure-layout!
                            :keyboard-should-persist-taps    :handled}

@@ -67,7 +67,6 @@
 
 (defn toast
   "Options:
-
    :type => :neutral/:negative/:positive
    "
   [{:keys [type icon title text action undo-duration undo-on-press container-style theme user]
@@ -81,7 +80,7 @@
                                          :i/incorrect
                                          :i/incorrect-dark)
                     (= type :neutral) icon)]
-    [quo.context/provider {:theme theme}
+    [quo.context/merge-provider {:theme theme}
      [toast-container
       {:left            (cond
                           user [user-avatar/user-avatar user]

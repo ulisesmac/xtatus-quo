@@ -30,14 +30,12 @@
 (defn- get-top-for-views
   "Safe area top that must be used when creating screens"
   [original-top-safe-area]
-  (- original-top-safe-area (get-top-fix original-top-safe-area)))
+  original-top-safe-area)
 
 (defn- get-bottom-for-views
   "Safe area bottom that must be used when creating screens"
   [original-bottom-safe-area]
-  (if platform/ios?
-    (- original-bottom-safe-area (get-bottom-fix))
-    0))
+  original-bottom-safe-area)
 
 (def top (-> safe-area-context/initial-window-metrics :insets :top get-top-for-views))
 (def bottom (-> safe-area-context/initial-window-metrics :insets :bottom get-bottom-for-views))

@@ -46,8 +46,5 @@
    :left     0
    :right    0
    :bottom   0
-   :z-index  1})
-
-(def category-blur-container
-  {:height   category-nav-height
-   :overflow :hidden})
+   :z-index  1
+   :padding-bottom safe-area/bottom})

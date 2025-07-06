@@ -5,8 +5,8 @@
     [react-native.platform :as platform]))
 
 (def account-colors
-  [:red :orange :gold :yellow :lime :mint #_:green :blue :army :teal :turquoise :aqua :sky
-   :steel :slate :charcoal :indigo :lavender :purple :magenta :pink :copper :camel :brown])
+  [:red :orange :gold  :blue :army :turquoise :aqua :sky :charcoal :indigo
+   :lavender :purple :magenta :pink :brown])
 
 (defn alpha
   [value opacity]
@@ -184,10 +184,8 @@
 (def primary-50-opa-40 (alpha primary-50 0.4))
 
 ;;;;Success
-
-;;;; Success  (refreshed)
-(def success-50 "#26C298")   ; L* ≈ 56
-(def success-60 "#1F9B73")   ; L* ≈ 44
+(def success-50 "#23ADA0")
+(def success-60 "#1C8A80")
 
 ;;50 with transparency
 (def success-50-opa-5 (alpha success-50 0.05))
@@ -253,7 +251,6 @@
    :turquoise {50 "#2E9AB3" 60 "#23798A"}
    :sky       {50 "#2FA4E8" 60 "#1E80B3"}
    :steel     {50 "#6F8FAF" 60 "#56728A"}
-   :slate     {50 "#7C8EA5" 60 "#637185"}
    :charcoal  {50 "#4A5666" 60 "#3B4452"}
    :indigo    {50 "#4C6AA9" 60 "#405A8D"}
    :lavender  {50 "#A38BFF" 60 "#8270CC"}
@@ -360,12 +357,14 @@
   ([color opacity]
    (resolve-color* color opacity nil))
   ([color opacity color-suffix]
-   (let [suffix (cond
-                  (not (keyword? color)) nil
-                  color-suffix           color-suffix
-                  opacity                50
-                  :else                  60)]
-     (cond-> color
+   (let [color-kw (when (keyword? color)
+                    (keyword (name color)))
+         suffix   (cond
+                    (not (keyword? color)) nil
+                    color-suffix          color-suffix
+                    opacity 50
+                    :else 60)]
+     (cond-> color-kw
        suffix  (get-from-colors-map suffix)
        opacity (alpha (/ opacity 100))))))
 

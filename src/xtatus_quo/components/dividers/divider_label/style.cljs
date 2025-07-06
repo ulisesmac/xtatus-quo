@@ -1,4 +1,4 @@
-(ns quo.components.dividers.divider-label.style
+(ns xtatus-quo.components.dividers.divider-label.style
   (:require
     [quo.foundations.colors :as colors]))
 
@@ -23,8 +23,8 @@
   {:border-top-width 1
    :border-top-color (get-border-color blur? theme)
    :height           (get-height tight?)
-   :padding-top      (if tight? 6 14)
-   :padding-bottom   7
+   :padding-top      (if tight? 6 15)
+   :padding-bottom   8
    :padding-left     (if (= :left chevron) 16 20)
    :padding-right    20
    :align-items      :center

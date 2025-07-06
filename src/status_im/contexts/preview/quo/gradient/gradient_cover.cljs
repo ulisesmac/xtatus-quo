@@ -65,7 +65,7 @@
          [(if @blur? quo/blur rn/view)
           {:style     {:height           332
                        :padding-vertical 40}
-           :blur-type :theme/dark}
+           :blur-type :dark}
           [quo/gradient-cover @state]]]
         [quo/button
          {:container-style {:margin-horizontal 40}
