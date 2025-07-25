@@ -42,8 +42,6 @@
             :align-items               :center
             :justify-content           :center
             :flex-direction            :row
-            :border-top-left-radius    border-radius
-            :border-bottom-left-radius border-radius
             :background-color          background-color
             :padding-left              padding}
            ;; The minimum padding right of 1 is a mandatory workaround. Without

@@ -1,8 +1,8 @@
-(ns quo.components.tabs.tab.view
+(ns xtatus-quo.components.tabs.tab.view
   (:require
     [quo.components.common.notification-dot.view :as notification-dot]
-    [quo.components.icon :as icons]
-    [quo.components.markdown.text :as text]
+    [xtatus-quo.components.icon :as icons]
+    [xtatus-quo.components.markdown.text :as text]
     [quo.components.tabs.tab.style :as style]
     [quo.context :as quo.context]
     [react-native.core :as rn]
@@ -72,17 +72,16 @@
        [notification-dot/view
         {:style               style/notification-dot
          :customization-color customization-color}])
-     [rn/view
-      {:style (merge
-               (style/tab
-                {:size                   size
-                 :background-color       (if (and segmented? (not active))
-                                           :transparent
-                                           background-color)
-                 :disabled               disabled
-                 :segmented?             segmented?
-                 :show-notification-dot? show-notification-dot?})
-               (if active active-item-container-style item-container-style))}
+     [rn/view {:style       [(style/tab
+                              {:size                   size
+                               :background-color       (if (and segmented? (not active))
+                                                         :transparent
+                                                         background-color)
+                               :disabled               disabled
+                               :segmented?             segmented?
+                               :show-notification-dot? show-notification-dot?})
+                             (if active active-item-container-style item-container-style)]
+               :collapsable false}
       (when before
         [rn/view
          [icons/icon before {:color icon-color}]])

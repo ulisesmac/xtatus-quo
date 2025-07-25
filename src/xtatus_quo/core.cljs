@@ -18,6 +18,7 @@
    xtatus-quo.components.inputs.title-input.view
    quo.components.info.info-message.view
    xtatus-quo.components.profile.showcase-nav.view
+   xtatus-quo.components.tabs.segmented-tab
    xtatus-quo.components.dividers.divider-line.view
    xtatus-quo.components.dividers.divider-label.view
    xtatus-quo.components.colors.color-picker.view))
@@ -50,6 +51,9 @@
 
 ;; Settings
 (def category xtatus-quo.components.settings.category.view/category)
+
+;; Tabs
+(def segmented-control xtatus-quo.components.tabs.segmented-tab/segmented-control)
 
 ;; Text combinations
 (def page-top xtatus-quo.components.text-combinations.page-top.view/view)
