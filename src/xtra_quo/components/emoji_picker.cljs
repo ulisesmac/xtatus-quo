@@ -36,20 +36,14 @@
        7)))
 
 (defn emoji-row [emojis on-emoji-press]
-  [:rn/view {:style {:flex-direction     :row
-                     :column-gap         18.5
-                     :justify-content    :flex-start
-                     :padding-vertical   8
-                     :padding-horizontal 20}}
+  [:rn/view {:style style/emoji-row}
    (map (fn [{:keys [unicode]}]
           ^{:key unicode}
-          [:rn/pressable {:width           emoji-size
-                          :height          emoji-size
-                          :justify-content :center
-                          :align-items     :center
-                          :on-press        #(on-emoji-press unicode)}
-           [:rn/text {:style                {:font-size            50
-                                             :include-font-padding false}
+          [:rn/pressable {:style    (assoc style/emoji-pressable
+                                      :width emoji-size
+                                      :height emoji-size)
+                          :on-press #(on-emoji-press unicode)}
+           [:rn/text {:style                style/emoji-text
                       :adjustsFontSizeToFit true}
             unicode]])
         emojis)])
@@ -151,7 +145,6 @@
                                                       :padding-bottom (+ safe-area/bottom 56)}
                     :data                            data
                     :scroll-event-throttle           300
-                    :window-size                     8
                     :on-scroll                       scroll-fn
                     :render-item                     render-item-fn
                     :get-item-layout                 get-item-layout
@@ -171,16 +164,7 @@
 (defn bottom-nav [scroll-ref category set-category]
   (let [theme    (quo.context/use-theme)
         bg-color (colors/theme-colors colors/white colors/neutral-95 theme)]
-    [:rn/view {:style {:position           :absolute
-                       :bottom             0
-                       :left               0
-                       :right              0
-                       :flex-direction     :row
-                       :justify-content    :space-between
-                       :padding-horizontal 20
-                       :padding-top        12
-                       :background-color   bg-color
-                       :padding-bottom     (+ 12 safe-area/bottom)}}
+    [:rn/view {:style (assoc style/bottom-nav :background-color bg-color)}
      (map (fn [{:keys [id icon]}]
             ^{:key (str id)}
             [category-button {:category     id
@@ -193,18 +177,13 @@
 (defn input-patch-view []
   (let [theme    (quo.context/use-theme)
         bg-color (colors/theme-colors colors/white colors/neutral-95 theme)]
-    [:rn/view {:style {:position         :absolute
-                       :top              32
-                       :left             0
-                       :right            0
-                       :height           11
-                       :background-color bg-color}}]))
+    [:rn/view {:style (assoc style/input-patch :background-color bg-color)}]))
 
 (defn view [{:keys [on-emoji-press]}]
-  (let [scroll-ref (rn/use-ref nil)
+  (let [scroll-ref              (rn/use-ref nil)
         [category set-category] (rn/use-state :people)
-        [input set-input] (rn/use-state nil)
-        searching? (search-term? input)]
+        [input set-input]       (rn/use-state nil)
+        searching?              (search-term? input)]
     [:rn/view
      [:rn/view {:style {:padding-horizontal 20}}
       [quo/input
