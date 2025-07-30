@@ -8,6 +8,3 @@
 (def above-keyboard-container quo.extra.components.above-keyboard-container.view/view)
 
 (def emoji-picker xtra-quo.components.emoji-picker/view)
-
-(def emoji-picker-sheet nil ; xtra-quo.components.emoji-picker/sheet-view
-  )

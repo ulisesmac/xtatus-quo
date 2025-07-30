@@ -46,15 +46,6 @@
          (map (comp string/upper-case str first))
          string/join)))
 
-(def emoji-data (transforms/js->clj (js/require "../resources/data/emojis/en.json")))
-(def emoji-unicode-values (map :unicode emoji-data))
-
-(defn contains-emoji?
-  [s]
-  (some (fn [emoji]
-          (string/includes? s emoji))
-        emoji-unicode-values))
-
 (defn contains-special-character?
   [s]
   (re-find #"[^a-zA-Z0-9\s]" s))

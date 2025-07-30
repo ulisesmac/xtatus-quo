@@ -22,8 +22,6 @@
 ;; - The emoji components (https://symbl.cc/en/emoji/component) which are group 2 are not used
 ;;   in the app and are removed from the dataset.
 
-(def emoji-data (transforms/js->clj (js/require "../resources/data/emojis/en.json")))
-
 (def group-smileys-emotion 0)
 (def group-people-body 1)
 (def group-animals-nature 3)
@@ -33,6 +31,24 @@
 (def group-objects 7)
 (def group-symbols 8)
 (def group-flags 9)
+
+(def valid-groups
+  #{group-smileys-emotion
+    group-people-body
+    group-animals-nature
+    group-food-drink
+    group-travel-places
+    group-activity
+    group-objects
+    group-symbols
+    group-flags})
+
+(def emoji-data
+  (->> (js/require "../resources/data/emojis/es.json")
+       (transforms/js->clj)
+       (filter (comp valid-groups :group)))
+  #_(transforms/js->clj (js/require "../resources/data/emojis/en.json"))
+  )
 
 (def categories
   [{:title :t/emoji-people ;; 0 and 1
@@ -82,6 +98,7 @@
     group-flags           {:index 7 :id :flags}
     nil))
 
+
 (def ^:private categorized-and-partitioned
   (->> emoji-data
        (reduce (fn [acc {:keys [group] :as emoji}]
@@ -96,10 +113,8 @@
             (into [{:title title :id id :header? true}] data))
           categorized-and-partitioned))
 
-
-(def ^:private filter-section-header-index
-  (keep-indexed #(when (:header? %2) %1) flatten-data))
-
-(defn get-section-header-index-in-data
-  [index]
-  (nth filter-section-header-index index))
+(def ^:private section-header-indexes
+  (into {}
+        (keep-indexed #(when (:header? %2)
+                         {(:id %2) %1})
+                      flatten-data)))
