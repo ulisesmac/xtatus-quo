@@ -115,8 +115,7 @@
                          (header-worklet/profile-header-animation scroll-y
                                                                   threshold
                                                                   page-nav-height))]
-    [reanimated/view
-     {:style [center-content-container-style animated-style]}
+    [reanimated/view {:style [center-content-container-style animated-style]}
      [text/text
       {:weight          :medium
        :size            :paragraph-1
@@ -265,7 +264,7 @@
   `:network`
     - network-name
     - network-logo a valid rn/image `:source` value"
-  [{:keys [type right-side background text-align behind-overlay? center-opacity]
+  [{:keys [type right-side background text-align behind-overlay? center-opacity custom-content]
     :or   {type       :no-title
            text-align :center
            right-side :none
@@ -345,6 +344,16 @@
       (:community :network)
       [page-nav-base props
        [community-network-center props-with-style]
+       [right-content
+        {:background                background
+         :content                   right-side
+         :max-actions               3
+         :support-account-switcher? false
+         :centered-content?         centered-content?}]]
+
+      :custom
+      [page-nav-base props
+       custom-content
        [right-content
         {:background                background
          :content                   right-side

@@ -21,7 +21,9 @@
    xtatus-quo.components.tabs.segmented-tab
    xtatus-quo.components.dividers.divider-line.view
    xtatus-quo.components.dividers.divider-label.view
-   xtatus-quo.components.colors.color-picker.view))
+   xtatus-quo.components.colors.color-picker.view
+   xtatus-quo.components.drawers.drawer-action.view
+   ))
 
 ;; Avatars
 (def account-avatar xtatus-quo.components.avatars.account-avatar.view/view)
@@ -65,6 +67,7 @@
 ;; Drawer
 (def drawer-top xtatus-quo.components.drawers.drawer-top.view/view)
 (def bottom-actions xtatus-quo.components.drawers.bottom-actions.view/view)
+(def drawer-action xtatus-quo.components.drawers.drawer-action.view/view)
 
 ;; Notifications
 (def toast xtatus-quo.components.notifications.toast.view/toast)

@@ -1,26 +1,24 @@
-(ns quo.components.drawers.drawer-action.view
+(ns xtatus-quo.components.drawers.drawer-action.view
   (:require
-    [quo.components.drawers.drawer-action.schema :as component-schema]
-    [quo.components.drawers.drawer-action.style :as style]
-    [quo.components.icon :as icon]
-    [quo.components.inputs.input.view :as input]
-    [quo.components.markdown.text :as text]
-    [quo.components.selectors.selectors.view :as selectors]
-    [quo.context]
-    [react-native.core :as rn]
-    [schema.core :as schema]))
+   [xtatus-quo.components.drawers.drawer-action.style :as style]
+   [quo.context]
+   [react-native.core :as rn]
+   [xtatus-quo.components.icon :as icon]
+   [xtatus-quo.components.inputs.input.view :as input]
+   [xtatus-quo.components.markdown.text :as text]
+   [xtatus-quo.components.selectors.selectors.view :as selectors]))
 
-(defn view-internal
+(defn view
   [{:keys       [action icon description state title on-press customization-color
                  blur? accessibility-label input-props]
     action-type :type
-    :or         {customization-color :blue
-                 blur?               false}}]
-  (let [theme                  (quo.context/use-theme)
-        action-type            (or action-type :main)
+    :or         {blur? false}}]
+  (let [theme               (quo.context/use-theme)
+        customization-color (quo.context/use-color)
+        action-type         (or action-type :main)
         [pressed? set-pressed] (rn/use-state false)
-        on-press-in            (rn/use-callback #(set-pressed true))
-        on-press-out           (rn/use-callback #(set-pressed false))]
+        on-press-in         (rn/use-callback #(set-pressed true))
+        on-press-out        (rn/use-callback #(set-pressed false))]
 
     [rn/pressable
      {:on-press            on-press
@@ -89,5 +87,3 @@
         (assoc input-props
                :blur?               blur?
                :accessibility-label :input)])]))
-
-(def view (schema/instrument #'view-internal component-schema/?schema))

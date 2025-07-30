@@ -1,6 +1,5 @@
-(ns quo.components.drawers.drawer-action.style
-  (:require
-    [quo.foundations.colors :as colors]))
+(ns xtatus-quo.components.drawers.drawer-action.style
+  (:require [quo.foundations.colors :as colors]))
 
 (defn- background-color
   [{:keys [state action customization-color theme pressed? blur?]}]
