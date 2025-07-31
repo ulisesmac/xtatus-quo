@@ -1,5 +1,5 @@
 (ns quo.extra.components.above-keyboard-container.view
-  (:require ["react" :refer [useLayoutEffect useState useCallback useRef]]
+  (:require ["react" :refer [useLayoutEffect useEffect useState useCallback useRef]]
             ["react-native-reanimated" :refer [useSharedValue withSpring]]
             ["react-native" :refer [useWindowDimensions Keyboard]]
             ["react-native-safe-area-context" :as safe-area]))
@@ -20,31 +20,20 @@
             above-position  ^js (useSharedValue 0)
             measure-layout! (useCallback
                              ;; TODO: check double re-render
-                             ;; TODO: refactor
                              (fn [^js e]
-                               (let [keyboard-up? (< (.-value above-position) 0)]
-                                 (if keyboard-up?
+                               (let [keyboard-up?  (.isVisible Keyboard)
+                                     layout-height (.. e -nativeEvent -layout -height)]
+                                 (if-not keyboard-up?
                                    (animate-above! above-position 0)
-                                   (animate-above! above-position
-                                                   (if
-                                                    (or (zero? (- (.. e -nativeEvent -layout -height) ;; first time
-                                                                  @initial-content-height))
-                                                        ;; NOTE: for cases where the frame is taking the whole screen
-                                                        ;; TODO: maybe read safe areas dynamically
-                                                        (zero? (- (+ (.. e -nativeEvent -layout -height)
-                                                                     (.. safe-area -initialWindowMetrics -insets -top)
-                                                                     (.. safe-area -initialWindowMetrics -insets -bottom))
-                                                                  @initial-content-height)))
-                                                     0
-                                                     (+ (- (.. e -nativeEvent -layout -height)
-                                                           @initial-content-height)
-                                                        offset))))))
+                                   (animate-above! above-position (+ (- layout-height @initial-content-height)
+                                                                     offset)))))
                              #js[])
             [extra-padding set-extra-padding!] (useState 0)]
         (useLayoutEffect
          (fn []
-           (some-> above-ref .-current (.measureInWindow #(set-extra-padding! %4)))
-           (some-> content-ref .-current (.measureInWindow #(reset! initial-content-height %4)))
+           (when (.. above-ref -current -measureInWindow)
+             (some-> above-ref .-current (.measureInWindow #(set-extra-padding! %4)))
+             (some-> content-ref .-current (.measureInWindow #(reset! initial-content-height %4))))
            js/undefined)
          #js[])
 
