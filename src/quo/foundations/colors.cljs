@@ -92,9 +92,12 @@
 (def neutral-80-opa-80 (alpha neutral-80 0.8))
 (def neutral-80-opa-90 (alpha neutral-80 0.9))
 (def neutral-80-opa-95 (alpha neutral-80 0.95))
+(def neutral-80-opa-98 (alpha neutral-80 0.98))
 
 ;;90 with transparency
 (def neutral-90-opa-0 (alpha neutral-90 0))
+(def neutral-90-opa-90 (alpha neutral-90 0.9))
+(def neutral-90-opa-95 (alpha neutral-90 0.95))
 
 ;;95 with transparency
 (def neutral-95-opa-0 (alpha neutral-95 0))
