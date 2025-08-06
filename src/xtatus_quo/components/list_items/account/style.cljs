@@ -1,4 +1,4 @@
-(ns quo.components.list-items.account.style
+(ns xtatus-quo.components.list-items.account.style
   (:require
     [quo.foundations.colors :as colors]))
 

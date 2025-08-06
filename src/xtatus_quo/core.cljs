@@ -23,7 +23,7 @@
    xtatus-quo.components.dividers.divider-label.view
    xtatus-quo.components.colors.color-picker.view
    xtatus-quo.components.drawers.drawer-action.view
-   ))
+   xtatus-quo.components.list-items.account.view))
 
 ;; Avatars
 (def account-avatar xtatus-quo.components.avatars.account-avatar.view/view)
@@ -38,6 +38,9 @@
 ;; Inputs
 (def input xtatus-quo.components.inputs.input.view/input)
 (def title-input xtatus-quo.components.inputs.title-input.view/view)
+
+;; List Items
+(def account xtatus-quo.components.list-items.account.view/view)
 
 (def text xtatus-quo.components.markdown.text/text)
 (def button xtatus-quo.components.buttons.button.view/button)

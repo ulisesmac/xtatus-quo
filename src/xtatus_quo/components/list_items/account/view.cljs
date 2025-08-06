@@ -1,15 +1,13 @@
-(ns quo.components.list-items.account.view
+(ns xtatus-quo.components.list-items.account.view
   (:require
-    [quo.components.avatars.account-avatar.view :as account-avatar]
-    [quo.components.icon :as icon]
-    [quo.components.list-items.account.schema :as component-schema]
-    [quo.components.list-items.account.style :as style]
-    [quo.components.markdown.text :as text]
-    [quo.components.wallet.address-text.view :as address-text]
-    [quo.context :as quo.context]
-    [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
-    [schema.core :as schema]))
+   [xtatus-quo.components.avatars.account-avatar.view :as account-avatar]
+   [xtatus-quo.components.icon :as icon]
+   [xtatus-quo.components.list-items.account.style :as style]
+   [xtatus-quo.components.markdown.text :as text]
+   [quo.components.wallet.address-text.view :as address-text]
+   [quo.context :as quo.context]
+   [quo.foundations.colors :as colors]
+   [react-native.core :as rn]))
 
 (defn- account-view
   [{:keys [account-props title-icon blur? theme]}]
@@ -92,8 +90,8 @@
               colors/white
               (colors/resolve-color customization-color theme))}]])
 
-(defn- internal-view
-  [{:keys [type state blur? customization-color on-press]
+(defn view
+  [{:keys [type state blur? customization-color on-press non-reactive?]
     :or   {customization-color :blue
            type                :default
            state               :default
@@ -103,18 +101,19 @@
         [pressed? set-pressed] (rn/use-state false)
         on-press-in            (rn/use-callback #(set-pressed true))
         on-press-out           (rn/use-callback #(set-pressed false))
-        props                  (assoc props :theme theme)]
+        props                  (assoc props :theme theme)
+        disabled?              (= state :disabled)]
     [rn/pressable
-     {:style               (style/container
-                            {:state               state
-                             :blur?               blur?
-                             :customization-color customization-color
-                             :pressed?            pressed?})
-      :on-press-in         on-press-in
-      :on-press            on-press
-      :disabled            (= state :disabled)
-      :on-press-out        on-press-out
-      :accessibility-label :container}
+     (cond-> {:style               (style/container
+                                    {:state               state
+                                     :blur?               blur?
+                                     :customization-color customization-color
+                                     :pressed?            pressed?})
+              :disabled            disabled?
+              :accessibility-label :container}
+       (not non-reactive?) (assoc :on-press-in (when-not disabled? on-press-in)
+                                  :on-press (when-not disabled? on-press)
+                                  :on-press-out (when-not disabled? on-press-out)))
      [account-view props]
      [rn/view {:style (when (= type :tag) style/token-tag-container)}
       (cond
@@ -129,5 +128,3 @@
 
         (and (= type :default) (= state :selected))
         [check-icon props])]]))
-
-(def view (schema/instrument #'internal-view component-schema/?schema))
