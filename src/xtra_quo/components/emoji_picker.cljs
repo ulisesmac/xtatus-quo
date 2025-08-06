@@ -114,11 +114,12 @@
 
 (defn emojis-to-render [input]
   (if (search-term? input)
-    (->> emoji-picker.data/emoji-data
-         (filter (fn [{:keys [label tags] :as _emoji}]
-                   (or (string/includes? label input)
-                       (some #(string/includes? % input) tags))))
-         (partition-all constants/emojis-per-row))
+    (let [search-string (string/lower-case input)]
+      (->> emoji-picker.data/emoji-data
+           (filter (fn [{:keys [label tags] :as _emoji}]
+                     (or (string/includes? label search-string)
+                         (some #(string/includes? % search-string) tags))))
+           (partition-all constants/emojis-per-row)))
     emoji-picker.data/flatten-data))
 
 ;; TODO: add recently used to emoji-picker.data/flatten-data
@@ -134,7 +135,8 @@
                         [])
         change-search! (rn/use-memo #(gfns/debounce set-search-term! 500)
                                     [])]
-    (rn/use-effect #(change-search! input) [input])
+    (rn/use-effect #(change-search! input)
+                   [input])
     [:gh/flat-list {:ref                             scroll-ref
                     :style                           {:height (- (:height (rn/get-screen))
                                                                  safe-area/top
