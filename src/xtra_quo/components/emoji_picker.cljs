@@ -82,10 +82,9 @@
 (defn- on-category-press
   [^js scroll-ref category-id set-category]
   (let [index (emoji-picker.data/section-header-indexes category-id)]
-    (some-> scroll-ref
-      (.-current)
-      (.scrollToOffset #js{:offset   (+ (get data-layout-offset index) 10)
-                           :animated false}))
+    (when (.. scroll-ref -current -scrollToOffset)
+      (.. scroll-ref -current (scrollToOffset #js{:offset   (+ (get data-layout-offset index) 10)
+                                                  :animated false})))
     (set-category category-id)
     (reagent/flush)))
 
