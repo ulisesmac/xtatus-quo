@@ -32,7 +32,7 @@
         [icons/icon icon
          {:accessibility-label :disclaimer-icon
           :color               (if blur?
-                                 (colors/white-opa-70)
+                                 colors/white-opa-70
                                  (colors/theme-colors colors/neutral-50
                                                       colors/neutral-40
                                                       theme))}]])]))

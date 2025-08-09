@@ -19,8 +19,7 @@
    :margin-left 8})
 
 (def icon-container
-  {:align-items :flex-end
-   :flex        1})
+  {:align-items :flex-end})
 
 (defn multi-container
   [blur? theme]

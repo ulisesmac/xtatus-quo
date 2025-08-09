@@ -14,8 +14,7 @@
   [rn/view {:style style/left-container}
    [account-avatar/view (assoc account-props :size 32)]
    [rn/view {:style style/account-container}
-    [rn/view
-     {:style style/account-title-container}
+    [rn/view {:style style/account-title-container}
      [text/text
       {:weight :semi-bold
        :size   :paragraph-1}
