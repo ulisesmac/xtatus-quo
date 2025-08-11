@@ -4,24 +4,13 @@
    [quo.foundations.colors :as colors]
    [react-native.core :as rn]
    [reagent.core :as reagent]
-   [xtatus-quo.components.icon :as icons]))
-
-;; TODO: separate the styles into another namespace as the pattern in this repo.
-;; Optimize style redefinitions.
+   [xtatus-quo.components.icon :as icons]
+   [xtatus-quo.components.colors.color-picker.style :as style]))
 
 (defn color-selected-border [theme color]
-  [:rn/view {:style {:flex-direction :row
-                     :flex           1}}
-   [:rn/view {:style {:height                    48
-                      :flex                      1
-                      :background-color          (colors/resolve-color color theme 20)
-                      :border-top-left-radius    24
-                      :border-bottom-left-radius 24}}]
-   [:rn/view {:style {:height                     48
-                      :flex                       1
-                      :background-color           (colors/resolve-color color theme 40)
-                      :border-top-right-radius    24
-                      :border-bottom-right-radius 24}}]])
+  [:rn/view {:style style/color-selected-border}
+   [:rn/view {:style (style/selected-left theme color)}]
+   [:rn/view {:style (style/selected-right theme color)}]])
 
 (defn scroll-to-index [^js ref index]
   (when (.. ref -current -scrollToIndex)
@@ -38,31 +27,21 @@
                       (scroll-to-index ref item-index)
                       (on-change color))
                     [])]
-    [:rn/pressable {:style    {:width          48
-                               :height         48
-                               :flex-direction :row}
-                    :on-press on-select!}
+    [:rn/pressable {:style              style/item-container
+                    :accessibility-label :color-picker-item
+                    :on-press           on-select!}
      (when selected?
        [color-selected-border theme color])
-     [:rn/view {:style {:position         :absolute
-                        :top              0
-                        :left             0
-                        :width            40
-                        :height           40
-                        :background-color (colors/resolve-color color theme)
-                        :border-radius    20
-                        :transform        [{:translate-x 4} {:translate-y 4}]
-                        :justify-content  :center
-                        :align-items      :center}}
+     [:rn/view {:style (style/color-circle theme color)}
       (when selected?
         [icons/icon :i/check {:size  20
                               :color colors/white}])]]))
 
 (defn get-item-layout [_data index]
-  #js{:length 48
-      :offset (+ (* 48 index)
-                 (* 8 index) ;; spacing
-                 16) ;; left padding
+  #js{:length style/item-outer-size
+      :offset (+ (* style/item-outer-size index)
+                 (* style/content-gap index)
+                 style/content-padding-h)
       :index  index})
 
 (defn view [{:keys [default-selected]}]
@@ -85,12 +64,10 @@
          (fn []
            (js/setTimeout (fn []
                             (scroll-to-index ref default-index))
-                          300))
+                          350))
          [])
         [:gh/flat-list {:ref                               ref
-                        :content-container-style           {:column-gap         8
-                                                            :padding-vertical   8
-                                                            :padding-horizontal 16}
+                        :content-container-style           style/content-container
                         :data                              (with-meta colors/account-colors {:keep-items true})
                         :render-item                       render-item-fn
                         :key-extractor                     str
