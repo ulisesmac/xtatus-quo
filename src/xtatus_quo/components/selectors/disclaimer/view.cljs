@@ -9,8 +9,9 @@
     [react-native.core :as rn]))
 
 (defn view
-  [{:keys [checked? blur? accessibility-label container-style on-change icon customization-color]} label]
-  (let [theme (quo.context/use-theme)]
+  [{:keys [checked? blur? accessibility-label container-style on-change icon]} label]
+  (let [theme (quo.context/use-theme)
+        color (quo.context/use-color)]
     [rn/pressable
      {:on-press            (when on-change
                              #(on-change (not checked?)))
@@ -22,7 +23,7 @@
        :blur?               blur?
        :checked?            checked?
        :on-change           on-change
-       :customization-color customization-color}]
+       :customization-color color}]
      [text/text
       {:size  :paragraph-2
        :style style/text}
