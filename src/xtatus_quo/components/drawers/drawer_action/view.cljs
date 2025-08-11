@@ -9,8 +9,8 @@
    [xtatus-quo.components.selectors.selectors.view :as selectors]))
 
 (defn view
-  [{:keys       [action icon description state title on-press customization-color
-                 blur? accessibility-label input-props]
+  [{:keys       [action action-icon icon description state title on-press blur? accessibility-label
+                 input-props]
     action-type :type
     :or         {blur? false}}]
   (let [theme               (quo.context/use-theme)
@@ -32,9 +32,7 @@
                                              :description?        (not-empty description)
                                              :blur?               blur?})
       :accessibility-label accessibility-label}
-     [rn/view
-      {:style {:flex-direction :row
-               :align-items    :center}}
+     [rn/view {:style {:flex-direction :row :align-items :center}}
       (when icon
         [icon/icon icon
          {:accessibility-label :left-icon
@@ -69,7 +67,7 @@
           :checked?            (= state :selected)}]
 
         (= action :arrow)
-        [icon/icon :i/chevron-right
+        [icon/icon (or action-icon :i/chevron-right)
          {:accessibility-label :arrow-icon
           :color               (style/icon-color {:theme theme
                                                   :type  action-type
