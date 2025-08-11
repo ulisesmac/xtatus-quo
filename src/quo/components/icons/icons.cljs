@@ -12,5 +12,3 @@
     (do
       (log/error "could not find source for " icon " icon")
       nil)))
-
-(icon-source "puzzle20")
