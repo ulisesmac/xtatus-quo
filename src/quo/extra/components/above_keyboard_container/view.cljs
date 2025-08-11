@@ -37,8 +37,9 @@
            js/undefined)
          #js[])
 
-        [:rn/keyboard-avoiding-view {:style    {:flex 1}
-                                     :behavior :padding}
+        [:rn/keyboard-avoiding-view {:style       {:flex 1}
+                                     :behavior    :padding
+                                     :collapsable false}
          [:rn/scroll-view {:style                           {:flex 1}
                            :ref                             content-ref
                            :content-container-style         {:padding-bottom (- extra-padding offset)}
