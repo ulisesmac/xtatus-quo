@@ -5,7 +5,7 @@
     [react-native.platform :as platform]))
 
 (def account-colors
-  [:red :orange :gold  :blue :army :turquoise :aqua :sky :charcoal :indigo
+  [:red :orange :gold :primary :army :turquoise :aqua :sky :charcoal :indigo
    :lavender :purple :magenta :pink :brown])
 
 (defn alpha

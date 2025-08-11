@@ -6,6 +6,9 @@
    [reagent.core :as reagent]
    [xtatus-quo.components.icon :as icons]))
 
+;; TODO: separate the styles into another namespace as the pattern in this repo.
+;; Optimize style redefinitions.
+
 (defn color-selected-border [theme color]
   [:rn/view {:style {:flex-direction :row
                      :flex           1}}
@@ -20,6 +23,11 @@
                       :border-top-right-radius    24
                       :border-bottom-right-radius 24}}]])
 
+(defn scroll-to-index [^js ref index]
+  (when (.. ref -current -scrollToIndex)
+    (.. ref -current (scrollToIndex #js{:animated     true
+                                        :index        index
+                                        :viewPosition 0.5}))))
 
 (defn color-item [{:keys [color selected set-selected! on-change ^js ref item-index]}]
   (let [theme      (quo.context/use-theme)
@@ -27,13 +35,7 @@
         on-select! (rn/use-callback
                     (fn []
                       (set-selected! color)
-                      (when (.. ref -current -scrollToIndex)
-                        (.. ref -current (scrollToIndex #js{:animated     true
-                                                            :index        item-index
-                                                            :viewPosition 0.5
-                                                            ;:viewOffset -48
-                                                            })))
-
+                      (scroll-to-index ref item-index)
                       (on-change color))
                     [])]
     [:rn/pressable {:style    {:width          48
@@ -68,6 +70,7 @@
         set-selected! #(reset! selected %)]
     (fn [{:keys [on-change]}]
       (let [ref            (rn/use-ref nil)
+            default-index  (.indexOf colors/account-colors default-selected)
             render-item-fn (rn/use-callback
                             (fn [js-data]
                               (let [item (oops/oget js-data "item")]
@@ -78,8 +81,14 @@
                                                                  :ref           ref
                                                                  :item-index    (.indexOf colors/account-colors item)}])))
                             [on-change])]
+        (rn/use-effect
+         (fn []
+           (js/setTimeout (fn []
+                            (scroll-to-index ref default-index))
+                          300))
+         [])
         [:gh/flat-list {:ref                               ref
-                        :content-container-style           {:column-gap 8
+                        :content-container-style           {:column-gap         8
                                                             :padding-vertical   8
                                                             :padding-horizontal 16}
                         :data                              (with-meta colors/account-colors {:keep-items true})

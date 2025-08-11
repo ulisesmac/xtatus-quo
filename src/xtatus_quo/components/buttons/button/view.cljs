@@ -1,13 +1,12 @@
 (ns xtatus-quo.components.buttons.button.view
   (:require
-   [quo.components.blur.view :as blur]
    [quo.components.buttons.button.properties :as button-properties]
    [quo.components.buttons.button.style :as style]
-   [xtatus-quo.components.icon :as quo.icons]
-   [xtatus-quo.components.markdown.text :as text]
    [quo.context]
    [quo.foundations.customization-colors :as customization-colors]
-   [react-native.core :as rn]))
+   [react-native.core :as rn]
+   [xtatus-quo.components.icon :as quo.icons]
+   [xtatus-quo.components.markdown.text :as text]))
 
 (defn button
   "with label
