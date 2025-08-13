@@ -63,7 +63,8 @@
         (rn/use-effect
          (fn []
            (js/setTimeout (fn []
-                            (scroll-to-index ref default-index))
+                            (when (pos? default-index)
+                              (scroll-to-index ref default-index)))
                           350))
          [])
         [:gh/flat-list {:ref                               ref
