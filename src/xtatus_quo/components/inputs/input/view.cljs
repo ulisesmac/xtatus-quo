@@ -114,6 +114,10 @@
                                                   (.clear ^js @ref)
                                                   (when on-clear (on-clear)))
                                                 [on-clear])
+        focus-text-input       (rn/use-callback (fn []
+                                                  (when-let [^js node @ref]
+                                                    (.focus node)))
+                                                [])
         right-icon             (or right-icon
                                    (when clearable?
                                      {:style-fn  style/clear-icon
@@ -132,7 +136,8 @@
          :current-chars  char-count
          :char-limit     char-limit
          :theme          theme}])
-     [rn/view {:style [(style/input-container colors-by-status small? disabled?) input-container-style]}
+     [rn/pressable {:style    [(style/input-container colors-by-status small? disabled?) input-container-style]
+                    :on-press focus-text-input}
       (when-let [{:keys [icon-name]} left-icon]
         [left-accessory
          {:variant-colors variant-colors
