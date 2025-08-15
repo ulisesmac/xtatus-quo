@@ -1,18 +1,19 @@
 (ns xtatus-quo.components.navigation.page-nav.style
   (:require
-    [quo.foundations.colors :as colors]))
+    [quo.foundations.colors :as colors]
+    [reagent-extended-compiler.utils :refer [defstyle style]]))
 
 (defn container
   [margin-top]
-  {:margin-top         margin-top
-   :padding-horizontal 20
-   :padding-vertical   12
-   :height             56
-   :flex-direction     :row
-   :justify-content    :space-between
-   :align-items        :center})
+  (style {:margin-top         margin-top
+          :padding-horizontal 20
+          :padding-vertical   12
+          :height             56
+          :flex-direction     :row
+          :justify-content    :space-between
+          :align-items        :center}))
 
-(def icon-container
+(defstyle icon-container
   {:flex-grow  1
    :flex-basis 1})
 
@@ -24,11 +25,11 @@
    :align-items       :center
    :justify-content   (if centered? :center :flex-start)})
 
-(def right-actions-container
+(defstyle right-actions-container
   {:flex-direction  :row
    :justify-content :flex-end})
 
-(def right-actions-spacing
+(defstyle right-actions-spacing
   {:width 12})
 
 (defn right-content
@@ -41,7 +42,7 @@
                              :flex-basis 1)
     min-size? (assoc :min-height 32)))
 
-(def token-logo
+(defstyle token-logo
   {:width 16 :height 16})
 
 (def token-name
@@ -58,7 +59,7 @@
      :color               color
      :text-align-vertical :center}))
 
-(def channel-emoji
+(defstyle channel-emoji
   {:width 20 :height 20})
 
 (defn channel-icon-color
@@ -72,10 +73,10 @@
   {:margin-horizontal   4
    :text-align-vertical :center})
 
-(def group-avatar-picture
+(defstyle group-avatar-picture
   {:margin-right 8})
 
-(def title-description-container
+(defstyle title-description-container
   {:height          32
    :justify-content :center})
 
@@ -91,7 +92,7 @@
     {:color               color
      :text-align-vertical :center}))
 
-(def community-network-logo
+(defstyle community-network-logo
   {:width         24
    :height        24
    :border-radius 12
