@@ -5,8 +5,12 @@
     [react-native.platform :as platform]))
 
 (def account-colors
-  [:red :orange :gold :primary :army :turquoise :aqua :sky :charcoal :indigo
-   :lavender :purple :magenta :pink :brown])
+  [:navy :blue :indigo
+   :violet :plum :magenta :pink
+   :fern
+   :primary
+   :sage :crimson :red :wine :orange :amber :camel])
+
 
 (defn alpha
   [value opacity]
@@ -57,25 +61,19 @@
 
 ;;Solid
 
-(def neutral-2_5 "#FAFBFC")
-(def neutral-5   "#F5F6F8")
-(def neutral-10  "#F0F2F5")
-(def neutral-20  "#E7EAEE")
-(def neutral-30  "#DCE0E5")
-(def neutral-40  "#9AA3B0")
-(def neutral-50  "#616C7A")
-(def neutral-60  "#2E3844")
-(def neutral-70  "#1D2630")
-;; --- Deep neutrals (v3) --------------------------------------
-;(def neutral-80  "#1A1F26") ; L* ≈ 13   (raised cards / inner sheets)
-;(def neutral-90  "#12161C") ; L* ≈  9   (default dark background)
-;(def neutral-95  "#0A0D10") ; L* ≈  5½ (focus ring / modal overlay)
-;(def neutral-100 "#040506") ; L* ≈  3   (scrim / deepest strokes)
-;; --- Deep neutrals (v4) --------------------------------------
-(def neutral-80  "#1F272F") ; L* ≈ 16   raised cards / input & radio borders
-(def neutral-90  "#13181D") ; L* ≈ 10   default dark background
-(def neutral-95  "#090B0E") ; L* ≈  6   focus ring / modal overlay
-(def neutral-100 "#040506") ; L* ≈  3   scrim / deepest strokes
+(def neutral-2_5 "#FAFAFB")
+(def neutral-5   "#F6F7F8")
+(def neutral-10  "#F1F2F4")
+(def neutral-20  "#E6E8EB")
+(def neutral-30  "#D3D6DA")
+(def neutral-40  "#A5ABB3")
+(def neutral-50  "#6E7681")  ;; body text / icons on light; subdued strokes on dark
+(def neutral-60  "#3A4046")  ;; prominent strokes, headings on light
+(def neutral-70  "#2B3036")
+(def neutral-80  "#22262B")  ;; dark page background
+(def neutral-90  "#171A1E")  ;; raised dark surfaces
+(def neutral-95  "#111317")  ;; top app bars, modal bases
+(def neutral-100 "#0C0E12")  ;; almost‑black; deepest shadows
 
 (def neutral-50-opa-40 (alpha neutral-50 0.4))
 
@@ -176,12 +174,12 @@
   "#475060")
 ;;;;Primary
 
-;;;; Primary brand – Green
-(def primary-50 "#01B77B")
-(def primary-60 "#017E55")
+;;;; Primary (brand)
 
-;;50 with transparency
-(def primary-50-opa-5 (alpha primary-50 0.05))
+(def primary-50 "#026443") ;; light theme / default
+(def primary-60 "#01533A") ;; dark theme
+
+(def primary-50-opa-5  (alpha primary-50 0.05))
 (def primary-50-opa-10 (alpha primary-50 0.1))
 (def primary-50-opa-20 (alpha primary-50 0.2))
 (def primary-50-opa-30 (alpha primary-50 0.3))
@@ -236,31 +234,34 @@
 
 ;; Colors for customizing users account
 (def customization
-  {:blue      {50 "#01B77B" 60 "#017E55"} ; brand accent
-   :red       {50 "#F46666" 60 "#CD5656"}
-   :coral     {50 "#FF867E" 60 "#CC6B64"}
-   :copper    {50 "#CF6A5C" 60 "#A65548"}
-   :brown     {50 "#9E6C55" 60 "#7F5743"}
-   :orange    {50 "#FF884F" 60 "#CC6E40"}
-   :peach     {50 "#FFB38A" 60 "#CC8F6E"}
-   :camel     {50 "#C89A6C" 60 "#A17854"}
-   :yellow    {50 "#F6B03C" 60 "#C58D30"}
-   :gold      {50 "#FFD54F" 60 "#CCAB3F"}
-   :lime      {50 "#A7D759" 60 "#85AE46"}
-   :mint      {50 "#5ED7A7" 60 "#4AB388"}
-   :green     {50 "#01B77B" 60 "#017E55"} ; alias
-   :army      {50 "#2A6F68" 60 "#1E554E"}
-   :teal      {50 "#13B4A5" 60 "#0F8F84"}
-   :aqua      {50 "#33C5DD" 60 "#279EB2"}
-   :turquoise {50 "#2E9AB3" 60 "#23798A"}
-   :sky       {50 "#2FA4E8" 60 "#1E80B3"}
-   :steel     {50 "#6F8FAF" 60 "#56728A"}
-   :charcoal  {50 "#4A5666" 60 "#3B4452"}
-   :indigo    {50 "#4C6AA9" 60 "#405A8D"}
-   :lavender  {50 "#A38BFF" 60 "#8270CC"}
-   :purple    {50 "#7A4BFF" 60 "#5D3ACB"}
-   :magenta   {50 "#EE3272" 60 "#BF285B"}
-   :pink      {50 "#F67893" 60 "#C55E75"}})
+  {;; ——— Cool (soft, limited) ———
+   :navy    {50 "#2A3B6A"  60 "#1E2F56"}
+   :blue    {50 "#3A7CE5" 60 "#2E62BC"}
+   :indigo  {50 "#6A70E0" 60 "#575DC4"}
+
+   ;; ——— Purples ———
+   :violet  {50 "#8E79E6" 60 "#7565C9"}
+   :plum    {50 "#7E4A9D"  60 "#61377C"}
+
+   ;; ——— Pink family ———
+   :magenta {50 "#D85FAE" 60 "#A9458A"}
+   :pink    {50 "#F48FB1" 60 "#B75688"}
+
+   ;; ——— Reds ———
+   :crimson {50 "#C73A4E"  60 "#9E2E3E"}
+   :wine    {50 "#7E2F3E" 60 "#652533"}
+   :red      {50 "#E0523E"  60 "#C04233"}
+
+   ;; ——— Warm (kept minimal) ———
+   :coral   {50 "#F17F73" 60 "#C45448"}
+   :orange  {50 "#F28C48" 60 "#B65F2E"}
+   :amber   {50 "#E3A23A" 60 "#996F20"}
+
+   ;; ——— Warm neutrals ———
+   :camel   {50 "#C3A07A" 60 "#8A704F"}
+   :fern    {50 "#2F8F5B" 60 "#25734A"}
+   :primary {50 "#026443" 60 "#01533A"}
+   :sage    {50 "#9AB7A1" 60 "#5E7E67"}})
 
 ;;;; Networks
 (def ^:private networks
@@ -386,7 +387,7 @@
    opacity 0-100 (optional) - if set theme is ignored and goes to 50 suffix internally"
   (memoize resolve-color*))
 
-(def shadow "rgba(9,16,28,0.08)")
+(def shadow "rgba(12,14,18,0.08)")
 
 (defn theme-colors
   "(theme-colors light dark override-theme)"
