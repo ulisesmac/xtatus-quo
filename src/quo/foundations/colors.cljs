@@ -64,13 +64,13 @@
 (def neutral-2_5 "#FAFBFC")
 (def neutral-5   "#F6F7F9")
 (def neutral-10  "#EFF1F4")
-(def neutral-20  "#E4E7EB")
-(def neutral-30  "#D2D6DB")
-(def neutral-40  "#B0B7C0")
-(def neutral-50  "#8E98A3")  ;; brighter on dark; still soft grey on light
-(def neutral-60  "#515861")  ;; strong body/icon grey on light
-(def neutral-70  "#23282F")  ;; ELEVATED surface on dark
-(def neutral-80  "#121417")  ;; PAGE background on dark
+(def neutral-20  "#DADFE5")
+(def neutral-30  "#C5CBD3")
+(def neutral-40  "#A6AFB9")
+(def neutral-50  "#707A86")
+(def neutral-60  "#515861")
+(def neutral-70  "#23282F")
+(def neutral-80  "#121417")
 (def neutral-90  "#0C0F12")
 (def neutral-95  "#090B0D")
 (def neutral-100 "#060809")
