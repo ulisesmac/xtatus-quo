@@ -234,23 +234,20 @@
 
 ;; Colors for customizing users account
 (def customization
-  {;; ——— Cool (soft, limited) ———
-   :navy    {50 "#2A3B6A"  60 "#1E2F56"}
+  {:navy    {50 "#405894" 60 "#31487D"}
    :blue    {50 "#3A7CE5" 60 "#2E62BC"}
    :indigo  {50 "#6A70E0" 60 "#575DC4"}
-
    ;; ——— Purples ———
    :violet  {50 "#8E79E6" 60 "#7565C9"}
-   :plum    {50 "#7E4A9D"  60 "#61377C"}
+   :plum    {50 "#7E4A9D" 60 "#61377C"}
 
    ;; ——— Pink family ———
    :magenta {50 "#D85FAE" 60 "#A9458A"}
    :pink    {50 "#F48FB1" 60 "#B75688"}
 
    ;; ——— Reds ———
-   :crimson {50 "#C73A4E"  60 "#9E2E3E"}
-   :wine    {50 "#7E2F3E" 60 "#652533"}
-   :red      {50 "#E0523E"  60 "#C04233"}
+   :crimson {50 "#C73A4E" 60 "#9E2E3E"}
+   :red     {50 "#E0523E" 60 "#C04233"}
 
    ;; ——— Warm (kept minimal) ———
    :coral   {50 "#F17F73" 60 "#C45448"}
