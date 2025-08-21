@@ -37,13 +37,14 @@
   {:color (colors/theme-colors colors/white colors/neutral-100 theme)})
 
 (defn icon
-  [toast-type theme]
+  [toast-type theme icon-color]
   {:color           (case toast-type
                       :negative (colors/resolve-color :danger theme)
                       :positive (colors/resolve-color :success theme)
                       :neutral  (colors/theme-colors colors/white-opa-40
                                                      colors/neutral-80-opa-40
-                                                     theme))
+                                                     theme)
+                      :custom (colors/resolve-color icon-color theme))
    :container-style {:width 20 :height 20}})
 
 (def left-side-container

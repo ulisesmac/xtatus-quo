@@ -5,11 +5,11 @@
     [react-native.platform :as platform]))
 
 (def account-colors
-  [:navy :blue :indigo
+  [:navy :blue
    :violet :plum :magenta :pink
    :fern
    :primary
-   :sage :crimson :red :wine :orange :amber :camel])
+   :sage :crimson :red :orange :amber :camel])
 
 
 (defn alpha
@@ -61,19 +61,19 @@
 
 ;;Solid
 
-(def neutral-2_5 "#FAFAFB")
-(def neutral-5   "#F6F7F8")
-(def neutral-10  "#F1F2F4")
-(def neutral-20  "#E6E8EB")
-(def neutral-30  "#D3D6DA")
-(def neutral-40  "#A5ABB3")
-(def neutral-50  "#6E7681")  ;; body text / icons on light; subdued strokes on dark
-(def neutral-60  "#3A4046")  ;; prominent strokes, headings on light
-(def neutral-70  "#2B3036")
-(def neutral-80  "#22262B")  ;; dark page background
-(def neutral-90  "#171A1E")  ;; raised dark surfaces
-(def neutral-95  "#111317")  ;; top app bars, modal bases
-(def neutral-100 "#0C0E12")  ;; almost‑black; deepest shadows
+(def neutral-2_5 "#FAFBFC")
+(def neutral-5   "#F6F7F9")
+(def neutral-10  "#EFF1F4")
+(def neutral-20  "#E4E7EB")
+(def neutral-30  "#D2D6DB")
+(def neutral-40  "#B0B7C0")
+(def neutral-50  "#8E98A3")  ;; brighter on dark; still soft grey on light
+(def neutral-60  "#515861")  ;; strong body/icon grey on light
+(def neutral-70  "#23282F")  ;; ELEVATED surface on dark
+(def neutral-80  "#121417")  ;; PAGE background on dark
+(def neutral-90  "#0C0F12")
+(def neutral-95  "#090B0D")
+(def neutral-100 "#060809")
 
 (def neutral-50-opa-40 (alpha neutral-50 0.4))
 

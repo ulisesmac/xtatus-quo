@@ -69,7 +69,8 @@
   "Options:
    :type => :neutral/:negative/:positive
    "
-  [{:keys [type icon title text action undo-duration undo-on-press container-style theme user]
+  [{:keys [type icon title text action undo-duration undo-on-press container-style theme
+           user icon-color]
     :or   {type :neutral icon nil}}]
   (let [theme     (or theme (quo.context/use-theme))
         icon-name (cond
@@ -85,7 +86,7 @@
      [toast-container
       {:left            (cond
                           user [user-avatar/user-avatar user]
-                          icon-name [icon/icon icon-name (style/icon type theme)])
+                          icon-name [icon/icon icon-name (style/icon type theme icon-color)])
        :title           title
        :text            text
        :right           (if undo-duration
