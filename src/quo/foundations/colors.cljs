@@ -69,11 +69,11 @@
 (def neutral-40  "#A6AFB9")
 (def neutral-50  "#707A86")
 (def neutral-60  "#515861")
-(def neutral-70  "#23282F")
-(def neutral-80  "#121417")
-(def neutral-90  "#0C0F12")
-(def neutral-95  "#090B0D")
-(def neutral-100 "#060809")
+(def neutral-70  "#2F343A")
+(def neutral-80  "#161A1E")
+(def neutral-90  "#0A0E13")
+(def neutral-95  "#030507")
+(def neutral-100 "#010203")
 
 (def neutral-50-opa-40 (alpha neutral-50 0.4))
 
