@@ -2,7 +2,7 @@
   (:require
    [quo.foundations.colors :as colors]
    [react-native.platform :as platform]
-   [reagent-extended-compiler.utils :refer [defstyle style]]))
+   [reagent-extended-compiler.utils.transforms :refer [defstyle style]]))
 
 (defn container
   [margin-top]
