@@ -98,7 +98,6 @@
                             32 5
                             24 0
                             9))
-    :overflow           :hidden
     :background-color   (if disabled? (colors/alpha background-color 0.3) background-color)
     :border-radius      (if border-radius
                           border-radius

@@ -1,6 +1,5 @@
-(ns react-native.hole-view
-  (:require
-   ;["react-native-hole-view" :refer (RNHoleView)]
-    [reagent.core :as reagent]))
+(ns react-native.hole-view)
 
-(def hole-view (reagent/adapt-react-class (fn [])))
+(defn hole-view
+  ([children] [:rn/view children])
+  ([props children] [:rn/view props children]))
