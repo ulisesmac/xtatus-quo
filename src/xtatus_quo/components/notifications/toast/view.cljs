@@ -40,7 +40,7 @@
   (let [theme (quo.context/use-theme)]
     [rn/view {:style (merge (style/box-container theme) container-style)}
      [blur/view
-      {:style         style/blur-container
+      {:style         rn/stylesheet-absolute-fill
        :blur-amount   13
        :blur-radius   10
        :blur-type     :transparent

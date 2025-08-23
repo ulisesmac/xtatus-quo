@@ -11,14 +11,6 @@
           :border-radius     12
           :overflow          :hidden}))
 
-(def blur-container
-  {:height           "100%"
-   :width            "100%"
-   :position         :absolute
-   :padding-vertical 8
-   :padding-left     10
-   :padding-right    8
-   :background-color (when platform/ios? :transparent)})
 
 (defn content-container
   [theme]
