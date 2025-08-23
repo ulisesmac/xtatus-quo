@@ -4,35 +4,11 @@
     [quo.components.drawers.bottom-actions.style :as style]
     [xtatus-quo.components.icon :as icon]
     [xtatus-quo.components.markdown.text :as text]
-    [quo.components.tags.context-tag.schema :as context-tag.schema]
     [xtatus-quo.components.tags.context-tag.view :as context-tag]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]
     [utils.i18n :as i18n]))
-
-(def ?schema
-  [:=>
-   [:catn
-    [:props
-     [:map {:closed true}
-      [:actions [:maybe [:enum :one-action :two-actions :two-vertical-actions]]]
-      [:description {:optional true} [:maybe [:enum :top :bottom :top-error]]]
-      [:description-text {:optional true} [:maybe [:or :string :schema.common/hiccup]]]
-      [:description-top-text {:optional true} [:maybe [:or :string :schema.common/hiccup]]]
-      [:error-message {:optional true} [:maybe :string]]
-      [:role {:optional true} [:maybe [:enum :admin :member :token-master :owner]]]
-      [:context-tag-props {:optional true} [:maybe context-tag.schema/?schema]]
-      [:button-one-label {:optional true} [:maybe :string]]
-      [:button-two-label {:optional true} [:maybe :string]]
-      [:button-one-props {:optional true} [:maybe :map]]
-      [:button-two-props {:optional true} [:maybe :map]]
-      [:scroll? {:optional true} [:maybe :boolean]]
-      [:blur? {:optional true} [:maybe :boolean]]
-      [:container-style {:optional true} [:maybe :map]]
-      [:buttons-container-style {:optional true} [:maybe :map]]
-      [:buttons-style {:optional true} [:maybe :map]]]]]
-   :any])
 
 (def ^:private role-icon
   {:admin        :i/gavel
@@ -45,7 +21,7 @@
            button-two-label blur? button-one-props button-two-props scroll? container-style
            buttons-container-style buttons-style context-tag-props]}]
   (let [theme (quo.context/use-theme)]
-    [rn/view {:style (merge (style/container scroll? blur? theme) container-style)}
+    [:rn/view {:style [(style/container scroll? blur? theme) container-style]}
      (when (= description :top-error)
        [rn/view {:style style/error-message}
         [icon/icon
