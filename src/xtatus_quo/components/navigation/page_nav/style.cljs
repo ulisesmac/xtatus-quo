@@ -1,17 +1,20 @@
 (ns xtatus-quo.components.navigation.page-nav.style
   (:require
-    [quo.foundations.colors :as colors]
-    [reagent-extended-compiler.utils :refer [defstyle style]]))
+   [quo.foundations.colors :as colors]
+   [react-native.platform :as platform]
+   [reagent-extended-compiler.utils :refer [defstyle style]]))
 
 (defn container
   [margin-top]
-  (style {:margin-top         margin-top
-          :padding-horizontal 20
-          :padding-vertical   12
-          :height             56
-          :flex-direction     :row
-          :justify-content    :space-between
-          :align-items        :center}))
+  (cond-> {:margin-top         margin-top
+           :padding-horizontal 20
+           :height             56
+           :flex-direction     :row
+           :justify-content    :space-between
+           :align-items        :center}
+    platform/ios? (assoc :padding-bottom 12
+                         :padding-top    0)
+    platform/android? (assoc :padding-vertical 12)))
 
 (defstyle icon-container
   {:flex-grow  1
