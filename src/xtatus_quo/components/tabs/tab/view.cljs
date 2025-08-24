@@ -35,12 +35,11 @@
   [rn/view
    (cond
      (string? children)
-     [text/text
-      (merge {:size            (case size
-                                 24 :paragraph-2
-                                 20 :label
-                                 nil)
-              :weight          :medium
+     [text/text2
+      (merge {:font            (case size
+                                 24 :font/medium-13
+                                 20 :font/medium-11
+                                 :font/medium-15)
               :number-of-lines 1}
              label)
       children]

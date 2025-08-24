@@ -112,7 +112,7 @@
                             :flex-direction :row
                             :flex-shrink    1}}
           [text/text2 {:style           {:opacity (when (and disabled? (= theme :theme/dark)) 0.3)}
-                       :font            :font/medium-13
+                      :font            :font/medium-13
                        :number-of-lines 1
                        :ellipsize-mode  :tail}
            children]]

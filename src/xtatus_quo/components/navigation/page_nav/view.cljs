@@ -116,9 +116,8 @@
                                                                   threshold
                                                                   page-nav-height))]
     [reanimated/view {:style [center-content-container-style animated-style]}
-     [text/text
-      {:weight          :medium
-       :size            :paragraph-1
+     [text/text2
+      {:font            :font/medium-15
        :number-of-lines 1}
       title]]))
 
@@ -145,16 +144,14 @@
   (let [theme (quo.context/use-theme)]
     [reanimated/view {:style center-content-container-style}
      [rn/image {:style style/token-logo :source token-logo}]
-     [text/text
+     [text/text2
       {:style           style/token-name
-       :weight          :semi-bold
-       :size            :paragraph-1
+       :font            :font/semibold-15
        :number-of-lines 1}
       token-name]
-     [text/text
+     [text/text2
       {:style           (style/token-abbreviation theme background)
-       :weight          :medium
-       :size            :paragraph-2
+       :font            :font/medium-13
        :number-of-lines 1}
       token-abbreviation]]))
 
@@ -164,10 +161,9 @@
     [reanimated/view {:style center-content-container-style}
      [rn/text {:style style/channel-emoji}
       channel-emoji]
-     [text/text
+     [text/text2
       {:style           style/channel-name
-       :weight          :semi-bold
-       :size            :paragraph-1
+       :font            :font/semibold-15
        :number-of-lines 1}
       (str "# " channel-name)]
      [icons/icon channel-icon {:size 16 :color (style/channel-icon-color theme background)}]]))
@@ -180,16 +176,14 @@
        [rn/view {:style style/group-avatar-picture}
         [group-avatar/view {:picture picture :size :size-28}]])
      [rn/view {:style style/title-description-container}
-      [text/text
+      [text/text2
        {:style           style/title-description-title
-        :weight          :semi-bold
-        :size            :paragraph-1
+        :font            :font/semibold-15
         :number-of-lines 1}
        title]
-      [text/text
+      [text/text2
        {:style           (style/title-description-description theme background)
-        :weight          :medium
-        :size            :paragraph-2
+        :font            :font/medium-13
         :number-of-lines 1}
        description]]]))
 
@@ -202,9 +196,8 @@
      [rn/image
       {:style  style/community-network-logo
        :source shown-logo}]
-     [text/text
-      {:weight          :semi-bold
-       :size            :paragraph-1
+     [text/text2
+      {:font            :font/semibold-15
        :number-of-lines 1}
       shown-name]]))
 

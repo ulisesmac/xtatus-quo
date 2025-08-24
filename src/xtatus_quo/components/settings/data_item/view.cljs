@@ -38,10 +38,9 @@
                      :source              network-image
                      :style               style/image}]
           nil)])
-     [text/text
-      (merge {:weight :medium
-              :size   :paragraph-2
-              :style  (style/description subtitle-color blur? theme)}
+     [text/text2
+      (merge {:font  :font/medium-13
+              :style (style/description subtitle-color blur? theme)}
              subtitle-text-props)
       subtitle]
      (when (= subtitle-type :editable)
@@ -59,10 +58,9 @@
   [{:keys [title blur? title-icon]}]
   (let [theme (quo.context/use-theme)]
     [rn/view {:style style/title-container}
-     [text/text
-      {:weight :regular
-       :size   :paragraph-2
-       :style  (style/title blur? theme)}
+     [text/text2
+      {:font  :font/regular-13
+       :style (style/title blur? theme)}
       title]
      (when title-icon
        [icons/icon title-icon

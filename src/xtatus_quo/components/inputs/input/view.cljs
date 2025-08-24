@@ -13,28 +13,25 @@
    {:accessibility-label :input-labels
     :style               style/texts-container}
    [rn/view {:style style/label-container}
-    [text/text
-     {:style  (style/label-color variant-colors)
-      :weight :medium
-      :size   :paragraph-2}
+    [text/text2
+     {:style (style/label-color variant-colors)
+      :font  :font/medium-13}
      label]]
    (when label-right
      [rn/view {:style style/right-label-container}
-      [text/text
-       {:style  (style/label-color variant-colors)
-        :weight :regular
-        :size   :paragraph-2}
+      [text/text2
+       {:style (style/label-color variant-colors)
+        :font  :font/regular-13}
        label-right]])
    (when char-limit
      (let [count-text (str current-chars "/" char-limit)]
        [rn/view {:style style/right-label-container}
-        [text/text
-         {:style  (style/counter-color {:current-chars  current-chars
-                                        :char-limit     char-limit
-                                        :variant-colors variant-colors
-                                        :theme          theme})
-          :weight :regular
-          :size   :paragraph-2}
+        [text/text2
+         {:style (style/counter-color {:current-chars  current-chars
+                                       :char-limit     char-limit
+                                       :variant-colors variant-colors
+                                       :theme          theme})
+          :font  :font/regular-13}
          count-text]]))])
 
 (defn- left-accessory

@@ -24,7 +24,7 @@
 
 (defn- header-counter
   [counter-top counter-bottom]
-  [rn/view {:style style/header-counter}
+   [rn/view {:style style/header-counter}
    [text/text2 {:style style/header-counter-text
                 :font  :font/regular-13}
     (str (format-counter counter-top)

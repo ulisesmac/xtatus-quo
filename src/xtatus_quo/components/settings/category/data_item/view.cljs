@@ -12,10 +12,9 @@
         last-item (rn/use-memo #(last data) [data])]
     [rn/view {:style [(style/container label) container-style]}
      (when label
-       [text/text
-        {:weight :medium
-         :size   :paragraph-2
-         :style  (style/label blur? theme)}
+       [text/text2
+        {:font  :font/medium-13
+         :style (style/label blur? theme)}
         label])
      [rn/view {:style (style/settings-items blur? theme)}
       (for [item data

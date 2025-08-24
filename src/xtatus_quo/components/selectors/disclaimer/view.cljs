@@ -24,8 +24,8 @@
        :checked?            checked?
        :on-change           on-change
        :customization-color color}]
-     [text/text
-      {:size  :paragraph-2
+     [text/text2
+      {:font  :font/regular-13
        :style style/text}
       label]
      (when icon
@@ -54,8 +54,8 @@
        :checked?            checked?
        :on-change           on-press
        :customization-color color}]
-     [text/text
-      {:size  :paragraph-2
+     [text/text2
+      {:font  :font/regular-13
        :style style/text}
       content]]))
 
@@ -74,10 +74,9 @@
      [checks])
     [:rn/view {:style [container-style (style/multi-container blur? theme)]}
      (when label
-       [text/text
-        {:weight :medium
-         :size   :paragraph-2
-         :style  (style/label theme)}
+       [text/text2
+        {:font  :font/medium-13
+         :style (style/label theme)}
         label])
      (map-indexed (fn [idx content]
                     ^{:key (str "disclaimer-" idx)}

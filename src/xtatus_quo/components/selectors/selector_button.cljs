@@ -19,6 +19,6 @@
                                              quo.colors/neutral-5
                                              quo.colors/neutral-90)}}
      [selectors/view props]
-     [md/text {:font-style :font/medium-15}
+     [md/text2 {:font :font/medium-15}
       text]
      ]))

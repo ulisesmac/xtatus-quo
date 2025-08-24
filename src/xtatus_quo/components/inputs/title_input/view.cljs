@@ -41,11 +41,15 @@
     [rn/view {:style [(style/container disabled?) container-style]}
      [rn/view {:style style/text-input-container}
       [rn/text-input
-       {:style                  (text/text-style
-                                 {:size   (or size :heading-1)
-                                  :weight :semi-bold
-                                  :style  (style/title-text theme)}
-                                 nil)
+       {:style                  (text/text2-style
+                                 {:font (case (or size :heading-1)
+                                          :label       :font/semibold-11
+                                          :paragraph-2 :font/semibold-13
+                                          :paragraph-1 :font/semibold-15
+                                          :heading-2   :font/semibold-19
+                                          :heading-1   :font/semibold-27
+                                          :font/semibold-27)}
+                                 theme)
         :default-value          default-value
         :accessibility-label    :profile-title-input
         :keyboard-appearance    theme
@@ -65,14 +69,14 @@
                                   (style/get-placeholder-color blur? theme))}]]
      [rn/view {:style (style/counter-container focused?)}
       (if focused?
-        [text/text
-         [text/text
+        [text/text2
+         [text/text2
           {:style (style/char-count blur? theme)
-           :size  :paragraph-2}
+           :font  :font/regular-13}
           (str (count value))]
-         [text/text
+         [text/text2
           {:style (style/char-count blur? theme)
-           :size  :paragraph-2}
+           :font  :font/regular-13}
           (str "/" (pad-0 (str max-length)))]]
         [rn/pressable {:on-press on-press}
          [icon/icon :i/edit {:color (style/get-char-count-color blur? theme)}]])]]))

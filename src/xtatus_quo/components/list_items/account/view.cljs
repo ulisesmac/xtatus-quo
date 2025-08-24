@@ -15,9 +15,8 @@
    [account-avatar/view (assoc account-props :size 32)]
    [rn/view {:style style/account-container}
     [rn/view {:style style/account-title-container}
-     [text/text
-      {:weight :semi-bold
-       :size   :paragraph-1}
+     [text/text2
+      {:font :font/semibold-15}
       (:name account-props)]
      (when title-icon
        [icon/icon title-icon
@@ -34,19 +33,18 @@
   [rn/view
    {:style               style/balance-container
     :accessibility-label :balance-container}
-   [text/text
-    {:weight :medium
-     :size   :paragraph-2}
+   [text/text2
+    {:font :font/medium-13}
     (:fiat-value balance-props)]
    [rn/view
     {:style style/metrics-container}
-    [text/text
-     {:size  :paragraph-2
+    [text/text2
+     {:font  :font/regular-13
       :style (style/metric-text type theme)}
      (str (:percentage-change balance-props) "%")]
     [rn/view {:style (style/dot-divider type theme)}]
-    [text/text
-     {:size  :paragraph-2
+    [text/text2
+     {:font  :font/regular-13
       :style (style/metric-text type theme)}
      (:fiat-change balance-props)]
     (when (not= type :balance-neutral)
@@ -64,10 +62,9 @@
   [rn/view
    {:style               (style/token-tag-text-container blur? theme)
     :accessibility-label :tag-container}
-   [text/text
-    {:size   :label
-     :weight :medium
-     :style  (style/token-tag-text blur? theme)}
+   [text/text2
+    {:font  :font/medium-11
+     :style (style/token-tag-text blur? theme)}
     (str (:value token-props) " " (:symbol token-props))]])
 
 (defn- options-button

@@ -29,10 +29,9 @@
       :theme               theme}
      [rn/view {:style {:margin-right 5}}
       [count-down-circle/circle-timer {:duration undo-duration}]]
-     [text/text
-      {:size   :paragraph-2
-       :weight :medium
-       :style  (style/text theme)}
+     [text/text2
+      {:font  :font/medium-13
+       :style (style/text theme)}
       [i18n/label :t/undo]]]))
 
 (defn toast-container
@@ -50,16 +49,14 @@
        left]
       [rn/view {:style style/right-side-container}
        (when title
-         [text/text
-          {:size                :paragraph-1
-           :weight              :semi-bold
+         [text/text2
+          {:font                :font/semibold-15
            :style               (style/title theme)
            :accessibility-label :toast-title}
           title])
        (when text
-         [text/text
-          {:size                :paragraph-2
-           :weight              :medium
+         [text/text2
+          {:font                :font/medium-13
            :style               (style/text theme)
            :accessibility-label :toast-content}
           text])]

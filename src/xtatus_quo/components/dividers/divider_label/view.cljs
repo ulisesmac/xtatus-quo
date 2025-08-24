@@ -37,10 +37,9 @@
                               :margin-left
                               :margin-right)
                             2}}])
-      [text/text
-       {:size   :paragraph-2
-        :weight :medium
-        :style  (style/text blur? theme)}
+      [text/text2
+       {:font  :font/medium-13
+       :style (style/text blur? theme)}
        label]]
      (when counter?
        [counter/view

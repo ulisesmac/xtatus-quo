@@ -42,11 +42,10 @@
 (defn- keypair-subtitle
   [{:keys [theme blur? stored]}]
   [rn/view {:style style/row}
-   [text/text
-    {:size   :paragraph-2
-     :weight :regular
-     :style  (style/description theme blur?)}
-    (case stored
+   [text/text2
+    {:font  :font/regular-13
+     :style (style/description theme blur?)}
+   (case stored
       :on-device  (i18n/label :t/on-device)
       :on-keycard (i18n/label :t/on-keycard)
       :missing    (i18n/label :t/import-to-use-derived-accounts)
@@ -66,10 +65,9 @@
 
 (defn- default-keypair-subtitle
   [{:keys [description theme blur?]}]
-  [text/text
+  [text/text2
    {:accessibility-label :default-keypair-text
-    :size                :paragraph-2
-    :weight              :regular
+    :font                :font/regular-13
     :style               (style/description theme blur?)}
    (str description " · " (i18n/label :t/on-device))])
 
@@ -97,10 +95,9 @@
 
 (defn- description-subtitle
   [{:keys [theme blur? description]}]
-  [text/text
-   {:size   :paragraph-1
-    :weight :regular
-    :style  (style/description theme blur?)}
+  [text/text2
+   {:font  :font/regular-15
+    :style (style/description theme blur?)}
    description])
 
 (defn- subtitle
@@ -172,10 +169,9 @@
 (defn- left-title
   [{:keys [type label title title-icon theme blur?]}]
   (case type
-    :label   [text/text
-              {:weight :medium
-               :size   :paragraph-2
-               :style  (style/description theme blur?)}
+    :label   [text/text2
+              {:font  :font/medium-13
+               :style (style/description theme blur?)}
               label]
     :address [address-text/view
               {:address       title
@@ -183,10 +179,9 @@
                :weight        :semi-bold
                :size          :heading-2}]
     [rn/view {:style style/title-container}
-     [text/text
-      {:size   :heading-2
-       :weight :semi-bold
-       :style  (when blur? {:color colors/white})}
+     [text/text2
+      {:font  :font/semibold-19
+       :style (when blur? {:color colors/white})}
       title]
      (when title-icon
        [icons/icon title-icon
