@@ -40,6 +40,25 @@
         children    (if props (rest argv) argv)]
     [props children]))
 
+(defn props
+  [argv]
+  (let [first-child (first argv)
+        props-map   (when (map? first-child) first-child)
+        children    (if props-map (rest argv) argv)]
+    [props-map children]))
+
+(defn add-styles
+  "Returns a vector of styles with `styles-2` at the end"
+  [styles-1 styles-2]
+  (cond
+    (and (map? styles-1) (map? styles-2))       [styles-1 styles-2]
+    (and (map? styles-1) (vector? styles-2))    (into [styles-1] styles-2)
+    (and (vector? styles-1) (map? styles-2))    (conj styles-1 styles-2)
+    (and (vector? styles-1) (vector? styles-2)) (into styles-1 styles-2)
+    (map? styles-2)                             [styles-1 styles-2]
+    (vector? styles-2)                          (into [styles-1] styles-2)
+    :else                                       [styles-1 styles-2]))
+
 (defn kebab-case-map->camelCase-obj
   "Takes a Clojure map with kebab-case keys and returns a JS object with camelCase keys.
    Not recursive"

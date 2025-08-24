@@ -1,29 +1,29 @@
 (ns xtatus-quo.core
   (:require
-   xtatus-quo.components.buttons.button.view
-   xtatus-quo.components.drawers.bottom-actions.view
-   xtatus-quo.components.inputs.input.view
-   xtatus-quo.components.markdown.text
-   xtatus-quo.components.navigation.page-nav.view
-   xtatus-quo.components.notifications.toast.view
-   xtatus-quo.components.overlay.view
-   xtatus-quo.components.settings.category.view
-   xtatus-quo.components.selectors.selectors.view
-   xtatus-quo.components.text-combinations.page-top.view
-   xtatus-quo.components.text-combinations.standard-title.view
-   xtatus-quo.components.drawers.drawer-top.view
-   xtatus-quo.components.selectors.disclaimer.view
-   xtatus-quo.components.selectors.selector-button
-   xtatus-quo.components.tags.context-tag.view
-   xtatus-quo.components.inputs.title-input.view
-   quo.components.info.info-message.view
-   xtatus-quo.components.profile.showcase-nav.view
-   xtatus-quo.components.tabs.segmented-tab
-   xtatus-quo.components.dividers.divider-line.view
-   xtatus-quo.components.dividers.divider-label.view
-   xtatus-quo.components.colors.color-picker.view
-   xtatus-quo.components.drawers.drawer-action.view
-   xtatus-quo.components.list-items.account.view))
+   [quo.components.info.info-message.view]
+   [xtatus-quo.components.buttons.button.view]
+   [xtatus-quo.components.colors.color-picker.view]
+   [xtatus-quo.components.dividers.divider-label.view]
+   [xtatus-quo.components.dividers.divider-line.view]
+   [xtatus-quo.components.drawers.bottom-actions.view]
+   [xtatus-quo.components.drawers.drawer-action.view]
+   [xtatus-quo.components.drawers.drawer-top.view]
+   [xtatus-quo.components.inputs.input.view]
+   [xtatus-quo.components.inputs.title-input.view]
+   [xtatus-quo.components.list-items.account.view]
+   [xtatus-quo.components.markdown.text]
+   [xtatus-quo.components.navigation.page-nav.view]
+   [xtatus-quo.components.notifications.toast.view]
+   [xtatus-quo.components.overlay.view]
+   [xtatus-quo.components.profile.showcase-nav.view]
+   [xtatus-quo.components.selectors.disclaimer.view]
+   [xtatus-quo.components.selectors.selector-button]
+   [xtatus-quo.components.selectors.selectors.view]
+   [xtatus-quo.components.settings.category.view]
+   [xtatus-quo.components.tabs.segmented-tab]
+   [xtatus-quo.components.tags.context-tag.view]
+   [xtatus-quo.components.text-combinations.page-top.view]
+   [xtatus-quo.components.text-combinations.standard-title.view]))
 
 ;; Avatars
 (def account-avatar xtatus-quo.components.avatars.account-avatar.view/view)
@@ -42,7 +42,6 @@
 ;; List Items
 (def account xtatus-quo.components.list-items.account.view/view)
 
-(def text xtatus-quo.components.markdown.text/text)
 (def button xtatus-quo.components.buttons.button.view/button)
 
 ;; Profile
@@ -61,6 +60,7 @@
 (def segmented-control xtatus-quo.components.tabs.segmented-tab/segmented-control)
 
 ;; Text combinations
+(def text xtatus-quo.components.markdown.text/text)
 (def page-top xtatus-quo.components.text-combinations.page-top.view/view)
 (def standard-title xtatus-quo.components.text-combinations.standard-title.view/view)
 

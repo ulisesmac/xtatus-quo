@@ -1,10 +1,8 @@
 (ns xtatus-quo.components.dividers.divider-line.view
   (:require
-    [xtatus-quo.components.dividers.divider-line.style :as style]
-    [quo.context :as quo.context]
-    [react-native.core :as rn]))
+   [xtatus-quo.context :as context]
+   [xtatus-quo.components.dividers.divider-line.style :as style]))
 
-(defn view
-  [props]
-  (let [theme (quo.context/use-theme)]
-    [rn/view {:style (style/divider-line props theme)}]))
+(defn view [{:keys [blur?]}]
+  (let [theme (context/use-theme)]
+    [:rn/view {:style (style/divider-line blur? theme)}]))

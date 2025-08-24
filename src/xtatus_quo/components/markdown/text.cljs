@@ -2,10 +2,12 @@
   (:require
    [clojure.string :as string]
    [quo.context :as quo.context]
-   [quo.foundations.colors :as colors]
-   [xtatus-quo.foundations.typography :as typography]
    [react-native.core :as rn]
-   [react-native.utils :as rn.utils]))
+   [react-native.utils :as rn.utils]
+   [reagent-extended-compiler.utils.transforms :as transforms]
+   [xtatus-quo.context :as context]
+   [xtatus-quo.foundations.colors :as colors]
+   [xtatus-quo.foundations.typography :as typography]))
 
 (defn text-style
   [{:keys [size align weight style]} theme]
@@ -85,11 +87,32 @@
                             :color (if (= theme :theme/dark) colors/white colors/neutral-100)))]
       [font-weight font-size text-align color style])))
 
-(defn text
-  [& argv]
+(defn text [& argv]
   (let [[props children] (rn.utils/get-props-and-children argv)
-        theme            (quo.context/use-theme)
-        styles           (text-styles props theme)]
+        theme  (quo.context/use-theme)
+        styles (text-styles props theme)]
     (into [rn/text (assoc (dissoc props :style :size :align :weight :color)
                      :style styles)]
+          children)))
+
+(def text2-style
+  (memoize
+   (fn [{:keys [font color align]} theme]
+     (let [align        (or align :auto)
+           color        (or color
+                            (if (= theme :theme/dark)
+                              colors/white
+                              colors/neutral-100))
+           inner-styles (assoc (font-type-style font)
+                          :text-align align
+                          :color color)]
+       (transforms/->js-prop-obj inner-styles)))))
+
+(defn text2 [& argv]
+  (let [[props children] (rn.utils/props argv)
+        theme        (context/use-theme)
+        input-styles (get props :style [])
+        styles       (rn.utils/add-styles (text2-style props theme) input-styles)]
+    (into [:rn/text (assoc (dissoc props :style :size :align :weight :color)
+                      :style styles)]
           children)))

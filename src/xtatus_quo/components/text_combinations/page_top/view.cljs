@@ -6,14 +6,14 @@
             [quo.components.inputs.address-input.view :as address-input]
             [quo.components.inputs.recovery-phrase.view :as recovery-phrase]
             [quo.components.inputs.search-input.view :as search-input]
+            [quo.context]
+            [react-native.core :as rn]
+            [utils.number]
             [xtatus-quo.components.markdown.text :as text]
             [xtatus-quo.components.tags.context-tag.view :as context-tag]
             [xtatus-quo.components.text-combinations.page-top.style :as style]
             [xtatus-quo.components.text-combinations.standard-title.view :as standard-title]
-            [quo.context]
-            [react-native.core :as rn]
-            [react-native.fast-image :as fast-image]
-            [utils.number]))
+            [xtatus-quo.context :as context]))
 
 (defn- format-counter
   [n]
@@ -25,10 +25,8 @@
 (defn- header-counter
   [counter-top counter-bottom]
   [rn/view {:style style/header-counter}
-   [text/text
-    {:style  style/header-counter-text
-     :weight :regular
-     :size   :paragraph-2}
+   [text/text2 {:style style/header-counter-text
+                :font  :font/regular-13}
     (str (format-counter counter-top)
          "/"
          (format-counter counter-bottom))]])
@@ -54,20 +52,19 @@
 
 (defn- summary-description
   [{:keys [row-1 row-2] :as _summary-props} blur?]
-  (let [text-props {:size   :paragraph-2
-                    :weight :medium}]
+  (let [text-props {:font :font/medium-13}]
     [rn/view {:style style/summary-description}
      (when-let [{:keys [text-1 text-2 context-tag-1 context-tag-2]} row-1]
        [rn/view {:style style/summary-description-row}
-        [text/text text-props text-1]
+        [text/text2 text-props text-1]
         [context-tag/view (assoc context-tag-1 :size 24 :blur? blur?)]
-        [text/text text-props text-2]
+        [text/text2 text-props text-2]
         [context-tag/view (assoc context-tag-2 :size 24 :blur? blur?)]])
      (when-let [{:keys [text-1 text-2 context-tag-1 context-tag-2]} row-2]
        [rn/view {:style style/summary-description-row}
-        [text/text text-props text-1]
+        [text/text2 text-props text-1]
         [context-tag/view (assoc context-tag-1 :size 24 :blur? blur?)]
-        [text/text text-props text-2]
+        [text/text2 text-props text-2]
         [context-tag/view (assoc context-tag-2 :size 24 :blur? blur?)]])]))
 
 (defn- community-logo
@@ -86,9 +83,7 @@
   [rn/view {:accessibility-label description-accessibility-label}
    (cond
      (and (= description :text) (not (string/blank? description-text)))
-     [text/text
-      {:weight :regular
-       :size   :paragraph-1}
+     [text/text2 {:font :font/regular-15}
       description-text]
 
      (and (= description :context-tag) context-tag-props)
@@ -101,13 +96,13 @@
      (= description :collection)
      [rn/view {:style style/image-text-description}
       [collection-avatar/view {:image collection-image}]
-      [text/text {:weight :semi-bold :size :paragraph-1}
+      [text/text2 {:font :font/semibold-15}
        collection-text]]
 
      (= description :community)
      [rn/view {:style style/image-text-description}
       [community-logo community-image]
-      [text/text {:weight :semi-bold :size :paragraph-1}
+      [text/text2 {:font :font/semibold-15}
        community-text]])])
 
 (defn- emoji-dash
@@ -118,11 +113,10 @@
                 [rn/text {:adjusts-font-size-to-fit true} emoji]]))
         emojis))
 
-(defn view
-  [{:keys  [description title input blur? input-props container-style]
-    emojis :emoji-dash
-    :as    props}]
-  (let [theme (quo.context/use-theme)]
+(defn view [{:keys  [description title input blur? input-props container-style]
+             emojis :emoji-dash
+             :as    props}]
+  (let [theme (context/use-theme)]
     [rn/view {:style container-style}
      [rn/view {:style style/top-container}
       (when (or title input)
@@ -137,8 +131,8 @@
           :search
           [search-input/search-input
            (assoc input-props
-                  :container-style style/search-input-container
-                  :blur?           blur?)]
+             :container-style style/search-input-container
+             :blur? blur?)]
 
           :address
           [address-input/address-input (assoc input-props :blur? blur?)]
@@ -146,6 +140,6 @@
           :recovery-phrase
           [recovery-phrase/recovery-phrase-input
            (assoc input-props
-                  :container-style style/recovery-phrase-container
-                  :blur?           blur?)]
+             :container-style style/recovery-phrase-container
+             :blur? blur?)]
           nil)])]))

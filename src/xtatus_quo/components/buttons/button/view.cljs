@@ -108,17 +108,13 @@
            :size  icon-size}]
 
          (string? children)
-         [:rn/view {:style {:flex-grow   0
+         [:rn/view {:style {:flex-grow      0
                             :flex-direction :row
-                            :flex-shrink 1
-                            }}
-          [text/text
-           {:size            (when (#{56 24} size) :paragraph-2)
-            :weight          :medium
-            :number-of-lines 1
-            :ellipsize-mode :tail
-            :style           {:color   label-color
-                              :opacity (when (and disabled? (= theme :theme/dark)) 0.3)}}
+                            :flex-shrink    1}}
+          [text/text2 {:style           {:opacity (when (and disabled? (= theme :theme/dark)) 0.3)}
+                       :font            :font/medium-13
+                       :number-of-lines 1
+                       :ellipsize-mode  :tail}
            children]]
 
          (vector? children)
