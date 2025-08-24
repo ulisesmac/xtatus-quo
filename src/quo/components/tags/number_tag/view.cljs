@@ -13,7 +13,7 @@
         icon-size  (get-in style/sizes [size :icon-size])]
     [rn/view (style/container props theme)
      (if (and (> size-value 20) (< (count number) 3))
-       [text/text
+       [text/text*
         {:size   (if (= size :size-32)
                    :paragraph-2
                    :label)

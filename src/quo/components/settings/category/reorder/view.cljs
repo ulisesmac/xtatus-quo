@@ -25,7 +25,7 @@
                                                        {:style (style/reorder-separator blur? theme)}])
                                                [blur? theme])]
     [rn/view {:style [(style/container label) container-style]}
-     [text/text
+     [text/text*
       {:weight :medium
        :size   :paragraph-2
        :style  {:color (colors/theme-colors colors/neutral-50 colors/neutral-40 theme)}}

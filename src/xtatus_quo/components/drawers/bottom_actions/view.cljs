@@ -28,9 +28,9 @@
          :i/alert
          {:color (colors/theme-colors colors/danger-50 colors/danger-60 theme)
           :size  16}]
-        [text/text2
+        [text/text
          {:font  :font/regular-13
-          :style {:color (colors/theme-colors colors/danger-50 colors/danger-60 theme)}}
+          :color (colors/theme-colors colors/danger-50 colors/danger-60 theme)}
          error-message]])
 
      (when (= description :top)
@@ -38,7 +38,7 @@
          description-top-text
          (when (or role context-tag-props)
            [rn/view {:style style/description-top}
-            [text/text2
+            [text/text
              {:font  :font/regular-13
               :style (style/description-top-text scroll? blur? theme)}
              (or description-top-text (i18n/label :t/eligible-to-join-as))]
@@ -74,7 +74,7 @@
        button-one-label]]
      (when (= description :bottom)
        (if (string? description-text)
-         [text/text2
+         [text/text
           {:font  :font/regular-13
            :style (style/description-bottom scroll? blur? theme)} description-text]
          description-text))]))

@@ -52,7 +52,7 @@
         initials    (utils.string/get-initials full-name (if small? 1 2))]
     [rn/view
      {:style (merge (style/container circle-size customization-color neutral? theme) container-style)}
-     [text/text
+     [text/text*
       {:accessibility-label :wallet-user-avatar
        :size                (:font-size (size properties))
        :weight              (if monospace? :monospace (:font-weight (size properties)))

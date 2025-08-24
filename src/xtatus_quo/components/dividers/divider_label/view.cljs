@@ -37,7 +37,7 @@
                               :margin-left
                               :margin-right)
                             2}}])
-      [text/text2
+      [text/text
        {:font  :font/medium-13
        :style (style/text blur? theme)}
        label]]

@@ -74,7 +74,7 @@
             :no-color            no-icon-color?
             :size                icon-size
             :container-style     style/left-icon}])
-        [text/text
+        [text/text*
          {:size            text-size
           :weight          :medium
           :number-of-lines 1

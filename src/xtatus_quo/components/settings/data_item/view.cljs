@@ -38,7 +38,7 @@
                      :source              network-image
                      :style               style/image}]
           nil)])
-     [text/text2
+     [text/text
       (merge {:font  :font/medium-13
               :style (style/description subtitle-color blur? theme)}
              subtitle-text-props)
@@ -58,7 +58,7 @@
   [{:keys [title blur? title-icon]}]
   (let [theme (quo.context/use-theme)]
     [rn/view {:style style/title-container}
-     [text/text2
+     [text/text
       {:font  :font/regular-13
        :style (style/title blur? theme)}
       title]

@@ -42,7 +42,7 @@
 (defn- keypair-subtitle
   [{:keys [theme blur? stored]}]
   [rn/view {:style style/row}
-   [text/text2
+   [text/text
     {:font  :font/regular-13
      :style (style/description theme blur?)}
    (case stored
@@ -65,7 +65,7 @@
 
 (defn- default-keypair-subtitle
   [{:keys [description theme blur?]}]
-  [text/text2
+  [text/text
    {:accessibility-label :default-keypair-text
     :font                :font/regular-13
     :style               (style/description theme blur?)}
@@ -95,7 +95,7 @@
 
 (defn- description-subtitle
   [{:keys [theme blur? description]}]
-  [text/text2
+  [text/text
    {:font  :font/regular-15
     :style (style/description theme blur?)}
    description])
@@ -169,7 +169,7 @@
 (defn- left-title
   [{:keys [type label title title-icon theme blur?]}]
   (case type
-    :label   [text/text2
+    :label   [text/text
               {:font  :font/medium-13
                :style (style/description theme blur?)}
               label]
@@ -179,7 +179,7 @@
                :weight        :semi-bold
                :size          :heading-2}]
     [rn/view {:style style/title-container}
-     [text/text2
+     [text/text
       {:font  :font/semibold-19
        :style (when blur? {:color colors/white})}
       title]

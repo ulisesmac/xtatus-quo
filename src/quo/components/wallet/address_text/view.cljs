@@ -7,7 +7,7 @@
 
 (defn- colored-network-text
   [{:keys [theme network size weight]}]
-  [text/text
+  [text/text*
    {:size   size
     :weight weight
     :style  {:color (colors/resolve-color (keyword network) theme)}}
@@ -29,7 +29,7 @@
         networks-internal                    (if full-address?
                                                splitted-networks
                                                (map :short-name networks))
-        address-text                         [text/text
+        address-text                         [text/text*
                                               {:size   size
                                                ;; TODO: monospace font
                                                ;; https://github.com/status-im/status-mobile/issues/17009
@@ -39,5 +39,5 @@
                                                 ;(utils/get-short-wallet-address address-internal)
                                                 address-internal)]]
     (as-> networks-internal $
-      (into [text/text] network-colored-text $)
+      (into [text/text*] network-colored-text $)
       (conj $ address-text))))

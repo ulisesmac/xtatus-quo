@@ -116,7 +116,7 @@
                                                                   threshold
                                                                   page-nav-height))]
     [reanimated/view {:style [center-content-container-style animated-style]}
-     [text/text2
+     [text/text
       {:font            :font/medium-15
        :number-of-lines 1}
       title]]))
@@ -144,12 +144,12 @@
   (let [theme (quo.context/use-theme)]
     [reanimated/view {:style center-content-container-style}
      [rn/image {:style style/token-logo :source token-logo}]
-     [text/text2
+     [text/text
       {:style           style/token-name
        :font            :font/semibold-15
        :number-of-lines 1}
       token-name]
-     [text/text2
+     [text/text
       {:style           (style/token-abbreviation theme background)
        :font            :font/medium-13
        :number-of-lines 1}
@@ -161,7 +161,7 @@
     [reanimated/view {:style center-content-container-style}
      [rn/text {:style style/channel-emoji}
       channel-emoji]
-     [text/text2
+     [text/text
       {:style           style/channel-name
        :font            :font/semibold-15
        :number-of-lines 1}
@@ -176,12 +176,12 @@
        [rn/view {:style style/group-avatar-picture}
         [group-avatar/view {:picture picture :size :size-28}]])
      [rn/view {:style style/title-description-container}
-      [text/text2
+      [text/text
        {:style           style/title-description-title
         :font            :font/semibold-15
         :number-of-lines 1}
        title]
-      [text/text2
+      [text/text
        {:style           (style/title-description-description theme background)
         :font            :font/medium-13
         :number-of-lines 1}
@@ -196,7 +196,7 @@
      [rn/image
       {:style  style/community-network-logo
        :source shown-logo}]
-     [text/text2
+     [text/text
       {:font            :font/semibold-15
        :number-of-lines 1}
       shown-name]]))

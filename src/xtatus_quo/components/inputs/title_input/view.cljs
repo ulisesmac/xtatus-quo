@@ -69,12 +69,12 @@
                                   (style/get-placeholder-color blur? theme))}]]
      [rn/view {:style (style/counter-container focused?)}
       (if focused?
-        [text/text2
-         [text/text2
+        [text/text
+         [text/text
           {:style (style/char-count blur? theme)
            :font  :font/regular-13}
           (str (count value))]
-         [text/text2
+         [text/text
           {:style (style/char-count blur? theme)
            :font  :font/regular-13}
           (str "/" (pad-0 (str max-length)))]]

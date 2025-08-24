@@ -25,8 +25,8 @@
 (defn- header-counter
   [counter-top counter-bottom]
    [rn/view {:style style/header-counter}
-   [text/text2 {:style style/header-counter-text
-                :font  :font/regular-13}
+   [text/text {:style style/header-counter-text
+                :font :font/regular-13}
     (str (format-counter counter-top)
          "/"
          (format-counter counter-bottom))]])
@@ -56,15 +56,15 @@
     [rn/view {:style style/summary-description}
      (when-let [{:keys [text-1 text-2 context-tag-1 context-tag-2]} row-1]
        [rn/view {:style style/summary-description-row}
-        [text/text2 text-props text-1]
+        [text/text text-props text-1]
         [context-tag/view (assoc context-tag-1 :size 24 :blur? blur?)]
-        [text/text2 text-props text-2]
+        [text/text text-props text-2]
         [context-tag/view (assoc context-tag-2 :size 24 :blur? blur?)]])
      (when-let [{:keys [text-1 text-2 context-tag-1 context-tag-2]} row-2]
        [rn/view {:style style/summary-description-row}
-        [text/text2 text-props text-1]
+        [text/text text-props text-1]
         [context-tag/view (assoc context-tag-1 :size 24 :blur? blur?)]
-        [text/text2 text-props text-2]
+        [text/text text-props text-2]
         [context-tag/view (assoc context-tag-2 :size 24 :blur? blur?)]])]))
 
 (defn- community-logo
@@ -83,7 +83,7 @@
   [rn/view {:accessibility-label description-accessibility-label}
    (cond
      (and (= description :text) (not (string/blank? description-text)))
-     [text/text2 {:font :font/regular-15}
+     [text/text {:font :font/regular-15}
       description-text]
 
      (and (= description :context-tag) context-tag-props)
@@ -96,13 +96,13 @@
      (= description :collection)
      [rn/view {:style style/image-text-description}
       [collection-avatar/view {:image collection-image}]
-      [text/text2 {:font :font/semibold-15}
+      [text/text {:font :font/semibold-15}
        collection-text]]
 
      (= description :community)
      [rn/view {:style style/image-text-description}
       [community-logo community-image]
-      [text/text2 {:font :font/semibold-15}
+      [text/text {:font :font/semibold-15}
        community-text]])])
 
 (defn- emoji-dash

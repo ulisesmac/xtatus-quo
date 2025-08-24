@@ -62,7 +62,7 @@
    (when (= type :emoji)
      [emoji-comp size resource])
    (when labelled?
-     [text/text
+     [text/text*
       (merge {:size            (case size
                                  32 :paragraph-1
                                  24 :paragraph-2

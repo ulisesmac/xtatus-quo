@@ -25,7 +25,7 @@
   [rn/view {:style (style/tag-container size)}
    logo-component
    [rn/view {:style (style/tag-spacing size shrinkable?)}
-    [text/text2
+    [text/text
      {:style           (style/text theme gray-text?)
       :font            (if (= size 24) :font/medium-13 :font/medium-15)
       :number-of-lines 1
@@ -40,7 +40,7 @@
     [rn/view {:style (style/tag-container size)}
      [rn/image {:style (style/circle-logo size) :source community-logo}]
      [rn/view {:style (style/tag-spacing size false)}
-      [text/text2
+      [text/text
        {:style (style/text theme)
         :font  (if (= size 24) :font/medium-13 :font/medium-15)}
        community-name]]
@@ -49,7 +49,7 @@
         [icons/icon :i/chevron-right
          {:color (style/context-tag-icon-color theme blur?)
           :size  icon-size}]
-        [text/text2
+        [text/text
          {:style (style/text theme)
           :font  (if (= size 24) :font/medium-13 :font/medium-15)}
          (str "# " channel-name)]])]))
@@ -62,7 +62,7 @@
   [{:keys [size address]}]
   (let [theme (quo.context/use-theme)]
     [rn/view {:style (style/address size)}
-    [text/text2
+    [text/text
      {:style (style/text theme)
       :font  (if (= size 24) :font/monospace-13 :font/monospace-15)}
      (trim-public-key address)]]))
@@ -75,7 +75,7 @@
       {:color (style/context-tag-icon-color theme blur?)
        :size  (if (= size 24) 12 20)}]
      [rn/view {:style (style/icon-spacing size)}
-      [text/text2
+      [text/text
        {:style (style/text theme)
         :font  (if (= size 24) :font/medium-13 :font/medium-15)}
        context]]]))

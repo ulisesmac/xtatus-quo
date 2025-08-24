@@ -24,7 +24,7 @@
         {:keys [online? text]} description-props]
     [rn/view {:style style/status-container}
      [rn/view {:style (style/status-dot online? blur?)}]
-     [text/text
+     [text/text*
       {:size  :paragraph-2
        :style (style/color blur? theme)}
       (if online? (i18n/label :t/online-now) text)]]))
@@ -34,7 +34,7 @@
   (let [theme               (quo.context/use-theme)
         {:keys [text icon]} description-props]
     [rn/view {:style (style/sub-container :center)}
-     [text/text
+     [text/text*
       {:size  :paragraph-2
        :style (style/color blur? theme)}
       text]
@@ -90,7 +90,7 @@
   [{:keys [label label-props label-icon-props blur? theme preview-size]}]
   [rn/view {:accessibility-label :label-component}
    (case label
-     :text    [text/text {:style (style/color blur? theme)}
+     :text    [text/text* {:style (style/color blur? theme)}
                label-props]
      :color   [rn/view
                {:style (style/label-dot label-props)}]
@@ -130,7 +130,7 @@
        [image-component props]
        [rn/view {:style (style/left-container (:image props))}
         [rn/view {:style {:flex-direction :row}}
-         [text/text
+         [text/text*
           {:weight :medium
            :style  {:color (when (or blur? (= theme :theme/dark))
                              colors/white)}}
@@ -138,7 +138,7 @@
          (when show-new-feature-tag?
            [rn/view {:style style/new-feature-tag-container}
             [new-feature-gradient/view {:style style/new-feature-tag-gradient}]
-            [text/text
+            [text/text*
              {:weight :semi-bold
               :size   :label
               :style  style/new-feature-tag-text}

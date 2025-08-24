@@ -24,7 +24,7 @@
        :checked?            checked?
        :on-change           on-change
        :customization-color color}]
-     [text/text2
+     [text/text
       {:font  :font/regular-13
        :style style/text}
       label]
@@ -54,7 +54,7 @@
        :checked?            checked?
        :on-change           on-press
        :customization-color color}]
-     [text/text2
+     [text/text
       {:font  :font/regular-13
        :style style/text}
       content]]))
@@ -74,7 +74,7 @@
      [checks])
     [:rn/view {:style [container-style (style/multi-container blur? theme)]}
      (when label
-       [text/text2
+       [text/text
         {:font  :font/medium-13
          :style (style/label theme)}
         label])

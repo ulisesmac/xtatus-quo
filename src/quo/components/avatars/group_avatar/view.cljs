@@ -45,7 +45,7 @@
            [rn/text
             {:style (style/avatar-identifier theme)}
             emoji]
-           [text/text
+           [text/text*
             {:size  :paragraph-1
              :style (dissoc (style/avatar-identifier theme) :font-size)}
             emoji])

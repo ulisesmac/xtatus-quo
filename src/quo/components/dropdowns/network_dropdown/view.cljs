@@ -16,7 +16,7 @@
    [rn/image
     {:source (or (:source item) item)
      :style  style/single-network-image}]
-   [text/text
+   [text/text*
     {:weight :medium
      :size   :paragraph-2} (:full-name item)]])
 
@@ -67,7 +67,7 @@
          :size      :size-20}
         networks])
      (when label
-       [text/text
+       [text/text*
         {:size            :paragraph-1
          :weight          :medium
          :style           (style/dropdown-text theme)

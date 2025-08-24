@@ -43,7 +43,7 @@
 
       [rn/view
        {:style style/text-container}
-       [text/text2
+       [text/text
         (merge (style/text {:theme theme
                             :type  action-type
                             :blur? blur?})
@@ -51,7 +51,7 @@
         title]
 
        (when (seq description)
-         [text/text2
+         [text/text
           {:font  :font/regular-13
            :style (style/desc {:theme theme
                                :blur? blur?})}

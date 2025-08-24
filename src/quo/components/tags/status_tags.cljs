@@ -58,7 +58,7 @@
             icon
             {:no-color true
              :size     (if (= size :large) 20 12)}])]
-        [text/text
+        [text/text*
          {:size   paragraph-size
           :weight :medium
           :style  {:padding-left (if icon 5 0)

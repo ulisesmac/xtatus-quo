@@ -24,7 +24,7 @@
         counter-warning? (when show-counter-warning?
                            (error-state-counter? left-value right-value))]
     [rn/view {:style style/counter}
-     [text/text
+     [text/text*
       {:size   :paragraph-2
        :weight :regular
        :style  (style/counter-text counter-warning? blur? theme)}

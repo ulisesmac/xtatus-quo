@@ -60,6 +60,7 @@
 (def segmented-control xtatus-quo.components.tabs.segmented-tab/segmented-control)
 
 ;; Text combinations
+;; Export new text implementation (text2) under `text` for consumers.
 (def text xtatus-quo.components.markdown.text/text)
 (def page-top xtatus-quo.components.text-combinations.page-top.view/view)
 (def standard-title xtatus-quo.components.text-combinations.standard-title.view/view)

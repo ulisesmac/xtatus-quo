@@ -35,7 +35,7 @@
   [rn/view
    (cond
      (string? children)
-     [text/text2
+     [text/text
       (merge {:font            (case size
                                  24 :font/medium-13
                                  20 :font/medium-11

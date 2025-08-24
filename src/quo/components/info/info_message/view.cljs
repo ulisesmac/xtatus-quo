@@ -50,7 +50,7 @@
          :color     icon-color
          :no-color? no-icon-color?}])
      [:rn/view {:style {:flex 1}} ;; Needed to avoid text overflows
-      [text/text
+      [text/text*
        {:size                (if (= size :tiny) :label :paragraph-2)
         :accessibility-label accessibility-label
         :style               {:color text-color}}

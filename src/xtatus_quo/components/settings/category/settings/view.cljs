@@ -14,7 +14,7 @@
         last-index     (dec (count settings-items))]
     [rn/view {:style [(style/container label) container-style]}
      (when label
-       [text/text2
+       [text/text
         {:font  :font/medium-13
          :style (style/label blur? theme)}
         label])

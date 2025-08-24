@@ -13,7 +13,7 @@
   [{:keys [full-name size customization-color theme]}]
   (let [amount-initials (if (#{:size-32 :size-64 :size-80} size) 2 1)
         channel-name    (utils.string/safe-replace full-name "#" "")]
-    [text/text
+    [text/text*
      (cond-> {:accessibility-label :initials
               :style               {:color (colors/resolve-color customization-color theme)}
               :size                :paragraph-2

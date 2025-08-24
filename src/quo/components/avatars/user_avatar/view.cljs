@@ -1,15 +1,12 @@
 (ns quo.components.avatars.user-avatar.view
   (:require
-    [quo.components.avatars.user-avatar.schema :as component-schema]
-    [quo.components.avatars.user-avatar.style :as style]
-    [quo.components.common.no-flicker-image :as no-flicker-image]
-    [xtatus-quo.components.markdown.text :as text]
-    [quo.context]
-    [react-native.core :as rn]
-    [react-native.fast-image :as fast-image]
-    [schema.core :as schema]
-    [utils.image-server :as image-server]
-    utils.string))
+   [quo.components.avatars.user-avatar.style :as style]
+   [quo.components.common.no-flicker-image :as no-flicker-image]
+   [quo.context]
+   [react-native.core :as rn]
+   [utils.image-server :as image-server]
+   [utils.string]
+   [xtatus-quo.components.markdown.text :as text]))
 
 (defn initials-avatar
   [{:keys [full-name size customization-color]
@@ -20,7 +17,7 @@
     [rn/view
      {:accessibility-label :initials-avatar
       :style               (style/initials-avatar size customization-color theme)}
-     [text/text
+     [text/text*
       {:style  style/initials-avatar-text
        :size   font-size
        :weight :semi-bold}

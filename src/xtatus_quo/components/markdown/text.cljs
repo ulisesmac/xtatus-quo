@@ -87,7 +87,7 @@
                             :color (if (= theme :theme/dark) colors/white colors/neutral-100)))]
       [font-weight font-size text-align color style])))
 
-(defn text [& argv]
+(defn text* [& argv]
   (let [[props children] (rn.utils/get-props-and-children argv)
         theme  (quo.context/use-theme)
         styles (text-styles props theme)]
@@ -97,7 +97,9 @@
 
 (def text2-style
   (memoize
-   (fn [{:keys [font color align]} theme]
+   (fn [{:keys [font color align]
+         :or   {font :font/regular-15}}
+        theme]
      (let [align        (or align :auto)
            color        (or color
                             (if (= theme :theme/dark)
@@ -108,7 +110,7 @@
                           :color color)]
        (transforms/->js-prop-obj inner-styles)))))
 
-(defn text2 [& argv]
+(defn text [& argv]
   (let [[props children] (rn.utils/props argv)
         theme        (context/use-theme)
         input-styles (get props :style [])

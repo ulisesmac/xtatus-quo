@@ -15,7 +15,7 @@
    [account-avatar/view (assoc account-props :size 32)]
    [rn/view {:style style/account-container}
     [rn/view {:style style/account-title-container}
-     [text/text2
+     [text/text
       {:font :font/semibold-15}
       (:name account-props)]
      (when title-icon
@@ -33,17 +33,17 @@
   [rn/view
    {:style               style/balance-container
     :accessibility-label :balance-container}
-   [text/text2
+   [text/text
     {:font :font/medium-13}
     (:fiat-value balance-props)]
    [rn/view
     {:style style/metrics-container}
-    [text/text2
+    [text/text
      {:font  :font/regular-13
       :style (style/metric-text type theme)}
      (str (:percentage-change balance-props) "%")]
     [rn/view {:style (style/dot-divider type theme)}]
-    [text/text2
+    [text/text
      {:font  :font/regular-13
       :style (style/metric-text type theme)}
      (:fiat-change balance-props)]
@@ -62,7 +62,7 @@
   [rn/view
    {:style               (style/token-tag-text-container blur? theme)
     :accessibility-label :tag-container}
-   [text/text2
+   [text/text
     {:font  :font/medium-11
      :style (style/token-tag-text blur? theme)}
     (str (:value token-props) " " (:symbol token-props))]])

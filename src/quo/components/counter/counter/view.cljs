@@ -27,7 +27,7 @@
                              :customization-color customization-color
                              :theme               theme
                              :container-style     container-style})}
-     [text/text
+     [text/text*
       {:weight :medium
        :size   :label
        :style  (when (= type :default) {:color colors/white})}

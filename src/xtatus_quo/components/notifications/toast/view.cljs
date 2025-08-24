@@ -29,7 +29,7 @@
       :theme               theme}
      [rn/view {:style {:margin-right 5}}
       [count-down-circle/circle-timer {:duration undo-duration}]]
-     [text/text2
+     [text/text
       {:font  :font/medium-13
        :style (style/text theme)}
       [i18n/label :t/undo]]]))
@@ -49,13 +49,13 @@
        left]
       [rn/view {:style style/right-side-container}
        (when title
-         [text/text2
+         [text/text
           {:font                :font/semibold-15
            :style               (style/title theme)
            :accessibility-label :toast-title}
           title])
        (when text
-         [text/text2
+         [text/text
           {:font                :font/medium-13
            :style               (style/text theme)
            :accessibility-label :toast-content}

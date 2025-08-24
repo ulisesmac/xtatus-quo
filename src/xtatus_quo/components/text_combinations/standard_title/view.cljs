@@ -48,8 +48,8 @@
 
 (defn view [{:keys [title right container-style] :as props}]
   [:rn/view {:style [style/container container-style]}
-   [text/text2 {:style style/text
-                :font  :font/semibold-27}
+   [text/text {:style style/text
+                :font :font/semibold-27}
     title]
    (case right
      :counter [right-counter props]
