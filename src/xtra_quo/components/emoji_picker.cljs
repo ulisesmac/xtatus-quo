@@ -157,11 +157,13 @@
   (let [on-press (rn/use-callback
                   #(on-category-press scroll-ref category set-category)
                   [])]
-    [quo/button {:type       (if selected? :grey :ghost)
-                 :icon-only? true
-                 :size       32
-                 :on-press   on-press}
-     icon]))
+    [:rn/view {:style {:border-radius 8
+                       :overflow      :hidden}}
+     [quo/button {:type       (if selected? :grey :ghost)
+                  :icon-only? true
+                  :size       32
+                  :on-press   on-press}
+      icon]]))
 
 (defn bottom-nav [scroll-ref category set-category]
   (let [theme    (quo.context/use-theme)
