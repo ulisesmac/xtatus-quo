@@ -180,7 +180,7 @@
 
 (defn input-patch-view []
   (let [theme    (quo.context/use-theme)
-        bg-color (colors/theme-colors colors/white colors/neutral-95 theme)]
+        bg-color (colors/theme-colors colors/white colors/neutral-90 theme)]
     [:rn/view {:style (assoc style/input-patch :background-color bg-color)}]))
 
 (defn view [{:keys [on-emoji-press]}]
