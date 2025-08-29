@@ -7,6 +7,17 @@
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]))
 
+;; Runtime capture of icon usage for tooling
+(defonce captured-icons (atom #{}))
+
+(comment
+
+ (set
+  (concat
+   @captured-icons
+   #{}))
+ )
+
 (defn- valid-color?
   [color]
   (and color
@@ -52,5 +63,8 @@
 (defn icon
   ([icon-name] (icon icon-name nil))
   ([icon-name params]
-   (let [theme (quo.context/use-theme)]
+   (let [theme (quo.context/use-theme)
+         size  (or (:size params) 20)]
+     (when (keyword? icon-name)
+       (swap! captured-icons conj [icon-name size]))
      (memoized-icon params icon-name theme))))
