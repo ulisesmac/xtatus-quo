@@ -32,7 +32,7 @@
   "A hook that returns the current color keyword."
   []
   (or (some-> context (rn/use-context) (oops/oget :cljData) :color)
-      :color/primary))
+      :primary))
 
 (defn use-theme-color
   "A hook that returns a color given the current theme"

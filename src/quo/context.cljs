@@ -29,7 +29,7 @@
   "A hook that returns the current color keyword."
   []
   (or (some-> context (rn/use-context) (oops/oget :cljData) :color)
-      :color/primary))
+      :primary))
 
 (defn use-screen-id
   "A hook that returns the current screen id."
