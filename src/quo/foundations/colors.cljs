@@ -71,8 +71,8 @@
 (def neutral-60  "#515861")
 (def neutral-70  "#2F343A")
 (def neutral-80  "#161A1E")
-(def neutral-90  "#0A0E13")
-(def neutral-95  "#030507")
+(def neutral-90  "#0E1115")
+(def neutral-95  "#080A0C")
 (def neutral-100 "#010203")
 
 (def neutral-50-opa-40 (alpha neutral-50 0.4))
