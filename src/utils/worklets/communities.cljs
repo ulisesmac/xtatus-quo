@@ -2,7 +2,7 @@
   (:require [goog.object :as gobj]
             [react-native.utils :as utils]))
 
-(def ^:private worklets (js/require "../src/js/worklets/communities.js"))
+(def ^:private worklets #js{})
 
 (defn- transform-args
   [f]

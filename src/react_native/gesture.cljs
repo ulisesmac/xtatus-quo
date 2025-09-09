@@ -11,7 +11,7 @@
       FlatList
       ScrollView)]
     [react-native.core :as rn]
-    [react-native.flat-list :as rn-flat-list]
+   ;[react-native.flat-list :as rn-flat-list]
     [reagent.core :as reagent]))
 
 (def directions (js->clj Directions :keywordize-keys true))
@@ -88,7 +88,8 @@
 
 (defn flat-list
   [props]
-  [gesture-flat-list (rn-flat-list/base-list-props props)])
+  [gesture-flat-list (fn []) ;(rn-flat-list/base-list-props props)
+   ])
 
 (def scroll-view (reagent/adapt-react-class ScrollView))
 

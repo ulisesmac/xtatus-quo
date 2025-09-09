@@ -1,7 +1,7 @@
 (ns react-native.section-list
   (:require
     ["react-native" :as react-native]
-    [react-native.flat-list :as flat-list]
+   ;[react-native.flat-list :as flat-list]
     [reagent.core :as reagent]))
 
 (def section-list-class (reagent/adapt-react-class (.-SectionList react-native)))
@@ -38,7 +38,7 @@
    See https://facebook.github.io/react-native/docs/sectionlist.html"
   [{:keys [sections render-section-header-fn render-section-footer-fn style] :as props}]
   [section-list-class
-   (merge (flat-list/base-list-props props)
+   (merge nil ;(flat-list/base-list-props props)
           props
           (when render-section-footer-fn
             {:renderSectionFooter (wrap-render-section-header-fn render-section-footer-fn)})

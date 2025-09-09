@@ -1,6 +1,6 @@
 (ns utils.worklets.onboarding-carousel)
 
-(def worklets (js/require "../src/js/worklets/onboarding_carousel.js"))
+(def worklets #js{})
 
 (defn dynamic-progress-bar-width
   [static-progress-bar-width progress]

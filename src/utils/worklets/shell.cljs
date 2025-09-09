@@ -1,7 +1,7 @@
 (ns utils.worklets.shell)
 
-(def bottom-tabs-worklets (js/require "../src/js/worklets/shell/bottom_tabs.js"))
-(def home-stack-worklets (js/require "../src/js/worklets/shell/home_stack.js"))
+(def bottom-tabs-worklets #js{})
+(def home-stack-worklets #js{})
 
 ;; Derived values for Bottom tabs
 (defn bottom-tab-icon-color

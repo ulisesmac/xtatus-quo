@@ -1,6 +1,6 @@
 (ns utils.worklets.chat.messenger.composer)
 
-(def ^:private worklets (js/require "../src/js/worklets/chat/messenger/composer.js"))
+(def ^:private worklets #js{})
 
 (defn scroll-down-button-opacity
   [chat-list-scroll-y composer-focused? window-height]

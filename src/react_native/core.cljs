@@ -3,7 +3,7 @@
     ["react" :as react]
     ["react-native" :as react-native]
     [promesa.core :as promesa]
-    [react-native.flat-list :as flat-list]
+   ;[react-native.flat-list :as flat-list]
     [react-native.platform :as platform]
     [react-native.section-list :as section-list]
     [react-native.utils :as utils]
@@ -66,7 +66,7 @@
   [props child]
   [touchable-without-feedback-class (utils/custom-pressable-props props) child])
 
-(def flat-list flat-list/flat-list)
+(def flat-list (fn []))
 
 (def section-list section-list/section-list)
 

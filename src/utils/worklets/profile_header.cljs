@@ -1,6 +1,6 @@
 (ns utils.worklets.profile-header)
 
-(def ^:private worklets (js/require "../src/js/worklets/profile_header.js"))
+(def ^:private worklets #js{})
 
 (defn profile-header-animation
   [scroll-y threshold top-bar-height]

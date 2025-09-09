@@ -1,6 +1,6 @@
 (ns utils.worklets.core)
 
-(def core-js (js/require "../src/js/worklets/core.js"))
+(def core-js #js{})
 
 (defn interpolate-value
   [shared-value

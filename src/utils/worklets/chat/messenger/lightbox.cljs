@@ -1,6 +1,6 @@
 (ns utils.worklets.chat.messenger.lightbox)
 
-(def ^:private layout-worklets (js/require "../src/js/worklets/chat/messenger/lightbox.js"))
+(def ^:private layout-worklets #js{})
 
 (defn info-layout
   [input top?]
