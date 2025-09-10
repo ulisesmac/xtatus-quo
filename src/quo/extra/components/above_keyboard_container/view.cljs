@@ -14,7 +14,7 @@
 (defn view [_ _]
   (let [initial-content-height (atom nil)
         animate-above!         #(set! (.-value %1) (withSpring %2 animation-params))]
-    (fn [{:keys [content-ref above above-container-style offset]} child]
+    (fn [{:keys [content-ref above above-container-style offset skip-scroll-view?]} child]
       (let [above-ref       ^js (useRef)
             ^js content-ref (or content-ref (useRef))
             above-position  ^js (useSharedValue 0)
@@ -28,7 +28,8 @@
                                    (animate-above! above-position (+ (- layout-height @initial-content-height)
                                                                      offset)))))
                              #js[])
-            [extra-padding set-extra-padding!] (useState 0)]
+            [extra-padding set-extra-padding!] (useState 0)
+            container-component (if skip-scroll-view? :rn/view :rn/scroll-view)]
         (useLayoutEffect
          (fn []
            (when (.. above-ref -current -measureInWindow)
@@ -40,12 +41,12 @@
         [:rn/keyboard-avoiding-view {:style       {:flex 1}
                                      :behavior    :padding
                                      :collapsable false}
-         [:rn/scroll-view {:style                           {:flex 1}
-                           :ref                             content-ref
-                           :content-container-style         {:padding-bottom (- extra-padding offset)}
-                           :shows-vertical-scroll-indicator false
-                           :on-layout                       measure-layout!
-                           :keyboard-should-persist-taps    :handled}
+         [container-component {:style                           {:flex 1}
+                               :ref                             content-ref
+                               :content-container-style         {:padding-bottom (- extra-padding offset)}
+                               :shows-vertical-scroll-indicator false
+                               :on-layout                       measure-layout!
+                               :keyboard-should-persist-taps    :handled}
           child]
          [:animated/view {:ref       above-ref
                           :style     [{:position       :absolute
