@@ -51,7 +51,9 @@
                           15 typography/paragraph-1
                           19 typography/heading-2
                           27 typography/heading-1
-                          nil)]
+                          {:font-size      (int size)
+                           ;:line-height    (+ (int size) 4)
+                           :letter-spacing (typography/tracking (int size))})]
        (assoc size-style :font-family weight-style)))))
 
 

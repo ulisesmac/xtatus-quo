@@ -7,8 +7,10 @@
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]))
 
+
 ;; Runtime capture of icon usage for tooling
 (defonce captured-icons (atom #{}))
+
 
 (comment
 
