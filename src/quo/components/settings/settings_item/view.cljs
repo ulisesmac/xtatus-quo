@@ -16,6 +16,7 @@
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.core :as rn]
+    [react-native.reanimated :as reanimated]
     [utils.i18n :as i18n]))
 
 (defn status-description
@@ -87,17 +88,21 @@
     nil))
 
 (defn label-component
-  [{:keys [label label-props label-icon-props blur? theme preview-size]}]
+  [{:keys [label label-props label-icon-props blur? theme preview-size loading?]}]
   [rn/view {:accessibility-label :label-component}
-   (case label
-     :text    [text/text* {:style (style/color blur? theme)}
-               label-props]
-     :color   [rn/view
-               {:style (style/label-dot label-props)}]
-     :preview [preview-list/view {:type (:type label-props) :size (or preview-size :size-24)}
-               (:data label-props)]
-     :icon    [icon/icon label-props (or label-icon-props (style/icon-color blur? theme nil))]
-     nil)])
+   (if loading?
+     [rn/view {:style style/loading-icon-container}
+      [reanimated/view {:style style/loading-icon-spin}
+       [icon/icon :i/loading (style/color blur? theme)]]]
+     (case label
+       :text    [text/text* {:style (style/color blur? theme)}
+                 label-props]
+       :color   [rn/view
+                 {:style (style/label-dot label-props)}]
+       :preview [preview-list/view {:type (:type label-props) :size (or preview-size :size-24)}
+                 (:data label-props)]
+       :icon    [icon/icon label-props (or label-icon-props (style/icon-color blur? theme nil))]
+       nil))])
 
 (defn action-component
   [{:keys [action action-props blur? theme customization-color] :as props}]

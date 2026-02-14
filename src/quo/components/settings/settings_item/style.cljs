@@ -34,6 +34,16 @@
    :margin-top  (if (or tag description) 1 0)
    :margin-left (when (nil? image) 4)})
 
+(def loading-icon-container
+  {:align-items     :center
+   :justify-content :center})
+
+(def loading-icon-spin
+  {:animation-name            {"to" {:transform [{:rotate "360deg"}]}}
+   :animation-duration        "1000ms"
+   :animation-timing-function "linear"
+   :animation-iteration-count "infinite"})
+
 (def status-container
   {:flex-direction :row
    :align-items    :center})

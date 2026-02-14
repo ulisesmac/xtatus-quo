@@ -48,7 +48,8 @@
      children)])
 
 (defn view
-  [{:keys [accessibility-label active before item-container-style active-item-container-style blur?
+  [{:keys [accessibility-label active before before-props item-container-style
+           active-item-container-style blur?
            disabled id on-press segmented? size notification-dot? customization-color]
     :or   {size 32}}
    children]
@@ -82,8 +83,10 @@
                              (if active active-item-container-style item-container-style)]
                :collapsable false}
       (when before
-        [rn/view
-         [icons/icon before {:color icon-color}]])
+        [rn/view {:style (:container-style before-props)}
+         [icons/icon before
+          (merge {:color icon-color}
+                 (dissoc before-props :container-style))]])
       [content {:size size :label label} children]]
      (when show-notification-dot?
        [right-side-with-cutout

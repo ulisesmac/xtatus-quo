@@ -8,6 +8,7 @@
    [xtatus-quo.components.drawers.bottom-actions.view]
    [xtatus-quo.components.drawers.drawer-action.view]
    [xtatus-quo.components.drawers.drawer-top.view]
+   [xtatus-quo.components.empty-state.view]
    [xtatus-quo.components.inputs.input.view]
    [xtatus-quo.components.inputs.title-input.view]
    [xtatus-quo.components.list-items.account.view]
@@ -83,4 +84,5 @@
 (def icon xtatus-quo.components.icon/icon)
 
 ;; info
+(def empty-state xtatus-quo.components.empty-state.view/empty-state)
 (def info-message quo.components.info.info-message.view/view)

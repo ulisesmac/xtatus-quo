@@ -13,6 +13,9 @@
   {:theme/light {:background-color colors/neutral-10}
    :theme/dark  {:background-color colors/neutral-90}})
 
+(defn- default-before-props [size]
+  {:container-style {:margin-right 4}})
+
 (defn segmented-control
   [{:keys [data size blur? container-style item-container-style
            active-item-container-style default-active on-change]}]
@@ -35,17 +38,24 @@
                                            6)
                        :padding          2}
                       container-style]}
-     (for [[indx {:keys [label id]}] (map-indexed vector data)]
-       ^{:key id}
-       [rn/view {:style {:margin-left (if (= 0 indx) 0 2)
-                         :flex        1}}
-        [tab/view
-         {:id                          id
-          :active-item-container-style active-item-container-style
-          :item-container-style        item-container-style
-          :segmented?                  true
-          :size                        size
-          :blur?                       blur?
-          :active                      (= id active-tab-id)
-          :on-press                    on-press}
-         label]])]))
+     (for [[indx {:keys [label id before icon before-props icon-props]}] (map-indexed vector data)]
+       (let [before*       (or before icon)
+             before-props* (or before-props
+                               icon-props
+                               (when before*
+                                 (default-before-props size)))]
+         ^{:key id}
+         [rn/view {:style {:margin-left (if (= 0 indx) 0 2)
+                           :flex        1}}
+          [tab/view
+           {:id                          id
+            :before                      before*
+            :before-props                before-props*
+            :active-item-container-style active-item-container-style
+            :item-container-style        item-container-style
+            :segmented?                  true
+            :size                        size
+            :blur?                       blur?
+            :active                      (= id active-tab-id)
+            :on-press                    on-press}
+           label]]))]))

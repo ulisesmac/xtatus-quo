@@ -3,6 +3,9 @@
     [clojure.java.io :as io]
     [clojure.string :as string]))
 
+;; NOTE: This namespace is macro-compiled and reads the curated icon set from
+;; resources/images/icons/required.edn.
+
 (def ^:private icon-path "./resources/images/icons2/")
 (def ^:private used-icons-edn "./resources/images/icons/required.edn")
 
