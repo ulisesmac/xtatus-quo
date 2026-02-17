@@ -23,6 +23,7 @@
    [xtatus-quo.components.settings.category.view]
    [xtatus-quo.components.tabs.segmented-tab]
    [xtatus-quo.components.tags.context-tag.view]
+   [xtatus-quo.components.tags.status-tag.view]
    [xtatus-quo.components.text-combinations.page-top.view]
    [xtatus-quo.components.text-combinations.standard-title.view]))
 
@@ -79,6 +80,7 @@
 
 ;; Tags
 (def context-tag xtatus-quo.components.tags.context-tag.view/view)
+(def status-tag xtatus-quo.components.tags.status-tag.view/view)
 
 ;; Icon
 (def icon xtatus-quo.components.icon/icon)

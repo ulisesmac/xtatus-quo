@@ -3,7 +3,7 @@
   (:require
     [mock.timbre :as log]))
 
-(def ^:private icons  (icons/resolve-icons))
+(def ^:private icons (icons/resolve-icons))
 
 (defn icon-source
   [icon]
