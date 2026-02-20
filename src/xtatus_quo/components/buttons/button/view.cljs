@@ -3,10 +3,24 @@
    [quo.components.buttons.button.properties :as button-properties]
    [quo.components.buttons.button.style :as style]
    [quo.context]
+   [quo.foundations.colors :as colors]
    [quo.foundations.customization-colors :as customization-colors]
+   ["react-native" :as react-native]
    [react-native.core :as rn]
    [xtatus-quo.components.icon :as quo.icons]
    [xtatus-quo.components.markdown.text :as text]))
+
+(def ^:private hairline-width
+  (.. react-native -StyleSheet -hairlineWidth))
+
+(defn- resolved-border-radius [size border-radius]
+  (or border-radius
+      (case size
+        56 12
+        40 12
+        32 10
+        24 8
+        12)))
 
 (defn button
   "with label
@@ -80,10 +94,12 @@
           :theme               theme
           :pressed?            (if pressed? pressed? pressed-state?)}])
       (when (= background :photo)
-        [:blur/blur-view {:style         style/blur-view
-                          :blur-radius   25
-                          :blur-type     :light
-                          :overlay-color blur-overlay-color}])
+        [rn/view {:pointer-events :none
+                  :style          [style/blur-view
+                                   {:background-color (colors/alpha blur-overlay-color 0.8)
+                                    :border-width     hairline-width
+                                    :border-color     "#000"
+                                    :border-radius    (resolved-border-radius size border-radius)}]}])
       (when icon-top
         [rn/view
          [quo.icons/icon icon-top
