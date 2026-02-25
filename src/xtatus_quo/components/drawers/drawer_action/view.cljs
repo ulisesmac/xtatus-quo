@@ -9,7 +9,7 @@
    [xtatus-quo.components.selectors.selectors.view :as selectors]))
 
 (defn view
-  [{:keys       [action action-icon icon description state title on-press blur? accessibility-label
+  [{:keys       [action action-icon icon icon-props description state title on-press blur? accessibility-label
                  input-props]
     action-type :type
     :or         {blur? false}}]
@@ -35,11 +35,12 @@
      [rn/view {:style {:flex-direction :row :align-items :center}}
       (when icon
         [icon/icon icon
-         {:accessibility-label :left-icon
-          :container-style     style/left-icon
-          :color               (style/icon-color {:theme theme
-                                                  :type  action-type
-                                                  :blur? blur?})}])
+         (merge {:accessibility-label :left-icon
+                 :container-style     style/left-icon
+                 :color               (style/icon-color {:theme theme
+                                                         :type  action-type
+                                                         :blur? blur?})}
+                icon-props)])
 
       [rn/view
        {:style style/text-container}
