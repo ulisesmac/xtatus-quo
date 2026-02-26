@@ -8,7 +8,6 @@
   {:regular   "Inter-Regular"
    :medium    "Inter-Medium"
    :semibold  "Inter-SemiBold"
-   :bold      "Inter-Bold"
    :monospace "InterStatus-Regular"
    :code      "UbuntuMono-Regular"})
 
@@ -46,21 +45,6 @@
   {:font-size      19
    :line-height    28
    :letter-spacing -0.304})
-
-(def display-40
-  {:font-size      40
-   :line-height    44
-   :letter-spacing -0.8})
-
-(def display-64
-  {:font-size      64
-   :line-height    68
-   :letter-spacing -1.28})
-
-(def display-88
-  {:font-size      88
-   :line-height    84
-   :letter-spacing -1.848})
 
 (def code-13
   {:font-size      13
@@ -107,19 +91,7 @@
        :body-semibold (assoc body-19 :font-family (:semibold font-families))}
    27 {:regular  (assoc heading-1-27 :font-family (:regular font-families))
        :medium   (assoc heading-1-27 :font-family (:medium font-families))
-       :semibold (assoc heading-1-27 :font-family (:semibold font-families))}
-   40 {:regular  (assoc display-40 :font-family (:regular font-families))
-       :medium   (assoc display-40 :font-family (:medium font-families))
-       :semibold (assoc display-40 :font-family (:semibold font-families))
-       :bold     (assoc display-40 :font-family (:bold font-families))}
-   64 {:regular  (assoc display-64 :font-family (:regular font-families))
-       :medium   (assoc display-64 :font-family (:medium font-families))
-       :semibold (assoc display-64 :font-family (:semibold font-families))
-       :bold     (assoc display-64 :font-family (:bold font-families))}
-   88 {:regular  (assoc display-88 :font-family (:regular font-families))
-       :medium   (assoc display-88 :font-family (:medium font-families))
-       :semibold (assoc display-88 :font-family (:semibold font-families))
-       :bold     (assoc display-88 :font-family (:bold font-families))}})
+       :semibold (assoc heading-1-27 :font-family (:semibold font-families))}})
 
 (defn- parse-font-keyword [font]
   (when (and (keyword? font) (= "font" (namespace font)))

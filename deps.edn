@@ -1,6 +1,7 @@
 {:paths ["src"]
  :deps  {reagent/reagent                                     {:mvn/version "1.2.0"}
          re-frame/re-frame                                   {:mvn/version "1.4.3"}
+         applied-science/js-interop                          {:mvn/version "0.4.2"}
          binaryage/oops                                      {:mvn/version "0.7.2"}
          com.andrewmcveigh/cljs-time                         {:mvn/version "0.5.2"}
          cljs-bean/cljs-bean                                 {:mvn/version "1.9.0"}
@@ -24,3 +25,9 @@
                      re-frisk-remote/re-frisk-remote       {:mvn/version "1.6.0"}
                      nubank/matcher-combinators            {:mvn/version "3.9.1"}}}}
  }
+
+
+#_{reagent/reagent                                     {:mvn/version "2.0.1"}
+ camel-snake-kebab/camel-snake-kebab                 {:mvn/version "0.4.3"}
+ org.clojure/clojurescript                           {:mvn/version "1.12.134"}
+ reagent-extended-compiler/reagent-extended-compiler {:local/root "../reagent-extended-compiler"}}
