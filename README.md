@@ -6,7 +6,10 @@ This repository starts with the Quo Component Library used by Status-mobile. Thi
 
 ⚠️ This Project is not ready to be used ⚠️
 
+## Design Token Docs
+
+- [Color generator strategy (Figma -> tokens)](docs/color-generator-strategy.md)
+
 ## License
 
 This project remains under the [MPL-2.0](LICENSE.md) license.
-
