@@ -45,20 +45,6 @@
                80  {:base "#FFFFFFCC"}
                90  {:base "#FFFFFFE6"}
                100 {:base "#FFFFFF"}}
-   :yin       {50 {:base "#09101C"
-                   :opa  {5  "#09101C0D"
-                          10 "#09101C1A"
-                          20 "#09101C33"
-                          30 "#09101C4D"
-                          40 "#09101C66"}}
-               60 {:base "#1D232E"}}
-   :yang      {50 {:base "#FFFFFF"
-                   :opa  {5  "#FFFFFF0D"
-                          10 "#FFFFFF1A"
-                          20 "#FFFFFF33"
-                          30 "#FFFFFF4D"
-                          40 "#FFFFFF66"}}
-               60 {:base "#EBEBEB"}}
    ;; Customization
    :primary   {50 {:base "#2A4AF5"}
                60 {:base "#223BC4"}}
@@ -125,16 +111,6 @@
                           30 "#F6B03C4D"
                           40 "#F6B03C66"}}
                60 {:base "#C58D30"}}
-   :beige     {50 {:opa {5  "#CAAE930D"
-                         10 "#CAAE931A"
-                         20 "#CAAE9333"
-                         30 "#CAAE934D"
-                         40 "#CAAE9366"}}}
-   :brown     {50 {:opa {5  "#99604D0D"
-                         10 "#99604D1A"
-                         20 "#99604D33"
-                         30 "#99604D4D"
-                         40 "#99604D66"}}}
    :camel     {50 {:base "#C78F67"}
                60 {:base "#9F7252"}}
    :copper    {50 {:base "#CB6256"}
@@ -168,16 +144,79 @@
     (js/parseFloat s)
     (js/parseInt s 10)))
 
+(defn- as-hex-byte
+  [value]
+  (-> (.toString (js/Math.round value) 16)
+      (.padStart 2 "0")
+      string/upper-case))
+
+(defn- hex->rgb
+  [hex-color]
+  (let [hex-value (subs hex-color 1)]
+    [(js/parseInt (subs hex-value 0 2) 16)
+     (js/parseInt (subs hex-value 2 4) 16)
+     (js/parseInt (subs hex-value 4 6) 16)]))
+
+(defn- rgb->hex
+  [[r g b]]
+  (str "#" (as-hex-byte r) (as-hex-byte g) (as-hex-byte b)))
+
+(defn- mix-channel
+  [base target weight]
+  (js/Math.round (+ (* base (- 1 weight))
+                    (* target weight))))
+
+(def compute-color
+  (memoize
+   (fn [base-color-50 intensity opacity]
+     (let [base-rgb    (hex->rgb base-color-50)
+           offset      (/ (- intensity 50) 50)
+           weight      (js/Math.abs offset)
+           target-rgb  (cond
+                         (neg? offset) [255 255 255]
+                         (pos? offset) [0 0 0]
+                         :else         base-rgb)
+           color-rgb   (if (= intensity 50)
+                         base-rgb
+                         (map mix-channel base-rgb target-rgb (repeat weight)))
+           color-hex   (rgb->hex color-rgb)
+           opacity-hex (when (some? opacity)
+                         (as-hex-byte (* 255 (/ opacity 100))))]
+       (if opacity-hex
+         (str color-hex opacity-hex)
+         color-hex)))))
+
 (def get-color
   (memoize
-   (fn [token]
-     (when (and (keyword? token) (= "color" (namespace token)))
-       (let [[_ color-name level opa]
-             (re-matches #"([a-z-]+)-([0-9]+(?:\.[0-9]+)?)(?:-([0-9]+))?"
-                         (name token))
-             color-key (when color-name (keyword color-name))
-             level-key (when level (parse-number level))]
-         (when (and color-key level-key)
-           (if opa
-             (get-in colors [color-key level-key :opa (js/parseInt opa 10)])
-             (get-in colors [color-key level-key :base]))))))))
+   (fn [color-kw]
+     (let [[_ color-name level opa] (->> color-kw
+                                         (name)
+                                         (re-matches #"([a-z-]+)-([0-9]+(?:\.[0-9]+)?)(?:-([0-9]+))?"))
+           color-key (keyword color-name)
+           level-key (parse-number level)]
+       (when (and color-key level-key)
+         (if opa
+           (get-in colors [color-key level-key :opa (js/parseInt opa 10)])
+           (get-in colors [color-key level-key :base])))))))
+
+(def get-color*
+  (memoize
+   (fn [color-kw]
+     (let [[_ color-name level opa] (->> color-kw
+                                         (name)
+                                         (re-matches #"([a-z-]+)-([0-9]+(?:\.[0-9]+)?)(?:-([0-9]+))?"))
+           color-key  (keyword color-name)
+           level-key  (parse-number level)
+           opacity    (when opa (js/parseInt opa 10))
+           base-color (case color-key
+                        :neutral (get-in colors [color-key level-key :base])
+                        :white   (get-in colors [color-key level-key :base])
+                        (get-in colors [color-key 50 :base]))]
+       (if (or (= color-key :neutral)
+               (= color-key :white))
+         (if opacity
+           (compute-color base-color 50 opacity)
+           base-color)
+         (if opacity
+           (compute-color base-color 50 opacity)
+           (compute-color base-color level-key nil)))))))
