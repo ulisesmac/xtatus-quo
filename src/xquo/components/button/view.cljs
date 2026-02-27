@@ -31,38 +31,44 @@
                                          (when on-press-out
                                            (on-press-out event)))
                                        [on-press-out])]
-    [:rn/pressable (-> props
-                       (dissoc :type :size :icon :state :disabled? :style :on-press-in :on-press-out)
-                       (assoc :disabled disabled?
-                              :style (rec.xf/add-styles
-                                      style/pressable-base-style
-                                      (style/container-layout-style size icon)
-                                      (style/pressable-type-style theme type disabled? pressed?)
-                                      (:style props))
-                              :on-press-in on-press-in!
-                              :on-press-out on-press-out!))
-     (case icon
-       :right [:<>
+    [:animated/view {:style [style/pressable-transition-style
+                             (if pressed?
+                               style/pressable-transition-in-duration
+                               style/pressable-transition-out-duration)
+                             (when pressed?
+                               style/pressable-pressed-style)]}
+     [:rn/pressable (-> props
+                        (dissoc :type :size :icon :state :disabled? :style :on-press-in :on-press-out)
+                        (assoc :disabled disabled?
+                               :style (rec.xf/add-styles
+                                       style/pressable-base-style
+                                       (style/container-layout-style size icon)
+                                       (style/pressable-type-style theme type disabled? pressed?)
+                                       (:style props))
+                               :on-press-in on-press-in!
+                               :on-press-out on-press-out!))
+      (case icon
+        :right [:<>
+                [button-text {:type type
+                              :size size}
+                 content]
+                [button-icon-placeholder {:size size
+                                          :side :right}]]
+        :left [:<>
+               [button-icon-placeholder {:size size
+                                         :side :left}]
                [button-text {:type type
                              :size size}
-                content]
-               [button-icon-placeholder {:size size
-                                         :side :right}]]
-       :left [:<>
-              [button-icon-placeholder {:size size
-                                        :side :left}]
-              [button-text {:type type
-                            :size size}
-               content]]
-       :left-right [:<>
-                    [button-icon-placeholder {:size size
-                                              :side :left}]
-                    [button-text {:type type
-                                  :size size}
-                     content]
-                    [button-icon-placeholder {:size size
-                                              :side :right}]]
-       :icon-only [button-icon-placeholder {:size size}]
-       [button-text {:type type
-                     :size size}
-        content])]))
+                content]]
+        :left-right [:<>
+                     [button-icon-placeholder {:size size
+                                               :side :left}]
+                     [button-text {:type type
+                                   :size size}
+                      content]
+                     [button-icon-placeholder {:size size
+                                               :side :right}]]
+        :icon-only [button-icon-placeholder {:size size}]
+        [button-text {:type type
+                      :size size}
+         content])]]))

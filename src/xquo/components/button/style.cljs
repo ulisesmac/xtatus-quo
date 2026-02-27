@@ -199,6 +199,23 @@
    :flex-direction  :row
    :align-self      :flex-start})
 
+(defstyle pressable-transition-style
+  {:transform                  [{:scale 1}
+                                {:translate-y 0}]
+   :transition-property        "transform"})
+
+(defstyle pressable-transition-in-duration
+  {:transition-duration        "100ms"
+   :transition-timing-function "ease-out"})
+
+(defstyle pressable-transition-out-duration
+  {:transition-duration        "150ms"
+   :transition-timing-function "ease-in-out"})
+
+(defstyle pressable-pressed-style
+  {:transform [{:scale 0.982}
+               {:translate-y 2}]})
+
 (def font-type
   {40 :font/medium-15
    32 :font/medium-15
