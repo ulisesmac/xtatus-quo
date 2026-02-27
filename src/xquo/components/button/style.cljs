@@ -5,26 +5,31 @@
 
 (def type-styles
   {:theme/light {:primary   {:text-color (colors/get-color :color/white-100)
+                             :icon-color (colors/get-color :color/white-70)
                              :default    {:background-color (colors/get-color :color/primary-50)}
                              :pressed    {:background-color (colors/get-color :color/primary-60)}
                              :disabled   {:background-color (colors/get-color :color/primary-50)
                                           :opacity          0.3}}
                  :positive  {:text-color (colors/get-color :color/white-100)
+                             :icon-color (colors/get-color :color/white-70)
                              :default    {:background-color (colors/get-color :color/success-50)}
                              :pressed    {:background-color (colors/get-color :color/success-60)}
                              :disabled   {:background-color (colors/get-color :color/success-50)
                                           :opacity          0.3}}
                  :grey      {:text-color (colors/get-color :color/neutral-100)
+                             :icon-color (colors/get-color :color/neutral-50)
                              :default    {:background-color (colors/get-color :color/neutral-10)}
                              :pressed    {:background-color (colors/get-color :color/neutral-20)}
                              :disabled   {:background-color (colors/get-color :color/neutral-10)
                                           :opacity          0.3}}
                  :dark-grey {:text-color (colors/get-color :color/neutral-100)
+                             :icon-color (colors/get-color :color/neutral-50)
                              :default    {:background-color (colors/get-color :color/neutral-20)}
                              :pressed    {:background-color (colors/get-color :color/neutral-30)}
                              :disabled   {:background-color (colors/get-color :color/neutral-20)
                                           :opacity          0.3}}
                  :outline   {:text-color (colors/get-color :color/neutral-100)
+                             :icon-color (colors/get-color :color/neutral-50)
                              :default    {:background-color :transparent
                                           :border-color     (colors/get-color :color/neutral-30)
                                           :border-width     1}
@@ -36,36 +41,43 @@
                                           :border-width     1
                                           :opacity          0.3}}
                  :ghost     {:text-color (colors/get-color :color/neutral-100)
+                             :icon-color (colors/get-color :color/neutral-50)
                              :default    {:background-color :transparent}
                              :pressed    {:background-color (colors/get-color :color/neutral-10)}
                              :disabled   {:background-color :transparent
                                           :opacity          0.3}}
                  :danger    {:text-color (colors/get-color :color/white-100)
+                             :icon-color (colors/get-color :color/white-70)
                              :default    {:background-color (colors/get-color :color/danger-50)}
                              :pressed    {:background-color (colors/get-color :color/danger-60)}
                              :disabled   {:background-color (colors/get-color :color/danger-50)
                                           :opacity          0.3}}}
    :theme/dark  {:primary   {:text-color (colors/get-color :color/white-100)
+                             :icon-color (colors/get-color :color/white-70)
                              :default    {:background-color (colors/get-color :color/primary-50)}
                              :pressed    {:background-color (colors/get-color :color/primary-60)}
                              :disabled   {:background-color (colors/get-color :color/primary-50)
                                           :opacity          0.3}}
                  :positive  {:text-color (colors/get-color :color/white-100)
+                             :icon-color (colors/get-color :color/white-70)
                              :default    {:background-color (colors/get-color :color/success-50)}
                              :pressed    {:background-color (colors/get-color :color/success-60)}
                              :disabled   {:background-color (colors/get-color :color/success-50)
                                           :opacity          0.3}}
                  :grey      {:text-color (colors/get-color :color/white-100)
+                             :icon-color (colors/get-color :color/neutral-40)
                              :default    {:background-color (colors/get-color :color/white-5)}
                              :pressed    {:background-color (colors/get-color :color/white-10)}
                              :disabled   {:background-color (colors/get-color :color/white-5)
                                           :opacity          0.3}}
                  :dark-grey {:text-color (colors/get-color :color/white-100)
+                             :icon-color (colors/get-color :color/neutral-40)
                              :default    {:background-color (colors/get-color :color/white-10)}
                              :pressed    {:background-color (colors/get-color :color/white-20)}
                              :disabled   {:background-color (colors/get-color :color/white-10)
                                           :opacity          0.3}}
                  :outline   {:text-color (colors/get-color :color/white-100)
+                             :icon-color (colors/get-color :color/neutral-40)
                              :default    {:background-color :transparent
                                           :border-color     (colors/get-color :color/white-10)
                                           :border-width     1}
@@ -77,11 +89,13 @@
                                           :border-width     1
                                           :opacity          0.3}}
                  :ghost     {:text-color (colors/get-color :color/white-100)
+                             :icon-color (colors/get-color :color/neutral-40)
                              :default    {:background-color :transparent}
                              :pressed    {:background-color (colors/get-color :color/white-10)}
                              :disabled   {:background-color :transparent
                                           :opacity          0.3}}
                  :danger    {:text-color (colors/get-color :color/white-100)
+                             :icon-color (colors/get-color :color/white-70)
                              :default    {:background-color (colors/get-color :color/danger-50)}
                              :pressed    {:background-color (colors/get-color :color/danger-60)}
                              :disabled   {:background-color (colors/get-color :color/danger-50)
@@ -162,24 +176,12 @@
                 :else     :default)]
     (get-in type-styles [theme type state])))
 
-(defstyle icon-size-style-40-32
-  {:width            20
-   :height           20
-   :background-color (colors/get-color :color/neutral-40)
-   :border-radius    10})
-
-(defstyle icon-size-style-24
-  {:width            12
-   :height           12
-   :background-color (colors/get-color :color/neutral-40)
-   :border-radius    6})
-
-(defn icon-size-styles [size]
+(defn icon-size [size]
   (case size
-    40 icon-size-style-40-32
-    32 icon-size-style-40-32
-    24 icon-size-style-24
-    nil))
+    24 12
+    40 20
+    32 20
+    20))
 
 (defstyle icon-left-gap
   {:margin-right 4})
@@ -221,5 +223,11 @@
    32 :font/medium-15
    24 :font/medium-13})
 
+(defn text-color [theme type]
+  (get-in type-styles [theme type :text-color]))
+
+(defn icon-color [theme type]
+  (get-in type-styles [theme type :icon-color]))
+
 (defn text-style [theme type]
-  (style {:color (get-in type-styles [theme type :text-color])}))
+  (style {:color (text-color theme type)}))
