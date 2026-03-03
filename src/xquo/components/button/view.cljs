@@ -12,11 +12,12 @@
                 :style (style/text-style theme type)}
      content]))
 
-(defn- button-icon [{:keys [icon-name side type size]}]
+(defn- button-icon [{:keys [icon-name side type size icon-color]}]
   (let [theme (context/use-theme)]
     [icon/icon {:icon  icon-name
                 :size  (style/icon-size size)
-                :color (style/icon-color theme type)
+                :color (or icon-color
+                           (style/icon-color theme type))
                 :style (style/icon-gap-style side)}]))
 
 (defn- layout-type [icon-only? left-icon right-icon]
@@ -27,7 +28,7 @@
     right-icon                 :right
     :else                      nil))
 
-(defn button [{:keys               [type size disabled? on-press-in on-press-out]
+(defn button [{:keys               [type size disabled? on-press-in on-press-out icon-color]
                {left-icon  :left
                 right-icon :right} :icons
                :or                 {type :primary
@@ -52,7 +53,7 @@
                               style/pressable-pressed-state-style
                               style/pressable-default-state-style)}
      [:rn/pressable (-> props
-                        (dissoc :type :size :icons :state :disabled? :style :on-press-in :on-press-out)
+                        (dissoc :type :size :icons :state :disabled? :style :on-press-in :on-press-out :icon-color)
                         (assoc :disabled disabled?
                                :style (rec.xf/add-styles
                                        style/pressable-base-style
@@ -65,7 +66,8 @@
         icon-only?
         [button-icon {:icon-name (or left-icon right-icon)
                       :type      type
-                      :size      size}]
+                      :size      size
+                      :icon-color icon-color}]
 
         (= layout :right)
         [:<>
@@ -74,14 +76,16 @@
          [button-icon {:icon-name right-icon
                        :side      :right
                        :type      type
-                       :size      size}]]
+                       :size      size
+                       :icon-color icon-color}]]
 
         (= layout :left)
         [:<>
          [button-icon {:icon-name left-icon
                        :side      :left
                        :type      type
-                       :size      size}]
+                       :size      size
+                       :icon-color icon-color}]
          [button-text {:type type :size size}
           content]]
 
@@ -90,13 +94,15 @@
          [button-icon {:icon-name left-icon
                        :side      :left
                        :type      type
-                       :size      size}]
+                       :size      size
+                       :icon-color icon-color}]
          [button-text {:type type :size size}
           content]
          [button-icon {:icon-name right-icon
                        :side      :right
                        :type      type
-                       :size      size}]]
+                       :size      size
+                       :icon-color icon-color}]]
 
         :else
         [button-text {:type type :size size}

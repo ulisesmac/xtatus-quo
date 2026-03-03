@@ -3,6 +3,7 @@
 ;; Source: Figma Foundations/Border Radius node 622:270.
 ;; Values captured from the visible cards in the Figma page.
 
+;; TODO: rename to avoid the borders word and also use it like a FN instead of as a value
 (def border-radius-values
   {:border/max           "50%" ;; Contextual
    :border/drawer        20 ;; Drawers

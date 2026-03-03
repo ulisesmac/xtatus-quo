@@ -3,5 +3,5 @@
 
 (def ^:private icons (icons/resolve-icons))
 
-(defn icon-source [icon]
-  (get icons (name icon)))
+(defn icon-source [icon-key]
+  (get icons (name icon-key)))

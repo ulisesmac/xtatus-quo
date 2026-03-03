@@ -1,4 +1,8 @@
 #{
+  :icon/dropdown-12
+  :icon/dropdown-16
+  :icon/dropdown-20
   :icon/placeholder-12
   :icon/placeholder-20
+  :icon/your-icon-20
 }
