@@ -34,21 +34,9 @@
     (colors/get-color :color/neutral-50)))
 
 (defn icon-color [theme background]
-  (if (= background :photo)
-    (if (= theme :theme/dark)
-      (colors/get-color :color/white-100)
-      (colors/get-color :color/neutral-100))
-    (if (or (= theme :theme/dark) (dark-background? background))
-      (colors/get-color :color/neutral-40)
-      (colors/get-color :color/neutral-50))))
-
-(defn action-button-style [theme background]
-  (case background
-    :photo (style {:background-color (colors/get-color :color/white-40)})
-    :blur  (style {:background-color (if (= theme :theme/dark)
-                                       (colors/get-color :color/white-20)
-                                       (colors/get-color :color/white-40))})
-    nil))
+  (if (or (= theme :theme/dark) (dark-background? background))
+    (colors/get-color :color/white-100)
+    (colors/get-color :color/neutral-100)))
 
 (defn dropdown-surface-style [theme background]
   (case background

@@ -8,13 +8,12 @@
 
 (defn- icon-button [{:keys [icon on-press theme background]}]
   (when icon
-    (let [button-style (style/action-button-style theme background)]
-      [button/button (cond-> {:type       (style/action-button-type theme background)
-                              :size       32
-                              :icons      {:left icon}
-                              :icon-color (style/icon-color theme background)}
-                       button-style (assoc :style button-style)
-                       on-press     (assoc :on-press on-press))])))
+    [button/button (cond-> {:type       (style/action-button-type theme background)
+                            :size       32
+                            :background background
+                            :icons      {:left icon}
+                            :icon-color (style/icon-color theme background)}
+                     on-press (assoc :on-press on-press))]))
 
 ;; TODO: Replace this placeholder with the real avatar component.
 (defn- avatar-placeholder [{:keys [on-press]}]
