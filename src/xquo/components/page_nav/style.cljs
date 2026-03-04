@@ -149,9 +149,15 @@
                               (colors/get-color :color/white-10)
                               (colors/get-color :color/neutral-10))}))
 
-(defstyle placeholder-avatar
-  {:width            24
-   :height           24
+(defstyle placeholder-account-switcher
+  {:width            32
+   :height           32
+   :border-radius    (:border/size-32 borders/border-radius-values)
+   :background-color (colors/get-color :color/danger-50)})
+
+(defstyle placeholder-channel-avatar
+  {:width            20
+   :height           20
    :background-color (colors/get-color :color/danger-50)})
 
 (defstyle placeholder-dots

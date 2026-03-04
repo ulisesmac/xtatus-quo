@@ -16,9 +16,13 @@
                      on-press (assoc :on-press on-press))]))
 
 ;; TODO: Replace this placeholder with the real avatar component.
-(defn- avatar-placeholder [{:keys [on-press]}]
-  [:rn/pressable (cond-> {:style style/placeholder-avatar}
+(defn- account-switcher-placeholder [{:keys [on-press]}]
+  [:rn/pressable (cond-> {:style style/placeholder-account-switcher}
                    on-press (assoc :on-press on-press))])
+
+;; TODO: Replace this placeholder with the real channel avatar/emoji component.
+(defn- channel-avatar-placeholder []
+  [:rn/view {:style style/placeholder-channel-avatar}])
 
 (defn- max-right-actions [center]
   (case (:type center)
@@ -59,7 +63,7 @@
                      ^{:key (str "right-action-" index)}
                      [:rn/view {:style (when (pos? index) style/action-gap)}
                       (if (= (:type action) :account-switcher)
-                        [avatar-placeholder {:on-press (:on-press action)}]
+                        [account-switcher-placeholder {:on-press (:on-press action)}]
                         [icon-button {:icon       (:icon action)
                                       :on-press   (:on-press action)
                                       :theme      theme
@@ -105,7 +109,7 @@
 (defn- channel-center [{:keys [channel-name channel-icon theme background]}]
   [:rn/view {:style style/title-row}
    [:rn/view {:style style/placeholder-avatar-gap}
-    [avatar-placeholder {}]]
+    [channel-avatar-placeholder]]
    [text/text {:font            :font/medium-15
                :style           {:color (style/title-color theme background)}
                :number-of-lines 1}
