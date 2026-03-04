@@ -101,6 +101,58 @@
                              :disabled   {:background-color (colors/get-color :color/danger-50)
                                           :opacity          0.3}}}})
 
+(def background-type-styles
+  {:photo {:theme/light {:grey    {:icon-color (colors/get-color :color/neutral-100)
+                                   :default    {:background-color (colors/get-color :color/white-40)}
+                                   :pressed    {:background-color (colors/get-color :color/white-50)}
+                                   :disabled   {:background-color (colors/get-color :color/white-40)
+                                                :opacity          0.3}}
+                         :outline {:icon-color (colors/get-color :color/neutral-100)
+                                   :default    {:background-color :transparent
+                                                :border-color     (colors/get-color :color/white-40)
+                                                :border-width     1}
+                                   :pressed    {:background-color :transparent
+                                                :border-color     (colors/get-color :color/white-50)
+                                                :border-width     1}
+                                   :disabled   {:background-color :transparent
+                                                :border-color     (colors/get-color :color/white-40)
+                                                :border-width     1
+                                                :opacity          0.3}}}
+           :theme/dark  {:grey    {:icon-color (colors/get-color :color/white-100)
+                                   :default    {:background-color (colors/get-color :color/white-20)}
+                                   :pressed    {:background-color (colors/get-color :color/white-30)}
+                                   :disabled   {:background-color (colors/get-color :color/white-20)
+                                                :opacity          0.3}}
+                         :outline {:icon-color (colors/get-color :color/white-100)
+                                   :default    {:background-color :transparent
+                                                :border-color     (colors/get-color :color/white-20)
+                                                :border-width     1}
+                                   :pressed    {:background-color :transparent
+                                                :border-color     (colors/get-color :color/white-30)
+                                                :border-width     1}
+                                   :disabled   {:background-color :transparent
+                                                :border-color     (colors/get-color :color/white-20)
+                                                :border-width     1
+                                                :opacity          0.3}}}}
+   :blur  {:theme/light {:grey    {:icon-color (colors/get-color :color/neutral-100)
+                                   :default    {:background-color (colors/get-color :color/neutral-80-5)}
+                                   :pressed    {:background-color (colors/get-color :color/neutral-80-10)}
+                                   :disabled   {:background-color (colors/get-color :color/neutral-80-5)
+                                                :opacity          0.3}}
+                         :outline {:icon-color (colors/get-color :color/neutral-100)
+                                   :default    {:background-color :transparent
+                                                :border-color     (colors/get-color :color/neutral-80-10)
+                                                :border-width     1}
+                                   :pressed    {:background-color :transparent
+                                                :border-color     (colors/get-color :color/neutral-80-20)
+                                                :border-width     1}
+                                   :disabled   {:background-color :transparent
+                                                :border-color     (colors/get-color :color/neutral-80-10)
+                                                :border-width     1
+                                                :opacity          0.3}}}
+           :theme/dark  {:grey    {:icon-color (colors/get-color :color/white-100)}
+                         :outline {:icon-color (colors/get-color :color/white-100)}}}})
+
 (def container-layout-styles
   (let [{:border/keys [sizes-40-56 size-32 size-24 max]} borders/border-radius-values]
     {40 {nil         (style {:padding-horizontal 16
@@ -169,12 +221,25 @@
 (defn container-layout-style [size icon]
   (get-in container-layout-styles [size icon]))
 
-(defn pressable-type-style [theme type disabled? pressed?]
-  (let [state (cond
-                disabled? :disabled
-                pressed?  :pressed
-                :else     :default)]
-    (get-in type-styles [theme type state])))
+(defn- component-state [disabled? pressed?]
+  (cond
+    disabled? :disabled
+    pressed?  :pressed
+    :else     :default))
+
+(defn- normalized-background [background]
+  (case background
+    (:photo :blur) background
+    :none))
+
+(defn pressable-type-style [theme type background disabled? pressed?]
+  (let [state (component-state disabled? pressed?)]
+    (or (get-in background-type-styles [(normalized-background background) theme type state])
+        (get-in type-styles [theme type state]))))
+
+(defn text-color [theme type background]
+  (or (get-in background-type-styles [(normalized-background background) theme type :text-color])
+      (get-in type-styles [theme type :text-color])))
 
 (defn icon-size [size]
   (case size
@@ -218,11 +283,9 @@
    32 :font/medium-15
    24 :font/medium-13})
 
-(defn text-color [theme type]
-  (get-in type-styles [theme type :text-color]))
+(defn icon-color [theme type background]
+  (or (get-in background-type-styles [(normalized-background background) theme type :icon-color])
+      (get-in type-styles [theme type :icon-color])))
 
-(defn icon-color [theme type]
-  (get-in type-styles [theme type :icon-color]))
-
-(defn text-style [theme type]
-  (style {:color (text-color theme type)}))
+(defn text-style [theme type background]
+  (style {:color (text-color theme type background)}))

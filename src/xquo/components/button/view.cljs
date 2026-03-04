@@ -6,18 +6,18 @@
             [xquo.context :as context]
             [xquo.react-native :as rn]))
 
-(defn- button-text [{:keys [type size]} content]
+(defn- button-text [{:keys [type size background]} content]
   (let [theme (context/use-theme)]
     [text/text {:font  (get style/font-type size)
-                :style (style/text-style theme type)}
+                :style (style/text-style theme type background)}
      content]))
 
-(defn- button-icon [{:keys [icon-name side type size icon-color]}]
+(defn- button-icon [{:keys [icon-name side type size icon-color background]}]
   (let [theme (context/use-theme)]
     [icon/icon {:icon  icon-name
                 :size  (style/icon-size size)
                 :color (or icon-color
-                           (style/icon-color theme type))
+                           (style/icon-color theme type background))
                 :style (style/icon-gap-style side)}]))
 
 (defn- layout-type [icon-only? left-icon right-icon]
@@ -28,13 +28,40 @@
     right-icon                 :right
     :else                      nil))
 
-(defn button [{:keys               [type size disabled? on-press-in on-press-out icon-color]
-               {left-icon  :left
-                right-icon :right} :icons
-               :or                 {type :primary
-                                    size 40}
-               :as                 props}
-              content]
+(defn button
+  "Button component.
+
+  API:
+  - `props` map
+    - `:type` one of `:primary`, `:positive`, `:grey`, `:dark-grey`, `:outline`,
+      `:ghost`, `:danger` (default `:primary`)
+    - `:size` one of `40`, `32`, `24` (default `40`)
+    - `:background` one of `:none`, `:photo`, `:blur` (default `:none`)
+    - `:icons` optional map `{:left :icon/... :right :icon/...}`
+    - `:icon-color` optional icon color override
+    - `:disabled?` optional boolean
+    - `:on-press-in` optional callback `(fn [event] ...)`
+    - `:on-press-out` optional callback `(fn [event] ...)`
+    - `:style` optional caller style (map/vector/js style)
+    - Any additional keys are forwarded to `:rn/pressable` (for example
+      `:on-press`, `:on-long-press`, `:accessibility-label`, `:testID`)
+  - `content` optional label node.
+
+  Layout behavior:
+  - If `content` is nil and `:icons` has `:left` or `:right`, it renders icon-only.
+  - With `content`, icon layout is derived from `:icons`:
+    - `{:left ...}` left icon
+    - `{:right ...}` right icon
+    - `{:left ... :right ...}` both sides
+    - no icons -> text-only."
+  [{:keys               [type size background disabled? on-press-in on-press-out icon-color]
+    {left-icon  :left
+     right-icon :right} :icons
+    :or                 {type       :primary
+                         background :none
+                         size       40}
+    :as                 props}
+   content]
   (let [theme         (context/use-theme)
         icon-only?    (and (nil? content) (or left-icon right-icon))
         layout        (layout-type icon-only? left-icon right-icon)
@@ -53,12 +80,12 @@
                               style/pressable-pressed-state-style
                               style/pressable-default-state-style)}
      [:rn/pressable (-> props
-                        (dissoc :type :size :icons :state :disabled? :style :on-press-in :on-press-out :icon-color)
+                        (dissoc :type :size :background :icons :state :disabled? :style :on-press-in :on-press-out :icon-color)
                         (assoc :disabled disabled?
                                :style (rec.xf/add-styles
                                        style/pressable-base-style
                                        (style/container-layout-style size layout)
-                                       (style/pressable-type-style theme type disabled? pressed?)
+                                       (style/pressable-type-style theme type background disabled? pressed?)
                                        (:style props))
                                :on-press-in on-press-in!
                                :on-press-out on-press-out!))
@@ -67,16 +94,18 @@
         [button-icon {:icon-name (or left-icon right-icon)
                       :type      type
                       :size      size
+                      :background background
                       :icon-color icon-color}]
 
         (= layout :right)
         [:<>
-         [button-text {:type type :size size}
+         [button-text {:type type :size size :background background}
           content]
          [button-icon {:icon-name right-icon
                        :side      :right
                        :type      type
                        :size      size
+                       :background background
                        :icon-color icon-color}]]
 
         (= layout :left)
@@ -85,8 +114,9 @@
                        :side      :left
                        :type      type
                        :size      size
+                       :background background
                        :icon-color icon-color}]
-         [button-text {:type type :size size}
+         [button-text {:type type :size size :background background}
           content]]
 
         (= layout :left-right)
@@ -95,15 +125,17 @@
                        :side      :left
                        :type      type
                        :size      size
+                       :background background
                        :icon-color icon-color}]
-         [button-text {:type type :size size}
+         [button-text {:type type :size size :background background}
           content]
          [button-icon {:icon-name right-icon
                        :side      :right
                        :type      type
                        :size      size
+                       :background background
                        :icon-color icon-color}]]
 
         :else
-        [button-text {:type type :size size}
+        [button-text {:type type :size size :background background}
          content])]]))
