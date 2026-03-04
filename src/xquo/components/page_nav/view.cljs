@@ -193,15 +193,30 @@
     :custom                 custom-content
     nil))
 
+(defn nav-left-action [{:keys [icon on-press background]
+                        :or   {background :white}}]
+  (let [theme (context/use-theme)]
+    [icon-button {:icon       icon
+                  :on-press   on-press
+                  :theme      theme
+                  :background background}]))
+
+(defn nav-title [{:keys [title background]
+                  :or   {background :white}}]
+  (let [theme (context/use-theme)]
+    [title-center {:title      title
+                   :theme      theme
+                   :background background}]))
+
 (defn page-nav
   "Page nav component.
 
   Props:
   - `:background` one of `:white`, `:neutral-5`, `:neutral-90`, `:neutral-95`,
     `:neutral-100`, `:photo`, `:blur`
-  - `:left` map: `{:icon :icon/your-icon :on-press fn}`
+  - `:left` map: `{:icon :icon/arrow-left :on-press fn}`
   - `:right` nil or vector (up to 3 items)
-    - action item: `{:icon :icon/your-icon :on-press fn}`
+    - action item: `{:icon :icon/placeholder :on-press fn}`
     - account switcher placeholder: `{:type :account-switcher :on-press fn}`
   - `:center` map describing center variant and its props
   - `:center-opacity` optional opacity for the center slot
