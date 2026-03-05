@@ -1,5 +1,6 @@
 (ns xquo.core
   (:require [xquo.components.button.view]
+            [xquo.components.counter.step.view]
             [xquo.components.icon.view]
             [xquo.components.page-nav.view]
             [xquo.components.text.view]
@@ -10,6 +11,7 @@
 (def page-nav xquo.components.page-nav.view/page-nav)
 (def page-nav-left-action xquo.components.page-nav.view/nav-left-action)
 (def page-nav-title xquo.components.page-nav.view/nav-title)
+(def step xquo.components.counter.step.view/step)
 (def text xquo.components.text.view/text)
 (def provider xquo.context/provider)
 (def use-theme xquo.context/use-theme)
