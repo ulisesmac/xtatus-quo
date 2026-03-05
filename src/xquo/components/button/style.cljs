@@ -232,10 +232,19 @@
     (:photo :blur) background
     :none))
 
-(defn pressable-type-style [theme type background disabled? pressed?]
+(defn- primary-style [color state]
+  (cond
+    (= state :disabled) (style {:background-color (colors/get-color color 50)
+                                :opacity          0.3})
+    (= state :pressed)  (style {:background-color (colors/get-color color 60)})
+    :else               (style {:background-color (colors/get-color color 50)})))
+
+(defn pressable-type-style [theme type background color disabled? pressed?]
   (let [state (component-state disabled? pressed?)]
-    (or (get-in background-type-styles [(normalized-background background) theme type state])
-        (get-in type-styles [theme type state]))))
+    (if (= type :primary)
+      (primary-style color state)
+      (or (get-in background-type-styles [(normalized-background background) theme type state])
+          (get-in type-styles [theme type state])))))
 
 (defn text-color [theme type background]
   (or (get-in background-type-styles [(normalized-background background) theme type :text-color])

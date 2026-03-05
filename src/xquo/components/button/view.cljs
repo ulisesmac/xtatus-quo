@@ -37,6 +37,7 @@
       `:ghost`, `:danger` (default `:primary`)
     - `:size` one of `40`, `32`, `24` (default `40`)
     - `:background` one of `:none`, `:photo`, `:blur` (default `:none`)
+    - `:color` customization color family keyword (default `:color/blue`)
     - `:icons` optional map `{:left :icon/... :right :icon/...}`
     - `:icon-color` optional icon color override
     - `:disabled?` optional boolean
@@ -54,11 +55,12 @@
     - `{:right ...}` right icon
     - `{:left ... :right ...}` both sides
     - no icons -> text-only."
-  [{:keys               [type size background disabled? on-press-in on-press-out icon-color]
+  [{:keys               [type size background color disabled? on-press-in on-press-out icon-color]
     {left-icon  :left
      right-icon :right} :icons
     :or                 {type       :primary
                          background :none
+                         color      :color/blue
                          size       40}
     :as                 props}
    content]
@@ -80,12 +82,12 @@
                               style/pressable-pressed-state-style
                               style/pressable-default-state-style)}
      [:rn/pressable (-> props
-                        (dissoc :type :size :background :icons :state :disabled? :style :on-press-in :on-press-out :icon-color)
+                        (dissoc :type :size :background :color :icons :state :disabled? :style :on-press-in :on-press-out :icon-color)
                         (assoc :disabled disabled?
                                :style (rec.xf/add-styles
                                        style/pressable-base-style
                                        (style/container-layout-style size layout)
-                                       (style/pressable-type-style theme type background disabled? pressed?)
+                                       (style/pressable-type-style theme type background color disabled? pressed?)
                                        (:style props))
                                :on-press-in on-press-in!
                                :on-press-out on-press-out!))
