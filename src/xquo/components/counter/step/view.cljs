@@ -15,6 +15,7 @@
   Props:
   - `:type` one of `:neutral`, `:complete`, `:active` (default `:neutral`)
   - `:background` one of `:none`, `:blur` (default `:none`)
+  - `:color` customization color family keyword (default `:color/blue`)
   - `:style` optional caller style (map/vector/js style)
   - Any additional keys are forwarded to `:rn/view` (for example
     `:accessibility-label`, `:testID`)
@@ -25,23 +26,24 @@
     - 1 character -> 20px
     - 2 characters -> 20px
     - 3+ characters -> 28px."
-  [{:keys [type background]
+  [{:keys [type background color]
     :or   {type       :neutral
-           background :none}
+           background :none
+           color      :color/blue}
     :as   props}
    value]
   (let [theme      (context/use-theme)
         label      (str value)
         characters (characters-count label)]
     [:rn/view (-> props
-                  (dissoc :type :background :style)
+                  (dissoc :type :background :color :style)
                   (assoc :style (rec.xf/add-styles
                                  style/container-base
                                  (style/container-width-style characters)
                                  (:style props))))
      [:rn/view {:style [style/surface-base
                         (style/surface-inset-style characters)
-                        (style/surface-color-style theme type background)]}]
+                        (style/surface-color-style theme type background color)]}]
      [:rn/view {:style [style/value-slot-base
                         (style/value-slot-inset-style characters)]}
       [text/text {:font  :font/medium-11

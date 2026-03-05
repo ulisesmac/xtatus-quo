@@ -58,6 +58,14 @@
 (defn- dark-theme? [theme]
   (= theme :theme/dark))
 
+(defn- color-token
+  ([color level]
+   (keyword (namespace color)
+            (str (name color) "-" level)))
+  ([color level opacity]
+   (keyword (namespace color)
+            (str (name color) "-" level "-" opacity))))
+
 (defn container-width-style [characters]
   (if (= characters 3)
     container-width-28
@@ -75,7 +83,7 @@
     (dark-theme? theme)                            (colors/get-color :color/neutral-80)
     :else                                          (colors/get-color :color/neutral-20)))
 
-(defn surface-color-style [theme type background]
+(defn surface-color-style [theme type background color]
   (cond
     (= type :neutral)
     (style {:border-width 1
@@ -83,11 +91,11 @@
 
     (= type :complete)
     (style {:background-color (if (dark-theme? theme)
-                                (colors/get-color :color/blue-60)
-                                (colors/get-color :color/blue-50))})
+                                (colors/get-color (color-token color 60))
+                                (colors/get-color (color-token color 50)))})
 
     (= type :active)
-    (style {:background-color (colors/get-color :color/blue-50-10)})
+    (style {:background-color (colors/get-color (color-token color 50 10))})
 
     :else
     (style {:border-width 1

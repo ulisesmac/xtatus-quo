@@ -62,7 +62,7 @@
                           30 "#2A4AF54D"
                           40 "#2A4AF566"}}
                60 {:base "#223BC4"}}
-   :indigo    {50 {:base "#216266"
+   :army      {50 {:base "#216266"
                    :opa  {5  "#2162660D"
                           10 "#2162661A"
                           20 "#21626633"
@@ -138,31 +138,26 @@
                50 {:base "#E95460"}
                60 {:base "#BA434D"}}})
 
-(defn- parse-number
-  [s]
+(defn- parse-number [s]
   (if (string/includes? s ".")
     (js/parseFloat s)
     (js/parseInt s 10)))
 
-(defn- as-hex-byte
-  [value]
+(defn- as-hex-byte [value]
   (-> (.toString (js/Math.round value) 16)
       (.padStart 2 "0")
       string/upper-case))
 
-(defn- hex->rgb
-  [hex-color]
+(defn- hex->rgb [hex-color]
   (let [hex-value (subs hex-color 1)]
     [(js/parseInt (subs hex-value 0 2) 16)
      (js/parseInt (subs hex-value 2 4) 16)
      (js/parseInt (subs hex-value 4 6) 16)]))
 
-(defn- rgb->hex
-  [[r g b]]
+(defn- rgb->hex [[r g b]]
   (str "#" (as-hex-byte r) (as-hex-byte g) (as-hex-byte b)))
 
-(defn- mix-channel
-  [base target weight]
+(defn- mix-channel [base target weight]
   (js/Math.round (+ (* base (- 1 weight))
                     (* target weight))))
 
@@ -186,7 +181,7 @@
          (str color-hex opacity-hex)
          color-hex)))))
 
-(def get-color
+(def get-color*
   (memoize
    (fn [color-kw]
      (let [[_ color-name level opa] (->> color-kw
@@ -199,24 +194,26 @@
            (get-in colors [color-key level-key :opa (js/parseInt opa 10)])
            (get-in colors [color-key level-key :base])))))))
 
-(def get-color*
+(def get-color
   (memoize
-   (fn [color-kw]
-     (let [[_ color-name level opa] (->> color-kw
-                                         (name)
-                                         (re-matches #"([a-z-]+)-([0-9]+(?:\.[0-9]+)?)(?:-([0-9]+))?"))
-           color-key  (keyword color-name)
-           level-key  (parse-number level)
-           opacity    (when opa (js/parseInt opa 10))
-           base-color (case color-key
-                        :neutral (get-in colors [color-key level-key :base])
-                        :white   (get-in colors [color-key level-key :base])
-                        (get-in colors [color-key 50 :base]))]
-       (if (or (= color-key :neutral)
-               (= color-key :white))
-         (if opacity
-           (compute-color base-color 50 opacity)
-           base-color)
-         (if opacity
-           (compute-color base-color 50 opacity)
-           (compute-color base-color level-key nil)))))))
+   (fn
+     ([color-kw]
+      (let [[_ color-name level opa] (->> color-kw
+                                          (name)
+                                          (re-matches #"([a-z-]+?)(?:-([0-9]+(?:\.[0-9]+)?)(?:-([0-9]+))?)?$"))]
+        (get-color (keyword (namespace color-kw) color-name)
+                   (if level (parse-number level) 50)
+                   (when opa (js/parseInt opa 10)))))
+     ([color-kw level]
+      (get-color color-kw level nil))
+     ([color-kw level opacity]
+      (let [color-key  (keyword (name color-kw))
+            neutral?   (or (= color-key :neutral) (= color-key :white))
+            base-color (if neutral?
+                         (get-in colors [color-key level :base])
+                         (get-in colors [color-key 50 :base]))]
+        (if opacity
+          (compute-color base-color 50 opacity)
+          (if neutral?
+            base-color
+            (compute-color base-color level nil))))))))
