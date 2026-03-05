@@ -30,6 +30,7 @@
    content]
   (let [theme                  (context/use-theme)
         text?                  (some? content)
+        icon-color             (style/icon-color theme selected?)
         label-color            (style/text-color theme selected?)
         [pressed? set-pressed!] (rn/use-state false)
         on-press-in!           (rn/use-callback
@@ -60,10 +61,10 @@
       (if (= size 24)
         [icon/icon {:icon  (or icon :icon/placeholder)
                     :size  12
-                    :color (style/icon-color theme size selected?)}]
+                    :color icon-color}]
         [icon/icon {:icon  (or icon :icon/unread)
                     :size  20
-                    :color (style/icon-color theme size selected?)}])
+                    :color icon-color}])
       (when text?
         [text/text {:font  (style/label-font size)
                     :style {:color label-color}}

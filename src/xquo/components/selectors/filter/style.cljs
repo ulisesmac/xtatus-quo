@@ -84,12 +84,10 @@
     (colors/get-color :color/white-100)
     (colors/get-color :color/neutral-100)))
 
-(defn icon-color [theme size selected?]
-  (cond
-    selected? (colors/get-color :color/white-100)
-    (= theme :theme/dark) (colors/get-color :color/white-100)
-    (= size 24) (colors/get-color :color/neutral-100)
-    :else (colors/get-color :color/neutral-50)))
+(defn icon-color [theme selected?]
+  (if (or selected? (= theme :theme/dark))
+    (colors/get-color :color/white-100)
+    (colors/get-color :color/neutral-100)))
 
 (defn label-font [size]
   (if (= size 24)
