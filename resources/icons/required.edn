@@ -3,5 +3,7 @@
   :icon/dropdown-12
   :icon/dropdown-20
   :icon/locked-20
+  :icon/placeholder-12
   :icon/placeholder-20
+  :icon/unread-20
 }
