@@ -1,10 +1,7 @@
 #{
-  :icon/arrow-left-12
-  :icon/arrow-left-16
   :icon/arrow-left-20
   :icon/dropdown-12
-  :icon/dropdown-16
   :icon/dropdown-20
-  :icon/placeholder-12
+  :icon/locked-20
   :icon/placeholder-20
 }
