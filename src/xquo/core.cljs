@@ -5,6 +5,7 @@
             [xquo.components.icon.view]
             [xquo.components.page-nav.view]
             [xquo.components.settings.item.view]
+            [xquo.components.settings.section-label.view]
             [xquo.components.settings.section-title.view]
             [xquo.components.settings.sort-item.view]
             [xquo.components.selectors.disclaimer.view]
@@ -19,6 +20,7 @@
 (def page-nav-left-action xquo.components.page-nav.view/nav-left-action)
 (def page-nav-title xquo.components.page-nav.view/nav-title)
 (def settings-item xquo.components.settings.item.view/settings-item)
+(def section-label xquo.components.settings.section-label.view/section-label)
 (def section-title xquo.components.settings.section-title.view/section-title)
 (def sort-item xquo.components.settings.sort-item.view/sort-item)
 (def disclaimer xquo.components.selectors.disclaimer.view/disclaimer)

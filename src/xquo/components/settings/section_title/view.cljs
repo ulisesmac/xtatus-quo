@@ -11,18 +11,14 @@
   API:
   - `props` map
     - `:label` title text (default `\"Featured\"`)
-    - `:counter-value` value shown inside counter (default `3`)
     - `:counter?` show counter (`true`/`false`, default `true`)
     - `:right-icon?` show right info icon (`true`/`false`, default `true`)
-    - `:background` one of `:none`, `:blur` (default `:none`)
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`."
-  [{:keys [label counter-value counter? right-icon? background]
+  [{:keys [label counter? right-icon?]
     :or   {label         "Featured"
-           counter-value 3
            counter?      true
-           right-icon?   true
-           background    :none}
+           right-icon?   true}
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
@@ -39,16 +35,8 @@
                   :style           {:color (style/label-color theme)}}
        label]
       (when counter?
-        [:rn/view {:style style/counter-base}
-         [:rn/view {:style [style/counter-surface
-                            {:background-color (style/counter-surface-color
-                                                theme
-                                                background)}]}]
-         [:rn/view {:style style/counter-label-slot}
-          [text/text {:font  :font/medium-11
-                      :style [style/counter-label
-                              {:color (style/counter-value-color theme)}]}
-           counter-value]]])]
+        ;; TODO: replace red placeholder with the real counter component once available.
+        [:rn/view {:style style/counter-placeholder}])]
      (when right-icon?
        [icon/icon {:icon  :icon/info
                    :size  20
