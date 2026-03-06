@@ -4,6 +4,7 @@
             [xquo.components.counter.step.view]
             [xquo.components.icon.view]
             [xquo.components.page-nav.view]
+            [xquo.components.settings.category.view]
             [xquo.components.settings.item.view]
             [xquo.components.settings.section-label.view]
             [xquo.components.settings.section-title.view]
@@ -15,6 +16,7 @@
             [xquo.context]))
 
 (def button xquo.components.button.view/button)
+(def category xquo.components.settings.category.view/category)
 (def icon xquo.components.icon.view/icon)
 (def page-nav xquo.components.page-nav.view/page-nav)
 (def page-nav-left-action xquo.components.page-nav.view/nav-left-action)
