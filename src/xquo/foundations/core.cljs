@@ -1,5 +1,6 @@
 (ns xquo.foundations.core
-  (:require xquo.foundations.blur
+  (:require xquo.foundations.animations
+            xquo.foundations.blur
             xquo.foundations.borders
             xquo.foundations.colors
             xquo.foundations.shadows

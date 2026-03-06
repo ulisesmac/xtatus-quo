@@ -6,7 +6,8 @@
             [xquo.components.counter.step.view :as step]
             [xquo.components.settings.item.style :as style]
             [xquo.components.text.view :as text]
-            [xquo.context :as context]))
+            [xquo.context :as context]
+            [xquo.react-native :as rn]))
 
 (defn- title-view [{:keys [theme title]}]
   [text/text {:font            :font/medium-15
@@ -95,7 +96,7 @@
                   :size  20
                   :color (style/trailing-icon-color theme background)}])))
 
-(defn- action-view [{:keys [theme background action]}]
+(defn- action-view [{:keys [theme background action pressed?]}]
   (let [{action-type        :type
          action-on-press    :on-press
          action-on-select   :on-select
@@ -103,9 +104,12 @@
          action-selected?   :selected?} action]
     (cond
       (= action-type :arrow)
-      [icon/icon {:icon  :icon/chevron-right
-                  :size  20
-                  :color (style/trailing-icon-color theme background)}]
+      [:animated/view {:style (if pressed?
+                                style/arrow-pressed-state-style
+                                style/arrow-default-state-style)}
+       [icon/icon {:icon  :icon/chevron-right
+                   :size  20
+                   :color (style/trailing-icon-color theme background)}]]
 
       (= action-type :selector)
       [selector/selector (cond-> {:type       :toggle
@@ -121,14 +125,15 @@
                        action-on-press (assoc :on-press action-on-press))
        (or action-button-text "Button")])))
 
-(defn- right-view [{:keys [theme background right]}]
+(defn- right-view [{:keys [theme background right pressed?]}]
   (let [label-type  (get-in right [:label :type])
         label-node  (label-view {:theme      theme
                                  :background background
                                  :label      (:label right)})
         action-node (action-view {:theme      theme
                                   :background background
-                                  :action     (:action right)})]
+                                  :action     (:action right)
+                                  :pressed?   pressed?})]
     (when (or label-node action-node)
       [:rn/view {:style [style/right-content-base
                          (if (= label-type :text)
@@ -192,11 +197,12 @@
         - `:button-text` button label
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/pressable`."
-  [{:keys [title background image description tag right]
+  [{:keys [title background image description tag right on-press-in on-press-out]
     :or   {title      "Account"
            background :none}
     :as   props}]
   (let [theme                (context/use-theme)
+        [pressed? set-pressed!] (rn/use-state false)
         image-type           (or (:type image) :icon)
         description-type     (:type description)
         tag-type             (:type tag)
@@ -204,25 +210,45 @@
                                  (= description-type :text-icon)
                                  (= description-type :status))
         tag-visible?         (or (= tag-type :positive)
-                                 (= tag-type :context))]
+                                 (= tag-type :context))
+        on-press-in!         (rn/use-callback
+                              (fn [event]
+                                (set-pressed! true)
+                                (when on-press-in
+                                  (on-press-in event)))
+                              [on-press-in])
+        on-press-out!        (rn/use-callback
+                              (fn [event]
+                                (set-pressed! false)
+                                (when on-press-out
+                                  (on-press-out event)))
+                              [on-press-out])]
     [:rn/pressable (-> props
-                       (dissoc :title :background :image :description :tag :right :style)
-                       (assoc :style (rec.xf/add-styles
-                                      style/container-base
-                                      (style/container-padding-style
-                                       image-type
-                                       description-visible?
-                                       tag-visible?)
-                                      (if (= image-type :none) style/gap-0 style/gap-12)
-                                      (:style props))))
-     [leading-view {:theme      theme
-                    :background background
-                    :image      image}]
-     [content-view {:theme       theme
-                    :background  background
-                    :title       title
-                    :description description
-                    :tag         tag}]
+                       (dissoc :title :background :image :description :tag :right :style :on-press-in :on-press-out)
+                       (assoc :on-press-in  on-press-in!
+                              :on-press-out on-press-out!
+                              :style        (rec.xf/add-styles
+                                             style/container-base
+                                             (style/container-padding-style
+                                              image-type
+                                              description-visible?
+                                              tag-visible?)
+                                             (if (= image-type :none) style/gap-0 style/gap-12)
+                                             (:style props))))
+     [:animated/view {:style [(if pressed?
+                               style/row-pressed-state-style
+                               style/row-default-state-style)
+                              style/row-body-base
+                              (if (= image-type :none) style/gap-0 style/gap-12)]}
+      [leading-view {:theme      theme
+                     :background background
+                     :image      image}]
+      [content-view {:theme       theme
+                     :background  background
+                     :title       title
+                     :description description
+                     :tag         tag}]]
      [right-view {:theme      theme
                   :background background
-                  :right      right}]]))
+                  :right      right
+                  :pressed?   pressed?}]]))

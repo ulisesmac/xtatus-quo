@@ -45,6 +45,8 @@
                80  {:base "#FFFFFFCC"}
                90  {:base "#FFFFFFE6"}
                100 {:base "#FFFFFF"}}
+   :black     {50  {:base "#000000"}
+               100 {:base "#000000"}}
    ;; Customization
    :primary   {50 {:base "#2A4AF5"}
                60 {:base "#223BC4"}}

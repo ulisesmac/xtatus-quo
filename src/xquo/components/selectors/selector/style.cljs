@@ -1,5 +1,6 @@
 (ns xquo.components.selectors.selector.style
   (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+            [xquo.foundations.animations :as animations]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
@@ -81,9 +82,9 @@
    :height                     16
    :border-radius              (:border/drawer borders/border-radius-values)
    :background-color           (colors/get-color :color/white-100)
-   :transition-property        "transform"
-   :transition-duration        "300ms"
-   :transition-timing-function "ease-in-out"})
+   :transition-property        (get-in animations/common-values [:state-change :transition-property])
+   :transition-duration        (get-in animations/common-values [:state-change :toggle-duration])
+   :transition-timing-function (get-in animations/common-values [:state-change :transition-timing-function])})
 
 (defn toggle-handle-state-style [selected?]
   {:transform [{:translate-x (if selected? 10 0)}]})
@@ -92,12 +93,14 @@
   {:width                      14
    :height                     14
    :border-radius              (:border/drawer borders/border-radius-values)
-   :transition-property        "transform"
-   :transition-timing-function "ease-in-out"})
+   :transition-property        (get-in animations/common-values [:state-change :transition-property])
+   :transition-timing-function (get-in animations/common-values [:state-change :transition-timing-function])})
 
 (defn radio-dot-state-style [selected?]
   {:transform           [{:scale (if selected? 1 0)}]
-   :transition-duration (if selected? "300ms" "200ms")})
+   :transition-duration (if selected?
+                          (get-in animations/common-values [:state-change :radio-expand-duration])
+                          (get-in animations/common-values [:state-change :radio-collapse-duration]))})
 
 (defstyle checkmark-image-base
   {:width     12
@@ -105,16 +108,16 @@
    :transform [{:rotate "180deg"}]})
 
 (defstyle pressable-default-state-style
-  {:transform                  [{:scale 1} {:translate-y 0}]
-   :transition-property        "transform"
-   :transition-duration        "150ms"
-   :transition-timing-function "ease-in-out"})
+  {:transform                  (get-in animations/common-values [:press-feedback :default :transform])
+   :transition-property        (get-in animations/common-values [:press-feedback :default :transition-property])
+   :transition-duration        (get-in animations/common-values [:press-feedback :default :transition-duration])
+   :transition-timing-function (get-in animations/common-values [:press-feedback :default :transition-timing-function])})
 
 (defstyle pressable-pressed-state-style
-  {:transform                  [{:scale 0.982} {:translate-y 2}]
-   :transition-property        "transform"
-   :transition-duration        "100ms"
-   :transition-timing-function "ease-out"})
+  {:transform                  (get-in animations/common-values [:press-feedback :pressed :transform])
+   :transition-property        (get-in animations/common-values [:press-feedback :pressed :transition-property])
+   :transition-duration        (get-in animations/common-values [:press-feedback :pressed :transition-duration])
+   :transition-timing-function (get-in animations/common-values [:press-feedback :pressed :transition-timing-function])})
 
 (defn container-style [type]
   (case type

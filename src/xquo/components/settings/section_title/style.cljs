@@ -29,7 +29,7 @@
 (defn label-color [theme]
   (if (= theme :theme/dark)
     (colors/get-color :color/white-100)
-    (colors/get-color :color/neutral-100)))
+    (colors/get-color :color/black)))
 
 (defn right-icon-color [theme]
   (if (= theme :theme/dark)

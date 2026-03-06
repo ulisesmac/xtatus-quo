@@ -1,5 +1,6 @@
 (ns xquo.components.button.style
   (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+            [xquo.foundations.animations :as animations]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
@@ -276,16 +277,16 @@
    :align-self      :flex-start})
 
 (defstyle pressable-default-state-style
-  {:transform                  [{:scale 1} {:translate-y 0}]
-   :transition-property        "transform"
-   :transition-duration        "150ms"
-   :transition-timing-function "ease-in-out"})
+  {:transform                  (get-in animations/common-values [:press-feedback :default :transform])
+   :transition-property        (get-in animations/common-values [:press-feedback :default :transition-property])
+   :transition-duration        (get-in animations/common-values [:press-feedback :default :transition-duration])
+   :transition-timing-function (get-in animations/common-values [:press-feedback :default :transition-timing-function])})
 
 (defstyle pressable-pressed-state-style
-  {:transform                  [{:scale 0.982} {:translate-y 2}]
-   :transition-property        "transform"
-   :transition-duration        "100ms"
-   :transition-timing-function "ease-out"})
+  {:transform                  (get-in animations/common-values [:press-feedback :pressed :transform])
+   :transition-property        (get-in animations/common-values [:press-feedback :pressed :transition-property])
+   :transition-duration        (get-in animations/common-values [:press-feedback :pressed :transition-duration])
+   :transition-timing-function (get-in animations/common-values [:press-feedback :pressed :transition-timing-function])})
 
 (def font-type
   {40 :font/medium-15

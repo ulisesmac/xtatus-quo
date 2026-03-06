@@ -1,5 +1,6 @@
 (ns xquo.components.settings.item.style
   (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+            [xquo.foundations.animations :as animations]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
@@ -61,6 +62,12 @@
    :flex-direction :column
    :align-items    :flex-start})
 
+(defstyle row-body-base
+  {:flex           1
+   :min-width      0
+   :flex-direction :row
+   :align-items    :center})
+
 (defstyle content-column-gap-8
   {:gap 8})
 
@@ -94,6 +101,30 @@
 
 (defstyle right-gap-6
   {:gap 6})
+
+(defstyle row-default-state-style
+  {:transform                  (get-in animations/common-values [:press-feedback :default :transform])
+   :transition-property        (get-in animations/common-values [:press-feedback :default :transition-property])
+   :transition-duration        (get-in animations/common-values [:press-feedback :default :transition-duration])
+   :transition-timing-function (get-in animations/common-values [:press-feedback :default :transition-timing-function])})
+
+(defstyle row-pressed-state-style
+  {:transform                  (get-in animations/common-values [:press-feedback :pressed :transform])
+   :transition-property        (get-in animations/common-values [:press-feedback :pressed :transition-property])
+   :transition-duration        (get-in animations/common-values [:press-feedback :pressed :transition-duration])
+   :transition-timing-function (get-in animations/common-values [:press-feedback :pressed :transition-timing-function])})
+
+(defstyle arrow-default-state-style
+  {:transform                  [{:translate-x 0}]
+   :transition-property        (get-in animations/common-values [:press-feedback :default :transition-property])
+   :transition-duration        (get-in animations/common-values [:press-feedback :default :transition-duration])
+   :transition-timing-function (get-in animations/common-values [:press-feedback :default :transition-timing-function])})
+
+(defstyle arrow-pressed-state-style
+  {:transform                  [{:translate-x 6}]
+   :transition-property        (get-in animations/common-values [:press-feedback :pressed :transition-property])
+   :transition-duration        (get-in animations/common-values [:press-feedback :pressed :transition-duration])
+   :transition-timing-function (get-in animations/common-values [:press-feedback :pressed :transition-timing-function])})
 
 (defstyle label-text
   {:text-align :right})

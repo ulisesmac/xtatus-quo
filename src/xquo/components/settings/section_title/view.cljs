@@ -10,15 +10,13 @@
 
   API:
   - `props` map
-    - `:label` title text (default `\"Featured\"`)
-    - `:counter?` show counter (`true`/`false`, default `true`)
-    - `:right-icon?` show right info icon (`true`/`false`, default `true`)
+    - `:label` title text (default `\"Title\"`)
+    - `:counter?` show counter when truthy
+    - `:right-icon?` show right info icon when truthy
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`."
   [{:keys [label counter? right-icon?]
-    :or   {label         "Featured"
-           counter?      true
-           right-icon?   true}
+    :or   {label "Title"}
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
