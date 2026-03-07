@@ -57,24 +57,6 @@
 (defstyle bottom-description-text
   {:text-align :center})
 
-(defn container-color-style [theme background scroll?]
-  {:background-color (cond
-                       (= theme :theme/light)
-                       (if scroll?
-                         (colors/get-color :color/white 70)
-                         (colors/get-color :color/white 100))
-
-                       scroll?
-                       (if (= background :blur)
-                         (colors/get-color :color/neutral 80 1)
-                         (colors/get-color :color/neutral 95 70))
-
-                       (= background :blur)
-                       :transparent
-
-                       :else
-                       (colors/get-color :color/neutral 95))})
-
 (defn description-text-style [theme background scroll? position status]
   {:color (cond
             (= status :error)
@@ -98,11 +80,17 @@
             :else
             (colors/get-color :color/neutral 40))})
 
-(defn secondary-button-style [theme background scroll?]
+(defn secondary-button-style [theme background scroll? description-position]
   (cond
     (= theme :theme/light)
     (when scroll?
       {:background-color (colors/get-color :color/neutral 80 5)})
+
+    (and (= theme :theme/dark)
+         (not scroll?)
+         (= background :none)
+         (= description-position :top))
+    {:background-color (colors/get-color :color/neutral 80)}
 
     (and (= theme :theme/dark)
          (not scroll?)

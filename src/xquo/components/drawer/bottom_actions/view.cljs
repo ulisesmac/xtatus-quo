@@ -52,7 +52,7 @@
                                                        :default)]}
       (:text description)]]))
 
-(defn- action-button-view [{:keys [theme background scroll? primary? button-props]}]
+(defn- action-button-view [{:keys [theme background scroll? description-position primary? button-props]}]
   (let [color (or (:color button-props) :color/blue)]
     [button/button (cond-> (-> button-props
                                (dissoc :label)
@@ -62,12 +62,12 @@
                                               style/action-fill
                                               (if primary?
                                                 (style/primary-button-style theme color)
-                                                (style/secondary-button-style theme background scroll?))
+                                                (style/secondary-button-style theme background scroll? description-position))
                                               (:style button-props))))
                      primary? (assoc :color color))
      (:label button-props)]))
 
-(defn- actions-view [{:keys [theme background scroll? buttons]}]
+(defn- actions-view [{:keys [theme background scroll? description-position buttons]}]
   (let [two-actions? (= (count buttons) 2)]
     (into [:rn/view {:style style/actions-row}]
           (map-indexed
@@ -76,6 +76,7 @@
              [action-button-view {:theme        theme
                                   :background   background
                                   :scroll?      scroll?
+                                  :description-position description-position
                                   :primary?     (or (not two-actions?) (= index 1))
                                   :button-props button-props}])
            buttons))))
@@ -105,7 +106,6 @@
                   (dissoc :buttons :description :context-tag? :background :scroll? :style)
                   (assoc :style (rec.xf/add-styles
                                  style/container-base
-                                 (style/container-color-style theme background scroll?)
                                  (:style props))))
      (when (= (:position description) :top)
        [description-view {:theme        theme
@@ -116,6 +116,7 @@
      [actions-view {:theme      theme
                     :background background
                     :scroll?    scroll?
+                    :description-position (:position description)
                     :buttons    buttons}]
      (when (= (:position description) :bottom)
        [description-view {:theme        theme

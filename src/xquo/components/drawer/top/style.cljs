@@ -4,11 +4,17 @@
             [xquo.foundations.colors :as colors]))
 
 (defstyle container-base
-  {:align-self :stretch})
+  {:align-self  :stretch
+   :padding-top 20})
 
 (defstyle content-base
-  {:padding-horizontal 20
-   :padding-bottom     12})
+  {:padding-horizontal 20})
+
+(defstyle content-bottom-12
+  {:padding-bottom 12})
+
+(defstyle content-bottom-8
+  {:padding-bottom 8})
 
 (defstyle content-column
   {:flex-direction :column
@@ -79,12 +85,6 @@
 (defstyle counter-text
   {:text-align :right})
 
-(defn container-color-style [theme background]
-  (cond
-    (= background :blur) nil
-    (= theme :theme/dark) {:background-color (colors/get-color :color/neutral 95 70)}
-    :else                 {:background-color (colors/get-color :color/white 70)}))
-
 (defn title-text-style [theme]
   {:color (if (= theme :theme/dark)
             (colors/get-color :color/white 100)
@@ -107,7 +107,7 @@
             (colors/get-color :color/white 40)
 
             (= theme :theme/dark)
-            (colors/get-color :color/neutral 40)
+            (colors/get-color :color/neutral 50)
 
             :else
             (colors/get-color :color/neutral 40))})

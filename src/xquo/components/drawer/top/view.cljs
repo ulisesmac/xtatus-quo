@@ -126,8 +126,12 @@
                    :info?       info?
                    :button-props button-props}]])
 
-(defn- leading-content-view [{:keys [theme background title description description-icon title-icon leading]}]
-  [:rn/view {:style style/content-base}
+(defn- leading-content-view [{:keys [theme background title description description-icon title-icon
+                                     leading compact?]}]
+  [:rn/view {:style [style/content-base
+                     (if compact?
+                       style/content-bottom-8
+                       style/content-bottom-12)]}
    [:rn/view {:style style/leading-row}
     [leading-placeholder-view {:leading leading}]
     [:rn/view {:style style/leading-column}
@@ -142,8 +146,12 @@
                           :leading          leading
                           :description-icon description-icon}])]]])
 
-(defn- standard-content-view [{:keys [theme background title description context-tags info? counter button-props title-icon]}]
+(defn- standard-content-view [{:keys [theme background title description context-tags info? counter
+                                      button-props title-icon compact?]}]
   [:rn/view {:style [style/content-base
+                     (if compact?
+                       style/content-bottom-8
+                       style/content-bottom-12)
                      style/content-column
                      (cond
                        context-tags style/content-gap-4
@@ -173,6 +181,7 @@
   API:
   - `props` map
     - `:label` optional label variant. When present, title props are ignored.
+    - `:compact?` optional boolean for the tighter documentation top spacing
     - `:title` title text (default `\"Title\"`)
     - `:description` optional string or vector of segment maps `{:text ... :color :color/...}`
     - `:counter` optional right-side counter text (for example `\"00/00\"`)
@@ -189,20 +198,20 @@
     - `:background` optional `:blur`
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`."
-  [{:keys [label title description counter info? button-props title-icon description-icon
-           leading context-tags background]
+  [{:keys [label compact? title description counter info? button-props title-icon
+           description-icon leading context-tags background]
     :or   {title "Title"}
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
-                  (dissoc :label :title :description :counter :info? :button-props :title-icon
-                          :description-icon :leading :context-tags :background :style)
+                  (dissoc :label :compact? :title :description :counter :info? :button-props
+                          :title-icon :description-icon :leading :context-tags :background :style)
                   (assoc :style (rec.xf/add-styles
                                  style/container-base
-                                 (style/container-color-style theme background)
                                  (:style props))))
      (if label
-       [:rn/view {:style style/content-base}
+       [:rn/view {:style [style/content-base
+                          style/content-bottom-12]}
         [section-label/section-label {:label      label
                                       :background background}]]
        (if leading
@@ -212,7 +221,8 @@
                                 :description      description
                                 :description-icon description-icon
                                 :title-icon       title-icon
-                                :leading          leading}]
+                                :leading          leading
+                                :compact?         compact?}]
          [standard-content-view {:theme       theme
                                  :background  background
                                  :title       title
@@ -221,4 +231,5 @@
                                  :info?       info?
                                  :counter     counter
                                  :button-props button-props
-                                 :title-icon  title-icon}]))]))
+                                 :title-icon  title-icon
+                                 :compact?    compact?}]))]))

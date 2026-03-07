@@ -5,9 +5,7 @@
             [xquo.foundations.colors :as colors]))
 
 (defstyle container-base
-  {:flex-direction :row
-   :align-items    :center
-   :border-radius  (:border/sizes-40-56 borders/border-radius-values)})
+  {:border-radius (:border/sizes-40-56 borders/border-radius-values)})
 
 (defstyle gap-12
   {:gap 12})
@@ -62,6 +60,12 @@
    :flex-direction :column
    :align-items    :flex-start})
 
+(defstyle content-row-base
+  {:flex           1
+   :min-width      0
+   :flex-direction :row
+   :align-items    :center})
+
 (defstyle row-body-base
   {:flex           1
    :min-width      0
@@ -101,6 +105,9 @@
 
 (defstyle right-gap-6
   {:gap 6})
+
+(defstyle button-right-slot
+  {:margin-left 12})
 
 (defstyle row-default-state-style
   {:transform                  [{:scale       (:default-scale animations/press-feedback)}

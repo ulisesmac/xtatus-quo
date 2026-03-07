@@ -96,27 +96,22 @@
                   :size  20
                   :color (style/trailing-icon-color theme background)}])))
 
-(defn- action-view [{:keys [theme background action pressed?]}]
+(defn- action-view [{:keys [theme background action selector-selected?]}]
   (let [{action-type        :type
          action-on-press    :on-press
-         action-on-select   :on-select
-         action-button-text :button-text
-         action-selected?   :selected?} action]
+         action-button-text :button-text} action]
     (cond
       (= action-type :arrow)
-      [:animated/view {:style (if pressed?
-                                style/arrow-pressed-state-style
-                                style/arrow-default-state-style)}
-       [icon/icon {:icon  :icon/chevron-right
-                   :size  20
-                   :color (style/trailing-icon-color theme background)}]]
+      [icon/icon {:icon  :icon/chevron-right
+                  :size  20
+                  :color (style/trailing-icon-color theme background)}]
 
       (= action-type :selector)
-      [selector/selector (cond-> {:type       :toggle
-                                  :background background}
-                           (contains? action :selected?) (assoc :selected? action-selected?)
-                           action-on-select (assoc :on-select action-on-select)
-                           action-on-press (assoc :on-press action-on-press))]
+      [:rn/view {:pointer-events :none}
+       [selector/selector (cond-> {:type       :toggle
+                                   :background background}
+                            (or selector-selected?
+                                (contains? action :selected?)) (assoc :selected? selector-selected?))]]
 
       (= action-type :button)
       [button/button (cond-> {:type       :outline
@@ -125,22 +120,36 @@
                        action-on-press (assoc :on-press action-on-press))
        (or action-button-text "Button")])))
 
-(defn- right-view [{:keys [theme background right pressed?]}]
-  (let [label-type  (get-in right [:label :type])
-        label-node  (label-view {:theme      theme
-                                 :background background
-                                 :label      (:label right)})
-        action-node (action-view {:theme      theme
+(defn- right-view [{:keys [theme background right pressed? selector-selected?]}]
+  (let [label-type   (get-in right [:label :type])
+        action-type  (get-in right [:action :type])
+        label-node   (label-view {:theme      theme
                                   :background background
-                                  :action     (:action right)
-                                  :pressed?   pressed?})]
-    (when (or label-node action-node)
-      [:rn/view {:style [style/right-content-base
-                         (if (= label-type :text)
-                           style/right-gap-6
-                           style/right-gap-4)]}
-       label-node
-       action-node])))
+                                  :label      (:label right)})
+        action-node  (action-view {:theme              theme
+                                   :background         background
+                                   :action             (:action right)
+                                   :selector-selected? selector-selected?})
+        cluster-node (when (or label-node action-node)
+                       [:rn/view {:style [style/right-content-base
+                                          (if (= label-type :text)
+                                            style/right-gap-6
+                                            style/right-gap-4)]}
+                        label-node
+                        action-node])]
+    (cond
+      (= action-type :button)
+      [:rn/view {:style style/button-right-slot}
+       action-node]
+
+      (= action-type :arrow)
+      [:animated/view {:style (if pressed?
+                                style/arrow-pressed-state-style
+                                style/arrow-default-state-style)}
+       cluster-node]
+
+      cluster-node
+      cluster-node)))
 
 (defn- content-view [{:keys [theme background title description tag]}]
   (let [description-type     (:type description)
@@ -197,11 +206,21 @@
         - `:button-text` button label
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/pressable`."
-  [{:keys [title background image description tag right on-press-in on-press-out]
+  [{:keys [title background image description tag right on-press on-press-in on-press-out]
     :or   {title      "Account"
            background :none}
     :as   props}]
   (let [theme                (context/use-theme)
+        action               (:action right)
+        action-type          (:type action)
+        button-action?       (= action-type :button)
+        selector-action?     (= action-type :selector)
+        selector-provided?   (contains? action :selected?)
+        [internal-selector-selected?
+         set-internal-selector-selected!] (rn/use-state false)
+        selector-selected?   (if selector-provided?
+                               (:selected? action)
+                               internal-selector-selected?)
         [pressed? set-pressed!] (rn/use-state false)
         image-type           (or (:type image) :icon)
         description-type     (:type description)
@@ -211,6 +230,23 @@
                                  (= description-type :status))
         tag-visible?         (or (= tag-type :positive)
                                  (= tag-type :context))
+        on-press!            (rn/use-callback
+                              (fn [event]
+                                (when selector-action?
+                                  (let [next-selected? (not selector-selected?)]
+                                    (when-not selector-provided?
+                                      (set-internal-selector-selected! next-selected?))
+                                    (when-let [action-on-select (:on-select action)]
+                                      (action-on-select next-selected?))
+                                    (when-let [action-on-press (:on-press action)]
+                                      (action-on-press event))))
+                                (when on-press
+                                  (on-press event)))
+                              [selector-action?
+                               selector-selected?
+                               selector-provided?
+                               action
+                               on-press])
         on-press-in!         (rn/use-callback
                               (fn [event]
                                 (set-pressed! true)
@@ -224,31 +260,36 @@
                                   (on-press-out event)))
                               [on-press-out])]
     [:rn/pressable (-> props
-                       (dissoc :title :background :image :description :tag :right :style :on-press-in :on-press-out)
-                       (assoc :on-press-in  on-press-in!
-                              :on-press-out on-press-out!
+                       (dissoc :title :background :image :description :tag :right :style :on-press
+                               :on-press-in :on-press-out)
+                       (assoc :disabled     button-action?
+                              :on-press     on-press!
+                              :on-press-in  (when-not button-action? on-press-in!)
+                              :on-press-out (when-not button-action? on-press-out!)
                               :style        (rec.xf/add-styles
                                              style/container-base
                                              (style/container-padding-style
                                               image-type
                                               description-visible?
                                               tag-visible?)
-                                             (if (= image-type :none) style/gap-0 style/gap-12)
                                              (:style props))))
-     [:animated/view {:style [(if pressed?
-                               style/row-pressed-state-style
-                               style/row-default-state-style)
-                              style/row-body-base
-                              (if (= image-type :none) style/gap-0 style/gap-12)]}
-      [leading-view {:theme      theme
-                     :background background
-                     :image      image}]
-      [content-view {:theme       theme
-                     :background  background
-                     :title       title
-                     :description description
-                     :tag         tag}]]
-     [right-view {:theme      theme
-                  :background background
-                  :right      right
-                  :pressed?   pressed?}]]))
+     [:animated/view {:style [(when-not button-action?
+                                (if pressed?
+                                  style/row-pressed-state-style
+                                  style/row-default-state-style))
+                              style/content-row-base]}
+      [:rn/view {:style [style/row-body-base
+                         (if (= image-type :none) style/gap-0 style/gap-12)]}
+       [leading-view {:theme      theme
+                      :background background
+                      :image      image}]
+       [content-view {:theme       theme
+                      :background  background
+                      :title       title
+                      :description description
+                      :tag         tag}]]
+      [right-view {:theme              theme
+                   :background         background
+                   :right              right
+                   :pressed?           pressed?
+                   :selector-selected? selector-selected?}]]]))
