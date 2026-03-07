@@ -67,14 +67,14 @@
   (cond
     button-props
     (let [button-type  (or (:type button-props) :primary)
-          button-color (or (:color button-props) :color/blue)]
+          color        (context/use-color)]
       [button/button
        (cond-> (assoc button-props :size 24)
          (= button-type :primary)
          (assoc :icon-color (or (:icon-color button-props)
                                 (colors/get-color :color/white-100))
                 :style      (rec.xf/add-styles
-                             (style/primary-button-style theme button-color)
+                             (style/primary-button-style theme color)
                              (:style button-props))))])
 
     info?

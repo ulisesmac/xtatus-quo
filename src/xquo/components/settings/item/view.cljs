@@ -99,7 +99,8 @@
 (defn- action-view [{:keys [theme background action selector-selected?]}]
   (let [{action-type        :type
          action-on-press    :on-press
-         action-button-text :button-text} action]
+         action-button-text :button-text
+         action-disabled?   :disabled?} action]
     (cond
       (= action-type :arrow)
       [icon/icon {:icon  :icon/chevron-right
@@ -110,6 +111,7 @@
       [:rn/view {:pointer-events :none}
        [selector/selector (cond-> {:type       :toggle
                                    :background background}
+                            action-disabled? (assoc :disabled? true)
                             (or selector-selected?
                                 (contains? action :selected?)) (assoc :selected? selector-selected?))]]
 
@@ -215,6 +217,9 @@
         action-type          (:type action)
         button-action?       (= action-type :button)
         selector-action?     (= action-type :selector)
+        selector-disabled?   (:disabled? action)
+        item-disabled?       (or button-action?
+                                 selector-disabled?)
         selector-provided?   (contains? action :selected?)
         [internal-selector-selected?
          set-internal-selector-selected!] (rn/use-state false)
@@ -232,7 +237,8 @@
                                  (= tag-type :context))
         on-press!            (rn/use-callback
                               (fn [event]
-                                (when selector-action?
+                                (when (and selector-action?
+                                           (not selector-disabled?))
                                   (let [next-selected? (not selector-selected?)]
                                     (when-not selector-provided?
                                       (set-internal-selector-selected! next-selected?))
@@ -243,6 +249,7 @@
                                 (when on-press
                                   (on-press event)))
                               [selector-action?
+                               selector-disabled?
                                selector-selected?
                                selector-provided?
                                action
@@ -262,10 +269,10 @@
     [:rn/pressable (-> props
                        (dissoc :title :background :image :description :tag :right :style :on-press
                                :on-press-in :on-press-out)
-                       (assoc :disabled     button-action?
+                       (assoc :disabled     item-disabled?
                               :on-press     on-press!
-                              :on-press-in  (when-not button-action? on-press-in!)
-                              :on-press-out (when-not button-action? on-press-out!)
+                              :on-press-in  (when-not item-disabled? on-press-in!)
+                              :on-press-out (when-not item-disabled? on-press-out!)
                               :style        (rec.xf/add-styles
                                              style/container-base
                                              (style/container-padding-style

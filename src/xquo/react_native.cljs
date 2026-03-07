@@ -9,8 +9,10 @@
                            ;;
                            Linking PermissionsAndroid Share
                            useColorScheme
+
                            BackHandler]]
    ["react" :refer [useEffect useState useCallback useMemo useRef]]))
+
 
 (defn use-color-scheme []
   (keyword "theme" (or (useColorScheme) "light")))
@@ -23,12 +25,10 @@
 
 (def status-bar-height (.. StatusBar -currentHeight))
 (def screen-height (.. Dimensions (get "screen") -height))
-
 (defn window-width []
   (.. Dimensions (get "window") -width))
 
-(defn window-height []
-  (.. Dimensions (get "window") -height))
+(def window-height (.. Dimensions (get "window") -height))
 
 (def log-box LogBox)
 
@@ -40,11 +40,12 @@
 
 (def animated Animated)
 
+;;
 (defn color-scheme []
-  (keyword (useColorScheme)))
+  (keyword "theme" (or (useColorScheme) "light")))
 
 (defn get-color-scheme []
-  (keyword (.getColorScheme Appearance)))
+  (keyword "theme" (or (.getColorScheme Appearance) "light")))
 
 (def app-state AppState)
 
@@ -58,7 +59,7 @@
   (.addEventListener Linking "url" listener))
 
 (defn share-text [text]
-  (.share Share #js {:message text}))
+  (.share Share #js{:message text}))
 
 (def permissions-android PermissionsAndroid)
 

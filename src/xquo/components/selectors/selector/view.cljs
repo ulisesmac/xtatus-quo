@@ -34,6 +34,7 @@
            background :none}
     :as   props}]
   (let [theme             (context/use-theme)
+        color             (context/use-color)
         controlled?       (some? selected?)
         [internal-selected?
          set-internal-selected?] (rn/use-state false)
@@ -72,7 +73,7 @@
                                :on-press-out on-press-out!
                                :style        (rec.xf/add-styles
                                               (style/container-style type)
-                                              (style/state-style theme type background selected-now? disabled?)
+                                              (style/state-style theme type background selected-now? disabled? color)
                                               (:style props))))
       (cond
         (= type :toggle)
@@ -81,7 +82,7 @@
 
         (= type :radio)
         [:animated/view {:style [style/radio-dot-base
-                                 (style/radio-dot-style theme background)
+                                 (style/radio-dot-style theme background color)
                                  (style/radio-dot-state-style selected-now?)]}]
 
         (and (or (= type :checkbox)

@@ -40,10 +40,9 @@
                  :size  12
                  :color (style/close-icon-color theme status)}]]))
 
-(defn- button-view [{:keys [status color on-button-press button-label]}]
+(defn- button-view [{:keys [status on-button-press button-label]}]
   [button/button (cond-> {:type  (button-type status)
-                          :size  24
-                          :color color}
+                          :size  24}
                    on-button-press (assoc :on-press on-button-press))
    button-label])
 
@@ -60,21 +59,20 @@
     - `:close-icon?` optional boolean
     - `:on-close` optional close callback
     - `:background` one of `:none`, `:blur` (default `:none`)
-    - `:color` customization color family keyword (default `:color/blue`)
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`.
   - `content` body text."
-  [{:keys [status title button-label on-button-press close-icon? on-close background color]
+  [{:keys [status title button-label on-button-press close-icon? on-close background]
     :or   {status     :default
-           background :none
-           color      :color/blue}
+           background :none}
     :as   props}
    content]
   (let [theme (context/use-theme)
+        color (context/use-color)
         rich? (or title button-label)]
     [:rn/view (-> props
                   (dissoc :status :title :button-label :on-button-press :close-icon?
-                          :on-close :background :color :style)
+                          :on-close :background :style)
                   (assoc :style (rec.xf/add-styles
                                  style/container-base
                                  (style/container-color-style theme background status color)
@@ -103,7 +101,6 @@
              content])]
          (when button-label
            [button-view {:status          status
-                         :color           color
                          :on-button-press on-button-press
                          :button-label    button-label}])]
         (when close-icon?

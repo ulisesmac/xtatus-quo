@@ -37,7 +37,6 @@
       `:ghost`, `:danger` (default `:primary`)
     - `:size` one of `40`, `32`, `24` (default `40`)
     - `:background` one of `:none`, `:photo`, `:blur` (default `:none`)
-    - `:color` customization color family keyword (default `:color/blue`)
     - `:icons` optional map `{:left :icon/... :right :icon/...}`
     - `:icon-color` optional icon color override
     - `:container-style` optional outer animated wrapper style
@@ -56,16 +55,16 @@
     - `{:right ...}` right icon
     - `{:left ... :right ...}` both sides
     - no icons -> text-only."
-  [{:keys               [type size background color disabled? on-press-in on-press-out icon-color container-style]
+  [{:keys               [type size background disabled? on-press-in on-press-out icon-color container-style]
     {left-icon  :left
      right-icon :right} :icons
     :or                 {type       :primary
                          background :none
-                         color      :color/blue
                          size       40}
     :as                 props}
    content]
   (let [theme         (context/use-theme)
+        color         (context/use-color)
         icon-only?    (and (nil? content) (or left-icon right-icon))
         layout        (layout-type icon-only? left-icon right-icon)
         [pressed? set-pressed!] (rn/use-state false)
@@ -85,7 +84,7 @@
                                style/pressable-default-state-style)
                              container-style)}
      [:rn/pressable (-> props
-                        (dissoc :type :size :background :color :icons :state :disabled? :style :on-press-in :on-press-out :icon-color :container-style)
+                        (dissoc :type :size :background :icons :state :disabled? :style :on-press-in :on-press-out :icon-color :container-style :color)
                         (assoc :disabled disabled?
                                :style (rec.xf/add-styles
                                        style/pressable-base-style

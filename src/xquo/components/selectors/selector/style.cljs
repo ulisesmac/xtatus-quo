@@ -10,10 +10,10 @@
 (defn- blur-background? [background]
   (= background :blur))
 
-(defn- active-color [theme background]
+(defn- active-color [theme background color]
   (if (and (dark-theme? theme) (not (blur-background? background)))
-    (colors/get-color :color/blue 60)
-    (colors/get-color :color/blue 50)))
+    (colors/get-color color 60)
+    (colors/get-color color 50)))
 
 (defn- toggle-off-color [theme background]
   (cond
@@ -129,11 +129,11 @@
     :filled-checkbox filled-checkbox-base
     checkbox-base))
 
-(defn state-style [theme type background selected? disabled?]
+(defn state-style [theme type background selected? disabled? color]
   (cond
     (= type :toggle)
     {:background-color (if selected?
-                         (active-color theme background)
+                         (active-color theme background color)
                          (toggle-off-color theme background))
      :justify-content  :flex-start
      :opacity          (state-opacity disabled?)}
@@ -144,20 +144,20 @@
                          (radio-off-background-color theme background))
      :border-width     1.2
      :border-color     (if selected?
-                         (active-color theme background)
+                         (active-color theme background color)
                          (radio-off-border-color theme background))
      :opacity          (state-opacity disabled?)}
 
     (= type :checkbox)
     {:background-color (if selected?
-                         (active-color theme background)
+                         (active-color theme background color)
                          :transparent)
      :border-width     (if selected?
                          (if (blur-background? background) 1.2 0)
                          1.2)
      :border-color     (if selected?
                          (if (blur-background? background)
-                           (active-color theme background)
+                           (active-color theme background color)
                            :transparent)
                          (radio-off-border-color theme background))
      :opacity          (state-opacity disabled?)}
@@ -172,5 +172,5 @@
         {:background-color background-color
          :opacity          (state-opacity disabled?)}))))
 
-(defn radio-dot-style [theme background]
-  {:background-color (active-color theme background)})
+(defn radio-dot-style [theme background color]
+  {:background-color (active-color theme background color)})

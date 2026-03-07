@@ -14,7 +14,7 @@
 
 (defn- trailing-view
   [{:keys [theme background selected? selected-provided? arrow? toggle? on-select danger?
-           color pressed?]}]
+           action-color pressed?]}]
   (cond
     toggle?
     [:rn/view {:pointer-events :none}
@@ -26,7 +26,7 @@
     selected?
     [icon/icon {:icon  :icon/check
                 :size  20
-                :color (style/trailing-icon-color theme background true danger? color)}]
+                :color (style/trailing-icon-color theme background true danger? action-color)}]
 
     arrow?
     [:animated/view {:style (if pressed?
@@ -34,7 +34,7 @@
                               style/arrow-slot-default-state-style)}
      [icon/icon {:icon  :icon/chevron-right
                  :size  20
-                 :color (style/trailing-icon-color theme background false danger? color)}]]))
+                 :color (style/trailing-icon-color theme background false danger? action-color)}]]))
 
 (defn drawer-action
   "Drawer action component.
@@ -58,6 +58,7 @@
     :or   {title "Action"}
     :as   props}]
   (let [theme                   (context/use-theme)
+        accent-color            (context/use-color)
         selected-provided?      (contains? props :selected?)
         [internal-selected?
          set-internal-selected?] (rn/use-state false)
@@ -100,7 +101,11 @@
                                       (if description
                                         style/padding-description
                                         style/padding-default)
-                                      (style/container-color-style background pressed? selected-now? danger? color)
+                                      (style/container-color-style background
+                                                                   pressed?
+                                                                   selected-now?
+                                                                   danger?
+                                                                   (or color accent-color))
                                       (:style props))))
      [:animated/view {:style [(if pressed?
                                 style/row-pressed-state-style
@@ -131,5 +136,5 @@
                       :toggle?            toggle?
                       :on-select          on-select
                       :danger?            danger?
-                      :color              color
+                      :action-color       (or color accent-color)
                       :pressed?           pressed?}]]]))

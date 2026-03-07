@@ -29,6 +29,7 @@
     :as   props}
    content]
   (let [theme                  (context/use-theme)
+        color                  (context/use-color)
         text?                  (some? content)
         icon-color             (style/icon-color theme selected?)
         label-color            (style/text-color theme selected?)
@@ -56,7 +57,7 @@
                                :style        (rec.xf/add-styles
                                               style/container-base
                                               (style/container-size-style size text?)
-                                              (style/surface-color-style theme background selected?)
+                                              (style/surface-color-style theme background selected? color)
                                               (:style props))))
       (if (= size 24)
         [icon/icon {:icon  (or icon :icon/placeholder)

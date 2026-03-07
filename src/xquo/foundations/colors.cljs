@@ -50,6 +50,13 @@
    ;; Customization
    :primary   {50 {:base "#2A4AF5"}
                60 {:base "#223BC4"}}
+   :purple    {50 {:base "#7140FD"
+                   :opa  {5  "#7140FD0D"
+                          10 "#7140FD1A"
+                          20 "#7140FD33"
+                          30 "#7140FD4D"
+                          40 "#7140FD66"}}
+               60 {:base "#5A33CA"}}
    :privacy   {50 {:base "#7140FD"
                    :opa  {5  "#7140FD0D"
                           10 "#7140FD1A"
@@ -93,6 +100,13 @@
                           40 "#EC266C66"}}
                60 {:base "#BD1E56"}}
    :pink      {50 {:base "#F66F8F"
+                   :opa  {5  "#F66F8F0D"
+                          10 "#F66F8F1A"
+                          20 "#F66F8F33"
+                          30 "#F66F8F4D"
+                          40 "#F66F8F66"}}
+               60 {:base "#C55972"}}
+   :flamingo  {50 {:base "#F66F8F"
                    :opa  {5  "#F66F8F0D"
                           10 "#F66F8F1A"
                           20 "#F66F8F33"

@@ -53,18 +53,17 @@
       (:text description)]]))
 
 (defn- action-button-view [{:keys [theme background scroll? description-position primary? button-props]}]
-  (let [color (or (:color button-props) :color/blue)]
-    [button/button (cond-> (-> button-props
-                               (dissoc :label)
-                               (assoc :size 40
-                                      :container-style style/action-slot
-                                      :style (rec.xf/add-styles
-                                              style/action-fill
-                                              (if primary?
-                                                (style/primary-button-style theme color)
-                                                (style/secondary-button-style theme background scroll? description-position))
-                                              (:style button-props))))
-                     primary? (assoc :color color))
+  (let [color (context/use-color)]
+    [button/button (-> button-props
+                       (dissoc :label)
+                       (assoc :size 40
+                              :container-style style/action-slot
+                              :style (rec.xf/add-styles
+                                      style/action-fill
+                                      (if primary?
+                                        (style/primary-button-style theme color)
+                                        (style/secondary-button-style theme background scroll? description-position))
+                                      (:style button-props))))
      (:label button-props)]))
 
 (defn- actions-view [{:keys [theme background scroll? description-position buttons]}]
@@ -87,7 +86,6 @@
   - `props` map
     - `:buttons` vector of one or two button prop maps
       - each map accepts the `xquo/button` props plus `:label`
-      - `:color` is forwarded to the nested button
     - `:description` optional map
       - `:position` one of `:top`, `:bottom`
       - `:status` one of `:default`, `:error` (default `:default`)

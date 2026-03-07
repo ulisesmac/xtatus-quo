@@ -46,18 +46,18 @@
     (= size 24)             container-size-24-icon
     :else                   container-size-32-icon))
 
-(defn surface-color-style [theme background selected?]
+(defn surface-color-style [theme background selected? color]
   (cond
     (and (= theme :theme/dark)
          (= background :blur))
     {:background-color (if selected?
-                         (colors/get-color :color/blue 60)
+                         (colors/get-color color 60)
                          :transparent)
      :border-color     (colors/get-color :color/white-10)}
 
     (= theme :theme/dark)
     {:background-color (if selected?
-                         (colors/get-color :color/blue 60)
+                         (colors/get-color color 60)
                          :transparent)
      :border-color     (if selected?
                          (colors/get-color :color/white-10)
@@ -65,14 +65,14 @@
 
     (= background :blur)
     {:background-color (if selected?
-                         (colors/get-color :color/blue 50)
+                         (colors/get-color color 50)
                          :transparent)
      :border-color     (if selected?
                          (colors/get-color :color/neutral-80-20)
                          (colors/get-color :color/neutral-80-10))}
 
     selected?
-    {:background-color (colors/get-color :color/blue 50)
+    {:background-color (colors/get-color color 50)
      :border-color     (colors/get-color :color/neutral-80-10)}
 
     :else
