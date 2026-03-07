@@ -3,6 +3,8 @@
   (:require [xquo.components.button.view]
             [xquo.components.counter.step.view]
             [xquo.components.drawer.bottom-actions.view]
+            [xquo.components.drawer.drawer.view]
+            [xquo.components.drawer.drawer-action.view]
             [xquo.components.drawer.top.view]
             [xquo.components.icon.view]
             [xquo.components.info.info-message.view]
@@ -22,6 +24,8 @@
 (def button xquo.components.button.view/button)
 (def step xquo.components.counter.step.view/step)
 (def bottom-actions xquo.components.drawer.bottom-actions.view/bottom-actions)
+(def drawer xquo.components.drawer.drawer.view/drawer)
+(def drawer-action xquo.components.drawer.drawer-action.view/drawer-action)
 (def drawer-top xquo.components.drawer.top.view/drawer-top)
 (def icon xquo.components.icon.view/icon)
 (def info-message xquo.components.info.info-message.view/info-message)

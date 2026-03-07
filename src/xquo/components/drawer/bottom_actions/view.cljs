@@ -22,20 +22,20 @@
                   :style style/top-error-icon}]
       [text/text {:font  :font/regular-13
                   :style (style/description-text-style theme
-                                                      background
-                                                      scroll?
-                                                      :top
-                                                      :error)}
+                                                       background
+                                                       scroll?
+                                                       :top
+                                                       :error)}
        (:text description)]]]
 
     (= (:position description) :top)
     [:rn/view {:style style/top-description-row}
      [text/text {:font  :font/regular-13
                  :style (style/description-text-style theme
-                                                     background
-                                                     scroll?
-                                                     :top
-                                                     :default)}
+                                                      background
+                                                      scroll?
+                                                      :top
+                                                      :default)}
       (:text description)]
      (when context-tag?
        ;; TODO: replace red placeholder with the real context tag component.
@@ -72,13 +72,12 @@
     (into [:rn/view {:style style/actions-row}]
           (map-indexed
            (fn [index button-props]
-             ^{:key (str "bottom-action-" index "-" (:label button-props))}
-             [action-button-view {:theme        theme
-                                  :background   background
-                                  :scroll?      scroll?
+             [action-button-view {:theme                theme
+                                  :background           background
+                                  :scroll?              scroll?
                                   :description-position description-position
-                                  :primary?     (or (not two-actions?) (= index 1))
-                                  :button-props button-props}])
+                                  :primary?             (or (not two-actions?) (= index 1))
+                                  :button-props         button-props}])
            buttons))))
 
 (defn bottom-actions
@@ -104,20 +103,18 @@
   (let [theme (context/use-theme)]
     [:rn/view (-> props
                   (dissoc :buttons :description :context-tag? :background :scroll? :style)
-                  (assoc :style (rec.xf/add-styles
-                                 style/container-base
-                                 (:style props))))
+                  (assoc :style (rec.xf/add-styles style/container-base (:style props))))
      (when (= (:position description) :top)
        [description-view {:theme        theme
                           :background   background
                           :scroll?      scroll?
                           :description  description
                           :context-tag? context-tag?}])
-     [actions-view {:theme      theme
-                    :background background
-                    :scroll?    scroll?
+     [actions-view {:theme                theme
+                    :background           background
+                    :scroll?              scroll?
                     :description-position (:position description)
-                    :buttons    buttons}]
+                    :buttons              buttons}]
      (when (= (:position description) :bottom)
        [description-view {:theme        theme
                           :background   background

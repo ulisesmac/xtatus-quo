@@ -35,10 +35,9 @@
                                 (style/surface-color-style theme background)]}]
              (map-indexed
               (fn [index item]
-                ^{:key (str "category-item-" index)}
                 [:<>
                  (when (pos? index)
                    [:rn/view {:style [style/divider-base
                                       (style/divider-color-style theme background)]}])
-                 [settings-item/settings-item (assoc item :background background)]])
-              items)))]))
+                 [settings-item/settings-item (assoc item :background background)]]))
+             items))]))

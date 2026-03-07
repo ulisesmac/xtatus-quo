@@ -18,40 +18,34 @@
   [:rn/view {:style [style/leading-placeholder-base
                      (style/leading-placeholder-style)]}])
 
-(defn- context-item-view [{:keys [theme item index]}]
+(defn- context-item-view [{:keys [theme item]}]
   (cond
     (= (:type item) :text)
-    ^{:key (str "drawer-top-context-text-" index)}
     [text/text {:font  :font/regular-13
                 :style (style/title-text-style theme)}
      (:text item)]
 
     (= (:type item) :placeholder)
-    ^{:key (str "drawer-top-context-placeholder-" index)}
     ;; TODO: replace this red placeholder with the real context tag component.
     [:rn/view {:style [style/context-placeholder-base
                        (style/context-placeholder-style (:width item))]}]))
 
 (defn- context-tags-view [{:keys [theme context-tags]}]
   (into [:rn/view {:style style/context-row}]
-        (map-indexed
-         (fn [index item]
-           [context-item-view {:theme theme
-                               :item  item
-                               :index index}])
-         context-tags)))
+        (map (fn [item]
+               [context-item-view {:theme theme
+                                   :item  item}]))
+        context-tags))
 
 (defn- description-view [{:keys [theme background description leading description-icon]}]
   [:rn/view {:style style/description-row}
    (into [text/text {:font            (if leading :font/monospace-13 :font/regular-15)
                      :number-of-lines 1
                      :style           (style/secondary-text-style theme background)}]
-         (map-indexed
-          (fn [index segment]
-            ^{:key (str "drawer-top-description-" index)}
-            [:rn/text {:style (style/description-segment-style (:color segment))}
-             (:text segment)])
-          (description-segments description)))
+         (map (fn [segment]
+                [:rn/text {:style (style/description-segment-style (:color segment))}
+                 (:text segment)]))
+         (description-segments description))
    (when description-icon
      [icon/icon {:icon  description-icon
                  :size  20
@@ -153,9 +147,8 @@
                        style/content-bottom-8
                        style/content-bottom-12)
                      style/content-column
-                     (cond
-                       context-tags style/content-gap-4
-                       description  style/content-gap-2)]}
+                     (when description style/content-gap-2)
+                     (when context-tags style/content-gap-4)]}
    (if counter
      [counter-row-view {:theme      theme
                         :background background
