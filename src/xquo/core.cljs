@@ -2,7 +2,11 @@
   (:refer-clojure :exclude [filter])
   (:require [xquo.components.button.view]
             [xquo.components.counter.step.view]
+            [xquo.components.drawer.bottom-actions.view]
+            [xquo.components.drawer.top.view]
             [xquo.components.icon.view]
+            [xquo.components.info.info-message.view]
+            [xquo.components.info.information-box.view]
             [xquo.components.page-nav.view]
             [xquo.components.settings.category.view]
             [xquo.components.settings.item.view]
@@ -16,11 +20,16 @@
             [xquo.context]))
 
 (def button xquo.components.button.view/button)
-(def category xquo.components.settings.category.view/category)
+(def step xquo.components.counter.step.view/step)
+(def bottom-actions xquo.components.drawer.bottom-actions.view/bottom-actions)
+(def drawer-top xquo.components.drawer.top.view/drawer-top)
 (def icon xquo.components.icon.view/icon)
+(def info-message xquo.components.info.info-message.view/info-message)
+(def information-box xquo.components.info.information-box.view/information-box)
 (def page-nav xquo.components.page-nav.view/page-nav)
 (def page-nav-left-action xquo.components.page-nav.view/nav-left-action)
 (def page-nav-title xquo.components.page-nav.view/nav-title)
+(def category xquo.components.settings.category.view/category)
 (def settings-item xquo.components.settings.item.view/settings-item)
 (def section-label xquo.components.settings.section-label.view/section-label)
 (def section-title xquo.components.settings.section-title.view/section-title)
@@ -28,7 +37,6 @@
 (def disclaimer xquo.components.selectors.disclaimer.view/disclaimer)
 (def filter xquo.components.selectors.filter.view/filter)
 (def selector xquo.components.selectors.selector.view/selector)
-(def step xquo.components.counter.step.view/step)
 (def text xquo.components.text.view/text)
 (def provider xquo.context/provider)
 (def use-theme xquo.context/use-theme)

@@ -1,18 +1,19 @@
 (ns xquo.foundations.animations)
 
-(def common-values
-  {:press-feedback {:default {:transform                  [{:scale 1}
-                                                          {:translate-y 0}]
-                              :transition-property        "transform"
-                              :transition-duration        "220ms"
-                              :transition-timing-function "ease"}
-                    :pressed {:transform                  [{:scale 0.985}
-                                                          {:translate-y 2}]
-                              :transition-property        "transform"
-                              :transition-duration        "120ms"
-                              :transition-timing-function "ease-out"}}
-   :state-change   {:transition-property        "transform"
-                    :transition-timing-function "ease-in-out"
-                    :toggle-duration            "300ms"
-                    :radio-expand-duration      "300ms"
-                    :radio-collapse-duration    "200ms"}})
+(def press-feedback
+  {:transition-property     "transform"
+   :default-duration        "220ms"
+   :default-timing-function "ease"
+   :default-scale           1
+   :default-translate-y     0
+   :pressed-duration        "120ms"
+   :pressed-timing-function "ease-out"
+   :pressed-scale           0.985
+   :pressed-translate-y     2})
+
+(def state-change
+  {:transition-property        "transform"
+   :transition-timing-function "ease-in-out"
+   :toggle-duration            "300ms"
+   :radio-expand-duration      "300ms"
+   :radio-collapse-duration    "200ms"})

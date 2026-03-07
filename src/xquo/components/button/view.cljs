@@ -40,6 +40,7 @@
     - `:color` customization color family keyword (default `:color/blue`)
     - `:icons` optional map `{:left :icon/... :right :icon/...}`
     - `:icon-color` optional icon color override
+    - `:container-style` optional outer animated wrapper style
     - `:disabled?` optional boolean
     - `:on-press-in` optional callback `(fn [event] ...)`
     - `:on-press-out` optional callback `(fn [event] ...)`
@@ -55,7 +56,7 @@
     - `{:right ...}` right icon
     - `{:left ... :right ...}` both sides
     - no icons -> text-only."
-  [{:keys               [type size background color disabled? on-press-in on-press-out icon-color]
+  [{:keys               [type size background color disabled? on-press-in on-press-out icon-color container-style]
     {left-icon  :left
      right-icon :right} :icons
     :or                 {type       :primary
@@ -78,11 +79,13 @@
                                          (when on-press-out
                                            (on-press-out event)))
                                        [on-press-out])]
-    [:animated/view {:style (if pressed?
-                              style/pressable-pressed-state-style
-                              style/pressable-default-state-style)}
+    [:animated/view {:style (rec.xf/add-styles
+                             (if pressed?
+                               style/pressable-pressed-state-style
+                               style/pressable-default-state-style)
+                             container-style)}
      [:rn/pressable (-> props
-                        (dissoc :type :size :background :color :icons :state :disabled? :style :on-press-in :on-press-out :icon-color)
+                        (dissoc :type :size :background :color :icons :state :disabled? :style :on-press-in :on-press-out :icon-color :container-style)
                         (assoc :disabled disabled?
                                :style (rec.xf/add-styles
                                        style/pressable-base-style

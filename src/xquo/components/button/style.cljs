@@ -277,16 +277,18 @@
    :align-self      :flex-start})
 
 (defstyle pressable-default-state-style
-  {:transform                  (get-in animations/common-values [:press-feedback :default :transform])
-   :transition-property        (get-in animations/common-values [:press-feedback :default :transition-property])
-   :transition-duration        (get-in animations/common-values [:press-feedback :default :transition-duration])
-   :transition-timing-function (get-in animations/common-values [:press-feedback :default :transition-timing-function])})
+  {:transform                  [{:scale       (:default-scale animations/press-feedback)}
+                                {:translate-y (:default-translate-y animations/press-feedback)}]
+   :transition-property        (:transition-property animations/press-feedback)
+   :transition-duration        (:default-duration animations/press-feedback)
+   :transition-timing-function (:default-timing-function animations/press-feedback)})
 
 (defstyle pressable-pressed-state-style
-  {:transform                  (get-in animations/common-values [:press-feedback :pressed :transform])
-   :transition-property        (get-in animations/common-values [:press-feedback :pressed :transition-property])
-   :transition-duration        (get-in animations/common-values [:press-feedback :pressed :transition-duration])
-   :transition-timing-function (get-in animations/common-values [:press-feedback :pressed :transition-timing-function])})
+  {:transform                  [{:scale       (:pressed-scale animations/press-feedback)}
+                                {:translate-y (:pressed-translate-y animations/press-feedback)}]
+   :transition-property        (:transition-property animations/press-feedback)
+   :transition-duration        (:pressed-duration animations/press-feedback)
+   :transition-timing-function (:pressed-timing-function animations/press-feedback)})
 
 (def font-type
   {40 :font/medium-15
