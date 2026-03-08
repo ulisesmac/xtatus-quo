@@ -55,14 +55,14 @@
     - `{:right ...}` right icon
     - `{:left ... :right ...}` both sides
     - no icons -> text-only."
-  [{:keys               [type size background disabled? on-press-in on-press-out icon-color container-style]
+  [{:keys               [type size background disabled? on-press-in on-press-out icon-color container-style] ;; TODO: horrendous API: container-=style shouldn't be used, as well as icon-color
     {left-icon  :left
      right-icon :right} :icons
     :or                 {type       :primary
                          background :none
                          size       40}
     :as                 props}
-   content]
+   content] ;; TODO: icon-only variant icon color IS WRONG
   (let [theme         (context/use-theme)
         color         (context/use-color)
         icon-only?    (and (nil? content) (or left-icon right-icon))

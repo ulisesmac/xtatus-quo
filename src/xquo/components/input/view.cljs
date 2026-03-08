@@ -8,7 +8,7 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]
             [xquo.foundations.colors :as colors]
-            [xquo.react-native-reanimated :as rnr]
+   ;[xquo.react-native-reanimated :as rnr]
             [xquo.react-native :as rn]))
 
 (def clear-button-delay 120)
@@ -68,9 +68,9 @@
          (fn []
            #(some-> @clear-timeout js/clearTimeout))
          [])
-        [:animated/view {:entering (rnr/appear-in)
-                         :exiting  (rnr/disappear-out)
-                         :layout   rnr/linear-transition
+        [:animated/view { ;:entering (rnr/appear-in)
+                         ;:exiting  (rnr/disappear-out)
+                         ;:layout   rnr/linear-transition
                          :style    (if pressed?
                                      button.style/pressable-pressed-state-style
                                      button.style/pressable-default-state-style)}
@@ -193,7 +193,6 @@
                                      :on-focus on-focus!
                                      :placeholder-text-color placeholder-text-color
                                      :selection-color selection-color
-                                     :underline-color-android selection-color
                                      :value value)
                       disabled? (assoc :editable false)
                       max-length (assoc :max-length max-length)
@@ -208,23 +207,21 @@
     - `:size` one of `40` or `32` (default `40`)
     - `:background` one of `:none` or `:blur` (default `:none`)
     - `:label` optional label text rendered above the field
-    - `:max-length` optional character limit. When present, the counter is
-      computed internally from the current value
+    - `:max-length` optional character limit. When present, the counter is computed
+                    internally from the current value
     - `:placeholder` optional placeholder text
     - `:value` optional controlled value
     - `:default-value` optional uncontrolled initial value
-    - `:multiline?` optional boolean. When true, the field switches to the
-      multiline layout and top-aligned text behavior
-    - `:min-height` optional minimum surface height for multiline inputs. When
-      omitted, multiline starts at the single-line height and grows from
-      content
+    - `:multiline?` optional boolean. When true, the field switches to the multiline
+                    layout and top-aligned text behavior
+    - `:min-height` optional minimum surface height for multiline inputs. When omitted,
+                    multiline starts at the single-line height and grows from content
     - `:max-height` optional maximum surface height for multiline inputs
     - `:icon` optional leading icon
-    - `:clearable?` optional boolean that renders the clear button when the
-      input has content
+    - `:clearable?` optional boolean that renders the clear button when the input has content
     - `:on-clear` optional callback fired when the clear button is pressed
-    - `:button-props` optional trailing button map. `:label` is rendered as the
-      button content; `:size 24`, `:type :outline`, and inherited
+    - `:button-props` optional trailing button map. `:label` is rendered as the button
+                      content; `:size 24`, `:type :outline`, and inherited
       `:background` are enforced internally
     - `:error?` optional boolean
     - `:disabled?` optional boolean

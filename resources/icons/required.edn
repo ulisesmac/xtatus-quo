@@ -26,4 +26,12 @@
   :icon/placeholder-20
   :icon/reveal-20
   :icon/unread-20
+  ;; MAPP
+  :icon/search-20
+  :icon/search-12
+  :icon/derived-path-big-12
+  :icon/derived-path-big-20
+  :icon/arrow-left-right-12
+  :icon/flip-20
+  :icon/refresh-20
 }
