@@ -1,19 +1,20 @@
 (ns xtatus-quo.components.tabs.tab.view
   (:require
-    [quo.components.common.notification-dot.view :as notification-dot]
-    [xtatus-quo.components.icon :as icons]
-    [xtatus-quo.components.markdown.text :as text]
-    [quo.components.tabs.tab.style :as style]
-    [quo.context :as quo.context]
-    [react-native.core :as rn]
-    [react-native.svg :as svg]))
+   [quo.components.common.notification-dot.view :as notification-dot]
+   [xtatus-quo.components.icon :as icons]
+   [xtatus-quo.components.markdown.text :as text]
+   [quo.components.tabs.tab.style :as style]
+   [quo.context :as quo.context]
+   [react-native.core :as rn]
+   ;[react-native.svg :as svg]
+   ))
 
 (defn- right-side-with-cutout
   "SVG exported from Figma."
   [{:keys [height width background-color disabled]}]
   ;; Do not add a view-box property, it'll cause an artifact where the SVG is
   ;; rendered slightly smaller than the proper width and height.
-  [svg/svg
+  #_[svg/svg
    {:width        width
     :height       height
     :fill         background-color

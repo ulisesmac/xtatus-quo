@@ -1,10 +1,11 @@
 (ns quo.components.notifications.count-down-circle
   (:require
-    [goog.string :as gstring]
-    [quo.context :as quo.context]
-    [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
-    [react-native.svg :as svg]))
+   [goog.string :as gstring]
+   [quo.context :as quo.context]
+   [quo.foundations.colors :as colors]
+   [react-native.core :as rn]
+   ;[react-native.svg :as svg]
+   ))
 
 (defn- get-path-props
   [size stroke-width rotation]
@@ -83,7 +84,7 @@
      {:style {:position :relative
               :width    size
               :height   size}}
-     [svg/svg
+     #_[svg/svg
       {:view-box (str "0 0 " size " " size)
        :width    size
        :height   size}
