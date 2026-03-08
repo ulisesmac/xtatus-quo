@@ -14,12 +14,13 @@
              :or   {font :font/regular-15}
              :as   props}
             & children]
-  (into [:rn/text (-> props
-                      (dissoc :font :style)
-                      (assoc :style (rec.xf/add-styles
-                                     (typography/get-style font)
-                                     (if (= (context/use-theme) :theme/dark)
-                                       dark-text-style
-                                       light-text-style)
-                                     style)))]
-          children))
+  (let [theme (context/use-theme)]
+    (into [:rn/text (-> props
+                        (dissoc :font :style)
+                        (assoc :style (rec.xf/add-styles
+                                       (typography/get-style font)
+                                       (if (= theme :theme/dark)
+                                         dark-text-style
+                                         light-text-style)
+                                       style)))]
+          children)))
