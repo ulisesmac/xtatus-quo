@@ -57,8 +57,10 @@
                           (current-theme))
         color-value   (or (when context-value (j/get context-value :color))
                           (current-color))]
-    {:theme theme-value
-     :color color-value}))
+    {:theme        theme-value
+     :color        color-value
+     :dark-theme?  (= theme-value :theme/dark)
+     :light-theme? (= theme-value :theme/light)}))
 
 (defn use-theme []
   (:theme (use-theme-color)))

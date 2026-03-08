@@ -14,6 +14,8 @@
                      withDecay
                      Easing
                      cancelAnimation
+                     FadeIn
+                     FadeOut
                      SlideInUp
                      SlideOutUp
                      LinearTransition
@@ -28,6 +30,8 @@
 (def ^:const default-duration 300)
 
 ;; Animations
+(def fade-in FadeIn)
+(def fade-out FadeOut)
 (def slide-in-up-animation SlideInUp)
 (def slide-out-up-animation SlideOutUp)
 (def linear-transition LinearTransition)
