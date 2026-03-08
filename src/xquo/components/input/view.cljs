@@ -11,6 +11,9 @@
             [xquo.react-native-reanimated :as rnr]
             [xquo.react-native :as rn]))
 
+(def clear-button-delay 120)
+(def text-input-content-height 22)
+
 (defn- layout-type [icon clearable? button-props]
   (cond
     (and button-props icon clearable?) :button-icon-clear
@@ -59,7 +62,7 @@
                                                       (fn []
                                                         (reset! clear-timeout nil)
                                                         (clear-input!))
-                                                      120)))
+                                                      clear-button-delay)))
                                            [clear-input!])]
         (rn/use-effect
          (fn []
@@ -89,7 +92,113 @@
     :else                          18))
 
 (defn- normalize-multiline-height [content-height]
-  (* 22 (max 1 (js/Math.round (/ content-height 22)))))
+  (* text-input-content-height
+     (max 1 (js/Math.round (/ content-height text-input-content-height)))))
+
+(defn- next-content-height [event]
+  (-> event
+      (j/get-in [:nativeEvent :contentSize :height] text-input-content-height)
+      (js/Math.ceil)
+      (normalize-multiline-height)))
+
+(defn- updated-content-height [current-height next-height]
+  (if (= current-height next-height)
+    current-height
+    next-height))
+
+(defn- bounded-content-height [height vertical-padding]
+  (when height
+    (max text-input-content-height
+         (- height vertical-padding))))
+
+(defn- min-content-height [min-height vertical-padding]
+  (or (bounded-content-height min-height vertical-padding)
+      text-input-content-height))
+
+(defn- content-overflows? [content-height max-content-height]
+  (and max-content-height
+       content-height
+       (> content-height max-content-height)))
+
+(defn- input-height [content-height min-content-height max-content-height]
+  (cond
+    (not content-height) nil
+    max-content-height   (min (max min-content-height content-height)
+                              max-content-height)
+    :else                (max min-content-height content-height)))
+
+(defn- text-input-view
+  [{:keys [background button-props controlled? disabled? focused? input-ref max-height
+           max-length min-height multiline? on-blur on-change-text on-content-size-change
+           on-focus set-focused! set-internal-value! size value]
+    :as   props}]
+  (let [{:keys [color dark-theme?]} (context/use-theme-color)
+        [content-height
+         set-content-height!] (rn/use-state nil)
+        selection-color         (style/selection-color color)
+        vertical-padding        (surface-vertical-padding size button-props)
+        min-content-height      (min-content-height min-height vertical-padding)
+        max-content-height      (bounded-content-height max-height vertical-padding)
+        content-overflow?       (content-overflows? content-height max-content-height)
+        input-height            (input-height content-height min-content-height max-content-height)
+        placeholder-text-color  (style/placeholder-color dark-theme? background focused?)
+        text-input-layout-style (cond
+                                  (and multiline? rn/platform-android?) style/text-input-multiline-android
+                                  multiline? style/text-input-multiline-ios
+                                  rn/platform-android? style/text-input-single-line-android
+                                  (not rn/platform-android?) style/text-input-single-line-ios)
+        on-change-text!         (rn/use-callback (fn [next-value]
+                                                   (when-not controlled?
+                                                     (set-internal-value! next-value))
+                                                   (when on-change-text
+                                                     (on-change-text next-value)))
+                                                 [controlled? on-change-text])
+        on-content-size-change! (rn/use-callback
+                                 (fn [event]
+                                   (when multiline?
+                                     (set-content-height! #(updated-content-height % (next-content-height event))))
+                                   (when on-content-size-change
+                                     (on-content-size-change event)))
+                                 [multiline? on-content-size-change])
+        on-focus!               (rn/use-callback (fn [event]
+                                                   (set-focused! true)
+                                                   (when on-focus
+                                                     (on-focus event)))
+                                                 [on-focus])
+        on-blur!                (rn/use-callback (fn [event]
+                                                   (set-focused! false)
+                                                   (when on-blur
+                                                     (on-blur event)))
+                                                 [on-blur])]
+    [:rn/text-input (cond-> props
+                      :always (dissoc :background :button-props :default-value :disabled?
+                                      :error? :icon :clearable? :input-container-style
+                                      :label :max-height :max-length :min-height :multiline
+                                      :multiline? :on-blur :on-change-text :on-clear
+                                      :on-content-size-change :on-focus :size :style :value)
+                      :always (assoc :ref input-ref
+                                     :style [style/text-input-base
+                                             (if dark-theme?
+                                               text/dark-text-style
+                                               text/light-text-style)
+                                             text-input-layout-style
+                                             (when multiline?
+                                               {:min-height min-content-height})
+                                             (when input-height
+                                               {:height input-height})]
+                                     :cursor-color selection-color
+                                     :on-blur on-blur!
+                                     :on-change-text on-change-text!
+                                     :on-content-size-change on-content-size-change!
+                                     :on-focus on-focus!
+                                     :placeholder-text-color placeholder-text-color
+                                     :selection-color selection-color
+                                     :underline-color-android selection-color
+                                     :value value)
+                      disabled? (assoc :editable false)
+                      max-length (assoc :max-length max-length)
+                      multiline? (assoc :multiline      true
+                                        :scroll-enabled content-overflow?))]))
 
 (defn input
   "Input component.
@@ -129,52 +238,16 @@
     :or                 {background  :none
                          size        40}
     :as                 props}]
-  (let [{:keys [color dark-theme?]} (context/use-theme-color)
+  (let [{:keys [dark-theme?]}       (context/use-theme-color)
         controlled?                 (contains? props :value)
         input-ref                   (rn/use-ref nil)
         [focused? set-focused!]     (rn/use-state false)
         [internal-value
          set-internal-value!] (rn/use-state (or default-value ""))
-        [content-height
-         set-content-height!] (rn/use-state nil)
         current-value           (if controlled? value internal-value)
         show-clear-button?      (and clearable? (seq current-value))
-        selection-color         (style/selection-color color)
         layout                  (layout-type icon show-clear-button? button-props)
         slot-gap-style          (get container-slot-gap-styles size)
-        vertical-padding        (surface-vertical-padding size button-props)
-        min-input-height        (if min-height
-                                  (max 22 (- min-height vertical-padding))
-                                  22)
-        max-input-height        (when max-height
-                                  (max 22 (- max-height vertical-padding)))
-        input-height            (when (and multiline? content-height)
-                                  (let [next-height (max min-input-height content-height)]
-                                    (if max-input-height
-                                      (min next-height max-input-height)
-                                      next-height)))
-        content-overflow?       (and max-input-height
-                                     content-height
-                                     (> content-height max-input-height))
-        on-change-text!         (rn/use-callback (fn [next-value]
-                                                   (when-not controlled?
-                                                     (set-internal-value! next-value))
-                                                   (when on-change-text
-                                                     (on-change-text next-value)))
-                                                 [controlled? on-change-text])
-        on-content-size-change! (rn/use-callback (fn [event]
-                                                   (let [next-height (-> event
-                                                                         (j/get-in [:nativeEvent :contentSize :height] 22)
-                                                                         (js/Math.ceil)
-                                                                         (normalize-multiline-height))]
-                                                     (when multiline?
-                                                       (set-content-height!
-                                                        #(if (= % next-height)
-                                                           %
-                                                           next-height)))
-                                                     (when on-content-size-change
-                                                       (on-content-size-change event))))
-                                                 [multiline? on-content-size-change])
         focus-input!            (rn/use-callback (fn []
                                                    (when-not disabled?
                                                      (when-let [input-instance (j/get input-ref :current)]
@@ -185,17 +258,7 @@
                                                      (set-internal-value! ""))
                                                    (when on-clear
                                                      (on-clear)))
-                                                 [controlled? on-clear])
-        on-focus!               (rn/use-callback (fn [event]
-                                                   (set-focused! true)
-                                                   (when on-focus
-                                                     (on-focus event)))
-                                                 [on-focus])
-        on-blur!                (rn/use-callback (fn [event]
-                                                   (set-focused! false)
-                                                   (when on-blur
-                                                     (on-blur event)))
-                                                 [on-blur])]
+                                                 [controlled? on-clear])]
     [:rn/view {:style (rec.xf/add-styles style/root-base
                                          (when (or label max-length) style/root-gap-8)
                                          (when disabled? style/root-disabled)
@@ -226,43 +289,13 @@
        (when icon
          [leading-icon-view {:background background
                              :icon       icon}])
-       [:rn/text-input (cond-> props
-                         :always (dissoc :background :button-props :default-value :disabled?
-                                         :error? :icon :clearable? :input-container-style
-                                         :label :max-height :max-length :min-height
-                                         :multiline :multiline? :on-blur :on-change-text
-                                         :on-clear :on-content-size-change :on-focus
-                                         :size :style :value)
-                         :always (assoc :ref input-ref
-                                        :style [style/text-input-base
-                                                style/text-input-font
-                                                (if dark-theme?
-                                                  text/dark-text-style
-                                                  text/light-text-style)
-                                                (if multiline?
-                                                  (if rn/platform-android?
-                                                    style/text-input-multiline-android
-                                                    style/text-input-multiline-ios)
-                                                  (if rn/platform-android?
-                                                    style/text-input-single-line-android
-                                                    style/text-input-single-line-ios))
-                                                (when multiline?
-                                                  {:min-height min-input-height})
-                                                (when input-height
-                                                  {:height input-height})]
-                                        :cursor-color selection-color
-                                        :on-blur on-blur!
-                                        :on-change-text on-change-text!
-                                        :on-content-size-change on-content-size-change!
-                                        :on-focus on-focus!
-                                        :placeholder-text-color (style/placeholder-color dark-theme? background focused?)
-                                        :selection-color selection-color
-                                        :underline-color-android selection-color
-                                        :value current-value)
-                         disabled? (assoc :editable false)
-                         max-length (assoc :max-length max-length)
-                         multiline? (assoc :multiline      true
-                                           :scroll-enabled content-overflow?))]]
+       [text-input-view (assoc props
+                          :controlled?         controlled?
+                          :focused?            focused?
+                          :input-ref           input-ref
+                          :set-focused!        set-focused!
+                          :set-internal-value! set-internal-value!
+                          :value               current-value)]]
       (when show-clear-button?
         [clear-button-view {:background   background
                             :clear-input! clear-input!

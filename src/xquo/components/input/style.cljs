@@ -148,6 +148,9 @@
 (defstyle text-input-base
   {:flex                 1
    :min-width            1
+   :font-family          (:regular typography/font-families)
+   :font-size            (:font-size typography/paragraph-1-15)
+   :letter-spacing       (:letter-spacing typography/paragraph-1-15)
    :include-font-padding false
    :padding              0
    :padding-horizontal   0
@@ -157,11 +160,6 @@
    :padding-bottom       0
    :padding-left         0
    :margin               0})
-
-(defstyle text-input-font
-  {:font-family    (:regular typography/font-families)
-   :font-size      (:font-size typography/paragraph-1-15)
-   :letter-spacing (:letter-spacing typography/paragraph-1-15)})
 
 (defstyle text-input-single-line-ios
   {:line-height         18
