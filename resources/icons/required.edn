@@ -3,6 +3,7 @@
   :icon/arrow-down-12
   :icon/arrow-left-20
   :icon/arrow-top-12
+  :icon/browser-12
   :icon/browser-16
   :icon/browser-20
   :icon/check-20
@@ -14,6 +15,7 @@
   :icon/dark-20
   :icon/dropdown-12
   :icon/dropdown-20
+  :icon/edit-12
   :icon/email-20
   :icon/hide-20
   :icon/info-12

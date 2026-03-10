@@ -13,6 +13,11 @@
     [{:text description}]
     description))
 
+(defn- handle-view [{:keys [theme]}]
+  [:rn/view {:style style/handle-container}
+   [:rn/view {:style [style/handle-bar-base
+                      (style/handle-bar-style theme)]}]])
+
 (defn- leading-placeholder-view [_]
   ;; TODO: replace this red placeholder with the real drawer leading media components.
   [:rn/view {:style [style/leading-placeholder-base
@@ -173,6 +178,7 @@
 
   API:
   - `props` map
+    - `:skip-handle?` optional boolean that hides the top handle when true
     - `:label` optional label variant. When present, title props are ignored.
     - `:compact?` optional boolean for the tighter documentation top spacing
     - `:title` title text (default `\"Title\"`)
@@ -191,17 +197,20 @@
     - `:background` optional `:blur`
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`."
-  [{:keys [label compact? title description counter info? button-props title-icon
+  [{:keys [skip-handle? label compact? title description counter info? button-props title-icon
            description-icon leading context-tags background]
     :or   {title "Title"}
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
-                  (dissoc :label :compact? :title :description :counter :info? :button-props
+                  (dissoc :skip-handle? :label :compact? :title :description :counter :info?
+                          :button-props
                           :title-icon :description-icon :leading :context-tags :background :style)
                   (assoc :style (rec.xf/add-styles
                                  style/container-base
                                  (:style props))))
+     (when-not skip-handle?
+       [handle-view {:theme theme}])
      (if label
        [:rn/view {:style [style/content-base
                           style/content-bottom-12]}

@@ -14,12 +14,12 @@
 (def clear-button-delay 120)
 (def text-input-content-height 22)
 
-(defn- layout-type [icon clearable? button-props]
+(defn- layout-type [icon clearable? trailing-button]
   (cond
-    (and button-props icon clearable?) :button-icon-clear
-    (and button-props icon)            :button-icon
-    (and button-props clearable?)      :button-clear
-    button-props                       :button
+    (and trailing-button icon clearable?) :button-icon-clear
+    (and trailing-button icon)            :button-icon
+    (and trailing-button clearable?)      :button-clear
+    trailing-button                       :button
     (and icon clearable?)              :icon-clear
     icon                               :icon
     clearable?                         :clear))
@@ -84,10 +84,10 @@
                       :color   (:color (style/clear-icon-color dark-theme? background))
                       :color-2 (colors/get-color :color/white-100)}]]]))))
 
-(defn- surface-vertical-padding [size button-props]
+(defn- surface-vertical-padding [size trailing-button]
   (cond
-    (and button-props (= size 32)) 8
-    button-props                   16
+    (and trailing-button (= size 32)) 8
+    trailing-button                   16
     (= size 32)                    10
     :else                          18))
 
@@ -128,15 +128,16 @@
     :else                (max min-content-height content-height)))
 
 (defn- text-input-view
-  [{:keys [background button-props controlled? disabled? focused? input-ref max-height
+  [{:keys [background controlled? disabled? focused? input-ref max-height
            max-length min-height multiline? on-blur on-change-text on-content-size-change
            on-focus set-focused! set-internal-value! size value]
+    trailing-button :button
     :as   props}]
   (let [{:keys [color dark-theme?]} (context/use-theme-color)
         [content-height
          set-content-height!] (rn/use-state nil)
         selection-color         (style/selection-color color)
-        vertical-padding        (surface-vertical-padding size button-props)
+        vertical-padding        (surface-vertical-padding size trailing-button)
         min-content-height      (min-content-height min-height vertical-padding)
         max-content-height      (bounded-content-height max-height vertical-padding)
         content-overflow?       (content-overflows? content-height max-content-height)
@@ -171,7 +172,7 @@
                                                      (on-blur event)))
                                                  [on-blur])]
     [:rn/text-input (cond-> props
-                      :always (dissoc :background :button-props :default-value :disabled?
+                      :always (dissoc :background :button :default-value :disabled?
                                       :error? :icon :clearable? :input-container-style
                                       :label :max-height :max-length :min-height :multiline
                                       :multiline? :on-blur :on-change-text :on-clear
@@ -220,17 +221,18 @@
     - `:icon` optional leading icon
     - `:clearable?` optional boolean that renders the clear button when the input has content
     - `:on-clear` optional callback fired when the clear button is pressed
-    - `:button-props` optional trailing button map. `:label` is rendered as the button
+    - `:button` optional trailing button map. `:label` is rendered as the button
                       content; `:size 24`, `:type :outline`, and inherited
       `:background` are enforced internally
     - `:error?` optional boolean
     - `:disabled?` optional boolean
     - `:style` optional caller style for the outer component wrapper
     - Any additional keys are forwarded to `:rn/text-input`."
-  [{:keys               [background button-props clearable? default-value disabled? error? icon
+  [{:keys               [background clearable? default-value disabled? error? icon
                          label max-height max-length min-height multiline? on-blur
                          on-change-text on-clear on-content-size-change on-focus
                          size value]
+    trailing-button     :button
     component-style     :style
     :or                 {background  :none
                          size        40}
@@ -243,7 +245,7 @@
          set-internal-value!] (rn/use-state (or default-value ""))
         current-value           (if controlled? value internal-value)
         show-clear-button?      (and clearable? (seq current-value))
-        layout                  (layout-type icon show-clear-button? button-props)
+        layout                  (layout-type icon show-clear-button? trailing-button)
         slot-gap-style          (get container-slot-gap-styles size)
         focus-input!            (rn/use-callback (fn []
                                                    (when-not disabled?
@@ -298,10 +300,10 @@
                             :clear-input! clear-input!
                             :disabled?    disabled?}])
       (when-let [{:keys [label type]
-                  :or   {label "Button" type :outline}} button-props]
-        [button/button (assoc button-props
+                  :or   {label "Button" type :outline}} trailing-button]
+        [button/button (assoc trailing-button
                          :background background
-                         :disabled? (or disabled? (:disabled? button-props))
+                         :disabled? (or disabled? (:disabled? trailing-button))
                          :size 24
                          :type type)
          label])]]))

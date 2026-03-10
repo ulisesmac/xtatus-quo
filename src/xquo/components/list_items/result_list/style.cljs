@@ -40,10 +40,9 @@
   rn/style-sheet-absolute-fill)
 
 (defstyle image
-  {:width         32
-   :height        32
-   :align-self    :center
-   :border-radius (:border/size-32 borders/border-radius-values)})
+  {:width      32
+   :height     32
+   :align-self :center})
 
 (defstyle image-slot
   {:width            32

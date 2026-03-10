@@ -7,6 +7,21 @@
   {:align-self  :stretch
    :padding-top 20})
 
+(defstyle handle-container
+  {:position       :absolute
+   :top            0
+   :left           0
+   :right          0
+   :height         20
+   :align-items    :center
+   :justify-content :flex-end
+   :padding-bottom 8})
+
+(defstyle handle-bar-base
+  {:width         32
+   :height        4
+   :border-radius 100})
+
 (defstyle content-base
   {:padding-horizontal 20})
 
@@ -85,32 +100,37 @@
 (defstyle counter-text
   {:text-align :right})
 
+(defn handle-bar-style [theme]
+  {:background-color (if (= theme :theme/light)
+                       (colors/get-color :color/neutral-20)
+                       (colors/get-color :color/white-20))})
+
 (defn title-text-style [theme]
   {:color (if (= theme :theme/dark)
-            (colors/get-color :color/white 100)
-            (colors/get-color :color/neutral 100))})
+            (colors/get-color :color/white-100)
+            (colors/get-color :color/neutral-100))})
 
 (defn secondary-text-style [theme background]
   {:color (cond
             (and (= theme :theme/dark) (= background :blur))
-            (colors/get-color :color/white 40)
+            (colors/get-color :color/white-40)
 
             (= theme :theme/dark)
-            (colors/get-color :color/neutral 40)
+            (colors/get-color :color/neutral-40)
 
             :else
-            (colors/get-color :color/neutral 50))})
+            (colors/get-color :color/neutral-50))})
 
 (defn counter-text-style [theme background]
   {:color (cond
             (and (= theme :theme/dark) (= background :blur))
-            (colors/get-color :color/white 40)
+            (colors/get-color :color/white-40)
 
             (= theme :theme/dark)
-            (colors/get-color :color/neutral 50)
+            (colors/get-color :color/neutral-50)
 
             :else
-            (colors/get-color :color/neutral 40))})
+            (colors/get-color :color/neutral-40))})
 
 (defn primary-button-style [theme color]
   (when (= theme :theme/dark)
@@ -118,17 +138,17 @@
 
 (defn icon-color [theme background]
   (cond
-    (and (= theme :theme/dark) (= background :blur)) (colors/get-color :color/white 40)
-    (= theme :theme/dark)                            (colors/get-color :color/neutral 40)
-    :else                                            (colors/get-color :color/neutral 50)))
+    (and (= theme :theme/dark) (= background :blur)) (colors/get-color :color/white-40)
+    (= theme :theme/dark)                            (colors/get-color :color/neutral-40)
+    :else                                            (colors/get-color :color/neutral-50)))
 
 (defn leading-placeholder-style []
-  {:background-color (colors/get-color :color/danger 50)
+  {:background-color (colors/get-color :color/danger-50)
    :border-radius    (:border/bounding-area borders/border-radius-values)})
 
 (defn context-placeholder-style [width]
   {:width            width
-   :background-color (colors/get-color :color/danger 50)
+   :background-color (colors/get-color :color/danger-50)
    :border-radius    (:border/bounding-area borders/border-radius-values)})
 
 (defn description-segment-style [color]
