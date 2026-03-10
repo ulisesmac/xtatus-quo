@@ -8,7 +8,7 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]
             [xquo.foundations.colors :as colors]
-   ;[xquo.react-native-reanimated :as rnr]
+            [xquo.react-native-reanimated :as rnr]
             [xquo.react-native :as rn]))
 
 (def clear-button-delay 120)
@@ -68,9 +68,9 @@
          (fn []
            #(some-> @clear-timeout js/clearTimeout))
          [])
-        [:animated/view { ;:entering (rnr/appear-in)
-                         ;:exiting  (rnr/disappear-out)
-                         ;:layout   rnr/linear-transition
+        [:animated/view {:entering (rnr/appear-in)
+                         :exiting  (rnr/disappear-out)
+                         :layout   rnr/linear-transition
                          :style    (if pressed?
                                      button.style/pressable-pressed-state-style
                                      button.style/pressable-default-state-style)}
