@@ -21,6 +21,7 @@
             [xquo.components.settings.sort-item.view]
             [xquo.components.selectors.disclaimer.view]
             [xquo.components.selectors.filter.view]
+            [xquo.components.selectors.options.view]
             [xquo.components.selectors.selector.view]
             [xquo.components.text.view]))
 
@@ -47,5 +48,6 @@
 (def sort-item xquo.components.settings.sort-item.view/sort-item)
 (def disclaimer xquo.components.selectors.disclaimer.view/disclaimer)
 (def filter xquo.components.selectors.filter.view/filter)
+(def options xquo.components.selectors.options.view/view)
 (def selector xquo.components.selectors.selector.view/selector)
 (def text xquo.components.text.view/text)
