@@ -23,6 +23,7 @@
             [xquo.components.selectors.filter.view]
             [xquo.components.selectors.options.view]
             [xquo.components.selectors.selector.view]
+            [xquo.components.tags.context-tag.view]
             [xquo.components.text.view]))
 
 (def button xquo.components.button.view/button)
@@ -50,4 +51,5 @@
 (def filter xquo.components.selectors.filter.view/filter)
 (def options xquo.components.selectors.options.view/view)
 (def selector xquo.components.selectors.selector.view/selector)
+(def context-tag xquo.components.tags.context-tag.view/context-tag)
 (def text xquo.components.text.view/text)

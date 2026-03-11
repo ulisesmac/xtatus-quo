@@ -52,32 +52,36 @@
                                                        :default)]}
       (:text description)]]))
 
-(defn- action-button-view [{:keys [theme background scroll? description-position primary? button-props]}]
-  (let [color (context/use-color)]
-    [button/button (-> button-props
-                       (dissoc :label)
-                       (assoc :size 40
-                              :container-style style/action-slot
-                              :style (rec.xf/add-styles
-                                      style/action-fill
-                                      (if primary?
-                                        (style/primary-button-style theme color)
-                                        (style/secondary-button-style theme background scroll? description-position))
-                                      (:style button-props))))
+(defn- action-button-view [{:keys [theme color background scroll? description-position primary? button-props]}]
+  (let [button-type (or (:type button-props)
+                        (when-not primary? :grey))]
+    [button/button (cond-> (-> button-props
+                               (dissoc :label)
+                               (assoc :size 40
+                                      :container-style style/action-slot
+                                      :style (rec.xf/add-styles
+                                              style/action-fill
+                                              (if primary?
+                                                (style/primary-button-style theme color)
+                                                (style/secondary-button-style theme background scroll?
+                                                                              description-position))
+                                              (:style button-props))))
+                     button-type (assoc :type button-type))
      (:label button-props)]))
 
-(defn- actions-view [{:keys [theme background scroll? description-position buttons]}]
+(defn- actions-view [{:keys [theme color background scroll? description-position buttons]}]
   (let [two-actions? (= (count buttons) 2)]
     (into [:rn/view {:style style/actions-row}]
           (map-indexed
            (fn [index button-props]
              [action-button-view {:theme                theme
+                                  :color                color
                                   :background           background
                                   :scroll?              scroll?
                                   :description-position description-position
                                   :primary?             (or (not two-actions?) (= index 1))
-                                  :button-props         button-props}])
-           buttons))))
+                                  :button-props         button-props}]))
+          buttons)))
 
 (defn bottom-actions
   "Bottom actions component.
@@ -98,7 +102,7 @@
   [{:keys [buttons description context-tag? background scroll?]
     :or   {background :none}
     :as   props}]
-  (let [theme (context/use-theme)]
+  (let [{:keys [theme color]} (context/use-theme-color)]
     [:rn/view (-> props
                   (dissoc :buttons :description :context-tag? :background :scroll? :style)
                   (assoc :style (rec.xf/add-styles style/container-base (:style props))))
@@ -109,6 +113,7 @@
                           :description  description
                           :context-tag? context-tag?}])
      [actions-view {:theme                theme
+                    :color                color
                     :background           background
                     :scroll?              scroll?
                     :description-position (:position description)

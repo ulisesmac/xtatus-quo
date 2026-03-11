@@ -1,7 +1,8 @@
 (ns xquo.components.drawer.top.style
   (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
             [xquo.foundations.borders :as borders]
-            [xquo.foundations.colors :as colors]))
+            [xquo.foundations.colors :as colors]
+            [xquo.foundations.spacing :as spacing]))
 
 (defstyle container-base
   {:align-self  :stretch
@@ -40,6 +41,21 @@
 
 (defstyle content-gap-4
   {:gap 4})
+
+(defstyle subcontent-slot
+  {:align-self      :stretch
+   :height          (spacing/spacing-values 9)
+   :margin-top      (spacing/spacing-values 2)
+   :overflow        :hidden})
+
+(defstyle context-row-slot
+  {:margin-top (spacing/spacing-values 2)})
+
+(defstyle description-row-slot
+  {:margin-top (spacing/spacing-values 1)})
+
+(defstyle description-row-slot-with-context
+  {:margin-top (spacing/spacing-values 2)})
 
 (defstyle title-row
   {:flex-direction :row})
