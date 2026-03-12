@@ -8,7 +8,7 @@
             [xquo.react-native :as rn]))
 
 (defn- title-view [{:keys [theme title]}]
-  [text/text {:font            :font/semibold-15
+  [text/text {:font            :font/medium-15
               :number-of-lines 1
               :style           {:color (style/title-color theme)}}
    title])
@@ -22,20 +22,17 @@
     - `:content` bottom slot rendered as-is
     - `:image-source` leading image source for `:rn/image`
     - `:background` one of `:none` or `:blur` (default `:none`)
-    - `:color` customization color token used for pressed/active tint
-      (default `:color/blue`)
     - `:active?` optional boolean (default `false`)
     - `:style` optional caller style (map/vector/js style)
     - `:on-press-in` optional callback `(fn [event] ...)`
     - `:on-press-out` optional callback `(fn [event] ...)`
     - Any additional keys are forwarded to `:rn/pressable`."
-  [{:keys [active? background color content image-source on-press-in on-press-out title]
+  [{:keys [active? background content image-source on-press-in on-press-out title]
     :or   {active?    false
            background :none
-           color      :color/blue
            title      "Title"}
     :as   props}]
-  (let [theme                   (context/use-theme)
+  (let [{:keys [color theme]}   (context/use-theme-color)
         [pressed? set-pressed!] (rn/use-state false)
         on-press-in!            (rn/use-callback
                                  (fn [event]
@@ -76,7 +73,8 @@
         [:rn/image {:source image-source
                     :style  style/image}]])
      [:rn/view {:style style/content-column}
+      [:rn/view {:style style/title}
        [title-view {:theme theme
-                    :title title}]
+                    :title title}]]
        [:rn/view {:style style/content}
         content]]]]))

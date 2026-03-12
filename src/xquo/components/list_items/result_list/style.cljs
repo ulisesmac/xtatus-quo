@@ -8,7 +8,7 @@
 (defstyle container-base
   {:padding-horizontal 12
    :padding-vertical   8
-   :height             56
+   :height             64
    :border-radius      12
    :overflow           :hidden
    :flex-direction     :row
@@ -19,13 +19,14 @@
   {:flex            1
    :min-width       1
    :align-self      :stretch
-   :justify-content :center})
+   :justify-content :center
+   :gap             2})
 
 (defstyle title
   {:height 22})
 
 (defstyle content
-  {:height 18
+  {:height 22
    ;:background-color :blue
    })
 
@@ -40,12 +41,13 @@
   rn/style-sheet-absolute-fill)
 
 (defstyle image
-  {:width      32
-   :height     32
-   :align-self :center})
+  {:width         40
+   :height        40
+   :border-radius (:border/sizes-40-56 borders/border-radius-values)
+   :align-self    :center})
 
 (defstyle image-slot
-  {:width            32
+  {:width            40
    :align-self       :stretch
    :justify-content  :center
    :align-items      :center})
