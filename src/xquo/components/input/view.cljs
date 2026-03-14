@@ -281,8 +281,7 @@
                                 (when (and multiline? min-height)
                                   {:min-height min-height})
                                 (when (and multiline? max-height)
-                                  {:max-height max-height})
-                                )}
+                                  {:max-height max-height}))}
       [:rn/view {:style [style/content-base
                          (if multiline? style/content-multiline style/content-single-line)
                          slot-gap-style]}
