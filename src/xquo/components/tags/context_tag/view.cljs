@@ -50,6 +50,7 @@
 
 (defn- leading-view
   [{:keys [blur? color icon image-source emoji shape size type dark-theme?]}]
+  (let [secondary-text-style (style/secondary-text-style dark-theme? blur?)]
   (cond
     (and (= type :image) (= shape :squircle))
     [squircle-image-view {:blur?        blur?
@@ -82,27 +83,29 @@
                  :size     (get filled-icon-size size)}]]
 
     (and (= type :icon) icon)
-    [icon-node {:color    (style/secondary-color dark-theme? blur?)
+    [icon-node {:color    (:color secondary-text-style)
                 :icon     icon
                 :scale    1
-                :size     (get inline-icon-size size)}]))
+                :size     (get inline-icon-size size)}])))
 
 (defn- label-view [{:keys [blur? dark-theme? label size suffix]}]
-  [:rn/view {:style style/label-row}
-   [text/text {:font            (get text-font size)
-               :number-of-lines 1
-               :style           {:color (style/title-color dark-theme?)}}
-    label]
-   (when suffix
-     [icon/icon {:icon  :icon/chevron-right
-                 :size  20
-                 :color (style/secondary-color dark-theme? blur?)
-                 :style (style/scaled-icon (get chevron-icon-scale size))}])
-   (when suffix
+  (let [title-text-style     (style/title-text-style dark-theme?)
+        secondary-text-style (style/secondary-text-style dark-theme? blur?)]
+    [:rn/view {:style style/label-row}
      [text/text {:font            (get text-font size)
                  :number-of-lines 1
-                 :style           {:color (style/title-color dark-theme?)}}
-      suffix])])
+                 :style           title-text-style}
+      label]
+     (when suffix
+       [icon/icon {:icon  :icon/chevron-right
+                   :size  20
+                   :color (:color secondary-text-style)
+                   :style (style/scaled-icon (get chevron-icon-scale size))}])
+     (when suffix
+       [text/text {:font            (get text-font size)
+                   :number-of-lines 1
+                   :style           title-text-style}
+        suffix])]))
 
 (defn context-tag
   "Context tag component.
