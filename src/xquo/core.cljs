@@ -1,6 +1,7 @@
 (ns ^:dev/always xquo.core
   (:refer-clojure :exclude [filter])
   (:require [xquo.components.button.view]
+            [xquo.components.counter.view]
             [xquo.components.empty-state.view]
             [xquo.components.color-picker.color.view]
             [xquo.components.color-picker.picker.view]
@@ -28,6 +29,7 @@
             [xquo.components.text.view]))
 
 (def button xquo.components.button.view/button)
+(def counter xquo.components.counter.view/counter)
 (def empty-state xquo.components.empty-state.view/empty-state)
 (def color xquo.components.color-picker.color.view/color)
 (def color-picker xquo.components.color-picker.picker.view/picker)
