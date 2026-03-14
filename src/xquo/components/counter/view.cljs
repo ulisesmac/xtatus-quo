@@ -17,10 +17,12 @@
     (= (count label) 3)  :three
     :else                :four))
 
-(defn- value-view [{:keys [blur? color dark-theme? size type]} label]
+(defn- value-view [{:keys [blur? color dark-theme? size text-style type]} label]
   [text/text {:font            (get value-font size)
+              :ellipsize-mode  :clip
               :number-of-lines 1
-              :style           (counter-style/value-text-style color type dark-theme? blur?)}
+              :style           [text-style
+                                (counter-style/value-text-style color type dark-theme? blur?)]}
    label])
 
 (defn- default-counter-view [{:keys [blur? color dark-theme? root-props style type value]}]
@@ -28,7 +30,7 @@
         layout-key (value-layout-key label)]
     [:rn/view (assoc root-props :style (rec.xf/add-styles
                                         counter-style/default-root-base
-                                        (counter-style/default-root-style layout-key type dark-theme? blur?)
+                                        (counter-style/default-root-style color layout-key type dark-theme? blur?)
                                         style))
      [:rn/view {:style [counter-style/default-surface-base
                         (counter-style/default-surface-style color layout-key type dark-theme? blur?)]}]
@@ -52,6 +54,7 @@
                   :color       color
                   :dark-theme? dark-theme?
                   :size        :large
+                  :text-style  (counter-style/large-value-text-style layout-key)
                   :type        type}
       label]]))
 
