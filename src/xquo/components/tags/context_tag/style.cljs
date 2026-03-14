@@ -15,6 +15,10 @@
   {24 (:border/size-24 borders/border-radius-values)
    32 (:border/size-32 borders/border-radius-values)})
 
+(def ^:private multi-container-radius
+  {24 (:border/size-24 borders/border-radius-values)
+   32 (:border/size-32 borders/border-radius-values)})
+
 (def ^:private leading-layout
   {24 {:padding-left   2
        :padding-right  8
@@ -39,10 +43,54 @@
        :padding-bottom 5
        :gap            2}})
 
+(def ^:private multi-layout
+  {24 {true  {:padding-left   4
+              :padding-right  2
+              :padding-top    2
+              :padding-bottom 2
+              :gap            4}
+       false {:padding-left   2
+              :padding-right  2
+              :padding-top    2
+              :padding-bottom 2
+              :gap            0}}
+   32 {true  {:padding-left   4
+              :padding-right  2
+              :padding-top    2
+              :padding-bottom 2
+              :gap            4}
+       false {:padding-left   2
+              :padding-right  2
+              :padding-top    2
+              :padding-bottom 2
+              :gap            0}}})
+
+(def ^:private multi-overlap
+  {24 4
+   32 8})
+
+(def ^:private multi-stacked-border-width
+  {24 1
+   32 1.4})
+
 (defstyle root-base
-  {:align-self :flex-start})
+  {:align-self :flex-start
+   :position   :relative
+   :overflow   :visible
+   :min-width  1
+   :flex-shrink 1})
 
 (defstyle label-row
+  {:flex-direction :row
+   :align-items    :center
+   :min-width      1
+   :flex-shrink    1})
+
+(defstyle label-primary-text
+  {:min-width   1
+   :flex-shrink 1})
+
+(defstyle multi-stack-row
   {:flex-direction :row
    :align-items    :center})
 
@@ -58,20 +106,39 @@
             blur?                   (colors/get-color :color/neutral-80-40)
             :else                   (colors/get-color :color/neutral-50))})
 
-(defn- image-border-radius [size shape]
+(defn multi-content-style [dark-theme? blur?]
+  {:color (cond
+            (and dark-theme? blur?) (colors/get-color :color/white-80)
+            dark-theme?             (colors/get-color :color/neutral-40)
+            blur?                   (colors/get-color :color/neutral-80-40)
+            :else                   (colors/get-color :color/neutral-50))})
+
+(defn- resolved-media-size [size selected?]
+  (get media-size size))
+
+(defn- image-border-radius [size shape selected?]
   (if (= shape :squircle)
     (get squircle-image-radius size)
-    (/ (get media-size size) 2)))
+    (/ (resolved-media-size size selected?) 2)))
 
 (defn- container-border-radius [size type shape]
-  (if (and (= type :image) (= shape :squircle))
+  (cond
+    (= type :multi)
+    (if (= shape :squircle)
+      (get multi-container-radius size)
+      (/ size 2))
+
+    (and (= type :image) (= shape :squircle))
     (get squircle-container-radius size)
+
+    :else
     (/ size 2)))
 
-(defn container [size type shape dark-theme? blur? state color]
-  (let [layout        (if (= type :icon)
-                        (get icon-layout size)
-                        (get leading-layout size))
+(defn container [size type shape dark-theme? blur? icon]
+  (let [layout        (cond
+                        (= type :icon)  (get icon-layout size)
+                        (= type :multi) (get-in multi-layout [size (some? icon)])
+                        :else           (get leading-layout size))
         border-radius (container-border-radius size type shape)]
     (style {:padding-left     (:padding-left layout)
             :padding-right    (:padding-right layout)
@@ -86,19 +153,45 @@
                                 dark-theme?             (colors/get-color :color/neutral-90)
                                 blur?                   (colors/get-color :color/neutral-80-5)
                                 :else                   (colors/get-color :color/neutral-10))
-            :border-radius    border-radius
-            :border-width     (when (= state :selected) 1)
-            :border-color     (when (= state :selected)
-                                (colors/get-color color 50))})))
+            :border-radius    border-radius})))
 
-(defn media-image [size type shape blur?]
-  (style {:width         (get media-size size)
-          :height        (get media-size size)
+(defn selected-border [size type shape color]
+  (style {:position      :absolute
+          :top           -1
+          :right         -1
+          :bottom        -1
+          :left          -1
+          :border-radius (+ (container-border-radius size type shape) 1)
+          :border-width  1
+          :border-color  (colors/get-color color 50)}))
+
+(defn media-frame [size shape selected?]
+  (style {:width         (resolved-media-size size selected?)
+          :height        (resolved-media-size size selected?)
           :overflow      :hidden
-          :border-radius (image-border-radius size shape)
-          :border-width  (when (and (= type :image) (= shape :circle) (not blur?)) 1)
-          :border-color  (when (and (= type :image) (= shape :circle) (not blur?))
-                           (colors/get-color :color/neutral-80-5))}))
+          :position      :relative
+          :border-radius (image-border-radius size shape selected?)}))
+
+(defn multi-media-wrapper [size]
+  (style {:width    (get media-size size)
+          :height   (get media-size size)
+          :position :relative
+          :overflow :visible}))
+
+(defn media-image [size selected?]
+  (style {:width  (resolved-media-size size selected?)
+          :height (resolved-media-size size selected?)}))
+
+(defn media-border [size shape type blur? selected?]
+  (when (and (= type :image) (= shape :circle) (not blur?))
+    (style {:position      :absolute
+            :top           0
+            :right         0
+            :bottom        0
+            :left          0
+            :border-radius (image-border-radius size shape selected?)
+            :border-width  1
+            :border-color  (colors/get-color :color/neutral-80-5)})))
 
 (defn squircle-surface [size color]
   (style {:width            (get media-size size)
@@ -120,6 +213,31 @@
 (defn emoji-style [size]
   (style {:font-size   (if (= size 24) 12 16)
           :line-height (if (= size 24) 12 16)}))
+
+(defn multi-item-slot [size slot-index]
+  (style {:margin-left (when (pos? slot-index)
+                         (- (get multi-overlap size)))}))
+
+(defn multi-media-border [size shape outlined?]
+  (when outlined?
+    (let [border-width (get multi-stacked-border-width size)]
+      (style {:position      :absolute
+              :top           (- border-width)
+              :right         (- border-width)
+              :bottom        (- border-width)
+              :left          (- border-width)
+              :border-radius (+ (image-border-radius size shape false) border-width)
+              :border-width  border-width
+              :border-color  (colors/get-color :color/neutral-10)}))))
+
+(defn multi-count-surface [size shape dark-theme? blur?]
+  (style {:align-items      :center
+          :justify-content  :center
+          :background-color (cond
+                              (and dark-theme? blur?) (colors/get-color :color/white-10)
+                              dark-theme?             (colors/get-color :color/neutral-80)
+                              blur?                   (colors/get-color :color/neutral-80-10)
+                              :else                   (colors/get-color :color/neutral-20))}))
 
 (defn scaled-icon [scale]
   (style {:transform [{:scale scale}]}))
