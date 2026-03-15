@@ -44,34 +44,30 @@
        :gap            2}})
 
 (def ^:private multi-layout
-  {24 {true  {:padding-left   4
-              :padding-right  2
-              :padding-top    2
-              :padding-bottom 2
+  {24 {true  {:padding-left   3
+              :padding-right  1
+              :padding-top    1
+              :padding-bottom 1
               :gap            4}
-       false {:padding-left   2
-              :padding-right  2
-              :padding-top    2
-              :padding-bottom 2
+       false {:padding-left   1
+              :padding-right  1
+              :padding-top    1
+              :padding-bottom 1
               :gap            0}}
-   32 {true  {:padding-left   4
-              :padding-right  2
-              :padding-top    2
-              :padding-bottom 2
+   32 {true  {:padding-left   3
+              :padding-right  1
+              :padding-top    1
+              :padding-bottom 1
               :gap            4}
-       false {:padding-left   2
-              :padding-right  2
-              :padding-top    2
-              :padding-bottom 2
+       false {:padding-left   1
+              :padding-right  1
+              :padding-top    1
+              :padding-bottom 1
               :gap            0}}})
 
 (def ^:private multi-overlap
-  {24 4
-   32 8})
-
-(def ^:private multi-stacked-border-width
-  {24 1
-   32 1.4})
+  {24 6
+   32 10})
 
 (defstyle root-base
   {:align-self :flex-start
@@ -99,6 +95,13 @@
             (colors/get-color :color/white-100)
             (colors/get-color :color/neutral-100))})
 
+(defn- container-background-color [dark-theme? blur?]
+  (cond
+    (and dark-theme? blur?) (colors/get-color :color/white-5)
+    dark-theme?             (colors/get-color :color/neutral-90)
+    blur?                   (colors/get-color :color/neutral-80-5)
+    :else                   (colors/get-color :color/neutral-10)))
+
 (defn secondary-text-style [dark-theme? blur?]
   {:color (cond
             (and dark-theme? blur?) (colors/get-color :color/white-40)
@@ -113,13 +116,13 @@
             blur?                   (colors/get-color :color/neutral-80-40)
             :else                   (colors/get-color :color/neutral-50))})
 
-(defn- resolved-media-size [size selected?]
+(defn- resolved-media-size [size _selected?]
   (get media-size size))
 
-(defn- image-border-radius [size shape selected?]
+(defn- image-border-radius [size shape _selected?]
   (if (= shape :squircle)
     (get squircle-image-radius size)
-    (/ (resolved-media-size size selected?) 2)))
+    (/ (get media-size size) 2)))
 
 (defn- container-border-radius [size type shape]
   (cond
@@ -148,11 +151,7 @@
             :height           size
             :flex-direction   :row
             :align-items      :center
-            :background-color (cond
-                                (and dark-theme? blur?) (colors/get-color :color/white-5)
-                                dark-theme?             (colors/get-color :color/neutral-90)
-                                blur?                   (colors/get-color :color/neutral-80-5)
-                                :else                   (colors/get-color :color/neutral-10))
+            :background-color (container-background-color dark-theme? blur?)
             :border-radius    border-radius})))
 
 (defn selected-border [size type shape color]
@@ -172,12 +171,6 @@
           :position      :relative
           :border-radius (image-border-radius size shape selected?)}))
 
-(defn multi-media-wrapper [size]
-  (style {:width    (get media-size size)
-          :height   (get media-size size)
-          :position :relative
-          :overflow :visible}))
-
 (defn media-image [size selected?]
   (style {:width  (resolved-media-size size selected?)
           :height (resolved-media-size size selected?)}))
@@ -192,6 +185,17 @@
             :border-radius (image-border-radius size shape selected?)
             :border-width  1
             :border-color  (colors/get-color :color/neutral-80-5)})))
+
+(defn- multi-stack-item-size [size]
+  (+ (get media-size size) 2))
+
+(defn multi-stack-item-surface [size shape dark-theme? blur?]
+  (style {:width         (multi-stack-item-size size)
+          :height        (multi-stack-item-size size)
+          :overflow      :hidden
+          :border-width  1
+          :border-color  (container-background-color dark-theme? blur?)
+          :border-radius (container-border-radius size :multi shape)}))
 
 (defn squircle-surface [size color]
   (style {:width            (get media-size size)
@@ -218,24 +222,12 @@
   (style {:margin-left (when (pos? slot-index)
                          (- (get multi-overlap size)))}))
 
-(defn multi-media-border [size shape outlined?]
-  (when outlined?
-    (let [border-width (get multi-stacked-border-width size)]
-      (style {:position      :absolute
-              :top           (- border-width)
-              :right         (- border-width)
-              :bottom        (- border-width)
-              :left          (- border-width)
-              :border-radius (+ (image-border-radius size shape false) border-width)
-              :border-width  border-width
-              :border-color  (colors/get-color :color/neutral-10)}))))
-
-(defn multi-count-surface [size shape dark-theme? blur?]
+(defn multi-count-surface [_size _shape dark-theme? blur?]
   (style {:align-items      :center
           :justify-content  :center
           :background-color (cond
                               (and dark-theme? blur?) (colors/get-color :color/white-10)
-                              dark-theme?             (colors/get-color :color/neutral-80)
+                              dark-theme? (colors/get-color :color/neutral-80)
                               blur?                   (colors/get-color :color/neutral-80-10)
                               :else                   (colors/get-color :color/neutral-20))}))
 

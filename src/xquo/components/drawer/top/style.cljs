@@ -46,7 +46,7 @@
   {:align-self      :stretch
    :height          (spacing/spacing-values 9)
    :margin-top      (spacing/spacing-values 2)
-   :overflow        :hidden})
+   :overflow        :visible})
 
 (defstyle context-row-slot
   {:margin-top (spacing/spacing-values 2)})

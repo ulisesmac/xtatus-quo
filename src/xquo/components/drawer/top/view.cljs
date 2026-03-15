@@ -197,7 +197,7 @@
     - `:title` title text (default `\"Title\"`)
     - `:description` optional string or vector of segment maps `{:text ... :color :color/...}`
     - `:subcontent` optional custom hiccup rendered in a fixed 24px slot beneath
-      the main text content; callers should pass content that fits that height
+      the main text content; overflow outside that height remains visible
     - `:counter` optional right-side counter text (for example `\"00/00\"`)
     - `:info?` optional right-side info icon
     - `:button-props` optional trailing button props forwarded to `xquo/button`

@@ -26,9 +26,7 @@
   {:height 22})
 
 (defstyle content
-  {:height 22
-   ;:background-color :blue
-   })
+  {:height 22})
 
 (defstyle content-row
   {:flex           1
@@ -36,6 +34,9 @@
    :flex-direction :row
    :align-items    :center
    :column-gap     8})
+
+(defstyle disabled-state
+  {:opacity 0.3})
 
 (def overlay-base
   rn/style-sheet-absolute-fill)
@@ -52,6 +53,12 @@
    :justify-content  :center
    :align-items      :center})
 
+(defstyle right-slot
+  {:flex-shrink      0
+   :align-self       :stretch
+   :justify-content  :center
+   :align-items      :center})
+
 (defn- dark-theme? [theme]
   (= theme :theme/dark))
 
@@ -62,6 +69,9 @@
   (if (dark-theme? theme)
     (colors/get-color :color/white-100)
     (colors/get-color :color/neutral-100)))
+
+(defn title-style [theme]
+  (style {:color (title-color theme)}))
 
 (defn container-color-style [theme background]
   (style {:background-color (if (blur-background? background)

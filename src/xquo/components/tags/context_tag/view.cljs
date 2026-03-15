@@ -62,73 +62,70 @@
               :size  size
               :color color}])
 
-(defn- multi-image-view [{:keys [image-source outlined? shape size slot-index]}]
-  (let [border-style (style/multi-media-border size shape outlined?)]
-    [:rn/view {:style (style/multi-item-slot size slot-index)}
-     [:rn/view {:style (style/multi-media-wrapper size)}
-      [:rn/view {:style (style/media-frame size shape false)}
-       [:rn/image {:style  (style/media-image size false)
-                   :source image-source}]]
-      (when border-style
-        [:rn/view {:style          border-style
-                   :pointer-events :none}])]]))
+(defn- multi-image-view
+  [{:keys [blur? dark-theme? image-source shape size slot-index]}]
+  [:rn/view {:style (style/multi-item-slot size slot-index)}
+   [:rn/view {:style (style/multi-stack-item-surface size shape dark-theme? blur?)}
+    [:rn/view {:style (style/media-frame size shape false)}
+     [:rn/image {:style  (style/media-image size false)
+                 :source image-source}]]]])
 
-(defn- multi-number-text [number number-position]
-  (if (= number-position :start)
-    (str number "+")
-    (str "+" number)))
+(defn- multi-number-text [number]
+  (str number "+"))
+
 
 (defn- multi-number-view
-  [{:keys [blur? dark-theme? number number-position shape size slot-index]}]
+  [{:keys [blur? dark-theme? number shape size slot-index]}]
   [:rn/view {:style (style/multi-item-slot size slot-index)}
-   [:rn/view {:style [(style/media-frame size shape false)
-                      (style/multi-count-surface size shape dark-theme? blur?)]}
-    [text/text {:style           (style/multi-content-style dark-theme? blur?)
-                :font            (get multi-count-font size)
-                :number-of-lines 1
-                :ellipsize-mode  :clip}
-     (multi-number-text number number-position)]]])
+   [:rn/view {:style (style/multi-stack-item-surface size shape dark-theme? blur?)}
+    [:rn/view {:style [(style/media-frame size shape false)
+                       (style/multi-count-surface size shape dark-theme? blur?)]}
+     [text/text {:style           (style/multi-content-style dark-theme? blur?)
+                 :font            (get multi-count-font size)
+                 :number-of-lines 1
+                 :ellipsize-mode  :clip}
+      (multi-number-text number)]]]])
+
+(defn- multi-stack-items [image-sources number number-position]
+  (into []
+        (concat
+         (when (and (some? number) (= number-position :start))
+           [{:kind :number}])
+         (map (fn [image-source]
+                {:kind         :image
+                 :image-source image-source})
+              image-sources)
+         (when (and (some? number) (= number-position :end))
+           [{:kind :number}]))))
 
 (defn- multi-leading-view
   [{:keys [blur? dark-theme? icon image-sources number number-position shape size]}]
-  (let [content-style         (style/multi-content-style dark-theme? blur?)
-        visible-image-sources (if number
-                                (take 2 image-sources)
-                                (take 3 image-sources))
-        image-count           (count visible-image-sources)
-        slot-count            (+ image-count (if number 1 0))
-        outlined-slot-index   (when (= slot-count 3) 1)
-        stack-items           (concat
-                               (when (and number (= number-position :start))
-                                 [{:kind :number}])
-                               (map (fn [image-source]
-                                      {:kind         :image
-                                       :image-source image-source})
-                                    visible-image-sources)
-                               (when (and number (= number-position :end))
-                                 [{:kind :number}]))]
+  (let [content-style (style/multi-content-style dark-theme? blur?)
+        stack-items   (multi-stack-items image-sources number number-position)]
     [:<>
      (when icon
-       [icon-node {:color    (:color content-style)
-                   :icon     icon
-                   :scale    1
-                   :size     (get multi-icon-size size)}])
+       [icon-node {:color (:color content-style)
+                   :icon  icon
+                   :scale 1
+                   :size  (get multi-icon-size size)}])
      (into [:rn/view {:style style/multi-stack-row}]
-           (map-indexed
-            (fn [slot-index {:keys [image-source kind]}]
-              (if (= kind :number)
-                [multi-number-view {:blur?       blur?
-                                    :dark-theme? dark-theme?
-                                    :number      number
-                                    :number-position number-position
-                                    :shape       shape
-                                    :size        size
-                                    :slot-index  slot-index}]
-                [multi-image-view {:image-source image-source
-                                   :outlined?    (= slot-index outlined-slot-index)
-                                   :shape        shape
-                                   :size         size
-                                   :slot-index   slot-index}])))
+           (map-indexed (fn [slot-index {:keys [image-source kind]}]
+                          (if (= kind :number)
+                            ^{:key (str "number-" slot-index)}
+                            [multi-number-view {:blur?       blur?
+                                                :dark-theme? dark-theme?
+                                                :number      number
+                                                :number-position number-position
+                                                :shape       shape
+                                                :size        size
+                                                :slot-index  slot-index}]
+                            ^{:key (str "image-" slot-index)}
+                            [multi-image-view {:blur?        blur?
+                                               :dark-theme?  dark-theme?
+                                               :image-source image-source
+                                               :shape        shape
+                                               :size         size
+                                               :slot-index   slot-index}])))
            stack-items)]))
 
 (defn- leading-view
@@ -137,14 +134,14 @@
   (let [secondary-text-style (style/secondary-text-style dark-theme? blur?)]
     (cond
       (= type :multi)
-      [multi-leading-view {:blur?         blur?
-                           :dark-theme?   dark-theme?
-                           :icon          icon
-                           :image-sources image-sources
-                           :number        number
+      [multi-leading-view {:blur?           blur?
+                           :dark-theme?     dark-theme?
+                           :icon            icon
+                           :image-sources   image-sources
+                           :number          number
                            :number-position number-position
-                           :shape         shape
-                           :size          size}]
+                           :shape           shape
+                           :size            size}]
 
       (and (= type :image) (= shape :squircle))
       [squircle-image-view {:blur?        blur?
@@ -247,10 +244,10 @@
     - `:shape` one of `:circle` or `:squircle` for `:image` and `:multi`
       (default `:circle`)
     - `:image-source` image source for `:default` and `:image`
-    - `:image-sources` vector of image sources for `:multi`
+    - `:image-sources` vector of 1 to 3 image sources for `:multi`
     - `:number` optional number rendered as `+number` for `:multi`;
-      when present, the first two `:image-sources` are rendered with it
-    - `:number-position` one of `:start` or `:end` for `:multi`
+      when present, `:number-position` places the count slot at the start or end
+    - `:number-position` one of `:start` or `:end` for the `:multi` count slot
       (default `:end`)
     - `:emoji` optional emoji fallback for `:image` with `:shape :squircle`
     - `:icon` icon keyword for `:group`, `:icon`, `:audio`, and `:multi`
