@@ -88,7 +88,7 @@
       (= label-type :counter)
       [step/step {:type       :complete
                   :background background
-                  :color      (or label-color :color/blue)}
+                  :color      (or label-color :color/primary)}
        (or label-value 1)]
 
       (= label-type :icon)

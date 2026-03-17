@@ -10,13 +10,13 @@
 
   API:
   - `props` map
-    - `:color` color family keyword (default `:color/blue`)
+    - `:color` color family keyword (default `:color/primary`)
     - `:selected?` optional boolean
     - `:background` optional `:blur`
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/pressable`."
   [{:keys [color selected? background]
-    :or   {color :color/blue}
+    :or   {color :color/primary}
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/pressable (-> props

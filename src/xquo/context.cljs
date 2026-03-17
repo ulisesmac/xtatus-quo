@@ -8,7 +8,7 @@
   (react/createContext nil))
 
 (defonce ^:private theme-atom (r/atom nil))
-(defonce ^:private color-atom (r/atom :color/blue))
+(defonce ^:private color-atom (r/atom :color/primary))
 
 (defn current-theme []
   (or @theme-atom

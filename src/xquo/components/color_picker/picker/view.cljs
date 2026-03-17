@@ -6,7 +6,7 @@
             [xquo.react-native :as rn]))
 
 (def ^:private picker-colors
-  [:color/blue
+  [:color/primary
    :color/yellow
    :color/purple
    :color/turquoise
@@ -43,7 +43,7 @@
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/scroll-view`."
   [{:keys [default-selected background on-select on-layout]
-    :or   {default-selected :color/blue}
+    :or   {default-selected :color/primary}
     :as   props}]
   (let [[selected-color
          set-selected-color!] (rn/use-state default-selected)

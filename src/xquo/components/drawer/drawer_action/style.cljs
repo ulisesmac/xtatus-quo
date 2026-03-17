@@ -73,7 +73,7 @@
     {:background-color (colors/get-color :color/white 5)}
 
     (or selected? pressed?)
-    {:background-color (colors/get-color :color/blue 50 5)}))
+    {:background-color (colors/get-color :color/primary 50 5)}))
 
 (defn title-text-style [theme background danger? color]
   (let [action-color (if danger? :color/danger color)]
@@ -129,10 +129,10 @@
       (colors/get-color :color/white 70)
 
       (and selected? (= theme :theme/dark))
-      (colors/get-color :color/blue 60)
+      (colors/get-color :color/primary 60)
 
       selected?
-      (colors/get-color :color/blue 50)
+      (colors/get-color :color/primary 50)
 
       (= theme :theme/light)
       (colors/get-color :color/neutral 50)

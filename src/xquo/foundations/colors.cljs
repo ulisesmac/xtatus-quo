@@ -1,5 +1,6 @@
 (ns xquo.foundations.colors
-  (:require [clojure.string :as string]))
+  (:require [cljs.math :as math]
+            [clojure.string :as string]))
 
 ;; Generated from Figma Foundations page node 619:5995.
 
@@ -154,15 +155,44 @@
                50 {:base "#E95460"}
                60 {:base "#BA434D"}}})
 
+(def colors-1
+  #:color{:neutral {2.5 "#FBFCFC"
+                    5   "#F4F7F8"
+                    10  "#EEF2F4"
+                    20  "#E7ECEF"
+                    30  "#DCE4E8"
+                    40  "#A4B4BC"
+                    50  "#687D88"
+                    60  "#304A53"
+                    70  "#20383F"
+                    80  "#1A3036"
+                    90  "#13262B"
+                    95  "#0D1C21"
+                    100 "#071215"}
+          :white   {50 "#FFFFFF"}
+          :black   {50 "#000000"}
+          :primary {50 "#2C7F8E"}
+          :success {50 "#3A8E72"}
+          :warning {50 "#C99034"}
+          :danger  {50 "#D64249"}})
+
+(defonce inner-colors (atom colors-1))
+
+(defn set-colors! [app-colors]
+  (reset! inner-colors (conj colors-1 app-colors)))
+
 (defn- parse-number [s]
   (if (string/includes? s ".")
     (js/parseFloat s)
     (js/parseInt s 10)))
 
 (defn- as-hex-byte [value]
-  (-> (.toString (js/Math.round value) 16)
+  (-> (.toString (math/round value) 16)
       (.padStart 2 "0")
       string/upper-case))
+
+(defn- opacity->hex [opacity]
+  (as-hex-byte (* 255 (/ opacity 100))))
 
 (defn- hex->rgb [hex-color]
   (let [hex-value (subs hex-color 1)]
@@ -174,43 +204,23 @@
   (str "#" (as-hex-byte r) (as-hex-byte g) (as-hex-byte b)))
 
 (defn- mix-channel [base target weight]
-  (js/Math.round (+ (* base (- 1 weight))
-                    (* target weight))))
+  (math/round (+ (* base (- 1 weight))
+                 (* target weight))))
 
-(def compute-color
-  (memoize
-   (fn [base-color-50 intensity opacity]
-     (let [base-rgb    (hex->rgb base-color-50)
-           offset      (/ (- intensity 50) 50)
-           weight      (js/Math.abs offset)
-           target-rgb  (cond
-                         (neg? offset) [255 255 255]
-                         (pos? offset) [0 0 0]
-                         :else         base-rgb)
-           color-rgb   (if (= intensity 50)
-                         base-rgb
-                         (map mix-channel base-rgb target-rgb (repeat weight)))
-           color-hex   (rgb->hex color-rgb)
-           opacity-hex (when (some? opacity)
-                         (as-hex-byte (* 255 (/ opacity 100))))]
-       (if opacity-hex
-         (str color-hex opacity-hex)
-         color-hex)))))
+(defn- compute-color-intensity [base-color-50 intensity]
+  (let [base-rgb       (hex->rgb base-color-50)
+        weight         (abs (/ (- intensity 50) 50))
+        target-channel (if (< intensity 50) 255 0)]
+    (->> base-rgb
+         (map #(mix-channel % target-channel weight))
+         rgb->hex)))
 
-(def get-color*
-  (memoize
-   (fn [color-kw]
-     (let [[_ color-name level opa] (->> color-kw
-                                         (name)
-                                         (re-matches #"([a-z-]+)-([0-9]+(?:\.[0-9]+)?)(?:-([0-9]+))?"))
-           color-key (keyword color-name)
-           level-key (parse-number level)]
-       (when (and color-key level-key)
-         (if opa
-           (get-in colors [color-key level-key :opa (js/parseInt opa 10)])
-           (get-in colors [color-key level-key :base])))))))
+(defn compute-color [base-color-50 intensity opacity]
+  (cond-> base-color-50
+    (not= intensity 50) (compute-color-intensity intensity)
+    opacity             (str (opacity->hex opacity))))
 
-(def get-color
+#_(def get-color
   (memoize
    (fn
      ([color-kw]
@@ -233,3 +243,32 @@
           (if neutral?
             base-color
             (compute-color base-color level nil))))))))
+
+(defn color-parts [color]
+  (let [[_ color-name level opa] (->> color
+                                      (name)
+                                      (re-matches #"([a-z-]+?)(?:-([0-9]+(?:\.[0-9]+)?)(?:-([0-9]+))?)?$"))]
+    [(keyword "color" color-name)
+     (if level (parse-number level) 50)
+     (when opa (js/parseInt opa 10))]))
+
+(defn get-color
+  ([color]
+   (if (string? color)
+     color
+     (apply get-color (color-parts color))))
+  ([color level]
+   (get-color color level nil))
+  ([color level opacity]
+   (cond
+     (string? color)
+     (compute-color color level opacity)
+
+     (#{:color/black :color/white} color)
+     (-> @inner-colors (get-in [color 50]) (compute-color 50 level))
+
+     (= :color/neutral color)
+     (-> @inner-colors (get-in [color level]) (compute-color 50 opacity))
+
+     :else
+     (compute-color (get-in @inner-colors [color 50]) level opacity))))
