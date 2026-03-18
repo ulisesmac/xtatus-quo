@@ -8,6 +8,7 @@
   :icon/browser-16
   :icon/browser-20
   :icon/check-20
+  :icon/check-circle-16
   :icon/chevron-right-20
   :icon/clear-20
   :icon/close-12
@@ -21,7 +22,6 @@
   :icon/hide-20
   :icon/info-12
   :icon/info-16
-  :icon/info-20
   :icon/keycard-card-20
   :icon/light-20
   :icon/locked-20
@@ -29,6 +29,7 @@
   :icon/placeholder-20
   :icon/reveal-20
   :icon/unread-20
+  :icon/warning-16
   ;; MAPP
   :icon/search-20
   :icon/search-12
@@ -37,4 +38,5 @@
   :icon/arrow-left-right-12
   :icon/flip-20
   :icon/refresh-20
+  :icon/done-12
 }
