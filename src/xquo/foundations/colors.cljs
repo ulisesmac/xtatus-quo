@@ -172,8 +172,8 @@
           :white   {50 "#FFFFFF"}
           :black   {50 "#000000"}
           :primary {50 "#2C7F8E"}
-          :success {50 "#3A8E72"}
-          :warning {50 "#C99034"}
+          :success {50 "#2AA56B"}
+          :warning {50 "#D89622"}
           :danger  {50 "#D64249"}})
 
 (defonce inner-colors (atom colors-1))
@@ -219,30 +219,6 @@
   (cond-> base-color-50
     (not= intensity 50) (compute-color-intensity intensity)
     opacity             (str (opacity->hex opacity))))
-
-#_(def get-color
-  (memoize
-   (fn
-     ([color-kw]
-      (let [[_ color-name level opa] (->> color-kw
-                                          (name)
-                                          (re-matches #"([a-z-]+?)(?:-([0-9]+(?:\.[0-9]+)?)(?:-([0-9]+))?)?$"))]
-        (get-color (keyword (namespace color-kw) color-name)
-                   (if level (parse-number level) 50)
-                   (when opa (js/parseInt opa 10)))))
-     ([color-kw level]
-      (get-color color-kw level nil))
-     ([color-kw level opacity]
-      (let [color-key  (keyword (name color-kw))
-            neutral?   (or (= color-key :neutral) (= color-key :white))
-            base-color (if neutral?
-                         (get-in colors [color-key level :base])
-                         (get-in colors [color-key 50 :base]))]
-        (if opacity
-          (compute-color base-color 50 opacity)
-          (if neutral?
-            base-color
-            (compute-color base-color level nil))))))))
 
 (defn color-parts [color]
   (let [[_ color-name level opa] (->> color
