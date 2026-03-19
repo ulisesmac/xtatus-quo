@@ -221,30 +221,40 @@
     opacity             (str (opacity->hex opacity))))
 
 (defn color-parts [color]
-  (let [[_ color-name level opa] (->> color
-                                      (name)
-                                      (re-matches #"([a-z-]+?)(?:-([0-9]+(?:\.[0-9]+)?)(?:-([0-9]+))?)?$"))]
-    [(keyword "color" color-name)
-     (if level (parse-number level) 50)
-     (when opa (js/parseInt opa 10))]))
+  (let [[_ color-name level
+         opa] (->> color
+                   (name)
+                   (re-matches #"([a-z-]+?)(?:-([0-9]+(?:\.[0-9]+)?)(?:-([0-9]+))?)?$"))
+        color-kw          (keyword "color" color-name)
+        level-as-opacity? (and level (#{:color/white :color/black} color-kw))
+        level-part        (cond
+                            level-as-opacity? 50
+                            level             (parse-number level)
+                            :else             50)
+        opacity-part      (cond
+                            (and level-as-opacity? level) (parse-number level)
+                            level-as-opacity?             50
+                            opa                           (js/parseInt opa 10))]
+    [color-kw level-part opacity-part]))
 
-(defn get-color
-  ([color]
-   (if (string? color)
-     color
-     (apply get-color (color-parts color))))
-  ([color level]
-   (get-color color level nil))
-  ([color level opacity]
-   (cond
-     (string? color)
-     (compute-color color level opacity)
+(def get-color
+  (memoize
+   (fn get-color-internal
+     ([color]
+      (if (string? color)
+        color
+        (apply get-color (color-parts color))))
+     ([color level]
+      (if (#{:color/black :color/white} color)
+        (get-color color 50 level)
+        (get-color color level nil)))
+     ([color level opacity]
+      (cond
+        (string? color)
+        (compute-color color level opacity)
 
-     (#{:color/black :color/white} color)
-     (-> @inner-colors (get-in [color 50]) (compute-color 50 level))
+        (#{:color/neutral :color/black :color/white} color)
+        (-> @inner-colors (get-in [color level]) (compute-color 50 opacity))
 
-     (= :color/neutral color)
-     (-> @inner-colors (get-in [color level]) (compute-color 50 opacity))
-
-     :else
-     (compute-color (get-in @inner-colors [color 50]) level opacity))))
+        :else
+        (compute-color (get-in @inner-colors [color 50]) level opacity))))))
