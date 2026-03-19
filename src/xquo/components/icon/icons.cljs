@@ -4,7 +4,7 @@
 ;; Resolved at compile time from resources/icons/required.edn.
 ;; Touch this namespace when required.edn changes so newly used icons are included.
 ;; Keep this namespace easy to touch so dev watch picks required.edn changes.
-;; Reload marker: updated after adding check-circle-16 to the required icon set.
+;; Reload marker: updated after adding jump-to-12 to the required icon set.
 (def ^:private icons (icons/resolve-icons))
 
 (defn icon-source [icon-key]
