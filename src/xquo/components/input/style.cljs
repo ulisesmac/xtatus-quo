@@ -99,7 +99,7 @@
    32 (style {:gap 4})})
 
 (defstyle root-base
-  {:align-self :stretch})
+  {:flex 1})
 
 (defstyle root-gap-8
   {:gap 8})

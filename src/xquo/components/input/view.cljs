@@ -259,10 +259,9 @@
                                                    (when on-clear
                                                      (on-clear)))
                                                  [controlled? on-clear])]
-    [:rn/view {:style (rec.xf/add-styles style/root-base
-                                         (when (or label max-length) style/root-gap-8)
-                                         (when disabled? style/root-disabled)
-                                         component-style)}
+    [:rn/view {:style [style/root-base
+                       (when (or label max-length) style/root-gap-8)
+                       (when disabled? style/root-disabled)]}
      (when (or label max-length)
        [labels-view {:background    background
                      :current-value current-value
@@ -281,7 +280,8 @@
                                 (when (and multiline? min-height)
                                   {:min-height min-height})
                                 (when (and multiline? max-height)
-                                  {:max-height max-height}))}
+                                  {:max-height max-height})
+                                component-style)}
       [:rn/view {:style [style/content-base
                          (if multiline? style/content-multiline style/content-single-line)
                          slot-gap-style]}
@@ -289,12 +289,12 @@
          [leading-icon-view {:background background
                              :icon       icon}])
        [text-input-view (assoc props
-                          :controlled?         controlled?
-                          :focused?            focused?
-                          :input-ref           input-ref
-                          :set-focused!        set-focused!
+                          :controlled? controlled?
+                          :focused? focused?
+                          :input-ref input-ref
+                          :set-focused! set-focused!
                           :set-internal-value! set-internal-value!
-                          :value               current-value)]]
+                          :value current-value)]]
       (when show-clear-button?
         [clear-button-view {:background   background
                             :clear-input! clear-input!
