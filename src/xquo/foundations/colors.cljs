@@ -156,25 +156,39 @@
                60 {:base "#BA434D"}}})
 
 (def colors-1
-  #:color{:neutral {2.5 "#FBFCFC"
-                    5   "#F4F7F8"
-                    10  "#EEF2F4"
-                    20  "#E7ECEF"
-                    30  "#DCE4E8"
-                    40  "#A4B4BC"
-                    50  "#687D88"
-                    60  "#304A53"
-                    70  "#20383F"
-                    80  "#1A3036"
-                    90  "#13262B"
-                    95  "#0D1C21"
-                    100 "#071215"}
-          :white   {50 "#FFFFFF"}
-          :black   {50 "#000000"}
-          :primary {50 "#2C7F8E"}
-          :success {50 "#2AA56B"}
-          :warning {50 "#D89622"}
-          :danger  {50 "#D64249"}})
+  #:color{:neutral                {2.5 "#FBFCFC"
+                                   5   "#F4F7F8"
+                                   10  "#EEF2F4"
+                                   20  "#E7ECEF"
+                                   30  "#DCE4E8"
+                                   40  "#A4B4BC"
+                                   50  "#687D88"
+                                   60  "#304A53"
+                                   70  "#20383F"
+                                   80  "#1A3036"
+                                   90  "#13262B"
+                                   95  "#0D1C21"
+                                   100 "#071215"}
+          :white                  {50 "#FFFFFF"}
+          :black                  {50 "#000000"}
+          :primary                {50 "#2C7F8E"}
+          :success                {50 "#2AA56B"}
+          :warning                {50 "#D89622"}
+          :danger                 {50 "#D64249"}
+          ;;
+          :color/metro.line-1     {50 "#F56394"}
+          :color/metro.line-2     {50 "#0064A8"}
+          :color/metro.line-3     {50 "#b3ad00"}
+          :color/metro.line-4     {50 "#6FB7AE"}
+          :color/metro.line-5     {50 "#FDDF00"}
+          :color/metro.line-6     {50 "#FF1100"}
+          :color/metro.line-7     {50 "#FF6309"}
+          :color/metro.line-8     {50 "#018749"}
+          :color/metro.line-9     {50 "#5B2C2A"}
+          :color/metro.line-a     {50 "#81017e"}
+          :color/metro.line-b     {50 "#A8A8A8"}
+          :color/metro.line-b-alt {50 "#00673e"}
+          :color/metro.line-12    {50 "#c59e51"}})
 
 (defonce inner-colors (atom colors-1))
 
