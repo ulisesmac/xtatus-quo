@@ -7,9 +7,9 @@
 
 (defn- illustration-view [{:keys [image]}]
   (if image
-    [:rn/image {:source      image
-                :resize-mode :contain
-                :style       style/illustration}]
+    [:rn/image {:style       style/illustration
+                :source      image
+                :resize-mode :contain}]
     [:rn/view {:style style/illustration-placeholder}]))
 
 (defn- content-copy-view [{:keys [description light-theme? title]}]

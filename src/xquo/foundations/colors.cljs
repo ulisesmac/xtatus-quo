@@ -234,22 +234,48 @@
     (not= intensity 50) (compute-color-intensity intensity)
     opacity             (str (opacity->hex opacity))))
 
+(defn- split-number-suffix [s]
+  (when-let [[_ prefix suffix] (re-matches #"(.+)-([0-9]+(?:\.[0-9]+)?)" s)]
+    [prefix (parse-number suffix)]))
+
+(defn- opacity-color? [color]
+  (#{:color/white :color/black} color))
+
+(defn- known-color-parts [color]
+  (let [[base-name suffix]  (split-number-suffix (name color))
+        base-color          (when base-name (keyword "color" base-name))
+        [family-name level] (when base-name (split-number-suffix base-name))
+        family-color        (when family-name (keyword "color" family-name))]
+    (cond
+      (@inner-colors color)
+      [color 50 nil]
+
+      (and (@inner-colors base-color) (opacity-color? base-color))
+      [base-color 50 suffix]
+
+      (@inner-colors base-color)
+      [base-color suffix nil]
+
+      (and (@inner-colors family-color) (not (opacity-color? family-color)))
+      [family-color level suffix])))
+
 (defn color-parts [color]
-  (let [[_ color-name level
-         opa] (->> color
-                   (name)
-                   (re-matches #"([a-z-]+?)(?:-([0-9]+(?:\.[0-9]+)?)(?:-([0-9]+))?)?$"))
-        color-kw          (keyword "color" color-name)
-        level-as-opacity? (and level (#{:color/white :color/black} color-kw))
-        level-part        (cond
-                            level-as-opacity? 50
-                            level             (parse-number level)
-                            :else             50)
-        opacity-part      (cond
-                            (and level-as-opacity? level) (parse-number level)
-                            level-as-opacity?             50
-                            opa                           (js/parseInt opa 10))]
-    [color-kw level-part opacity-part]))
+  (if-let [parts (known-color-parts color)]
+    parts
+    (let [[_ color-name level opacity] (->> color
+                                            name
+                                            (re-matches #"([a-z-]+?)(?:-([0-9]+(?:\.[0-9]+)?)(?:-([0-9]+))?)?$"))
+          color-kw          (keyword "color" color-name)
+          level-as-opacity? (and level (opacity-color? color-kw))]
+      [color-kw
+       (cond
+         level-as-opacity? 50
+         level             (parse-number level)
+         :else             50)
+       (cond
+         (and level-as-opacity? level) (parse-number level)
+         level-as-opacity?             50
+         opacity                       (js/parseInt opacity 10))])))
 
 (def get-color
   (memoize

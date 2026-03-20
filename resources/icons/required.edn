@@ -35,9 +35,12 @@
   :icon/search-12
   :icon/derived-path-big-12
   :icon/derived-path-big-20
+  :icon/upvote-20
   :icon/jump-to-12
   :icon/arrow-left-right-12
   :icon/flip-20
   :icon/refresh-20
   :icon/done-12
+  :icon/zoom-in-20
+  :icon/zoom-out-20
 }

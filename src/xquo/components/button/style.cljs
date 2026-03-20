@@ -270,6 +270,16 @@
     :right icon-right-gap
     nil))
 
+(def neutral-icon-only-types
+  #{:grey :dark-grey :outline :ghost})
+
+(defstyle icon-only-rounded-square-shape
+  {:border-radius (:border/size-32 borders/border-radius-values)})
+
+(defn icon-only-shape-style [layout type]
+  (when (and (= layout :icon-only) (neutral-icon-only-types type))
+    icon-only-rounded-square-shape))
+
 (defstyle pressable-base-style
   {:align-items     :center
    :justify-content :center
@@ -295,9 +305,18 @@
    32 :font/medium-15
    24 :font/medium-13})
 
-(defn icon-color [theme type background]
-  (or (get-in background-type-styles [(normalized-background background) theme type :icon-color])
-      (get-in type-styles [theme type :icon-color])))
+(defn- icon-only-color [theme type background]
+  (cond
+    (= theme :theme/dark)                         (colors/get-color :color/white-100)
+    (= (normalized-background background) :blur) (colors/get-color :color/neutral-100)
+    (neutral-icon-only-types type)               (colors/get-color :color/neutral-100)
+    :else                                        (colors/get-color :color/white-100)))
+
+(defn icon-color [theme type background icon-only?]
+  (if icon-only?
+    (icon-only-color theme type background)
+    (or (get-in background-type-styles [(normalized-background background) theme type :icon-color])
+        (get-in type-styles [theme type :icon-color]))))
 
 (defn text-style [theme type background]
   (style {:color (text-color theme type background)}))

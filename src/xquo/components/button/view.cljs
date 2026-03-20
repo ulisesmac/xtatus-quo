@@ -12,12 +12,12 @@
                 :style (style/text-style theme type background)}
      content]))
 
-(defn- button-icon [{:keys [icon-name side type size icon-color background]}]
+(defn- button-icon [{:keys [icon-name side type size icon-color background icon-only?]}]
   (let [theme (context/use-theme)]
     [icon/icon {:icon  icon-name
                 :size  (style/icon-size size)
                 :color (or icon-color
-                           (style/icon-color theme type background))
+                           (style/icon-color theme type background icon-only?))
                 :style (style/icon-gap-style side)}]))
 
 (defn- layout-type [icon-only? left-icon right-icon]
@@ -62,7 +62,7 @@
                          background :none
                          size       40}
     :as                 props}
-   content] ;; TODO: icon-only variant icon color IS WRONG
+   content]
   (let [theme         (context/use-theme)
         color         (context/use-color)
         icon-only?    (and (nil? content) (or left-icon right-icon))
@@ -89,6 +89,7 @@
                                :style (rec.xf/add-styles
                                        style/pressable-base-style
                                        (style/container-layout-style size layout)
+                                       (style/icon-only-shape-style layout type)
                                        (style/pressable-type-style theme type background color disabled? pressed?)
                                        (:style props))
                                :on-press-in on-press-in!
@@ -96,9 +97,10 @@
       (cond
         icon-only?
         [button-icon {:icon-name (or left-icon right-icon)
-                      :type      type
-                      :size      size
+                      :type       type
+                      :size       size
                       :background background
+                      :icon-only? true
                       :icon-color icon-color}]
 
         (= layout :right)
