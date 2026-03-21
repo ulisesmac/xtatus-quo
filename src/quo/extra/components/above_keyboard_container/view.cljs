@@ -14,22 +14,28 @@
 (defn view [_ _]
   (let [initial-content-height (atom nil)
         animate-above!         #(set! (.-value %1) (withSpring %2 animation-params))]
-    (fn [{:keys [content-ref above above-container-style offset skip-scroll-view?]} child]
-      (let [above-ref       ^js (useRef)
-            ^js content-ref (or content-ref (useRef))
-            above-position  ^js (useSharedValue 0)
-            measure-layout! (useCallback
-                             ;; TODO: check double re-render
-                             (fn [^js e]
-                               (let [keyboard-up?  (.isVisible Keyboard)
-                                     layout-height (.. e -nativeEvent -layout -height)]
-                                 (if-not keyboard-up?
-                                   (animate-above! above-position 0)
-                                   (animate-above! above-position (+ (- layout-height @initial-content-height)
-                                                                     offset)))))
-                             #js[])
+    (fn [{:keys [content-ref above above-container-style offset skip-scroll-view?
+                 scroll-component gap-to-window-top]}
+         child]
+      (let [above-ref           ^js (useRef)
+            ^js content-ref     (or content-ref (useRef))
+            above-position      ^js (useSharedValue 0)
+            measure-layout!     (useCallback
+                                 ;; TODO: check double re-render
+                                 (fn [^js e]
+                                   (let [keyboard-up?  (.isVisible Keyboard)
+                                         layout-height (.. e -nativeEvent -layout -height)]
+                                     (if-not keyboard-up?
+                                       (animate-above! above-position 0)
+                                       (animate-above! above-position (+ (- layout-height @initial-content-height)
+                                                                         offset
+                                                                         (- (or gap-to-window-top 0)))))))
+                                 #js[])
             [extra-padding set-extra-padding!] (useState 0)
-            container-component (if skip-scroll-view? :rn/view :rn/scroll-view)]
+            container-component (cond
+                                  skip-scroll-view? :rn/view
+                                  scroll-component scroll-component
+                                  :else :rn/scroll-view)]
         (useLayoutEffect
          (fn []
            (when (.. above-ref -current -measureInWindow)
@@ -43,7 +49,8 @@
                                      :collapsable false}
          [container-component {:style                           {:flex 1}
                                :ref                             content-ref
-                               :content-container-style         {:padding-bottom (- extra-padding offset)}
+                               :content-container-style         {:padding-bottom (+ (- extra-padding offset)
+                                                                                     (or gap-to-window-top 0))}
                                :shows-vertical-scroll-indicator false
                                :on-layout                       measure-layout!
                                :keyboard-should-persist-taps    :handled}
