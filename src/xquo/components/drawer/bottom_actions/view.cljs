@@ -77,10 +77,13 @@
         button-background (or (:background button-props)
                               (when-not primary?
                                 (secondary-button-background theme background scroll?)))]
-    [button/button (cond-> button-props
-                     :always           (dissoc :label)
-                     :awalys           (assoc :size 40 :style (:style button-props))
-                     button-type       (assoc :type button-type)
+    [button/button (cond-> (-> button-props
+                               (dissoc :label)
+                               (assoc :size            40
+                                      :container-style (rec.xf/add-styles
+                                                        style/action-slot
+                                                        (:container-style button-props))))
+                     button-type (assoc :type button-type)
                      button-background (assoc :background button-background))
      (:label button-props)]))
 

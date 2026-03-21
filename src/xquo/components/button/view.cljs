@@ -79,7 +79,6 @@
                                            (on-press-out event)))
                                        [on-press-out])]
     [:animated/view {:style (rec.xf/add-styles
-                             {:flex 1}
                              (if pressed?
                                style/pressable-pressed-state-style
                                style/pressable-default-state-style)

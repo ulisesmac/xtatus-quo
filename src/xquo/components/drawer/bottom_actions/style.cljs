@@ -43,8 +43,8 @@
    :padding-horizontal 20
    :padding-vertical   12})
 
-(defstyle action-fill
-  {:width "100%"})
+(defstyle action-slot
+  {:flex 1})
 
 (defstyle bottom-description-row
   {:padding-left   40

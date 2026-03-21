@@ -118,8 +118,8 @@
 
 (defn handle-bar-style [theme]
   {:background-color (if (= theme :theme/light)
-                       (colors/get-color :color/neutral-20)
-                       (colors/get-color :color/white-20))})
+                       (colors/get-color :color/neutral-100-5)
+                       (colors/get-color :color/white-10))})
 
 (defn title-text-style [theme]
   {:color (if (= theme :theme/dark)

@@ -302,7 +302,6 @@
       (when-let [{:keys [label type]
                   :or   {label "Button" type :outline}} trailing-button]
         [button/button (assoc trailing-button
-                         :style [{:align-self :flex-end} (:style trailing-button)]
                          :background background
                          :disabled? (or disabled? (:disabled? trailing-button))
                          :size 24
