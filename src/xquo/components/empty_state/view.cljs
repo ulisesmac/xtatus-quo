@@ -5,9 +5,10 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]))
 
-(defn- illustration-view [{:keys [image]}]
+(defn- illustration-view [{:keys [image image-tint]}]
   (if image
-    [:rn/image {:style       style/illustration
+    [:rn/image {:style       [style/illustration
+                              (style/illustration-tint-style image-tint)]
                 :source      image
                 :resize-mode :contain}]
     [:rn/view {:style style/illustration-placeholder}]))
@@ -61,19 +62,22 @@
         `:disabled?`
     - `:blur?` optional boolean
     - `:image` optional `:rn/image` source
+    - `:image-tint` optional color keyword passed to `colors/get-color` and
+      applied to `:image`
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to the root `:rn/view`."
-  [{:keys                             [blur? description image title]
+  [{:keys                             [blur? description image image-tint title]
     [primary-button secondary-button] :buttons
     :as                               props}]
   (let [{:keys [color light-theme?]} (context/use-theme-color)]
     [:rn/view (-> props
-                  (dissoc :blur? :buttons :description :image :style :title)
+                  (dissoc :blur? :buttons :description :image :image-tint :style :title)
                   (assoc :style (rec.xf/add-styles style/root-base (:style props))))
      [:rn/view {:style [style/content-base
                         (when primary-button style/content-gap)]}
       [:rn/view {:style style/top-base}
-       [illustration-view {:image image}]
+       [illustration-view {:image      image
+                           :image-tint image-tint}]
        [content-copy-view {:description  description
                            :light-theme? light-theme?
                            :title        title}]]

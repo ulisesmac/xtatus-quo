@@ -23,6 +23,10 @@
   {:width  80
    :height 80})
 
+(defn illustration-tint-style [image-tint]
+  (when image-tint
+    {:tint-color (colors/get-color image-tint)}))
+
 (defstyle illustration-placeholder
   {:width            80
    :height           80
