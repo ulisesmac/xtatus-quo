@@ -72,20 +72,20 @@
                  :size  20
                  :color (style/icon-color theme background)}])])
 
-(defn- trailing-view [{:keys [theme background info? counter button-props]}]
+(defn- trailing-view [{:keys [theme background info? counter button]}]
   (cond
-    button-props
-    (let [button-type  (or (:type button-props) :primary)
+    button
+    (let [button-type  (or (:type button) :primary)
           color        (context/use-color)]
       [button/button
-       (cond-> (assoc button-props :size 24)
+       (cond-> (assoc button :size 24)
          (= button-type :primary)
-         (assoc :icon-color (get button-props
+         (assoc :icon-color (get button
                                  :icon-color
                                  (colors/get-color :color/white-100))
                 :style      (rec.xf/add-styles
                              (style/primary-button-style theme color)
-                             (:style button-props))))])
+                             (:style button))))])
 
     info?
     [icon/icon {:icon  :icon/info
@@ -114,11 +114,11 @@
                                  (style/counter-text-style theme background)]}
     counter]])
 
-(defn- plain-row-view [{:keys [theme background title title-icon info? button-props]}]
+(defn- plain-row-view [{:keys [theme background title title-icon info? button]}]
   [:rn/view {:style [style/title-row
                      style/title-row-center
                      (cond
-                       button-props style/title-row-gap-20
+                       button style/title-row-gap-20
                        info?        style/title-row-gap-12)]}
    [:rn/view {:style style/title-slot}
     [title-inline-view {:theme      theme
@@ -128,7 +128,7 @@
    [trailing-view {:theme       theme
                    :background  background
                    :info?       info?
-                   :button-props button-props}]])
+                   :button      button}]])
 
 (defn- leading-content-view
   [{:keys [theme background title description description-icon title-icon leading subcontent
@@ -154,7 +154,7 @@
        [subcontent-view {:subcontent subcontent}])]]])
 
 (defn- standard-content-view
-  [{:keys [theme background title description context-tags info? counter button-props
+  [{:keys [theme background title description context-tags info? counter button
            title-icon subcontent compact?]}]
   [:rn/view {:style [style/content-base
                      (if compact?
@@ -171,7 +171,7 @@
                       :title       title
                       :title-icon  title-icon
                       :info?       info?
-                      :button-props button-props}])
+                      :button      button}])
    (when context-tags
      [:rn/view {:style style/context-row-slot}
       [context-tags-view {:theme        theme
@@ -200,7 +200,7 @@
       the main text content; overflow outside that height remains visible
     - `:counter` optional right-side counter text (for example `\"00/00\"`)
     - `:info?` optional right-side info icon
-    - `:button-props` optional trailing button props forwarded to `xquo/button`
+    - `:button` optional trailing button props forwarded to `xquo/button`
       and forced to `:size 24`
     - `:title-icon` optional icon shown inline after the title
     - `:description-icon` optional icon shown inline after the description
@@ -212,14 +212,14 @@
     - `:background` optional `:blur`
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`."
-  [{:keys [skip-handle? label compact? title description subcontent counter info? button-props
+  [{:keys [skip-handle? label compact? title description subcontent counter info? button
            title-icon description-icon leading context-tags background]
     :or   {title "Title"}
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
                   (dissoc :skip-handle? :label :compact? :title :description :subcontent :counter
-                          :info? :button-props :title-icon :description-icon :leading :context-tags
+                          :info? :button :title-icon :description-icon :leading :context-tags
                           :background :style)
                   (assoc :style (rec.xf/add-styles style/container-base (:style props))))
      (when-not skip-handle?
@@ -250,6 +250,6 @@
                                  :context-tags context-tags
                                  :info?       info?
                                  :counter     counter
-                                 :button-props button-props
+                                 :button      button
                                  :title-icon  title-icon
                                  :compact?    compact?}]))]))

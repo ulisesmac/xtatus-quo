@@ -43,9 +43,6 @@
    :padding-horizontal 20
    :padding-vertical   12})
 
-(defstyle action-slot
-  {:flex 1})
-
 (defstyle action-fill
   {:width "100%"})
 
@@ -79,27 +76,3 @@
 
             :else
             (colors/get-color :color/neutral 40))})
-
-(defn secondary-button-style [theme background scroll? description-position]
-  (cond
-    (= theme :theme/light)
-    (when scroll?
-      {:background-color (colors/get-color :color/neutral 80 5)})
-
-    (and (= theme :theme/dark)
-         (not scroll?)
-         (= background :none)
-         (= description-position :top))
-    {:background-color (colors/get-color :color/neutral 80)}
-
-    (and (= theme :theme/dark)
-         (not scroll?)
-         (= background :none))
-    {:background-color (colors/get-color :color/neutral 90)}
-
-    :else
-    {:background-color (colors/get-color :color/white 5)}))
-
-(defn primary-button-style [theme color]
-  (when (= theme :theme/dark)
-    {:background-color (colors/get-color color 60)}))

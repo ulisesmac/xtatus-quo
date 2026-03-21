@@ -12,12 +12,12 @@
                 :style (style/text-style theme type background)}
      content]))
 
-(defn- button-icon [{:keys [icon-name side type size icon-color background icon-only?]}]
+(defn- button-icon [{:keys [icon-name side type size icon-color background icon-only? disabled? pressed?]}]
   (let [theme (context/use-theme)]
     [icon/icon {:icon  icon-name
                 :size  (style/icon-size size)
                 :color (or icon-color
-                           (style/icon-color theme type background icon-only?))
+                           (style/icon-color theme type background icon-only? disabled? pressed?))
                 :style (style/icon-gap-style side)}]))
 
 (defn- layout-type [icon-only? left-icon right-icon]
@@ -101,6 +101,8 @@
                       :size       size
                       :background background
                       :icon-only? true
+                      :disabled?  disabled?
+                      :pressed?   pressed?
                       :icon-color icon-color}]
 
         (= layout :right)
@@ -112,6 +114,8 @@
                        :type      type
                        :size      size
                        :background background
+                       :disabled?  disabled?
+                       :pressed?   pressed?
                        :icon-color icon-color}]]
 
         (= layout :left)
@@ -121,6 +125,8 @@
                        :type      type
                        :size      size
                        :background background
+                       :disabled?  disabled?
+                       :pressed?   pressed?
                        :icon-color icon-color}]
          [button-text {:type type :size size :background background}
           content]]
@@ -132,6 +138,8 @@
                        :type      type
                        :size      size
                        :background background
+                       :disabled?  disabled?
+                       :pressed?   pressed?
                        :icon-color icon-color}]
          [button-text {:type type :size size :background background}
           content]
@@ -140,6 +148,8 @@
                        :type      type
                        :size      size
                        :background background
+                       :disabled?  disabled?
+                       :pressed?   pressed?
                        :icon-color icon-color}]]
 
         :else
