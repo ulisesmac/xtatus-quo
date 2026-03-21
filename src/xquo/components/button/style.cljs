@@ -312,16 +312,14 @@
    :flex-direction  :row})
 
 (defstyle pressable-default-state-style
-  {:flex                       1
-   :transform                  [{:scale (:default-scale animations/press-feedback)}
+  {:transform                  [{:scale (:default-scale animations/press-feedback)}
                                 {:translate-y (:default-translate-y animations/press-feedback)}]
    :transition-property        (:transition-property animations/press-feedback)
    :transition-duration        (:default-duration animations/press-feedback)
    :transition-timing-function (:default-timing-function animations/press-feedback)})
 
 (defstyle pressable-pressed-state-style
-  {:flex                       1
-   :transform                  [{:scale (:pressed-scale animations/press-feedback)}
+  {:transform                  [{:scale (:pressed-scale animations/press-feedback)}
                                 {:translate-y (:pressed-translate-y animations/press-feedback)}]
    :transition-property        (:transition-property animations/press-feedback)
    :transition-duration        (:pressed-duration animations/press-feedback)

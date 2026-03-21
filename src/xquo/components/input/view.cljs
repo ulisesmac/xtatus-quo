@@ -68,10 +68,10 @@
          (fn []
            #(some-> @clear-timeout js/clearTimeout))
          [])
-         [:animated/view {:entering (rnr/appear-in)
-                          :exiting  (rnr/disappear-out)
-                          :layout   rnr/linear-transition
-                          :style    (if pressed?
+        [:animated/view {:entering (rnr/appear-in)
+                         :exiting  (rnr/disappear-out)
+                         :layout   rnr/linear-transition
+                         :style    (if pressed?
                                      button.style/pressable-pressed-state-style
                                      button.style/pressable-default-state-style)}
          [:rn/pressable {:disabled     disabled?
