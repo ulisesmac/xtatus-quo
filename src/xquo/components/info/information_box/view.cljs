@@ -6,124 +6,137 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]))
 
-(defn- button-type [status]
-  (cond
-    (= status :error) :danger
-    :else             :primary))
+(defn- leading-icon-view [{:keys [theme blur? status color close-button title button]}]
+  (let [icon-name (cond
+                    (= status :warning) :icon/warning
+                    close-button        :icon/close
+                    :else               :icon/info)
+        icon-size (cond
+                    (= status :warning) 16
+                    close-button        12
+                    :else               16)]
+    [icon/icon {:icon  icon-name
+                :size  icon-size
+                :color (style/leading-icon-color theme blur? status color)
+                :style (style/leading-icon-style close-button title button)}]))
 
-(defn- leading-icon-view [{:keys [theme background status color close-icon? title button-label]}]
-  (cond
-    close-icon?
-    [icon/icon {:icon  :icon/placeholder
-                :size  12
-                :color (style/leading-icon-color theme background status color)
-                :style (style/leading-icon-style close-icon? title button-label)}]
-
-    :else
-    [icon/icon {:icon  :icon/info
-                :size  16
-                :color (style/leading-icon-color theme background status color)
-                :style (style/leading-icon-style close-icon? title button-label)}]))
-
-(defn- close-icon-view [{:keys [theme status title button-label on-close]}]
-  (cond
-    on-close
-    [:rn/pressable {:on-press on-close
-                    :style    (style/close-icon-style title button-label)}
+(defn- close-button-view
+  [{:keys [theme status title button]
+    {on-press :on-press} :close-button}]
+  (if on-press
+    [:rn/pressable {:on-press on-press
+                    :style    (style/close-button-style title button)}
      [icon/icon {:icon  :icon/close
                  :size  12
-                 :color (style/close-icon-color theme status)}]]
-
-    :else
-    [:rn/view {:style (style/close-icon-style title button-label)}
+                 :color (style/close-button-color theme status)}]]
+    [:rn/view {:style (style/close-button-style title button)}
      [icon/icon {:icon  :icon/close
                  :size  12
-                 :color (style/close-icon-color theme status)}]]))
+                 :color (style/close-button-color theme status)}]]))
 
-(defn- button-view [{:keys [status on-button-press button-label]}]
-  [button/button (cond-> {:type  (button-type status)
-                          :size  24}
-                   on-button-press (assoc :on-press on-button-press))
-   button-label])
+(defn- button-view [{{:keys [label] :as button} :button}]
+  [button/button (-> button
+                     (dissoc :label)
+                     (assoc :size 24
+                            :type (:type button :primary)))
+   label])
+
+(defn- description-view [{:keys [theme blur? status title compact? description]}]
+  [text/text {:font  :font/regular-13
+              :style (if compact?
+                       [style/compact-body-base
+                        (style/body-text-style theme blur? status title)]
+                       (style/body-text-style theme blur? status title))}
+   description])
 
 (defn information-box
   "Information box component.
 
   API:
   - `props` map
-    - `:status` one of `:default`, `:informative`, `:error`
+    - `:status` one of `:default`, `:info`, `:warning`, `:error`
       (default `:default`)
     - `:title` optional title text
-    - `:button-label` optional 24px button label
-    - `:on-button-press` optional button callback
-    - `:close-icon?` optional boolean
-    - `:on-close` optional close callback
-    - `:background` one of `:none`, `:blur` (default `:none`)
+    - `:description` optional body text. When present, it overrides the child
+      content and is rendered with the Figma text styling.
+    - `:button` optional nested button map
+      - accepts `xquo/button` props plus required `:label`
+      - `:size 24` is enforced internally
+      - `:type` defaults to `:primary`
+    - `:close-button` optional close slot map
+      - `:on-press` optional close callback
+      - presence renders the trailing close icon
+    - `:blur?` optional boolean
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`.
-  - `content` body text."
-  [{:keys [status title button-label on-button-press close-icon? on-close background]
-    :or   {status     :default
-           background :none}
+  - `content` optional body node rendered as-is."
+  [{:keys [status title description button close-button blur?]
+    :or   {status :default}
     :as   props}
    content]
-  (let [theme (context/use-theme)
-        color (context/use-color)
-        rich? (or title button-label)]
+  (let [{:keys [theme color]} (context/use-theme-color)]
     [:rn/view (-> props
-                  (dissoc :status :title :button-label :on-button-press :close-icon?
-                          :on-close :background :style)
+                  (dissoc :status :title :description :button :close-button :blur? :background :style)
                   (assoc :style (rec.xf/add-styles
                                  style/container-base
-                                 (style/container-color-style theme background status color)
-                                 (if rich?
+                                 (style/container-color-style theme blur? status color)
+                                 (if (or title button)
                                    style/rich-layout-base
-                                   (style/compact-layout-style theme close-icon?))
+                                   (style/compact-layout-style theme close-button))
                                  (:style props))))
-     (if rich?
+     (if (or title button)
        [:rn/view {:style style/rich-row-base}
-        [leading-icon-view {:theme       theme
-                            :background  background
-                            :status      status
-                            :color       color
-                            :close-icon? close-icon?
-                            :title       title
-                            :button-label button-label}]
+        [leading-icon-view {:theme         theme
+                            :blur?         blur?
+                            :status        status
+                            :color         color
+                            :close-button  close-button
+                            :title         title
+                            :button        button}]
         [:rn/view {:style style/rich-content-base}
          [:rn/view {:style style/text-column-base}
           (when title
             [text/text {:font  :font/medium-15
                         :style (style/title-text-style theme status)}
              title])
-          (when content
-            [text/text {:font  :font/regular-13
-                        :style (style/body-text-style theme background status title)}
-             content])]
-         (when button-label
-           [button-view {:status          status
-                         :on-button-press on-button-press
-                         :button-label    button-label}])]
-        (when close-icon?
-          [close-icon-view {:theme        theme
-                            :status       status
-                            :title        title
-                            :button-label button-label
-                            :on-close     on-close}])]
+          (when description
+            [description-view {:theme       theme
+                               :blur?       blur?
+                               :status      status
+                               :title       title
+                               :description description}])]
+         (when (and (not description) content)
+           [:rn/view {:style style/body-slot-base}
+            content])
+         (when button
+           [button-view {:button button}])]
+        (when close-button
+          [close-button-view {:theme        theme
+                              :status       status
+                              :title        title
+                              :button       button
+                              :close-button close-button}])]
        [:<>
-        [leading-icon-view {:theme       theme
-                            :background  background
-                            :status      status
-                            :color       color
-                            :close-icon? close-icon?
-                            :title       title
-                            :button-label button-label}]
-        [text/text {:font  :font/regular-13
-                    :style [style/compact-body-base
-                            (style/body-text-style theme background status title)]}
-         content]
-        (when close-icon?
-          [close-icon-view {:theme        theme
-                            :status       status
-                            :title        title
-                            :button-label button-label
-                            :on-close     on-close}])])]))
+        [leading-icon-view {:theme         theme
+                            :blur?         blur?
+                            :status        status
+                            :color         color
+                            :close-button  close-button
+                            :title         title
+                            :button        button}]
+        (when description
+          [description-view {:theme       theme
+                             :blur?       blur?
+                             :status      status
+                             :title       title
+                             :compact?    true
+                             :description description}])
+        (when (and (not description) content)
+          [:rn/view {:style style/compact-body-base}
+           content])
+        (when close-button
+          [close-button-view {:theme        theme
+                              :status       status
+                              :title        title
+                              :button       button
+                              :close-button close-button}])])]))

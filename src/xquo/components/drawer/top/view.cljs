@@ -13,10 +13,17 @@
     [{:text description}]
     description))
 
-(defn- handle-view [{:keys [theme]}]
-  [:rn/view {:style style/handle-container}
-   [:rn/view {:style [style/handle-bar-base
-                      (style/handle-bar-style theme)]}]])
+(defn drawer-handle
+  "Drawer handle component.
+
+  API:
+  - `props` map
+    - `:style` optional caller style
+    - Any additional keys are forwarded to `:rn/view`."
+  [props]
+  (let [theme (context/use-theme)]
+    [:rn/view (update props :style #(rec.xf/add-styles style/handle-container %))
+     [:rn/view {:style (style/handle-bar-style theme)}]]))
 
 (defn- leading-placeholder-view [_]
   ;; TODO: replace this red placeholder with the real drawer leading media components.
@@ -223,7 +230,7 @@
                           :background :style)
                   (assoc :style (rec.xf/add-styles style/container-base (:style props))))
      (when-not skip-handle?
-       [handle-view {:theme theme}])
+       [drawer-handle])
      (if label
        [:rn/view {:style [style/content-base
                           style/content-bottom-12

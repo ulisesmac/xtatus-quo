@@ -33,26 +33,33 @@
 (defstyle text-column-base
   {:align-self :stretch})
 
-(defn compact-layout-style [theme close-icon?]
+(defstyle body-slot-base
+  {:align-self :stretch})
+
+(defn compact-layout-style [theme close-button]
   {:flex-direction     :row
-   :align-items        (if (and (= theme :theme/dark) close-icon?)
+   :align-items        (if (and (= theme :theme/dark) close-button)
                          :center
                          :flex-start)
    :gap                8
    :padding-horizontal 12
    :padding-vertical   11})
 
-(defn container-color-style [theme background status color]
+(defn container-color-style [theme blur? status color]
   (cond
-    (= status :informative)
+    (= status :info)
     {:background-color (colors/get-color color 50 5)
      :border-color     (colors/get-color color 50 10)}
+
+    (= status :warning)
+    {:background-color (colors/get-color :color/warning 50 5)
+     :border-color     (colors/get-color :color/warning 50 10)}
 
     (= status :error)
     {:background-color (colors/get-color :color/danger 50 5)
      :border-color     (colors/get-color :color/danger 50 10)}
 
-    (and (= theme :theme/dark) (= background :blur))
+    (and (= theme :theme/dark) blur?)
     {:background-color (colors/get-color :color/white 5)
      :border-color     (colors/get-color :color/white 10)}
 
@@ -64,13 +71,13 @@
     {:background-color (colors/get-color :color/neutral 5)
      :border-color     (colors/get-color :color/neutral 20)}))
 
-(defn leading-icon-style [close-icon? title button-label]
+(defn leading-icon-style [close-button title button]
   (cond
-    (and close-icon? title)
+    (and close-button title)
     {:padding-top 5}
 
-    close-icon?
-    (if button-label
+    close-button
+    (if button
       {:padding-top 3}
       {:padding-top    3
        :padding-bottom 3})
@@ -82,24 +89,28 @@
     {:padding-top    1
      :padding-bottom 1}))
 
-(defn close-icon-style [title button-label]
-  (if (or title button-label)
+(defn close-button-style [title button]
+  (if (or title button)
     {:padding-top    4
      :padding-bottom 3}
     {:padding-top    3
      :padding-bottom 3}))
 
-(defn leading-icon-color [theme background status color]
+(defn leading-icon-color [theme blur? status color]
   (cond
-    (= status :informative)
+    (= status :info)
     (colors/get-color color
+                      (if (= theme :theme/dark) 60 50))
+
+    (= status :warning)
+    (colors/get-color :color/warning
                       (if (= theme :theme/dark) 60 50))
 
     (= status :error)
     (colors/get-color :color/danger
                       (if (= theme :theme/dark) 60 50))
 
-    (and (= theme :theme/dark) (= background :blur))
+    (and (= theme :theme/dark) blur?)
     (colors/get-color :color/white 70)
 
     (= theme :theme/dark)
@@ -108,7 +119,7 @@
     :else
     (colors/get-color :color/neutral 50)))
 
-(defn close-icon-color [theme status]
+(defn close-button-color [theme status]
   (cond
     (= status :error)
     (colors/get-color :color/danger
@@ -132,7 +143,7 @@
             :else
             (colors/get-color :color/neutral 100))})
 
-(defn body-text-style [theme background status title]
+(defn body-text-style [theme blur? status title]
   {:color (cond
             (= status :error)
             (colors/get-color :color/danger
@@ -140,7 +151,7 @@
 
             title
             (cond
-              (and (= theme :theme/dark) (= background :blur))
+              (and (= theme :theme/dark) blur?)
               (colors/get-color :color/white 40)
 
               (= theme :theme/dark)

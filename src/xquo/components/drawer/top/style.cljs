@@ -5,23 +5,14 @@
             [xquo.foundations.spacing :as spacing]))
 
 (defstyle container-base
-  {:align-self  :stretch
-   :padding-top 20})
+  {:align-self :stretch})
 
 (defstyle handle-container
-  {:position       :absolute
-   :top            0
-   :left           0
-   :right          0
+  {:align-self     :stretch
    :height         20
    :align-items    :center
    :justify-content :flex-end
    :padding-bottom 8})
-
-(defstyle handle-bar-base
-  {:width         32
-   :height        4
-   :border-radius 100})
 
 (defstyle content-base
   {:padding-horizontal 20})
@@ -117,7 +108,10 @@
   {:text-align :right})
 
 (defn handle-bar-style [theme]
-  {:background-color (if (= theme :theme/light)
+  {:width            32
+   :height           4
+   :border-radius    100
+   :background-color (if (= theme :theme/light)
                        (colors/get-color :color/neutral-100-5)
                        (colors/get-color :color/white-10))})
 
