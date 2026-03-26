@@ -130,4 +130,4 @@
         (-> @colors (get-in [color level]) (compute-color 50 opacity))
 
         :else
-        (compute-color (get-in @colors [color 50]) level opacity))))))
+        (compute-color (get-in @colors [(or color :color/black) 50]) level opacity))))))
