@@ -47,19 +47,6 @@
   {:width      "100%"
    :text-align :center})
 
-(defn text-color-style [light-theme?]
-  {:color (if light-theme?
-            (colors/get-color :color/neutral-100)
-            (colors/get-color :color/white-100))})
-
-(defn primary-button-style [light-theme? color]
-  (when-not light-theme?
-    {:background-color (colors/get-color color 60)}))
-
-(defn secondary-button-style [light-theme? blur?]
-  (when (and (not light-theme?) (not blur?))
-    {:background-color (colors/get-color :color/neutral-90)}))
-
 (defstyle actions-base
   {:width              "100%"
    :align-items        :center
