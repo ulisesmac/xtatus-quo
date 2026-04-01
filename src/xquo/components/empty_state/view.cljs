@@ -24,15 +24,15 @@
     description]])
 
 (defn- action-button-view [{:keys [blur? button-props color light-theme? primary?]}]
-  (let [{:keys [disabled? label on-press]} button-props]
-    [button/button (cond-> {:size       32
-                            :background (when blur? :blur)
-                            :style      (if primary?
-                                          (style/primary-button-style light-theme? color)
-                                          (style/secondary-button-style light-theme? blur?))
-                            :type       (if primary? :primary :grey)}
-                     on-press (assoc :on-press on-press)
-                     disabled? (assoc :disabled? true))
+  (let [{:keys [label]} button-props]
+    [button/button (-> button-props
+                       (dissoc :label)
+                       (assoc :size       32
+                              :background (when blur? :blur)
+                              :style      (if primary?
+                                            (style/primary-button-style light-theme? color)
+                                            (style/secondary-button-style light-theme? blur?))
+                              :type       (if primary? :primary :grey)))
      label]))
 
 (defn- actions-view [{:keys [blur? color light-theme? primary-button secondary-button]}]
@@ -73,8 +73,7 @@
     [:rn/view (-> props
                   (dissoc :blur? :buttons :description :image :image-tint :style :title)
                   (assoc :style (rec.xf/add-styles style/root-base (:style props))))
-     [:rn/view {:style [style/content-base
-                        (when primary-button style/content-gap)]}
+     [:rn/view {:style style/content-base}
       [:rn/view {:style style/top-base}
        [illustration-view {:image      image
                            :image-tint image-tint}]

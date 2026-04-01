@@ -131,3 +131,16 @@
 
         :else
         (compute-color (get-in @colors [(or color :color/black) 50]) level opacity))))))
+
+(defn themed
+  "Returns a color resolved with `get-color` for the given `theme`.
+
+  With one color argument, resolves that color at level `50` for `:theme/light`
+  and `60` otherwise.
+
+  With light and dark color arguments, resolves the light color for
+  `:theme/light` and the dark color otherwise."
+  ([theme color]
+   (get-color color (if (= theme :theme/light) 50 60)))
+  ([theme light-color dark-color]
+   (get-color (if (= theme :theme/light) light-color dark-color))))

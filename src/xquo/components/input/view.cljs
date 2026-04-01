@@ -24,9 +24,9 @@
     icon                               :icon
     clearable?                         :clear))
 
-(defn- labels-view [{:keys [background current-value label max-length]}]
+(defn- labels-view [{:keys [blur? current-value label max-length]}]
   (let [{:keys [dark-theme?]} (context/use-theme-color)
-        labels-color-style    (style/labels-color dark-theme? background)]
+        labels-color-style    (style/labels-color dark-theme? blur?)]
     [:rn/view {:style style/top-row-base}
      (if label
        [text/text {:style           [style/label-slot labels-color-style]
@@ -40,16 +40,16 @@
                    :number-of-lines 1}
         (str (count current-value) "/" max-length)])]))
 
-(defn- leading-icon-view [{:keys [background icon]}]
+(defn- leading-icon-view [{:keys [blur? icon]}]
   (let [{:keys [dark-theme?]} (context/use-theme-color)]
     [icon/icon {:icon  icon
                 :size  20
-                :color (:color (style/leading-icon-color dark-theme? background))
+                :color (:color (style/leading-icon-color dark-theme? blur?))
                 :style style/icon-slot-base}]))
 
 (defn- clear-button-view [_]
   (let [clear-timeout (atom nil)]
-    (fn [{:keys [background clear-input! disabled?]}]
+    (fn [{:keys [blur? clear-input! disabled?]}]
       (let [{:keys [dark-theme?]} (context/use-theme-color)
             [pressed? set-pressed!] (rn/use-state false)
             on-press-in!  (rn/use-callback #(set-pressed! true) [])
@@ -82,7 +82,7 @@
                          :style        style/clear-icon-slot}
           [icon/icon {:icon    :icon/clear
                       :size    20
-                      :color   (:color (style/clear-icon-color dark-theme? background))
+                      :color   (:color (style/clear-icon-color dark-theme? blur?))
                       :color-2 (colors/get-color :color/white-100)}]]]))))
 
 (defn- surface-vertical-padding [size trailing-button]
@@ -129,7 +129,7 @@
     :else                (max min-content-height content-height)))
 
 (defn- text-input-view
-  [{:keys [background controlled? disabled? focused? input-ref max-height
+  [{:keys [blur? controlled? disabled? focused? input-ref max-height
            max-length min-height multiline? on-blur on-change-text on-content-size-change
            on-focus set-focused! set-internal-value! size value]
     trailing-button :button
@@ -143,7 +143,7 @@
         max-content-height      (bounded-content-height max-height vertical-padding)
         content-overflow?       (content-overflows? content-height max-content-height)
         input-height            (input-height content-height min-content-height max-content-height)
-        placeholder-text-color  (style/placeholder-color dark-theme? background focused?)
+        placeholder-text-color  (style/placeholder-color dark-theme? blur? focused?)
         text-input-layout-style (cond
                                   (and multiline? rn/platform-android?) style/text-input-multiline-android
                                   multiline? style/text-input-multiline-ios
@@ -173,7 +173,7 @@
                                                      (on-blur event)))
                                                  [on-blur])]
     [:rn/text-input (cond-> props
-                      :always (dissoc :background :button :default-value :disabled?
+                      :always (dissoc :blur? :button :default-value :disabled?
                                       :error? :icon :clearable? :input-container-style
                                       :label :max-height :max-length :min-height :multiline
                                       :multiline? :on-blur :on-change-text :on-clear
@@ -207,7 +207,7 @@
   API:
   - `props` map
     - `:size` one of `40` or `32` (default `40`)
-    - `:background` one of `:none` or `:blur` (default `:none`)
+    - `:blur?` optional boolean that uses the blur treatment
     - `:label` optional label text rendered above the field
     - `:max-length` optional character limit. When present, the counter is computed
                     internally from the current value
@@ -224,19 +224,18 @@
     - `:on-clear` optional callback fired when the clear button is pressed
     - `:button` optional trailing button map. `:label` is rendered as the button
                       content; `:size 24`, `:type :outline`, and inherited
-      `:background` are enforced internally
+      blur styling are enforced internally
     - `:error?` optional boolean
     - `:disabled?` optional boolean
     - `:style` optional caller style for the outer component wrapper
     - Any additional keys are forwarded to `:rn/text-input`."
-  [{:keys               [background clearable? default-value disabled? error? icon
+  [{:keys               [blur? clearable? default-value disabled? error? icon
                          label max-height max-length min-height multiline? on-blur
                          on-change-text on-clear on-content-size-change on-focus
                          size value]
     trailing-button     :button
     component-style     :style
-    :or                 {background  :none
-                         size        40}
+    :or                 {size 40}
     :as                 props}]
   (let [{:keys [dark-theme?]}       (context/use-theme-color)
         controlled?                 (contains? props :value)
@@ -263,7 +262,7 @@
                        (when (or label max-length) style/root-gap-8)
                        (when disabled? style/root-disabled)]}
      (when (or label max-length)
-       [labels-view {:background    background
+       [labels-view {:blur?         blur?
                      :current-value current-value
                      :label         label
                      :max-length    max-length}])
@@ -276,7 +275,7 @@
                                   style/container-single-line)
                                 slot-gap-style
                                 (style/container-layout-style size layout)
-                                (style/container-color-style dark-theme? background error? focused?)
+                                (style/container-color-style dark-theme? blur? error? focused?)
                                 (when (and multiline? min-height)
                                   {:min-height min-height})
                                 (when (and multiline? max-height)
@@ -286,9 +285,10 @@
                          (if multiline? style/content-multiline style/content-single-line)
                          slot-gap-style]}
        (when icon
-         [leading-icon-view {:background background
-                             :icon       icon}])
+         [leading-icon-view {:blur? blur?
+                             :icon  icon}])
        [text-input-view (assoc props
+                          :blur? blur?
                           :controlled? controlled?
                           :focused? focused?
                           :input-ref input-ref
@@ -296,13 +296,13 @@
                           :set-internal-value! set-internal-value!
                           :value current-value)]]
       (when show-clear-button?
-        [clear-button-view {:background   background
+        [clear-button-view {:blur?        blur?
                             :clear-input! clear-input!
                             :disabled?    disabled?}])
       (when-let [{:keys [label type]
                   :or   {label "Button" type :outline}} trailing-button]
         [button/button (assoc trailing-button
-                         :background background
+                         :background (when blur? :blur)
                          :disabled? (or disabled? (:disabled? trailing-button))
                          :size 24
                          :type type)

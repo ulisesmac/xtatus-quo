@@ -10,10 +10,8 @@
 (defstyle content-base
   {:width       "100%"
    :padding-top 12
-   :align-items :center})
-
-(defstyle content-gap
-  {:gap 8})
+   :align-items :center
+              :gap 8})
 
 (defstyle top-base
   {:width       "100%"

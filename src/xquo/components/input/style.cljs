@@ -194,36 +194,33 @@
    :justify-content  :flex-start
    :align-items      :center})
 
-(defn- blur? [background]
-  (= background :blur))
-
-(defn labels-color [dark-theme? background]
+(defn labels-color [dark-theme? blur?]
   {:color (cond
-            (and dark-theme? (blur? background)) (colors/get-color :color/white-40)
-            (blur? background)                   (colors/get-color :color/neutral-80-40)
-            dark-theme?                          (colors/get-color :color/neutral-40)
-            :else                                (colors/get-color :color/neutral-50))})
+            (and dark-theme? blur?) (colors/get-color :color/white-40)
+            blur?                   (colors/get-color :color/neutral-80-40)
+            dark-theme?             (colors/get-color :color/neutral-40)
+            :else                   (colors/get-color :color/neutral-50))})
 
-(defn leading-icon-color [dark-theme? background]
+(defn leading-icon-color [dark-theme? blur?]
   {:color (cond
-            (and dark-theme? (blur? background)) (colors/get-color :color/white-70)
-            (blur? background)                   (colors/get-color :color/neutral-80-70)
-            dark-theme?                          (colors/get-color :color/neutral-40)
-            :else                                (colors/get-color :color/neutral-50))})
+            (and dark-theme? blur?) (colors/get-color :color/white-70)
+            blur?                   (colors/get-color :color/neutral-80-70)
+            dark-theme?             (colors/get-color :color/neutral-40)
+            :else                   (colors/get-color :color/neutral-50))})
 
-(defn clear-icon-color [dark-theme? background]
+(defn clear-icon-color [dark-theme? blur?]
   {:color (cond
-            (and dark-theme? (blur? background)) (colors/get-color :color/white-40)
-            (blur? background)                   (colors/get-color :color/neutral-80-30)
-            dark-theme?                          (colors/get-color :color/neutral-60)
-            :else                                (colors/get-color :color/neutral-40))})
+            (and dark-theme? blur?) (colors/get-color :color/white-40)
+            blur?                   (colors/get-color :color/neutral-80-30)
+            dark-theme?             (colors/get-color :color/neutral-60)
+            :else                   (colors/get-color :color/neutral-40))})
 
-(defn placeholder-color [dark-theme? background focused?]
+(defn placeholder-color [dark-theme? blur? focused?]
   (cond
-    (and dark-theme? (blur? background) focused?)
+    (and dark-theme? blur? focused?)
     (colors/get-color :color/white-20)
 
-    (and dark-theme? (blur? background))
+    (and dark-theme? blur?)
     (colors/get-color :color/white-40)
 
     (and dark-theme? focused?)
@@ -232,10 +229,10 @@
     dark-theme?
     (colors/get-color :color/neutral-50)
 
-    (and (blur? background) focused?)
+    (and blur? focused?)
     (colors/get-color :color/neutral-80-20)
 
-    (blur? background)
+    blur?
     (colors/get-color :color/neutral-80-40)
 
     focused?
@@ -247,41 +244,40 @@
 (defn selection-color [color]
   (colors/get-color color 50))
 
-(defn container-color-style [dark-theme? background error? focused?]
-  (let [blur-bg? (blur? background)]
-    (style {:background-color (cond
-                                (and dark-theme? (not blur-bg?))
-                                (colors/get-color :color/neutral-95)
+(defn container-color-style [dark-theme? blur? error? focused?]
+  (style {:background-color (cond
+                              (and dark-theme? (not blur?))
+                              (colors/get-color :color/neutral-95)
 
-                                (not blur-bg?)
-                                (colors/get-color :color/white-100)
+                              (not blur?)
+                              (colors/get-color :color/white-100)
 
-                                :else
-                                :transparent)
-            :border-color     (cond
-                                error?
-                                (colors/get-color :color/danger-50-40)
+                              :else
+                              :transparent)
+          :border-color     (cond
+                              error?
+                              (colors/get-color :color/danger-50-40)
 
-                                (and dark-theme? blur-bg? focused?)
-                                (colors/get-color :color/white-40)
+                              (and dark-theme? blur? focused?)
+                              (colors/get-color :color/white-40)
 
-                                (and dark-theme? blur-bg?)
-                                (colors/get-color :color/white-10)
+                              (and dark-theme? blur?)
+                              (colors/get-color :color/white-10)
 
-                                (and blur-bg? focused?)
-                                (colors/get-color :color/neutral-80-20)
+                              (and blur? focused?)
+                              (colors/get-color :color/neutral-80-20)
 
-                                blur-bg?
-                                (colors/get-color :color/neutral-80-10)
+                              blur?
+                              (colors/get-color :color/neutral-80-10)
 
-                                (and dark-theme? focused?)
-                                (colors/get-color :color/neutral-60)
+                              (and dark-theme? focused?)
+                              (colors/get-color :color/neutral-60)
 
-                                dark-theme?
-                                (colors/get-color :color/neutral-70)
+                              dark-theme?
+                              (colors/get-color :color/neutral-70)
 
-                                focused?
-                                (colors/get-color :color/neutral-40)
+                              focused?
+                              (colors/get-color :color/neutral-40)
 
-                                :else
-                                (colors/get-color :color/neutral-20))})))
+                              :else
+                              (colors/get-color :color/neutral-20))}))

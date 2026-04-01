@@ -34,6 +34,9 @@
   ;; MAPP
   :icon/search-20
   :icon/search-12
+  :icon/route-12
+  :icon/route-16
+  :icon/route-20
   :icon/derived-path-big-12
   :icon/derived-path-big-20
   :icon/upvote-20
