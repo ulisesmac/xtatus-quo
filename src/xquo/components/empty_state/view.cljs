@@ -12,15 +12,18 @@
                 :resize-mode :contain}]
     [:rn/view {:style style/illustration-placeholder}]))
 
-(defn- content-copy-view [{:keys [description title]}]
-  [:rn/view {:style style/text-combination}
+(defn- content-copy-view [{:keys [description image-spacing title]}]
+  [:rn/view {:style [style/text-combination
+                     (style/text-combination-top-spacing image-spacing)]}
    [:rn/view {:style style/title-slot}
     [text/text {:font  :font/semibold-15
                 :style style/title-text}
      title]]
-   [text/text {:font  :font/regular-13
-               :style style/description-text}
-    description]])
+   (if (string? description)
+     [text/text {:font  :font/regular-13
+                 :style style/description-text}
+      description]
+     description)])
 
 (defn- action-button-view [{:keys [blur? button-props primary?]}]
   (let [{:keys [label]} button-props]
@@ -44,11 +47,10 @@
 
 (defn empty-state
   "Empty state component.
-
-  API:
   - `props` map
     - `:title` title text
-    - `:description` description text
+    - `:description` description text or arbitrary content
+    - `:image-spacing` optional spacing between image and text (default `12`)
     - `:buttons` optional vector `[primary-button secondary-button]`
       - each button map accepts `:label`, optional `:on-press`, and optional
         `:disabled?`
@@ -58,18 +60,19 @@
       applied to `:image`
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to the root `:rn/view`."
-  [{:keys                             [blur? description image image-tint title]
+  [{:keys                             [blur? description image image-spacing image-tint title]
     [primary-button secondary-button] :buttons
     :as                               props}]
   [:rn/view (-> props
-                (dissoc :blur? :buttons :description :image :image-tint :style :title)
+                (dissoc :blur? :buttons :description :image :image-spacing :image-tint :style :title)
                 (assoc :style (rec.xf/add-styles style/root-base (:style props))))
    [:rn/view {:style style/content-base}
     [:rn/view {:style style/top-base}
      [illustration-view {:image      image
                          :image-tint image-tint}]
-     [content-copy-view {:description description
-                         :title       title}]]
+     [content-copy-view {:description   description
+                         :image-spacing image-spacing
+                         :title         title}]]
     (when primary-button
       [actions-view {:blur?            blur?
                      :primary-button   primary-button

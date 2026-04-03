@@ -107,4 +107,4 @@
      (when bottom-actions
        [bottom-actions-view/bottom-actions
         (cond-> {:buttons bottom-actions}
-          background (assoc :background background))])]))
+          background (assoc :blur? (= background :blur)))])]))

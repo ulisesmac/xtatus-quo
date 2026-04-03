@@ -11,7 +11,7 @@
   {:width       "100%"
    :padding-top 12
    :align-items :center
-              :gap 8})
+   :gap         8})
 
 (defstyle top-base
   {:width       "100%"
@@ -34,8 +34,11 @@
   {:width              "100%"
    :align-items        :center
    :padding-horizontal 20
-   :padding-vertical   12
+   :padding-bottom     12
    :gap                2})
+
+(defn text-combination-top-spacing [image-spacing]
+  {:padding-top (or image-spacing 12)})
 
 (defstyle title-slot
   {:width "100%"})
