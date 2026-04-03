@@ -54,7 +54,7 @@
 (defstyle bottom-description-text
   {:text-align :center})
 
-(defn description-text-style [theme background scroll? position status]
+(defn description-text-style [theme blur? scroll? position status]
   {:color (cond
             (= status :error)
             (colors/get-color :color/danger
@@ -65,13 +65,13 @@
               (colors/get-color :color/neutral 80 70)
               (colors/get-color :color/neutral 50))
 
-            (and scroll? (= position :top) (= background :blur))
+            (and scroll? (= position :top) blur?)
             (colors/get-color :color/white 70)
 
             (and scroll? (= position :bottom))
             (colors/get-color :color/white 70)
 
-            (= background :blur)
+            blur?
             (colors/get-color :color/white 40)
 
             :else

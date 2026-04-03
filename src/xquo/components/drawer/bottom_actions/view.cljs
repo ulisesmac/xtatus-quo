@@ -6,7 +6,7 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]))
 
-(defn- description-view [{:keys [theme background scroll? description context-tag?]}]
+(defn- description-view [{:keys [theme blur? scroll? description context-tag?]}]
   (cond
     (and (= (:position description) :top)
          (= (:status description) :error))
@@ -14,28 +14,16 @@
      [:rn/view {:style style/top-error-content}
       [icon/icon {:icon  :icon/alert
                   :size  16
-                  :color (:color (style/description-text-style theme
-                                                               background
-                                                               scroll?
-                                                               :top
-                                                               :error))
+                  :color (:color (style/description-text-style theme blur? scroll? :top :error))
                   :style style/top-error-icon}]
       [text/text {:font  :font/regular-13
-                  :style (style/description-text-style theme
-                                                       background
-                                                       scroll?
-                                                       :top
-                                                       :error)}
+                  :style (style/description-text-style theme blur? scroll? :top :error)}
        (:text description)]]]
 
     (= (:position description) :top)
     [:rn/view {:style style/top-description-row}
      [text/text {:font  :font/regular-13
-                 :style (style/description-text-style theme
-                                                      background
-                                                      scroll?
-                                                      :top
-                                                      :default)}
+                 :style (style/description-text-style theme blur? scroll? :top :default)}
       (:text description)]
      (when context-tag?
        ;; TODO: replace red placeholder with the real context tag component.
@@ -45,38 +33,34 @@
     [:rn/view {:style style/bottom-description-row}
      [text/text {:font  :font/regular-13
                  :style [style/bottom-description-text
-                         (style/description-text-style theme
-                                                       background
-                                                       scroll?
-                                                       :bottom
-                                                       :default)]}
+                         (style/description-text-style theme blur? scroll? :bottom :default)]}
       (:text description)]]))
 
-(defn- secondary-button-type [theme background scroll? description-position]
+(defn- secondary-button-type [theme blur? scroll? description-position]
   (if (and (= theme :theme/dark)
            (not scroll?)
-           (= background :none)
+           (not blur?)
            (not= description-position :top))
     :dark-grey
     :grey))
 
-(defn- secondary-button-background [theme background scroll?]
+(defn- secondary-button-background [theme blur? scroll?]
   (cond
     (and (= theme :theme/light) scroll?)
     :blur
 
     (and (= theme :theme/dark)
-         (or scroll? (not= background :none)))
+         (or scroll? blur?))
     :blur))
 
-(defn- action-button-view [{:keys [theme background scroll? description-position primary? button-props]}]
+(defn- action-button-view [{:keys [theme blur? scroll? description-position primary? button-props]}]
   (let [button-type       (or (:type button-props)
                               (if primary?
                                 :primary
-                                (secondary-button-type theme background scroll? description-position)))
+                                (secondary-button-type theme blur? scroll? description-position)))
         button-background (or (:background button-props)
                               (when-not primary?
-                                (secondary-button-background theme background scroll?)))]
+                                (secondary-button-background theme blur? scroll?)))]
     [button/button (cond-> (-> button-props
                                (dissoc :label)
                                (assoc :size            40
@@ -87,13 +71,13 @@
                      button-background (assoc :background button-background))
      (:label button-props)]))
 
-(defn- actions-view [{:keys [theme background scroll? description-position buttons]}]
+(defn- actions-view [{:keys [theme blur? scroll? description-position buttons]}]
   (let [two-actions? (= (count buttons) 2)]
     (into [:rn/view {:style style/actions-row}]
           (map-indexed
            (fn [index button-props]
              [action-button-view {:theme                theme
-                                  :background           background
+                                  :blur?                blur?
                                   :scroll?              scroll?
                                   :description-position description-position
                                   :primary?             (or (not two-actions?) (= index 1))
@@ -112,31 +96,31 @@
       - `:status` one of `:default`, `:error` (default `:default`)
       - `:text` description text
     - `:context-tag?` optional boolean for the top/default variant
-    - `:background` one of `:none`, `:blur` (default `:none`)
+    - `:blur?` optional boolean (default `false`)
     - `:scroll?` optional boolean
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`."
-  [{:keys [buttons description context-tag? background scroll?]
-    :or   {background :none}
+  [{:keys [blur? buttons description context-tag? scroll?]
+    :or   {blur? false}
     :as   props}]
   (let [{:keys [theme]} (context/use-theme-color)]
     [:rn/view (-> props
-                  (dissoc :buttons :description :context-tag? :background :scroll? :style)
+                  (dissoc :blur? :buttons :description :context-tag? :scroll? :style)
                   (assoc :style (rec.xf/add-styles style/container-base (:style props))))
      (when (= (:position description) :top)
        [description-view {:theme        theme
-                          :background   background
+                          :blur?        blur?
                           :scroll?      scroll?
                           :description  description
                           :context-tag? context-tag?}])
      [actions-view {:theme                theme
-                    :background           background
+                    :blur?                blur?
                     :scroll?              scroll?
                     :description-position (:position description)
                     :buttons              buttons}]
      (when (= (:position description) :bottom)
        [description-view {:theme        theme
-                          :background   background
+                          :blur?        blur?
                           :scroll?      scroll?
                           :description  description
                           :context-tag? context-tag?}])]))
