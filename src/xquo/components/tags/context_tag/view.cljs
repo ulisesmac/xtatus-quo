@@ -261,13 +261,16 @@
             style suffix type]
      :or   {blur? false
             number-position :end
-            shape :circle
             size  24
             state :default
             type  :default}
      :as   props}
     label]
    (let [{:keys [color dark-theme?]} (context/use-theme-color)
+         shape                       (or shape
+                                         (when (and emoji (= type :image))
+                                           :squircle)
+                                         :circle)
          root-props                  (dissoc props :blur? :emoji :icon :image-source :image-sources
                                             :number :number-position :shape :size
                                             :state :style :suffix :type)]
