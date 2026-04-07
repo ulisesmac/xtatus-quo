@@ -241,18 +241,16 @@
     - `:size` one of `24` or `32` (default `24`)
     - `:state` one of `:default` or `:selected` (default `:default`)
     - `:blur?` optional boolean that uses the blur background treatment (default `false`)
-    - `:shape` one of `:circle` or `:squircle` for `:image` and `:multi`
-      (default `:circle`)
+    - `:shape` one of `:circle` or `:squircle` for `:image` and `:multi` (default `:circle`)
     - `:image-source` image source for `:default` and `:image`
     - `:image-sources` vector of 1 to 3 image sources for `:multi`
     - `:number` optional number rendered as `+number` for `:multi`;
-      when present, `:number-position` places the count slot at the start or end
-    - `:number-position` one of `:start` or `:end` for the `:multi` count slot
-      (default `:end`)
+                when present, `:number-position` places the count slot at the start or end
+    - `:number-position` one of `:start` or `:end` for the `:multi` count slot (default `:end`)
     - `:emoji` optional emoji fallback for `:image` with `:shape :squircle`
     - `:icon` icon keyword for `:group`, `:icon`, `:audio`, and `:multi`
     - `:suffix` optional trailing text rendered after the label; when present,
-      a chevron is inserted automatically between label and suffix
+                a chevron is inserted automatically between label and suffix
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to the root `:rn/view`.
   - `label` optional child content rendered in the main text slot for non-`multi`

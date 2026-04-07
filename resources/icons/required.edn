@@ -32,6 +32,7 @@
   :icon/reveal-20
   :icon/unread-20
   :icon/warning-16
+  :icon/collapse-20
   ;; MAPP
   :icon/search-20
   :icon/search-12
