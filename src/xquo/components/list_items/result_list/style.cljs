@@ -23,10 +23,10 @@
    :gap             2})
 
 (defstyle title
-  {:height 22})
+  {:height 24})
 
 (defstyle content
-  {:height 22})
+  {:height 24})
 
 (defstyle content-row
   {:flex           1
@@ -52,6 +52,19 @@
    :align-self       :stretch
    :justify-content  :center
    :align-items      :center})
+
+(defstyle image-background-slot
+  {:position         :absolute
+   :top              0
+   :right            0
+   :bottom           0
+   :left             0
+   :justify-content  :center
+   :align-items      :center})
+
+(defn image-tint-style [image-tint]
+  (when image-tint
+    (style {:tint-color (colors/get-color image-tint)})))
 
 (defstyle right-slot
   {:flex-shrink      0

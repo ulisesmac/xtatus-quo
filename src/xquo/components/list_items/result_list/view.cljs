@@ -21,15 +21,23 @@
     - `:title` top text label (default `\"Title\"`)
     - `:content` bottom slot rendered as-is
     - `:image-source` leading image source for `:rn/image`
+    - `:image-background` optional renderable node shown behind the image when
+      `:image-source` is present
+    - `:image-style` optional caller style for the rendered image
+    - `:image-tint` optional color keyword passed to `colors/get-color` and
+      applied as the image tint color
     - `:right` optional trailing slot rendered as-is
     - `:background` one of `:none` or `:blur` (default `:none`)
     - `:active?` optional boolean (default `false`)
     - `:disabled?` optional boolean that disables interaction and dims the item
+    - `:unpressable?` optional boolean that renders a static row without any
+      `on-press*` handling
     - `:style` optional caller style (map/vector/js style)
     - `:on-press-in` optional callback `(fn [event] ...)`
     - `:on-press-out` optional callback `(fn [event] ...)`
-    - Any additional keys are forwarded to `:rn/pressable`."
-  [{:keys [active? background content disabled? image-source on-press-in on-press-out right title]
+    - Any additional keys are forwarded to the root container."
+  [{:keys [active? background content disabled? image-background image-source image-style
+           image-tint on-press-in on-press-out right title unpressable?]
     :or   {active?    false
            background :none
            title      "Title"}
@@ -46,16 +54,23 @@
                                                    (when on-press-out
                                                      (on-press-out event)))
                                                  [on-press-out])
-        pressed-now?            (and pressed? (not disabled?))]
-    [:rn/pressable (-> props
-                       (dissoc :active? :background :color :content :disabled? :image-source
-                               :on-press-in :on-press-out :right :style :title)
-                       (assoc :disabled     disabled?
-                              :on-press-in  (when-not disabled? on-press-in!)
-                              :on-press-out (when-not disabled? on-press-out!)
-                              :style        (rec.xf/add-styles style/container-base
-                                                               (when disabled? style/disabled-state)
-                                                               (:style props))))
+        pressed-now?            (and pressed? (not disabled?) (not unpressable?))
+        root-props              (cond-> props
+                                  :always
+                                  (dissoc :active? :background :color :content :disabled?
+                                          :image-background :image-source :image-style
+                                          :image-tint :on-press-in :on-press-out :right
+                                          :style :title :unpressable?)
+                                  :always
+                                  (assoc :style (rec.xf/add-styles
+                                                 style/container-base
+                                                 (when disabled? style/disabled-state)
+                                                 (:style props)))
+                                  (not unpressable?)
+                                  (assoc :disabled     disabled?
+                                         :on-press-in  (when-not disabled? on-press-in!)
+                                         :on-press-out (when-not disabled? on-press-out!)))]
+    [(if unpressable? :rn/view :rn/pressable) root-props
      [:animated/view {:pointer-events :none
                       :style          [style/overlay-base
                                        (style/container-color-style theme background)]}]
@@ -75,8 +90,13 @@
                               style/content-row]}
      (when image-source
        [:rn/view {:style style/image-slot}
-        [:rn/image {:source image-source
-                    :style  style/image}]])
+        (when image-background
+          [:rn/view {:style style/image-background-slot}
+           image-background])
+        [:rn/image {:style  (rec.xf/add-styles style/image
+                                               (style/image-tint-style image-tint)
+                                               image-style)
+                    :source image-source}]])
      [:rn/view {:style style/content-column}
       [:rn/view {:style style/title}
        [title-view {:theme theme

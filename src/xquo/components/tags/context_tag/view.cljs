@@ -185,23 +185,27 @@
   (let [title-text-style     (style/title-text-style dark-theme?)
         secondary-text-style (style/secondary-text-style dark-theme? blur?)]
     [:rn/view {:style style/label-row}
-     [text/text {:style           [style/label-primary-text
-                                   title-text-style]
-                 :font            (get text-font size)
-                 :number-of-lines 1
-                 :ellipsize-mode  :tail}
-      label]
+     (if (string? label)
+       [text/text {:style           [style/label-primary-text
+                                     title-text-style]
+                   :font            (get text-font size)
+                   :number-of-lines 1
+                   :ellipsize-mode  :tail}
+        label]
+       label)
      (when suffix
        [icon/icon {:style (style/scaled-icon (get chevron-icon-scale size))
                    :icon  :icon/chevron-right
                    :size  20
                    :color (:color secondary-text-style)}])
      (when suffix
-       [text/text {:style           title-text-style
-                   :font            (get text-font size)
-                   :number-of-lines 1
-                   :ellipsize-mode  :tail}
-        suffix])]))
+       (if (string? suffix)
+         [text/text {:style           title-text-style
+                     :font            (get text-font size)
+                     :number-of-lines 1
+                     :ellipsize-mode  :tail}
+          suffix]
+         suffix))]))
 
 (defn- context-tag-body
   [{:keys [blur? color dark-theme? emoji icon image-source image-sources number number-position
@@ -249,12 +253,14 @@
     - `:number-position` one of `:start` or `:end` for the `:multi` count slot (default `:end`)
     - `:emoji` optional emoji fallback for `:image` with `:shape :squircle`
     - `:icon` icon keyword for `:group`, `:icon`, `:audio`, and `:multi`
-    - `:suffix` optional trailing text rendered after the label; when present,
-                a chevron is inserted automatically between label and suffix
+    - `:suffix` optional trailing string or renderable node; when a string is
+                provided it is rendered with the built-in text styling, and
+                when present a chevron is inserted automatically between label
+                and suffix
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to the root `:rn/view`.
-  - `label` optional child content rendered in the main text slot for non-`multi`
-    variants."
+  - `label` optional child content for non-`multi` variants; strings use the
+    built-in text styling and non-strings are rendered directly."
   ([props]
    (context-tag props nil))
   ([{:keys [blur? emoji icon image-source image-sources number number-position shape size state

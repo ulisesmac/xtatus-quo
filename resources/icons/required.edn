@@ -8,6 +8,7 @@
   :icon/browser-12
   :icon/browser-16
   :icon/browser-20
+  :icon/bridge-12
   :icon/check-20
   :icon/check-circle-16
   :icon/chevron-right-20
@@ -30,13 +31,17 @@
   :icon/locked-20
   :icon/placeholder-12
   :icon/placeholder-20
+  :icon/flag-12
   :icon/reveal-20
   :icon/unread-20
   :icon/warning-16
   :icon/collapse-20
+  :icon/bridge-16
+  :icon/bridge-20
   ;; MAPP
   :icon/search-20
   :icon/search-12
+  :icon/start-12
   :icon/route-12
   :icon/route-16
   :icon/route-20

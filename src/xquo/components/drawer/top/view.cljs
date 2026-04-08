@@ -22,11 +22,11 @@
       the inner bar when true
     - `:style` optional caller style
     - Any additional keys are forwarded to `:rn/view`."
-  [{:keys [skip-handle?] :as props}]
+  [{:keys [skip-handle? handle-style] :as props}]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
                   (dissoc :skip-handle?)
-                  (update :style #(rec.xf/add-styles style/handle-container %)))
+                  (assoc :style (rec.xf/add-styles style/handle-container handle-style)))
      (when-not skip-handle?
        [:rn/view {:style (style/handle-bar-style theme)}])]))
 
@@ -226,20 +226,19 @@
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`."
   [{:keys [skip-handle? label compact? title description subcontent counter info? button
-           title-icon description-icon leading context-tags background]
+           title-icon description-icon leading context-tags background handle-style]
     :or   {title "Title"}
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
                   (dissoc :skip-handle? :label :compact? :title :description :subcontent :counter
                           :info? :button :title-icon :description-icon :leading :context-tags
-                          :background :style)
+                          :background :style :handle-style)
                   (assoc :style (rec.xf/add-styles style/container-base (:style props))))
-     [drawer-handle {:skip-handle? skip-handle?}]
+     [drawer-handle {:skip-handle? skip-handle?
+                     :handle-style handle-style}]
      (if label
-       [:rn/view {:style [style/content-base
-                          style/content-bottom-12
-                          style/content-column]}
+       [:rn/view {:style [style/content-base style/content-bottom-12 style/content-column]}
         [section-label/section-label {:label      label
                                       :background background}]
         (when subcontent
