@@ -2,7 +2,22 @@
   (:require [cljs.math :as math]
             [clojure.string :as string]))
 
-(def inner-colors
+(def prev-colors
+   {2.5 "#FCFCFC"
+   5   "#F5F6F8"
+   10  "#F0F2F5"
+   20  "#E7EAEE"
+   30  "#DCE0E5"
+   40  "#A1ABBD"
+   50  "#647084"
+   60  "#303D55"
+   70  "#202C42"
+   80  "#1B273D"
+   90  "#131D2F"
+   95  "#0D1625"
+   100 "#09101C"})
+
+(def inner-colors-backup
   #:color{:neutral {2.5 "#FBFCFC"
                     5   "#F4F7F8"
                     10  "#EEF2F4"
@@ -21,6 +36,27 @@
           :primary {50 "#2C7F8E"}
           :success {50 "#2AA56B"}
           :warning {50 "#D89622"}
+          :danger  {50 "#D64249"}})
+
+(def inner-colors
+  #:color{:neutral {2.5 "#FCFCFC"
+                    5   "#F5F7F8"
+                    10  "#EFF2F4"
+                    20  "#E7ECEF"
+                    30  "#DBE2E6"
+                    40  "#9FAEB7"
+                    50  "#62717A"
+                    60  "#394952"
+                    70  "#2A3942"
+                    80  "#22343F"
+                    90  "#172731"
+                    95  "#0A1216"
+                    100 "#050B0E"}
+          :white   {50 "#FFFFFF"}
+          :black   {50 "#000000"}
+          :primary {50 "#3A7690"}
+          :success {50 "#2AA56B"}
+          :warning {50 "#B37F2F"}
           :danger  {50 "#D64249"}})
 
 (defonce colors (atom inner-colors))
