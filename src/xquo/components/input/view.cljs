@@ -14,10 +14,12 @@
 (def clear-button-delay 120)
 (def text-input-content-height 22)
 (def trailing-button-hit-slops
-  {32 {:top    4
-       :right  4
-       :bottom 4}
+  {32 {:top    6
+       :left   6
+       :right  6
+       :bottom 6}
    40 {:top    8
+       :left   8
        :right  8
        :bottom 8}})
 

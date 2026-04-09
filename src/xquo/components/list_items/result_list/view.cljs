@@ -20,6 +20,8 @@
   - `props` map
     - `:title` top text label (default `\"Title\"`)
     - `:content` bottom slot rendered as-is
+    - `:color` optional color keyword used for active and pressed overlays.
+      Defaults to the current `xquo` context color
     - `:image-source` leading image source for `:rn/image`
     - `:image-background` optional renderable node shown behind the image when
       `:image-source` is present
@@ -36,13 +38,15 @@
     - `:on-press-in` optional callback `(fn [event] ...)`
     - `:on-press-out` optional callback `(fn [event] ...)`
     - Any additional keys are forwarded to the root container."
-  [{:keys [active? background content disabled? image-background image-source image-style
-           image-tint on-press-in on-press-out right title unpressable?]
-    :or   {active?    false
-           background :none
+  [{result-color     :color
+    :keys            [active? background content disabled? image-background image-source image-style
+                      image-tint on-press-in on-press-out right title unpressable?]
+    :or   {background :none
            title      "Title"}
     :as   props}]
-  (let [{:keys [color theme]}   (context/use-theme-color)
+  (let [{context-color :color
+         theme         :theme} (context/use-theme-color)
+        overlay-color          (or result-color context-color)
         [pressed? set-pressed!] (rn/use-state false)
         on-press-in!            (rn/use-callback (fn [event]
                                                    (set-pressed! true)
@@ -76,14 +80,14 @@
                                        (style/container-color-style theme background)]}]
      [:animated/view {:pointer-events :none
                       :style          [style/overlay-base
-                                       (style/active-color-style theme background color)
+                                       (style/active-color-style theme background overlay-color)
                                        (style/active-overlay-state-style active?)]}]
      (when pressed-now?
        [:animated/view {:pointer-events :none
                         :entering       (rnr/appear-in)
                         :exiting        (rnr/disappear-out)
                         :style          [style/overlay-base
-                                         (style/pressed-color-style theme background color)]}])
+                                         (style/pressed-color-style theme background overlay-color)]}])
      [:animated/view {:style [(if pressed-now?
                                settings-item.style/row-pressed-state-style
                                settings-item.style/row-default-state-style)

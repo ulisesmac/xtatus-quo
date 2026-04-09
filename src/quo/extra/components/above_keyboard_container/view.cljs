@@ -1,9 +1,7 @@
 (ns quo.extra.components.above-keyboard-container.view
   (:require ["react" :refer [useLayoutEffect useEffect useState useCallback useRef]]
             ["react-native-reanimated" :refer [useSharedValue withSpring]]
-            ["react-native" :refer [useWindowDimensions Keyboard]]
-            ["react-native-safe-area-context" :as safe-area]))
-
+            ["react-native" :refer [Keyboard]]))
 ;; TODO: As soon as the refactor starts:
 ;; Export a React Native lib for ClojureScript
 
