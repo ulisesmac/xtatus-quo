@@ -13,6 +13,13 @@
 
 (def clear-button-delay 120)
 (def text-input-content-height 22)
+(def trailing-button-hit-slops
+  {32 {:top    4
+       :right  4
+       :bottom 4}
+   40 {:top    8
+       :right  8
+       :bottom 8}})
 
 (defn- layout-type [icon clearable? trailing-button]
   (cond
@@ -303,7 +310,8 @@
                   :or   {label "Button" type :outline}} trailing-button]
         [button/button (assoc trailing-button
                          :background (when blur? :blur)
-                         :disabled? (or disabled? (:disabled? trailing-button))
-                         :size 24
-                         :type type)
+                         :disabled?  (or disabled? (:disabled? trailing-button))
+                         :hit-slop   (get trailing-button-hit-slops size)
+                         :size       24
+                         :type       type)
          label])]]))
