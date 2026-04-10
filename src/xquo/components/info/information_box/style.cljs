@@ -134,8 +134,10 @@
 (defn title-text-style [theme status]
   {:color (cond
             (= status :error)
-            (colors/get-color :color/danger
-                              (if (= theme :theme/dark) 60 50))
+            (colors/themed theme :color/danger)
+
+            (= status :warning)
+            (colors/themed theme :color/warning)
 
             (= theme :theme/dark)
             (colors/get-color :color/white 100)
