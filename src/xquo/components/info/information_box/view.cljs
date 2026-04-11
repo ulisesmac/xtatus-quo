@@ -52,20 +52,16 @@
 (defn information-box
   "Information box component.
 
-  API:
   - `props` map
-    - `:status` one of `:default`, `:info`, `:warning`, `:error`
-      (default `:default`)
+    - `:status` one of `:default`, `:info`, `:warning`, `:error` (default `:default`)
     - `:title` optional title text
-    - `:description` optional body text. When present, it overrides the child
-      content and is rendered with the Figma text styling.
+    - `:description` optional body text. When present, it overrides the child content
     - `:button` optional nested button map
       - accepts `xquo/button` props plus required `:label`
       - `:size 24` is enforced internally
       - `:type` defaults to `:primary`
-    - `:close-button` optional close slot map
+    - `:close-button` optional close slot map presence renders the trailing close icon
       - `:on-press` optional close callback
-      - presence renders the trailing close icon
     - `:blur?` optional boolean
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`.
