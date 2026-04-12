@@ -45,7 +45,7 @@
     - `:on-press-out` optional callback `(fn [event] ...)`
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/pressable` (for example
-      `:on-press`, `:on-long-press`, `:accessibility-label`, `:testID`)
+      `:on-press`, `:on-long-press`
   - `content` optional label node.
 
   Layout behavior:

@@ -51,6 +51,10 @@
     {:background-color (colors/get-color color 50 5)
      :border-color     (colors/get-color color 50 10)}
 
+    (= status :success)
+    {:background-color (colors/get-color :color/success 50 5)
+     :border-color     (colors/get-color :color/success 50 10)}
+
     (= status :warning)
     {:background-color (colors/get-color :color/warning 50 5)
      :border-color     (colors/get-color :color/warning 50 10)}
@@ -100,6 +104,10 @@
   (cond
     (= status :info)
     (colors/get-color color
+                      (if (= theme :theme/dark) 60 50))
+
+    (= status :success)
+    (colors/get-color :color/success
                       (if (= theme :theme/dark) 60 50))
 
     (= status :warning)

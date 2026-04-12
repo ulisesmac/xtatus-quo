@@ -6,18 +6,21 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]))
 
-(defn- leading-icon-view [{:keys [theme blur? status color close-button title button]}]
-  (let [icon-name (cond
-                    (= status :warning) :icon/warning
-                    close-button        :icon/close
-                    :else               :icon/info)
+(defn- leading-icon-view [{:keys [theme blur? status theme-color close-button title button icon color]}]
+  (let [icon-name (or icon
+                      (cond
+                        (= status :warning) :icon/warning
+                        close-button        :icon/close
+                        :else               :icon/info))
         icon-size (cond
+                    icon              20
                     (= status :warning) 16
                     close-button        12
                     :else               16)]
     [icon/icon {:icon  icon-name
                 :size  icon-size
-                :color (style/leading-icon-color theme blur? status color)
+                :color (or color
+                           (style/leading-icon-color theme blur? status theme-color))
                 :style (style/leading-icon-style close-button title button)}]))
 
 (defn- close-button-view
@@ -53,7 +56,9 @@
   "Information box component.
 
   - `props` map
-    - `:status` one of `:default`, `:info`, `:warning`, `:error` (default `:default`)
+    - `:status` one of `:default`, `:info`, `:success`, `:warning`, `:error` (default `:default`)
+    - `:icon` optional leading icon override
+    - `:color` optional leading icon color override
     - `:title` optional title text
     - `:description` optional body text. When present, it overrides the child content
     - `:button` optional nested button map
@@ -66,16 +71,17 @@
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`.
   - `content` optional body node rendered as-is."
-  [{:keys [status title description button close-button blur?]
+  [{:keys [status icon color title description button close-button blur?]
     :or   {status :default}
     :as   props}
    content]
-  (let [{:keys [theme color]} (context/use-theme-color)]
+  (let [{theme :theme
+         theme-color :color} (context/use-theme-color)]
     [:rn/view (-> props
-                  (dissoc :status :title :description :button :close-button :blur? :background :style)
+                  (dissoc :status :icon :color :title :description :button :close-button :blur? :background :style)
                   (assoc :style (rec.xf/add-styles
                                  style/container-base
-                                 (style/container-color-style theme blur? status color)
+                                 (style/container-color-style theme blur? status theme-color)
                                  (if (or title button)
                                    style/rich-layout-base
                                    (style/compact-layout-style theme close-button))
@@ -85,6 +91,8 @@
         [leading-icon-view {:theme         theme
                             :blur?         blur?
                             :status        status
+                            :theme-color   theme-color
+                            :icon          icon
                             :color         color
                             :close-button  close-button
                             :title         title
@@ -116,6 +124,8 @@
         [leading-icon-view {:theme         theme
                             :blur?         blur?
                             :status        status
+                            :theme-color   theme-color
+                            :icon          icon
                             :color         color
                             :close-button  close-button
                             :title         title
