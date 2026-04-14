@@ -13,6 +13,14 @@
     [{:text description}]
     description))
 
+(defn- title-view [{:keys [theme title]}]
+  (if (vector? title)
+    title
+    [text/text {:font            :font/semibold-19
+                :number-of-lines 1
+                :style           (style/title-text-style theme)}
+     title]))
+
 (defn drawer-handle
   "Drawer handle component.
 
@@ -75,10 +83,8 @@
 
 (defn- title-inline-view [{:keys [theme background title title-icon]}]
   [:rn/view {:style style/title-inline-row}
-   [text/text {:font            :font/semibold-19
-               :number-of-lines 1
-               :style           (style/title-text-style theme)}
-    title]
+   [title-view {:theme theme
+                :title title}]
    (when title-icon
      [icon/icon {:icon  title-icon
                  :size  20
@@ -115,11 +121,9 @@
   [:rn/view {:style [style/title-row
                      style/title-row-baseline
                      style/title-row-gap-12]}
-   [text/text {:font            :font/semibold-19
-               :number-of-lines 1
-               :style           [style/title-slot
-                                 (style/title-text-style theme)]}
-    title]
+   [:rn/view {:style style/title-slot}
+    [title-view {:theme theme
+                 :title title}]]
    [text/text {:font            :font/regular-13
                :number-of-lines 1
                :style           [style/counter-text
@@ -207,7 +211,7 @@
       hides the inner handle bar when true
     - `:label` optional label variant. When present, title props are ignored.
     - `:compact?` optional boolean for the tighter documentation top spacing
-    - `:title` title text (default `\"Title\"`)
+    - `:title` title string or hiccup vector (default `\"Title\"`)
     - `:description` optional string or vector of segment maps `{:text ... :color :color/...}`
     - `:subcontent` optional custom hiccup rendered in a fixed 24px slot beneath
       the main text content; overflow outside that height remains visible
