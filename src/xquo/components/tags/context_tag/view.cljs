@@ -112,13 +112,13 @@
            (map-indexed (fn [slot-index {:keys [image-source kind]}]
                           (if (= kind :number)
                             ^{:key (str "number-" slot-index)}
-                            [multi-number-view {:blur?       blur?
-                                                :dark-theme? dark-theme?
-                                                :number      number
+                            [multi-number-view {:blur?           blur?
+                                                :dark-theme?     dark-theme?
+                                                :number          number
                                                 :number-position number-position
-                                                :shape       shape
-                                                :size        size
-                                                :slot-index  slot-index}]
+                                                :shape           shape
+                                                :size            size
+                                                :slot-index      slot-index}]
                             ^{:key (str "image-" slot-index)}
                             [multi-image-view {:blur?        blur?
                                                :dark-theme?  dark-theme?
@@ -161,25 +161,25 @@
 
       (and (= type :group) icon)
       [:rn/view {:style (style/filled-icon-surface size color)}
-       [icon-node {:color    (if (= size 24)
-                               (colors/get-color :color/white-70)
-                               (colors/get-color :color/white-100))
-                   :icon     icon
-                   :scale    (get filled-icon-scale size)
-                   :size     (get filled-icon-size size)}]]
+       [icon-node {:color (if (= size 24)
+                            (colors/get-color :color/white-70)
+                            (colors/get-color :color/white-100))
+                   :icon  icon
+                   :scale (get filled-icon-scale size)
+                   :size  (get filled-icon-size size)}]]
 
       (and (= type :audio) icon)
       [:rn/view {:style (style/filled-icon-surface size color)}
-       [icon-node {:color    (colors/get-color :color/white-100)
-                   :icon     icon
-                   :scale    (get filled-icon-scale size)
-                   :size     (get filled-icon-size size)}]]
+       [icon-node {:color (colors/get-color :color/white-100)
+                   :icon  icon
+                   :scale (get filled-icon-scale size)
+                   :size  (get filled-icon-size size)}]]
 
       (and (= type :icon) icon)
-      [icon-node {:color    (:color secondary-text-style)
-                  :icon     icon
-                  :scale    1
-                  :size     (get inline-icon-size size)}])))
+      [icon-node {:color (:color secondary-text-style)
+                  :icon  icon
+                  :scale 1
+                  :size  (get inline-icon-size size)}])))
 
 (defn- label-view [{:keys [blur? dark-theme? label size suffix]}]
   (let [title-text-style     (style/title-text-style dark-theme?)
@@ -211,8 +211,7 @@
   [{:keys [blur? color dark-theme? emoji icon image-source image-sources number number-position
            root-props root-style selected-border-style selected? shape size suffix type]}
    label]
-  [:rn/view (assoc root-props
-                   :style root-style)
+  [:rn/view (assoc root-props :style root-style)
    (when selected-border-style
      [:rn/view {:style          selected-border-style
                 :pointer-events :none}])
@@ -244,6 +243,7 @@
     - `:type` one of `:default`, `:image`, `:group`, `:icon`, `:audio`, `:multi`
     - `:size` one of `24` or `32` (default `24`)
     - `:state` one of `:default` or `:selected` (default `:default`)
+    - `:border` optional `:outline`
     - `:blur?` optional boolean that uses the blur background treatment (default `false`)
     - `:shape` one of `:circle` or `:squircle` for `:image` and `:multi` (default `:circle`)
     - `:image-source` image source for `:default` and `:image`
@@ -263,24 +263,25 @@
     built-in text styling and non-strings are rendered directly."
   ([props]
    (context-tag props nil))
-  ([{:keys [blur? emoji icon image-source image-sources number number-position shape size state
-            style suffix type]
-     :or   {blur? false
+  ([{:keys [blur? border emoji icon image-source image-sources number number-position shape
+            size state style suffix type]
+     :or   {blur?           false
             number-position :end
-            size  24
-            state :default
-            type  :default}
+            size            24
+            state           :default
+            type            :default}
      :as   props}
     label]
-   (let [{:keys [color dark-theme?]} (context/use-theme-color)
-         shape                       (or shape
-                                         (when (and emoji (= type :image))
-                                           :squircle)
-                                         :circle)
-         root-props                  (dissoc props :blur? :emoji :icon :image-source :image-sources
-                                            :number :number-position :shape :size
-                                            :state :style :suffix :type)]
+   (let [{:keys [color dark-theme? theme]} (context/use-theme-color)
+         shape      (or shape
+                        (when (and emoji (= type :image))
+                          :squircle)
+                        :circle)
+         root-props (dissoc props :blur? :border :emoji :icon :image-source :image-sources
+                            :number :number-position :shape :size
+                            :state :style :suffix :type)]
      [context-tag-body {:blur?                 blur?
+                        :border                border
                         :color                 color
                         :dark-theme?           dark-theme?
                         :emoji                 emoji
@@ -292,7 +293,10 @@
                         :root-props            root-props
                         :root-style            (rec.xf/add-styles
                                                 style/root-base
-                                                (style/container size type shape dark-theme? blur? icon)
+                                                (style/container size type shape border dark-theme? blur? icon)
+                                                (when (and (= border :outline)
+                                                           (not= state :selected))
+                                                  (style/outline-border size type shape theme))
                                                 style)
                         :selected-border-style (when (= state :selected)
                                                  (style/selected-border size type shape color))

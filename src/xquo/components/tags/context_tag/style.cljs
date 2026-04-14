@@ -95,8 +95,9 @@
             (colors/get-color :color/white-100)
             (colors/get-color :color/neutral-100))})
 
-(defn- container-background-color [dark-theme? blur?]
+(defn- container-background-color [border dark-theme? blur?]
   (cond
+    (= border :outline)       "transparent"
     (and dark-theme? blur?) (colors/get-color :color/white-5)
     dark-theme?             (colors/get-color :color/neutral-90)
     blur?                   (colors/get-color :color/neutral-80-5)
@@ -137,13 +138,16 @@
     :else
     (/ size 2)))
 
-(defn container [size type shape dark-theme? blur? icon]
+(defn container [size type shape border dark-theme? blur? icon]
   (let [layout        (cond
                         (= type :icon)  (get icon-layout size)
                         (= type :multi) (get-in multi-layout [size (some? icon)])
                         :else           (get leading-layout size))
+        padding-left  (if (= border :outline)
+                        (dec (:padding-left layout))
+                        (:padding-left layout))
         border-radius (container-border-radius size type shape)]
-    (style {:padding-left     (:padding-left layout)
+    (style {:padding-left     padding-left
             :padding-right    (:padding-right layout)
             :padding-top      (:padding-top layout)
             :padding-bottom   (:padding-bottom layout)
@@ -151,8 +155,13 @@
             :height           size
             :flex-direction   :row
             :align-items      :center
-            :background-color (container-background-color dark-theme? blur?)
+            :background-color (container-background-color border dark-theme? blur?)
             :border-radius    border-radius})))
+
+(defn outline-border [size type shape theme]
+  (style {:border-width  1
+          :border-color  (colors/themed theme :color/neutral-30 :color/neutral-60)
+          :border-radius (container-border-radius size type shape)}))
 
 (defn selected-border [size type shape color]
   (style {:position      :absolute
@@ -194,7 +203,7 @@
           :height        (multi-stack-item-size size)
           :overflow      :hidden
           :border-width  1
-          :border-color  (container-background-color dark-theme? blur?)
+          :border-color  (container-background-color nil dark-theme? blur?)
           :border-radius (container-border-radius size :multi shape)}))
 
 (defn squircle-surface [size color]
