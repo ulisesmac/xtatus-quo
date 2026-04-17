@@ -6,37 +6,36 @@
             [xquo.context :as context]
             [xquo.react-native :as rn]))
 
-(defn- option-view [{:keys [component on-select option option-id option-style selected-id]}]
+(defn- option-view
+  [{:keys [component on-select option option-id option-layout option-style selected-id]}]
   (let [{:keys [color dark-theme?]} (context/use-theme-color)
-        option-id-value             (option-id option)
-        selected?                   (= option-id-value selected-id)
-        [pressed? set-pressed!]     (rn/use-state false)
-        on-press!                   (rn/use-callback (fn []
-                                                       (when on-select
-                                                         (on-select option-id-value)))
-                                                     [on-select option-id-value])
-        on-press-in!                (rn/use-callback (fn [_]
-                                                       (set-pressed! true))
-                                                     [])
-        on-press-out!               (rn/use-callback (fn [_]
-                                                       (set-pressed! false))
-                                                     [])]
-    [:animated/view {:style (if pressed?
-                              button.style/pressable-pressed-state-style
-                              button.style/pressable-default-state-style)}
-     [:rn/pressable {:style        (rec.xf/add-styles
-                                     style/option-base
-                                     (style/option-border-style dark-theme? selected? color)
-                                     option-style)
-                     :on-press     on-press!
-                     :on-press-in  on-press-in!
-                     :on-press-out on-press-out!}
-      [:rn/view {:style          style/selector-slot
-                 :pointer-events :none}
-       [selector/selector {:type      :radio
-                           :selected? selected?}]]
-      (when component
-        [component option])]]))
+        option-id-value (option-id option)
+        selected?       (= option-id-value selected-id)
+        [pressed? set-pressed!] (rn/use-state false)
+        on-press!       (rn/use-callback (fn []
+                                           (when on-select
+                                             (on-select option-id-value)))
+                                         [on-select option-id-value])
+        on-press-in!    (rn/use-callback #(set-pressed! true) [])
+        on-press-out!   (rn/use-callback #(set-pressed! false) [])]
+    [:animated/pressable (cond-> {:style        (rec.xf/add-styles
+                                                 (if pressed?
+                                                   button.style/pressable-pressed-state-style
+                                                   button.style/pressable-default-state-style)
+                                                 style/option-base
+                                                 (style/option-border-style dark-theme? selected? color)
+                                                 option-style)
+                                  :on-press     on-press!
+                                  :on-press-in  on-press-in!
+                                  :on-press-out on-press-out!}
+                           option-layout
+                           (assoc :layout option-layout))
+     [:rn/view {:style          style/selector-slot
+                :pointer-events :none}
+      [selector/selector {:type      :radio
+                          :selected? selected?}]]
+     (when component
+       [component option])]))
 
 (defn view
   "Options selector container.
@@ -53,13 +52,14 @@
     - `:selected-id` optional controlled selected option id
     - `:initial-selected` optional id used to seed the internal selected state
     - `:on-select` optional callback invoked with the selected option id
+    - `:option-layout` optional layout transition applied to each option shell
     - `:horizontal?` optional boolean; defaults to vertical layout
     - `:content-container-style` optional style applied to the inner content container
     - `:option-style` optional style applied to each option shell
     - `:style` optional caller style for the outer container
     - Any additional keys are forwarded to `:rn/view`."
   [{:keys [component container-component content-container-style data horizontal? initial-selected
-           on-select option-id option-style selected-id style]
+           on-select option-id option-layout option-style selected-id style]
     :or   {container-component :rn/scroll-view
            option-id           :id}
     :as   props}]
@@ -79,7 +79,7 @@
     (into [container-component (-> props
                                    (dissoc :component :container-component :data :horizontal?
                                            :content-container-style :initial-selected
-                                           :selected-id
+                                           :selected-id :option-layout
                                            :on-select :option-id :option-style :style)
                                    (assoc :style (rec.xf/add-styles style/root-base style)
                                           :content-container-style (rec.xf/add-styles
@@ -90,6 +90,7 @@
                                :on-select    on-select!
                                :option       option
                                :option-id    option-id
+                               :option-layout option-layout
                                :option-style option-style
                                :selected-id  selected-id-now}]))
           data)))
