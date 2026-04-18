@@ -87,7 +87,6 @@
 (defn bottom-actions
   "Bottom actions component.
 
-  API:
   - `props` map
     - `:buttons` vector of one or two button prop maps
       - each map accepts the `xquo/button` props plus `:label`
