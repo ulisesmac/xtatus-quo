@@ -8,11 +8,11 @@
   {:align-self :stretch})
 
 (defstyle handle-container
-  {:align-self     :stretch
-   :height         20
-   :align-items    :center
+  {:align-self      :stretch
+   :height          20
+   :align-items     :center
    :justify-content :flex-end
-   :padding-bottom 8})
+   :padding-bottom  8})
 
 (defstyle content-base
   {:padding-horizontal 20})
@@ -27,17 +27,11 @@
   {:flex-direction :column
    :align-items    :flex-start})
 
-(defstyle content-gap-2
-  {:gap 2})
-
-(defstyle content-gap-4
-  {:gap 4})
-
 (defstyle subcontent-slot
-  {:align-self      :stretch
-   :height          (spacing/spacing-values 9)
-   :margin-top      (spacing/spacing-values 2)
-   :overflow        :visible})
+  {:align-self :stretch
+   :height     (spacing/spacing-values 9)
+   :margin-top (spacing/spacing-values 2)
+   :overflow   :visible})
 
 (defstyle context-row-slot
   {:margin-top (spacing/spacing-values 2)})
@@ -149,8 +143,8 @@
 (defn icon-color [theme background]
   (cond
     (and (= theme :theme/dark) (= background :blur)) (colors/get-color :color/white-40)
-    (= theme :theme/dark)                            (colors/get-color :color/neutral-40)
-    :else                                            (colors/get-color :color/neutral-50)))
+    (= theme :theme/dark) (colors/get-color :color/neutral-40)
+    :else (colors/get-color :color/neutral-50)))
 
 (defn leading-placeholder-style []
   {:background-color (colors/get-color :color/danger-50)

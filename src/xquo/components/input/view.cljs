@@ -182,7 +182,7 @@
                                                      (on-blur event)))
                                                  [on-blur])]
     [:rn/text-input (cond-> props
-                      :always (dissoc :blur? :button :default-value :disabled?
+                      :always (dissoc :auto-focus? :blur? :button :default-value :disabled?
                                       :error? :icon :clearable? :input-container-style
                                       :label :max-height :max-length :min-height :multiline
                                       :multiline? :on-blur :on-change-text :on-clear
@@ -223,6 +223,7 @@
     - `:placeholder` optional placeholder text
     - `:value` optional controlled value
     - `:default-value` optional uncontrolled initial value
+    - `:auto-focus?` optional boolean that focuses the internal text input once on mount
     - `:multiline?` optional boolean. When true, the field switches to the multiline
                     layout and top-aligned text behavior
     - `:min-height` optional minimum surface height for multiline inputs. When omitted,
@@ -238,7 +239,7 @@
     - `:disabled?` optional boolean
     - `:style` optional caller style for the outer component wrapper
     - Any additional keys are forwarded to `:rn/text-input`."
-  [{:keys               [blur? clearable? default-value disabled? error? icon
+  [{:keys               [auto-focus? blur? clearable? default-value disabled? error? icon
                          label max-height max-length min-height multiline? on-blur
                          on-change-text on-clear on-content-size-change on-focus
                          size value]
@@ -267,6 +268,12 @@
                                                    (when on-clear
                                                      (on-clear)))
                                                  [controlled? on-clear])]
+    (rn/use-effect
+     (fn []
+       (when auto-focus?
+         (let [focus-timeout (js/setTimeout focus-input! 16)]
+           #(js/clearTimeout focus-timeout))))
+     [])
     [:rn/view {:style [style/root-base
                        (when (or label max-length) style/root-gap-8)
                        (when disabled? style/root-disabled)]}
