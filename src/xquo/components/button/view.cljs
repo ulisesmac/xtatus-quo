@@ -12,6 +12,14 @@
                 :style (style/text-style theme type background)}
      content]))
 
+(defn- button-content [{:keys [background size type]} content]
+  (if (string? content)
+    [button-text {:type       type
+                  :size       size
+                  :background background}
+     content]
+    content))
+
 (defn- button-icon [{:keys [icon-name side type size icon-color background icon-only? disabled? pressed?]}]
   (let [theme (context/use-theme)]
     [icon/icon {:icon  icon-name
@@ -46,7 +54,7 @@
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/pressable` (for example
       `:on-press`, `:on-long-press`
-  - `content` optional label node.
+  - `content` optional label string or arbitrary content node.
 
   Layout behavior:
   - If `content` is nil and `:icons` has `:left` or `:right`, it renders icon-only.
@@ -54,7 +62,7 @@
     - `{:left ...}` left icon
     - `{:right ...}` right icon
     - `{:left ... :right ...}` both sides
-    - no icons -> text-only."
+    - no icons -> content only."
   [{:keys               [type size background disabled? on-press-in on-press-out icon-color container-style] ;; TODO: horrendous API: container-=style shouldn't be used, as well as icon-color
     {left-icon  :left
      right-icon :right} :icons
@@ -107,7 +115,9 @@
 
         (= layout :right)
         [:<>
-         [button-text {:type type :size size :background background}
+         [button-content {:type       type
+                          :size       size
+                          :background background}
           content]
          [button-icon {:icon-name right-icon
                        :side      :right
@@ -128,7 +138,9 @@
                        :disabled?  disabled?
                        :pressed?   pressed?
                        :icon-color icon-color}]
-         [button-text {:type type :size size :background background}
+         [button-content {:type       type
+                          :size       size
+                          :background background}
           content]]
 
         (= layout :left-right)
@@ -141,7 +153,9 @@
                        :disabled?  disabled?
                        :pressed?   pressed?
                        :icon-color icon-color}]
-         [button-text {:type type :size size :background background}
+         [button-content {:type       type
+                          :size       size
+                          :background background}
           content]
          [button-icon {:icon-name right-icon
                        :side      :right
@@ -153,5 +167,7 @@
                        :icon-color icon-color}]]
 
         :else
-        [button-text {:type type :size size :background background}
+        [button-content {:type       type
+                         :size       size
+                         :background background}
          content])]]))
