@@ -1,10 +1,12 @@
 (ns xquo.components.tags.context-tag.view
   (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+            [xquo.components.button.style :as button.style]
             [xquo.components.icon.view :as icon]
             [xquo.components.tags.context-tag.style :as style]
             [xquo.components.text.view :as text]
             [xquo.context :as context]
-            [xquo.foundations.colors :as colors]))
+            [xquo.foundations.colors :as colors]
+            [xquo.react-native :as rn]))
 
 (def ^:private text-font
   {24 :font/medium-13
@@ -209,37 +211,50 @@
 
 (defn- context-tag-body
   [{:keys [blur? color dark-theme? emoji icon image-source image-sources number number-position
-           root-props root-style selected-border-style selected? shape size suffix type]}
+           on-press-in! on-press-out! pressed? pressable? root-props root-style selected-border-style
+           selected? shape size suffix type]}
    label]
-  [:rn/view (assoc root-props :style root-style)
-   (when selected-border-style
-     [:rn/view {:style          selected-border-style
-                :pointer-events :none}])
-   [leading-view {:blur?           blur?
-                  :color           color
-                  :dark-theme?     dark-theme?
-                  :emoji           emoji
-                  :icon            icon
-                  :image-source    image-source
-                  :image-sources   image-sources
-                  :number          number
-                  :number-position number-position
-                  :selected?       selected?
-                  :shape           shape
-                  :size            size
-                  :type            type}]
-   (when (and (not= type :multi) (some? label))
-     [label-view {:blur?       blur?
-                  :dark-theme? dark-theme?
-                  :label       label
-                  :size        size
-                  :suffix      suffix}])])
+  (let [root-component (if pressable? :rn/pressable :rn/view)
+        root-props     (cond-> (assoc root-props :style root-style)
+                         pressable?
+                         (assoc :on-press-in  on-press-in!
+                                :on-press-out on-press-out!))]
+    [(if pressable? :animated/view :rn/view)
+     (when pressable?
+       {:style (if pressed?
+                 button.style/pressable-pressed-state-style
+                 button.style/pressable-default-state-style)})
+     [root-component root-props
+      (when selected-border-style
+        [:rn/view {:style          selected-border-style
+                   :pointer-events :none}])
+      [leading-view {:blur?           blur?
+                     :color           color
+                     :dark-theme?     dark-theme?
+                     :emoji           emoji
+                     :icon            icon
+                     :image-source    image-source
+                     :image-sources   image-sources
+                     :number          number
+                     :number-position number-position
+                     :selected?       selected?
+                     :shape           shape
+                     :size            size
+                     :type            type}]
+      (when (and (not= type :multi) (some? label))
+        [label-view {:blur?       blur?
+                     :dark-theme? dark-theme?
+                     :label       label
+                     :size        size
+                     :suffix      suffix}])]]))
 
 (defn context-tag
   "Context tag component.
 
   API:
   - `props` map
+    - `:color` optional color keyword or string; when omitted, uses the
+                current `xquo` context color
     - `:type` one of `:default`, `:image`, `:group`, `:icon`, `:audio`, `:multi`
     - `:size` one of `24` or `32` (default `24`)
     - `:state` one of `:default` or `:selected` (default `:default`)
@@ -263,8 +278,8 @@
     built-in text styling and non-strings are rendered directly."
   ([props]
    (context-tag props nil))
-  ([{:keys [blur? border emoji icon image-source image-sources number number-position shape
-            size state style suffix type]
+  ([{:keys [blur? border color emoji icon image-source image-sources number number-position on-press
+            on-press-in on-press-out shape size state style suffix type]
      :or   {blur?           false
             number-position :end
             size            24
@@ -272,17 +287,37 @@
             type            :default}
      :as   props}
     label]
-   (let [{:keys [color dark-theme? theme]} (context/use-theme-color)
-         shape      (or shape
-                        (when (and emoji (= type :image))
-                          :squircle)
-                        :circle)
-         root-props (dissoc props :blur? :border :emoji :icon :image-source :image-sources
-                            :number :number-position :shape :size
-                            :state :style :suffix :type)]
+   (let [{context-color :color
+          :keys         [dark-theme? theme]} (context/use-theme-color)
+         resolved-color      (or color context-color)
+         pressable?          (and on-press (not= border :outline))
+         [pressed?
+          set-pressed!]      (rn/use-state false)
+         on-press-in!        (rn/use-callback
+                              (fn [event]
+                                (set-pressed! true)
+                                (when on-press-in
+                                  (on-press-in event)))
+                              [on-press-in])
+         on-press-out!       (rn/use-callback
+                              (fn [event]
+                                (set-pressed! false)
+                                (when on-press-out
+                                  (on-press-out event)))
+                              [on-press-out])
+         shape               (or shape
+                                 (when (and emoji (= type :image))
+                                   :squircle)
+                                 :circle)
+         root-props          (cond-> (dissoc props :blur? :border :emoji :icon :image-source :image-sources
+                                             :color
+                                             :number :number-position :on-press-in :on-press-out :shape
+                                             :size :state :style :suffix :type)
+                               (not pressable?)
+                               (dissoc :on-press))]
      [context-tag-body {:blur?                 blur?
                         :border                border
-                        :color                 color
+                        :color                 resolved-color
                         :dark-theme?           dark-theme?
                         :emoji                 emoji
                         :icon                  icon
@@ -290,16 +325,22 @@
                         :image-sources         image-sources
                         :number                number
                         :number-position       number-position
+                        :on-press-in!          on-press-in!
+                        :on-press-out!         on-press-out!
+                        :pressed?              pressed?
+                        :pressable?            pressable?
                         :root-props            root-props
                         :root-style            (rec.xf/add-styles
                                                 style/root-base
                                                 (style/container size type shape border dark-theme? blur? icon)
+                                                (when pressable?
+                                                  (button.style/pressable-type-style theme :grey nil resolved-color false pressed?))
                                                 (when (and (= border :outline)
                                                            (not= state :selected))
                                                   (style/outline-border size type shape theme))
                                                 style)
                         :selected-border-style (when (= state :selected)
-                                                 (style/selected-border size type shape color))
+                                                 (style/selected-border size type shape resolved-color))
                         :selected?             (= state :selected)
                         :shape                 shape
                         :size                  size

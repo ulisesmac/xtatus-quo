@@ -213,7 +213,7 @@
           :align-items      :center
           :justify-content  :center
           :border-radius    (get squircle-image-radius size)
-          :background-color (colors/get-color color 50)}))
+          :background-color (colors/get-color color 50 20)}))
 
 (defn filled-icon-surface [size color]
   (style {:width            (get media-size size)
