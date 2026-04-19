@@ -1,5 +1,6 @@
 (ns xquo.components.button.style
   (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+            [reagent-extended.react-native :as rn]
             [xquo.foundations.animations :as animations]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
@@ -104,9 +105,15 @@
 
 (def background-type-styles
   {:photo {:theme/light {:grey    {:icon-color (colors/get-color :color/neutral-100)
-                                   :default    {:background-color (colors/get-color :color/white-40)}
-                                   :pressed    {:background-color (colors/get-color :color/white-50)}
+                                   :default    {:background-color (colors/get-color :color/white-40)
+                                                :border-color     (colors/get-color :color/neutral-80-10)
+                                                :border-width     rn/hairline-width}
+                                   :pressed    {:background-color (colors/get-color :color/white-50)
+                                                :border-color     (colors/get-color :color/neutral-80-20)
+                                                :border-width     rn/hairline-width}
                                    :disabled   {:background-color (colors/get-color :color/white-40)
+                                                :border-color     (colors/get-color :color/neutral-80-10)
+                                                :border-width     rn/hairline-width
                                                 :opacity          0.3}}
                          :outline {:icon-color (colors/get-color :color/neutral-100)
                                    :default    {:background-color :transparent
@@ -120,9 +127,15 @@
                                                 :border-width     1
                                                 :opacity          0.3}}}
            :theme/dark  {:grey    {:icon-color (colors/get-color :color/white-40)
-                                   :default    {:background-color (colors/get-color :color/neutral-80-40)}
-                                   :pressed    {:background-color (colors/get-color :color/neutral-80-50)}
+                                   :default    {:background-color (colors/get-color :color/neutral-80-40)
+                                                :border-color     (colors/get-color :color/white-10)
+                                                :border-width     rn/hairline-width}
+                                   :pressed    {:background-color (colors/get-color :color/neutral-80-50)
+                                                :border-color     (colors/get-color :color/white-20)
+                                                :border-width     rn/hairline-width}
                                    :disabled   {:background-color (colors/get-color :color/neutral-80-40)
+                                                :border-color     (colors/get-color :color/white-10)
+                                                :border-width     rn/hairline-width
                                                 :opacity          0.3}}
                          :outline {:icon-color (colors/get-color :color/white-100)
                                    :default    {:background-color :transparent
@@ -136,9 +149,15 @@
                                                 :border-width     1
                                                 :opacity          0.3}}}}
    :blur  {:theme/light {:grey    {:icon-color (colors/get-color :color/neutral-100)
-                                   :default    {:background-color (colors/get-color :color/neutral-80-5)}
-                                   :pressed    {:background-color (colors/get-color :color/neutral-80-10)}
+                                   :default    {:background-color (colors/get-color :color/neutral-80-5)
+                                                :border-color     (colors/get-color :color/neutral-80-10)
+                                                :border-width     rn/hairline-width}
+                                   :pressed    {:background-color (colors/get-color :color/neutral-80-10)
+                                                :border-color     (colors/get-color :color/neutral-80-20)
+                                                :border-width     rn/hairline-width}
                                    :disabled   {:background-color (colors/get-color :color/neutral-80-5)
+                                                :border-color     (colors/get-color :color/neutral-80-10)
+                                                :border-width     rn/hairline-width
                                                 :opacity          0.3}}
                          :outline {:icon-color (colors/get-color :color/neutral-100)
                                    :default    {:background-color :transparent
@@ -152,9 +171,15 @@
                                                 :border-width     1
                                                 :opacity          0.3}}}
            :theme/dark  {:grey    {:icon-color (colors/get-color :color/white-70)
-                                   :default    {:background-color (colors/get-color :color/white-5)}
-                                   :pressed    {:background-color (colors/get-color :color/white-10)}
+                                   :default    {:background-color (colors/get-color :color/white-5)
+                                                :border-color     (colors/get-color :color/white-10)
+                                                :border-width     rn/hairline-width}
+                                   :pressed    {:background-color (colors/get-color :color/white-10)
+                                                :border-color     (colors/get-color :color/white-20)
+                                                :border-width     rn/hairline-width}
                                    :disabled   {:background-color (colors/get-color :color/white-5)
+                                                :border-color     (colors/get-color :color/white-10)
+                                                :border-width     rn/hairline-width
                                                 :opacity          0.3}}
                          :outline {:icon-color (colors/get-color :color/white-70)
                                    :default    {:background-color :transparent

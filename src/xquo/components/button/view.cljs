@@ -43,6 +43,7 @@
   - `props` map
     - `:type` one of `:primary`, `:positive`, `:grey`, `:dark-grey`, `:outline`,
       `:ghost`, `:danger` (default `:primary`)
+    - `:color` optional color token used by `:primary`; falls back to context color
     - `:size` one of `40`, `32`, `24` (default `40`)
     - `:background` one of `:none`, `:photo`, `:blur` (default `:none`)
     - `:icons` optional map `{:left :icon/... :right :icon/...}`
@@ -63,7 +64,7 @@
     - `{:right ...}` right icon
     - `{:left ... :right ...}` both sides
     - no icons -> content only."
-  [{:keys               [type size background disabled? on-press-in on-press-out icon-color container-style] ;; TODO: horrendous API: container-=style shouldn't be used, as well as icon-color
+  [{:keys               [color type size background disabled? on-press-in on-press-out icon-color container-style] ;; TODO: horrendous API: container-=style shouldn't be used, as well as icon-color
     {left-icon  :left
      right-icon :right} :icons
     :or                 {type       :primary
@@ -72,7 +73,7 @@
     :as                 props}
    content]
   (let [theme         (context/use-theme)
-        color         (context/use-color)
+        resolved-color (or color (context/use-color))
         icon-only?    (and (nil? content) (or left-icon right-icon))
         layout        (layout-type icon-only? left-icon right-icon)
         [pressed? set-pressed!] (rn/use-state false)
@@ -98,7 +99,7 @@
                                        style/pressable-base-style
                                        (style/container-layout-style size layout)
                                        (style/icon-only-shape-style layout type)
-                                       (style/pressable-type-style theme type background color disabled? pressed?)
+                                       (style/pressable-type-style theme type background resolved-color disabled? pressed?)
                                        (:style props))
                                :on-press-in on-press-in!
                                :on-press-out on-press-out!))
