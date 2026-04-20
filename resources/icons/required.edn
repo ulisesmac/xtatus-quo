@@ -24,6 +24,7 @@
   :icon/hide-20
   :icon/info-12
   :icon/info-16
+  :icon/info-20
   :icon/keycard-card-20
   :icon/light-20
   :icon/loading-20
@@ -34,6 +35,7 @@
   :icon/reveal-20
   :icon/unread-20
   :icon/warning-16
+  :icon/warning-20
   :icon/collapse-20
   :icon/bridge-16
   :icon/bridge-20

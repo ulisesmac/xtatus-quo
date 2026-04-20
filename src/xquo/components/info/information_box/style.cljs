@@ -75,10 +75,13 @@
     {:background-color (colors/get-color :color/neutral 5)
      :border-color     (colors/get-color :color/neutral 20)}))
 
-(defn leading-icon-style [close-button title button]
+(defn leading-icon-style [close-button title button use-15-font?]
   (cond
     (and close-button title)
     {:padding-top 5}
+
+    (and title use-15-font?)
+    {:padding-top 1}
 
     close-button
     (if button
