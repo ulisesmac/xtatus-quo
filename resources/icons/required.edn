@@ -9,6 +9,7 @@
   :icon/browser-16
   :icon/browser-20
   :icon/bridge-12
+  :icon/bullet-20
   :icon/check-20
   :icon/chevron-right-20
   :icon/clear-20
@@ -20,6 +21,7 @@
   :icon/dropdown-20
   :icon/edit-12
   :icon/email-20
+  :icon/external-12
   :icon/expand-20
   :icon/hide-20
   :icon/info-12
@@ -31,6 +33,8 @@
   :icon/locked-20
   :icon/placeholder-12
   :icon/placeholder-20
+  :icon/negative-state-20
+  :icon/positive-state-20
   :icon/flag-12
   :icon/reveal-20
   :icon/unread-20

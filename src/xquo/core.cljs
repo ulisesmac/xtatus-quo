@@ -1,5 +1,5 @@
 (ns ^:dev/always xquo.core
-  (:refer-clojure :exclude [filter])
+  (:refer-clojure :exclude [filter list])
   (:require [xquo.components.button.view]
             [xquo.components.counter.view]
             [xquo.components.empty-state.view]
@@ -15,6 +15,7 @@
             [xquo.components.info.info-message.view]
             [xquo.components.info.information-box.view]
             [xquo.components.input.view]
+            [xquo.components.list.view]
             [xquo.components.list-items.result-list.view]
             [xquo.components.page-nav.view]
             [xquo.components.settings.category.view]
@@ -45,6 +46,7 @@
 (def info-message xquo.components.info.info-message.view/info-message)
 (def information-box xquo.components.info.information-box.view/information-box)
 (def input xquo.components.input.view/input)
+(def list xquo.components.list.view/view)
 (def result-list xquo.components.list-items.result-list.view/result-list)
 (def page-nav xquo.components.page-nav.view/page-nav)
 (def page-nav-left-action xquo.components.page-nav.view/nav-left-action)
