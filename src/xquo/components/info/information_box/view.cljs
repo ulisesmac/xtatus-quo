@@ -46,7 +46,7 @@
 (defn- button-view [{{:keys [label] :as button} :button}]
   [button/button (-> button
                      (dissoc :label)
-                     (assoc :size 24
+                     (assoc :size 32
                             :type (:type button :primary)))
    label])
 
