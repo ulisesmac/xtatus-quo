@@ -18,6 +18,7 @@
             [xquo.components.list.view]
             [xquo.components.list-items.result-list.view]
             [xquo.components.page-nav.view]
+            [xquo.components.page-top.view]
             [xquo.components.settings.category.view]
             [xquo.components.settings.item.view]
             [xquo.components.settings.section-label.view]
@@ -51,6 +52,7 @@
 (def page-nav xquo.components.page-nav.view/page-nav)
 (def page-nav-left-action xquo.components.page-nav.view/nav-left-action)
 (def page-nav-title xquo.components.page-nav.view/nav-title)
+(def page-top xquo.components.page-top.view/page-top)
 (def category xquo.components.settings.category.view/category)
 (def settings-item xquo.components.settings.item.view/settings-item)
 (def section-label xquo.components.settings.section-label.view/section-label)

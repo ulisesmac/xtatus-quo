@@ -59,7 +59,7 @@
 (defstyle container-base
   {:height             56
    :width              "100%"
-   :padding-horizontal 12
+   :padding-horizontal 20
    :flex-direction     :row
    :align-items        :center})
 
