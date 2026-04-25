@@ -15,6 +15,9 @@
    :overflow      :hidden
    :border-radius (:border/card-section borders/border-radius-values)})
 
+(defstyle item-container-in-surface
+  {:border-radius 0})
+
 (defstyle divider-base
   {:height     1
    :align-self :stretch})

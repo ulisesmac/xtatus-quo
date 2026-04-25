@@ -38,5 +38,8 @@
                  (when (pos? index)
                    [:rn/view {:style [style/divider-base
                                       (style/divider-color-style theme blur?)]}])
-                 [settings-item/settings-item (assoc item :blur? blur?)]]))
+                 [settings-item/settings-item (-> item
+                                                  (assoc :blur? blur?)
+                                                  (update :style rec.xf/add-styles
+                                                          style/item-container-in-surface))]]))
              items))]))

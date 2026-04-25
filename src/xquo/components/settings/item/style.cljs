@@ -5,7 +5,8 @@
             [xquo.foundations.colors :as colors]))
 
 (defstyle container-base
-  {:border-radius (:border/sizes-40-56 borders/border-radius-values)})
+  {:overflow      :hidden
+   :border-radius (:border/sizes-40-56 borders/border-radius-values)})
 
 (defstyle gap-12
   {:gap 12})
@@ -67,12 +68,11 @@
    :align-items    :center})
 
 (defstyle overlay-base
-  {:position      :absolute
-   :top           0
-   :right         0
-   :bottom        0
-   :left          0
-   :border-radius (:border/sizes-40-56 borders/border-radius-values)})
+  {:position :absolute
+   :top      0
+   :right    0
+   :bottom   0
+   :left     0})
 
 (defstyle row-body-base
   {:flex           1
