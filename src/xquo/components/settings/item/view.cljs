@@ -15,13 +15,13 @@
               :style           {:color (style/title-color theme)}}
    title])
 
-(defn- description-view [{:keys [theme blur? description]}]
+(defn- description-view [{:keys [theme blur? pressed? description]}]
   (let [{description-text :text
          description-icon :icon
          status-color     :status-color
          status-text      :status-text} description
         description-type (:type description)
-        text-color       (style/secondary-text-color theme blur?)]
+        text-color       (style/secondary-text-color theme blur? pressed?)]
     (cond
       (= description-type :text)
       [text/text {:font  :font/regular-13
@@ -35,7 +35,7 @@
         (or description-text "This is a description")]
        [icon/icon {:icon  (or description-icon :icon/browser)
                    :size  16
-                   :color (style/trailing-icon-color theme blur?)}]]
+                   :color (style/trailing-icon-color theme blur? pressed?)}]]
 
       (= description-type :status)
       [:rn/view {:style style/status-row}
@@ -53,7 +53,7 @@
       (= tag-type :positive) [:rn/view {:style style/tag-placeholder}]
       (= tag-type :context) [:rn/view {:style style/tag-placeholder}])))
 
-(defn- leading-view [{:keys [theme blur? image]}]
+(defn- leading-view [{:keys [theme blur? pressed? image]}]
   (let [image-type (or (:type image) :icon)
         image-icon (:icon image)
         image-color (:color image)]
@@ -61,7 +61,7 @@
       (= image-type :icon)
       [icon/icon {:icon  (or image-icon :icon/browser)
                   :size  20
-                  :color (or image-color (style/leading-icon-color theme blur?))}]
+                  :color (or image-color (style/leading-icon-color theme blur? pressed?))}]
 
       (= image-type :image)
       [:rn/view {:style style/image-placeholder}]
@@ -69,7 +69,7 @@
       (= image-type :avatar)
       [:rn/view {:style style/avatar-placeholder}])))
 
-(defn- label-view [{:keys [theme blur? label]}]
+(defn- label-view [{:keys [theme blur? pressed? label]}]
   (let [{label-text  :text
          label-color :color
          label-value :counter
@@ -80,7 +80,7 @@
       [text/text {:font            :font/regular-15
                   :number-of-lines 1
                   :style           [style/label-text
-                                    {:color (style/secondary-text-color theme blur?)}]}
+                                    {:color (style/secondary-text-color theme blur? pressed?)}]}
        (or label-text "Label")]
 
       (= label-type :color)
@@ -94,9 +94,9 @@
       (= label-type :icon)
       [icon/icon {:icon  (or label-icon :icon/placeholder)
                   :size  20
-                  :color (style/trailing-icon-color theme blur?)}])))
+                  :color (style/trailing-icon-color theme blur? pressed?)}])))
 
-(defn- action-view [{:keys [theme blur? action selector-selected?]}]
+(defn- action-view [{:keys [theme blur? pressed? action selector-selected?]}]
   (let [{action-type        :type
          action-on-press    :on-press
          action-button-text :button-text
@@ -105,7 +105,7 @@
       (= action-type :arrow)
       [icon/icon {:icon  :icon/chevron-right
                   :size  20
-                  :color (style/trailing-icon-color theme blur?)}]
+                  :color (style/trailing-icon-color theme blur? pressed?)}]
 
       (= action-type :selector)
       [:rn/view {:pointer-events :none}
@@ -125,9 +125,11 @@
         action-type  (get-in right [:action :type])
         label-node   (label-view {:theme theme
                                   :blur? blur?
+                                  :pressed? pressed?
                                   :label (:label right)})
         action-node  (action-view {:theme              theme
                                    :blur?              blur?
+                                   :pressed?           pressed?
                                    :action             (:action right)
                                    :selector-selected? selector-selected?})
         cluster-node (when (or label-node action-node)
@@ -151,7 +153,7 @@
       cluster-node
       cluster-node)))
 
-(defn- content-view [{:keys [theme blur? title description tag]}]
+(defn- content-view [{:keys [theme blur? pressed? title description tag]}]
   (let [description-type     (:type description)
         tag-type             (:type tag)
         description-visible? (or (= description-type :text)
@@ -173,6 +175,7 @@
                      :title title}]
         [description-view {:theme       theme
                            :blur?       blur?
+                           :pressed?    pressed?
                            :description description}]]
        [tag-view {:tag tag}]])))
 
@@ -225,6 +228,8 @@
                                (:selected? action)
                                internal-selector-selected?)
         [pressed? set-pressed!] (rn/use-state false)
+        pressed-now?            (and pressed?
+                                     (not item-disabled?))
         image-type           (or (:type image) :icon)
         description-type     (:type description)
         tag-type             (:type tag)
@@ -278,23 +283,29 @@
                                               description-visible?
                                               tag-visible?)
                                              (:style props))))
-     [:animated/view {:style [(when-not button-action?
-                                (if pressed?
-                                  style/row-pressed-state-style
-                                  style/row-default-state-style))
-                              style/content-row-base]}
-      [:rn/view {:style [style/row-body-base
-                         (if (= image-type :none) style/gap-0 style/gap-12)]}
+     [:animated/view {:pointer-events :none
+                      :style          [style/overlay-base
+                                       (style/pressed-overlay-color-style theme blur?)
+                                       (style/pressed-overlay-state-style pressed-now?)]}]
+     [:rn/view {:style style/content-row-base}
+      [:animated/view {:style [(when-not button-action?
+                                 (if pressed-now?
+                                   style/row-body-pressed-state-style
+                                   style/row-body-default-state-style))
+                               style/row-body-base
+                               (if (= image-type :none) style/gap-0 style/gap-12)]}
        [leading-view {:theme theme
                       :blur? blur?
+                      :pressed? pressed-now?
                       :image image}]
        [content-view {:theme       theme
                       :blur?       blur?
+                      :pressed?    pressed-now?
                       :title       title
                       :description description
                       :tag         tag}]]
       [right-view {:theme              theme
                    :blur?              blur?
                    :right              right
-                   :pressed?           pressed?
+                   :pressed?           pressed-now?
                    :selector-selected? selector-selected?}]]]))

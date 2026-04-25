@@ -1,5 +1,5 @@
 (ns xquo.components.settings.item.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
             [xquo.foundations.animations :as animations]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
@@ -66,6 +66,14 @@
    :flex-direction :row
    :align-items    :center})
 
+(defstyle overlay-base
+  {:position      :absolute
+   :top           0
+   :right         0
+   :bottom        0
+   :left          0
+   :border-radius (:border/sizes-40-56 borders/border-radius-values)})
+
 (defstyle row-body-base
   {:flex           1
    :min-width      0
@@ -119,6 +127,18 @@
 (defstyle row-pressed-state-style
   {:transform                  [{:scale       (:pressed-scale animations/press-feedback)}
                                 {:translate-y (:pressed-translate-y animations/press-feedback)}]
+   :transition-property        (:transition-property animations/press-feedback)
+   :transition-duration        (:pressed-duration animations/press-feedback)
+   :transition-timing-function (:pressed-timing-function animations/press-feedback)})
+
+(defstyle row-body-default-state-style
+  {:transform                  [{:translate-y (:default-translate-y animations/press-feedback)}]
+   :transition-property        (:transition-property animations/press-feedback)
+   :transition-duration        (:default-duration animations/press-feedback)
+   :transition-timing-function (:default-timing-function animations/press-feedback)})
+
+(defstyle row-body-pressed-state-style
+  {:transform                  [{:translate-y (:pressed-translate-y animations/press-feedback)}]
    :transition-property        (:transition-property animations/press-feedback)
    :transition-duration        (:pressed-duration animations/press-feedback)
    :transition-timing-function (:pressed-timing-function animations/press-feedback)})
@@ -187,20 +207,50 @@
     (colors/get-color :color/white-100)
     (colors/get-color :color/neutral-100)))
 
-(defn secondary-text-color [theme blur?]
-  (cond
-    (and (dark-theme? theme) blur?) (colors/get-color :color/white-40)
-    (dark-theme? theme)             (colors/get-color :color/neutral-40)
-    :else                           (colors/get-color :color/neutral-50)))
+(defn pressed-overlay-color-style [theme blur?]
+  (style {:background-color (cond
+                              (and (dark-theme? theme) blur?)
+                              (colors/get-color :color/white-10)
 
-(defn leading-icon-color [theme blur?]
-  (cond
-    (and (dark-theme? theme) blur?) (colors/get-color :color/white-70)
-    (dark-theme? theme)             (colors/get-color :color/neutral-40)
-    :else                           (colors/get-color :color/neutral-50)))
+                              blur?
+                              (colors/get-color :color/neutral-80-10)
 
-(defn trailing-icon-color [theme blur?]
-  (secondary-text-color theme blur?))
+                              (dark-theme? theme)
+                              (colors/get-color :color/white-5)
+
+                              :else
+                              (colors/get-color :color/neutral-80-5))}))
+
+(defn pressed-overlay-state-style [pressed?]
+  (style {:opacity                    (if pressed? 1 0)
+          :transition-property        "opacity"
+          :transition-duration        (if pressed?
+                                       (:pressed-duration animations/press-feedback)
+                                       (:default-duration animations/press-feedback))
+          :transition-timing-function (if pressed?
+                                       (:pressed-timing-function animations/press-feedback)
+                                       (:default-timing-function animations/press-feedback))}))
+
+(defn secondary-text-color [theme blur? pressed?]
+  (cond
+    (and (dark-theme? theme) blur? pressed?) (colors/get-color :color/white-70)
+    (and (dark-theme? theme) blur?)          (colors/get-color :color/white-40)
+    (and (dark-theme? theme) pressed?)       (colors/get-color :color/neutral-20)
+    (dark-theme? theme)                      (colors/get-color :color/neutral-40)
+    pressed?                                 (colors/get-color :color/neutral-70)
+    :else                                    (colors/get-color :color/neutral-50)))
+
+(defn leading-icon-color [theme blur? pressed?]
+  (cond
+    (and (dark-theme? theme) blur? pressed?) (colors/get-color :color/white-100)
+    (and (dark-theme? theme) blur?)          (colors/get-color :color/white-70)
+    (and (dark-theme? theme) pressed?)       (colors/get-color :color/white-70)
+    (dark-theme? theme)                      (colors/get-color :color/neutral-40)
+    pressed?                                 (colors/get-color :color/neutral-100)
+    :else                                    (colors/get-color :color/neutral-50)))
+
+(defn trailing-icon-color [theme blur? pressed?]
+  (secondary-text-color theme blur? pressed?))
 
 (defn status-dot-color [theme status-color]
   (if (dark-theme? theme)
