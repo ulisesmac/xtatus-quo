@@ -13,18 +13,17 @@
     - `:counter` optional right-side value (for example `\"00/00\"`)
     - `:description` optional second line. When present, the component uses
       the description variant and ignores `:counter`.
-    - `:background` one of `:none`, `:blur` (default `:none`)
+    - `:blur?` optional boolean for blur styling
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`."
-  [{:keys [label counter description background]
-    :or   {label      "Account"
-           background :none}
+  [{:keys [label counter description blur?]
+    :or   {label "Account"}
     :as   props}]
   (let [theme         (context/use-theme)
         counter?      (and (not description) counter)
-        label-color   (style/label-color theme background)]
+        label-color   (style/label-color theme blur?)]
     [:rn/view (-> props
-                  (dissoc :label :counter :description :background :style)
+                  (dissoc :label :counter :description :blur? :style)
                   (assoc :style (rec.xf/add-styles
                                  (if description style/description-base style/row-base)
                                  (when counter? style/row-gap-12)
@@ -41,5 +40,5 @@
 
        counter?
        [text/text {:font  :font/regular-13
-                   :style [style/counter-value (style/counter-color theme background)]}
+                   :style [style/counter-value (style/counter-color theme blur?)]}
         (str counter)])]))

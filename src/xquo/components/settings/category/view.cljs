@@ -10,34 +10,33 @@
 
   API:
   - `props` map
-    - `:label` section label text (default `\"Label\"`)
+    - `:label` optional section label text
     - `:items` vector of `settings-item` prop maps
-    - `:background` one of `:none`, `:blur` (default `:none`)
+    - `:blur?` optional boolean for blur styling
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`.
 
   This component currently implements only the Figma `List type=Settings`
   variant."
-  [{:keys [label items background]
-    :or   {label      "Label"
-           background :none}
+  [{:keys [label items blur?]
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
-                  (dissoc :label :items :background :style)
+                  (dissoc :label :items :blur? :style)
                   (assoc :style (rec.xf/add-styles
                                  style/container-base
                                  (:style props))))
-     [section-label/section-label {:label      label
-                                   :background background}]
+     (when label
+       [section-label/section-label {:label label
+                                     :blur? blur?}])
      (when (seq items)
        (into [:rn/view {:style [style/surface-base
-                                (style/surface-color-style theme background)]}]
+                                (style/surface-color-style theme blur?)]}]
              (map-indexed
               (fn [index item]
                 [:<>
                  (when (pos? index)
                    [:rn/view {:style [style/divider-base
-                                      (style/divider-color-style theme background)]}])
-                 [settings-item/settings-item (assoc item :background background)]]))
+                                      (style/divider-color-style theme blur?)]}])
+                 [settings-item/settings-item (assoc item :blur? blur?)]]))
              items))]))

@@ -19,10 +19,10 @@
   {:height     1
    :align-self :stretch})
 
-(defn surface-color-style [theme background]
+(defn surface-color-style [theme blur?]
   (cond
     (and (= theme :theme/dark)
-         (= background :blur))
+         blur?)
     {:background-color (colors/get-color :color/white-5)}
 
     (= theme :theme/dark)
@@ -35,10 +35,10 @@
      :border-width     1
      :border-color     (colors/get-color :color/neutral-10)}))
 
-(defn divider-color-style [theme background]
+(defn divider-color-style [theme blur?]
   {:background-color (cond
                        (and (= theme :theme/dark)
-                            (= background :blur))
+                            blur?)
                        (colors/get-color :color/white-5)
 
                        (= theme :theme/dark)

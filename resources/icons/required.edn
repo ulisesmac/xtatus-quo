@@ -9,6 +9,7 @@
   :icon/browser-12
   :icon/browser-16
   :icon/browser-20
+  :icon/book-20
   :icon/bridge-12
   :icon/bullet-20
   :icon/check-20
@@ -17,6 +18,8 @@
   :icon/close-12
   :icon/close-20
   :icon/color-pick-20
+  :icon/confetti-dark-20
+  :icon/dark-16
   :icon/dark-20
   :icon/dropdown-12
   :icon/dropdown-20
@@ -30,13 +33,16 @@
   :icon/info-20
   :icon/insights-20
   :icon/keycard-card-20
+  :icon/light-16
   :icon/light-20
   :icon/loading-20
   :icon/locked-20
+  :icon/mobile-16
   :icon/placeholder-12
   :icon/placeholder-20
   :icon/negative-state-20
   :icon/positive-state-20
+  :icon/puzzle-20
   :icon/flag-12
   :icon/reveal-20
   :icon/unread-20

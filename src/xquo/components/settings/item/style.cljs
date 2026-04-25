@@ -161,9 +161,6 @@
 (defn- dark-theme? [theme]
   (= theme :theme/dark))
 
-(defn- blur-background? [background]
-  (= background :blur))
-
 (defn container-padding-style [image-type description-visible? tag-visible?]
   (cond
     tag-visible?
@@ -190,20 +187,20 @@
     (colors/get-color :color/white-100)
     (colors/get-color :color/neutral-100)))
 
-(defn secondary-text-color [theme background]
+(defn secondary-text-color [theme blur?]
   (cond
-    (and (dark-theme? theme) (blur-background? background)) (colors/get-color :color/white-40)
-    (dark-theme? theme)                                     (colors/get-color :color/neutral-40)
-    :else                                                   (colors/get-color :color/neutral-50)))
+    (and (dark-theme? theme) blur?) (colors/get-color :color/white-40)
+    (dark-theme? theme)             (colors/get-color :color/neutral-40)
+    :else                           (colors/get-color :color/neutral-50)))
 
-(defn leading-icon-color [theme background]
+(defn leading-icon-color [theme blur?]
   (cond
-    (and (dark-theme? theme) (blur-background? background)) (colors/get-color :color/white-70)
-    (dark-theme? theme)                                     (colors/get-color :color/neutral-40)
-    :else                                                   (colors/get-color :color/neutral-50)))
+    (and (dark-theme? theme) blur?) (colors/get-color :color/white-70)
+    (dark-theme? theme)             (colors/get-color :color/neutral-40)
+    :else                           (colors/get-color :color/neutral-50)))
 
-(defn trailing-icon-color [theme background]
-  (secondary-text-color theme background))
+(defn trailing-icon-color [theme blur?]
+  (secondary-text-color theme blur?))
 
 (defn status-dot-color [theme status-color]
   (if (dark-theme? theme)

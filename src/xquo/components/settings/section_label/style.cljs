@@ -24,14 +24,14 @@
 (defstyle description-line
   {:align-self :stretch})
 
-(defn label-color [theme background]
+(defn label-color [theme blur?]
   {:color (cond
-            (and (= theme :theme/dark) (= background :blur)) (colors/get-color :color/white-40)
-            (= theme :theme/dark)                            (colors/get-color :color/neutral-40)
-            :else                                            (colors/get-color :color/neutral-50))})
+            (and (= theme :theme/dark) blur?) (colors/get-color :color/white-40)
+            (= theme :theme/dark)             (colors/get-color :color/neutral-40)
+            :else                             (colors/get-color :color/neutral-50))})
 
-(defn counter-color [theme background]
+(defn counter-color [theme blur?]
   {:color (cond
-            (and (= theme :theme/dark) (= background :blur)) (colors/get-color :color/white-40)
-            (= theme :theme/dark)                            (colors/get-color :color/neutral-30)
-            :else                                            (colors/get-color :color/neutral-40))})
+            (and (= theme :theme/dark) blur?) (colors/get-color :color/white-40)
+            (= theme :theme/dark)             (colors/get-color :color/neutral-30)
+            :else                             (colors/get-color :color/neutral-40))})
