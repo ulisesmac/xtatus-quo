@@ -14,11 +14,7 @@
     :neutral-95  (colors/get-color :color/neutral-95)
     :neutral-100 (colors/get-color :color/neutral-100)
     :photo       :transparent
-    ;; Blur is not consistently supported across RN targets, so this tokenized
-    ;; fallback keeps the same API without platform blur dependency.
-    :blur        (if (= theme :theme/dark)
-                   (colors/get-color :color/neutral-95-70)
-                   (colors/get-color :color/white-70))
+    :blur        :transparent
     (if (= theme :theme/dark)
       (colors/get-color :color/neutral-95)
       (colors/get-color :color/white-100))))
@@ -49,9 +45,11 @@
                                 (colors/get-color :color/neutral-10))})))
 
 (defn action-button-type [theme background]
-  (if (or (= theme :theme/dark) (dark-background? background))
-    :dark-grey
-    :grey))
+  (if (#{:photo :blur} background)
+    :grey
+    (if (or (= theme :theme/dark) (dark-background? background))
+      :dark-grey
+      :grey)))
 
 (defn nav-surface-style [theme background]
   (style {:background-color (nav-surface-color theme background)}))
