@@ -66,11 +66,11 @@
   [:rn/view {:style style/subcontent-slot}
    subcontent])
 
-(defn- description-view [{:keys [theme background description leading description-icon]}]
+(defn- description-view [{:keys [theme blur? description leading description-icon]}]
   [:rn/view {:style style/description-row}
    (into [text/text {:font            (if leading :font/monospace-13 :font/regular-15)
                      :number-of-lines 1
-                     :style           (style/secondary-text-style theme background)}]
+                     :style           (style/secondary-text-style theme blur?)}]
          (map (fn [segment]
                 [:rn/text {:style (style/description-segment-style (:color segment))}
                  (:text segment)]))
@@ -78,19 +78,19 @@
    (when description-icon
      [icon/icon {:icon  description-icon
                  :size  20
-                 :color (style/icon-color theme background)
+                 :color (style/icon-color theme blur?)
                  :style style/description-icon-scale}])])
 
-(defn- title-inline-view [{:keys [theme background title title-icon]}]
+(defn- title-inline-view [{:keys [theme blur? title title-icon]}]
   [:rn/view {:style style/title-inline-row}
    [title-view {:theme theme
                 :title title}]
    (when title-icon
      [icon/icon {:icon  title-icon
                  :size  20
-                 :color (style/icon-color theme background)}])])
+                 :color (style/icon-color theme blur?)}])])
 
-(defn- trailing-view [{:keys [theme background info? counter button]}]
+(defn- trailing-view [{:keys [theme blur? info? counter button]}]
   (cond
     button
     (let [button-type  (or (:type button) :primary)
@@ -108,16 +108,16 @@
     info?
     [icon/icon {:icon  :icon/info
                 :size  20
-                :color (style/icon-color theme background)}]
+                :color (style/icon-color theme blur?)}]
 
     counter
     [text/text {:font            :font/regular-13
                 :number-of-lines 1
                 :style           [style/counter-text
-                                  (style/counter-text-style theme background)]}
+                                  (style/counter-text-style theme blur?)]}
      counter]))
 
-(defn- counter-row-view [{:keys [theme background title counter]}]
+(defn- counter-row-view [{:keys [theme blur? title counter]}]
   [:rn/view {:style [style/title-row
                      style/title-row-baseline
                      style/title-row-gap-12]}
@@ -127,10 +127,10 @@
    [text/text {:font            :font/regular-13
                :number-of-lines 1
                :style           [style/counter-text
-                                 (style/counter-text-style theme background)]}
+                                 (style/counter-text-style theme blur?)]}
     counter]])
 
-(defn- plain-row-view [{:keys [theme background title title-icon info? button]}]
+(defn- plain-row-view [{:keys [theme blur? title title-icon info? button]}]
   [:rn/view {:style [style/title-row
                      style/title-row-center
                      (cond
@@ -138,16 +138,16 @@
                        info?        style/title-row-gap-12)]}
    [:rn/view {:style style/title-slot}
     [title-inline-view {:theme      theme
-                        :background background
+                        :blur?      blur?
                         :title      title
                         :title-icon title-icon}]]
-   [trailing-view {:theme       theme
-                   :background  background
-                   :info?       info?
-                   :button      button}]])
+   [trailing-view {:theme  theme
+                   :blur?  blur?
+                   :info?  info?
+                   :button button}]])
 
 (defn- leading-content-view
-  [{:keys [theme background title description description-icon title-icon leading subcontent
+  [{:keys [theme blur? title description description-icon title-icon leading subcontent
            compact?]}]
   [:rn/view {:style [style/content-base
                      (if compact?
@@ -157,12 +157,12 @@
     [leading-placeholder-view {:leading leading}]
     [:rn/view {:style style/leading-column}
      [title-inline-view {:theme      theme
-                         :background background
+                         :blur?      blur?
                          :title      title
                          :title-icon title-icon}]
      (when description
        [description-view {:theme            theme
-                          :background       background
+                          :blur?            blur?
                           :description      description
                           :leading          leading
                           :description-icon description-icon}])
@@ -170,7 +170,7 @@
        [subcontent-view {:subcontent subcontent}])]]])
 
 (defn- standard-content-view
-  [{:keys [theme background title description context-tags info? counter button
+  [{:keys [theme blur? title description context-tags info? counter button
            title-icon subcontent compact?]}]
   [:rn/view {:style [style/content-base
                      (if compact?
@@ -179,11 +179,11 @@
                      style/content-column]}
    (if counter
      [counter-row-view {:theme      theme
-                        :background background
+                        :blur?      blur?
                         :title      title
                         :counter    counter}]
      [plain-row-view {:theme       theme
-                      :background  background
+                      :blur?       blur?
                       :title       title
                       :title-icon  title-icon
                       :info?       info?
@@ -197,7 +197,7 @@
                          style/description-row-slot-with-context
                          style/description-row-slot)}
       [description-view {:theme       theme
-                         :background  background
+                         :blur?       blur?
                          :description description}]])
    (when subcontent
      [subcontent-view {:subcontent subcontent}])])
@@ -226,30 +226,29 @@
     - `:context-tags` optional vector
       - `{:type :placeholder :width n}`
       - `{:type :text :text \"...\"}`
-    - `:background` optional `:blur`
+    - `:blur?` optional boolean for blur styling
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`."
   [{:keys [skip-handle? label compact? title description subcontent counter info? button
-           title-icon description-icon leading context-tags background handle-style]
+           title-icon description-icon leading context-tags blur? handle-style]
     :or   {title "Title"}
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
                   (dissoc :skip-handle? :label :compact? :title :description :subcontent :counter
                           :info? :button :title-icon :description-icon :leading :context-tags
-                          :background :style :handle-style)
+                          :blur? :style :handle-style)
                   (assoc :style (rec.xf/add-styles style/container-base (:style props))))
      [drawer-handle {:skip-handle? skip-handle?
                      :handle-style handle-style}]
      (if label
        [:rn/view {:style [style/content-base style/content-bottom-12 style/content-column]}
-        [section-label/section-label {:label      label
-                                      :background background}]
+        [section-label/section-label {:label label :blur? blur?}]
         (when subcontent
           [subcontent-view {:subcontent subcontent}])]
        (if leading
          [leading-content-view {:theme            theme
-                                :background       background
+                                :blur?            blur?
                                 :title            title
                                 :description      description
                                 :subcontent       subcontent
@@ -258,7 +257,7 @@
                                 :leading          leading
                                 :compact?         compact?}]
          [standard-content-view {:theme       theme
-                                 :background  background
+                                 :blur?       blur?
                                  :title       title
                                  :description description
                                  :subcontent  subcontent

@@ -114,37 +114,35 @@
             (colors/get-color :color/white-100)
             (colors/get-color :color/neutral-100))})
 
-(defn secondary-text-style [theme background]
+(defn secondary-text-style [theme blur?]
   {:color (cond
-            (and (= theme :theme/dark) (= background :blur))
+            (and (= theme :theme/dark) blur?)
             (colors/get-color :color/white-40)
 
             (= theme :theme/dark)
             (colors/get-color :color/neutral-40)
 
-            :else
-            (colors/get-color :color/neutral-50))})
+            :else (colors/get-color :color/neutral-50))})
 
-(defn counter-text-style [theme background]
+(defn counter-text-style [theme blur?]
   {:color (cond
-            (and (= theme :theme/dark) (= background :blur))
+            (and (= theme :theme/dark) blur?)
             (colors/get-color :color/white-40)
 
             (= theme :theme/dark)
             (colors/get-color :color/neutral-50)
 
-            :else
-            (colors/get-color :color/neutral-40))})
+            :else (colors/get-color :color/neutral-40))})
 
 (defn primary-button-style [theme color]
   (when (= theme :theme/dark)
     {:background-color (colors/get-color color 60)}))
 
-(defn icon-color [theme background]
+(defn icon-color [theme blur?]
   (cond
-    (and (= theme :theme/dark) (= background :blur)) (colors/get-color :color/white-40)
-    (= theme :theme/dark) (colors/get-color :color/neutral-40)
-    :else (colors/get-color :color/neutral-50)))
+    (and (= theme :theme/dark) blur?) (colors/get-color :color/white-40)
+    (= theme :theme/dark)             (colors/get-color :color/neutral-40)
+    :else                             (colors/get-color :color/neutral-50)))
 
 (defn leading-placeholder-style []
   {:background-color (colors/get-color :color/danger-50)
