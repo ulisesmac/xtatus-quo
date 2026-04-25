@@ -2,6 +2,7 @@
   :icon/advanced-20
   :icon/alert-16
   :icon/alert-20
+  :icon/android-20
   :icon/arrow-down-12
   :icon/arrow-left-20
   :icon/chevron-left-20
@@ -26,6 +27,7 @@
   :icon/edit-12
   :icon/email-20
   :icon/external-12
+  :icon/external-20
   :icon/expand-20
   :icon/hide-20
   :icon/info-12
@@ -38,6 +40,7 @@
   :icon/loading-20
   :icon/locked-20
   :icon/mobile-16
+  :icon/mobile-20
   :icon/placeholder-12
   :icon/placeholder-20
   :icon/negative-state-20
