@@ -58,9 +58,10 @@
        [:rn/text {:style (style/emoji-style size)}
         emoji])]))
 
-(defn- icon-node [{:keys [color icon scale size]}]
+(defn- icon-node [{:keys [color scale size]
+                   icon-name :name}]
   [icon/icon {:style (style/scaled-icon scale)
-              :icon  icon
+              :name  icon-name
               :size  size
               :color color}])
 
@@ -101,13 +102,14 @@
            [{:kind :number}]))))
 
 (defn- multi-leading-view
-  [{:keys [blur? dark-theme? icon image-sources number number-position shape size]}]
+  [{:keys [blur? dark-theme? image-sources number number-position shape size]
+    icon-name :name}]
   (let [content-style (style/multi-content-style dark-theme? blur?)
         stack-items   (multi-stack-items image-sources number number-position)]
     [:<>
-     (when icon
+     (when icon-name
        [icon-node {:color (:color content-style)
-                   :icon  icon
+                   :name  icon-name
                    :scale 1
                    :size  (get multi-icon-size size)}])
      (into [:rn/view {:style style/multi-stack-row}]
@@ -131,14 +133,15 @@
            stack-items)]))
 
 (defn- leading-view
-  [{:keys [blur? color dark-theme? emoji icon image-source image-sources number number-position
-           selected? shape size type]}]
+  [{:keys [blur? color dark-theme? emoji image-source image-sources number number-position
+           selected? shape size type]
+    icon-name :name}]
   (let [secondary-text-style (style/secondary-text-style dark-theme? blur?)]
     (cond
       (= type :multi)
       [multi-leading-view {:blur?           blur?
                            :dark-theme?     dark-theme?
-                           :icon            icon
+                           :name            icon-name
                            :image-sources   image-sources
                            :number          number
                            :number-position number-position
@@ -161,25 +164,25 @@
                    :size         size
                    :type         type}]
 
-      (and (= type :group) icon)
+      (and (= type :group) icon-name)
       [:rn/view {:style (style/filled-icon-surface size color)}
        [icon-node {:color (if (= size 24)
                             (colors/get-color :color/white-70)
                             (colors/get-color :color/white-100))
-                   :icon  icon
+                   :name  icon-name
                    :scale (get filled-icon-scale size)
                    :size  (get filled-icon-size size)}]]
 
-      (and (= type :audio) icon)
+      (and (= type :audio) icon-name)
       [:rn/view {:style (style/filled-icon-surface size color)}
        [icon-node {:color (colors/get-color :color/white-100)
-                   :icon  icon
+                   :name  icon-name
                    :scale (get filled-icon-scale size)
                    :size  (get filled-icon-size size)}]]
 
-      (and (= type :icon) icon)
+      (and (= type :icon) icon-name)
       [icon-node {:color (:color secondary-text-style)
-                  :icon  icon
+                  :name  icon-name
                   :scale 1
                   :size  (get inline-icon-size size)}])))
 
@@ -197,7 +200,7 @@
        label)
      (when suffix
        [icon/icon {:style (style/scaled-icon (get chevron-icon-scale size))
-                   :icon  :icon/chevron-right
+                   :name  :icon/chevron-right
                    :size  20
                    :color (:color secondary-text-style)}])
      (when suffix
@@ -210,9 +213,10 @@
          suffix))]))
 
 (defn- context-tag-body
-  [{:keys [blur? color dark-theme? emoji icon image-source image-sources number number-position
+  [{:keys [blur? color dark-theme? emoji image-source image-sources number number-position
            on-press-in! on-press-out! pressed? pressable? root-props root-style selected-border-style
-           selected? shape size suffix type]}
+           selected? shape size suffix type]
+    icon-name :name}
    label]
   (let [root-component (if pressable? :rn/pressable :rn/view)
         root-props     (cond-> (assoc root-props :style root-style)
@@ -232,7 +236,7 @@
                      :color           color
                      :dark-theme?     dark-theme?
                      :emoji           emoji
-                     :icon            icon
+                     :name            icon-name
                      :image-source    image-source
                      :image-sources   image-sources
                      :number          number
@@ -267,7 +271,7 @@
                 when present, `:number-position` places the count slot at the start or end
     - `:number-position` one of `:start` or `:end` for the `:multi` count slot (default `:end`)
     - `:emoji` optional emoji fallback for `:image` with `:shape :squircle`
-    - `:icon` icon keyword for `:group`, `:icon`, `:audio`, and `:multi`
+    - `:name` icon keyword for `:group`, `:icon`, `:audio`, and `:multi`
     - `:suffix` optional trailing string or renderable node; when a string is
                 provided it is rendered with the built-in text styling, and
                 when present a chevron is inserted automatically between label
@@ -278,8 +282,9 @@
     built-in text styling and non-strings are rendered directly."
   ([props]
    (context-tag props nil))
-  ([{:keys [blur? border color emoji icon image-source image-sources number number-position on-press
+  ([{:keys [blur? border color emoji image-source image-sources number number-position on-press
             on-press-in on-press-out shape size state style suffix type]
+     icon-name :name
      :or   {blur?           false
             number-position :end
             size            24
@@ -309,7 +314,7 @@
                                  (when (and emoji (= type :image))
                                    :squircle)
                                  :circle)
-         root-props          (cond-> (dissoc props :blur? :border :emoji :icon :image-source :image-sources
+         root-props          (cond-> (dissoc props :blur? :border :emoji :name :icon :image-source :image-sources
                                              :color
                                              :number :number-position :on-press-in :on-press-out :shape
                                              :size :state :style :suffix :type)
@@ -320,7 +325,7 @@
                         :color                 resolved-color
                         :dark-theme?           dark-theme?
                         :emoji                 emoji
-                        :icon                  icon
+                        :name                  icon-name
                         :image-source          image-source
                         :image-sources         image-sources
                         :number                number
@@ -332,7 +337,7 @@
                         :root-props            root-props
                         :root-style            (rec.xf/add-styles
                                                 style/root-base
-                                                (style/container size type shape border dark-theme? blur? icon)
+                                                (style/container size type shape border dark-theme? blur? icon-name)
                                                 (when pressable?
                                                   (button.style/pressable-type-style theme :grey nil resolved-color false pressed?))
                                                 (when (and (= border :outline)

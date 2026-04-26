@@ -6,12 +6,13 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]))
 
-(defn- icon-button [{:keys [icon on-press theme background]}]
-  (when icon
+(defn- icon-button [{:keys [on-press theme background]
+                     icon-name :name}]
+  (when icon-name
     [button/button (cond-> {:type       (style/action-button-type theme background)
                             :size       32
                             :background background
-                            :icons      {:left icon}
+                            :icons      {:left icon-name}
                             :icon-color (style/icon-color theme background)}
                      on-press (assoc :on-press on-press))]))
 
@@ -64,7 +65,7 @@
                      [:rn/view {:style (when (pos? index) style/action-gap)}
                       (if (= (:type action) :account-switcher)
                         [account-switcher-placeholder {:on-press (:on-press action)}]
-                        [icon-button {:icon       (:icon action)
+                        [icon-button {:name       (:name action)
                                       :on-press   (:on-press action)
                                       :theme      theme
                                       :background background}])])
@@ -94,7 +95,7 @@
                :number-of-lines 1}
     dropdown-text]
    [:rn/view {:style style/dropdown-chevron}
-    [icon/icon {:icon  :icon/dropdown
+    [icon/icon {:name  :icon/dropdown
                 :size  20
                 :color :no-color}]]])
 
@@ -116,7 +117,7 @@
     channel-name]
    (when channel-icon
      [:rn/view {:style {:margin-left 6}}
-      [icon/icon {:icon  channel-icon
+      [icon/icon {:name  channel-icon
                   :size  12
                   :color (style/icon-color theme background)}]])])
 
@@ -145,7 +146,7 @@
       title]
      (when title-icon
        [:rn/view {:style style/dropdown-chevron}
-        [icon/icon {:icon  title-icon
+        [icon/icon {:name  title-icon
                     :size  12
                     :color (style/icon-color theme background)}]])]
     [text/text {:font            :font/medium-13
@@ -167,7 +168,7 @@
                   network-list)
      [center-dots-placeholder]
      [:rn/view {:style style/dropdown-chevron}
-      [icon/icon {:icon  :icon/dropdown
+      [icon/icon {:name  :icon/dropdown
                   :size  12
                   :color :no-color}]]]))
 
@@ -196,10 +197,11 @@
     :custom                 custom-content
     nil))
 
-(defn nav-left-action [{:keys [icon on-press background]
+(defn nav-left-action [{:keys [on-press background]
+                        icon-name :name
                         :or   {background :white}}]
   (let [theme (context/use-theme)]
-    [icon-button {:icon       icon
+    [icon-button {:name       icon-name
                   :on-press   on-press
                   :theme      theme
                   :background background}]))
@@ -217,9 +219,9 @@
   Props:
   - `:background` one of `:white`, `:neutral-5`, `:neutral-90`, `:neutral-95`,
     `:neutral-100`, `:photo`, `:blur`
-  - `:left` map: `{:icon :icon/arrow-left :on-press fn}`
+  - `:left` map: `{:name :icon/arrow-left :on-press fn}`
   - `:right` nil or vector (up to 3 items)
-    - action item: `{:icon :icon/placeholder :on-press fn}`
+    - action item: `{:name :icon/placeholder :on-press fn}`
     - account switcher placeholder: `{:type :account-switcher :on-press fn}`
   - `:center` map describing center variant and its props
   - `:center-opacity` optional opacity for the center slot
@@ -257,7 +259,7 @@
                                  (style/nav-surface-style theme background)
                                  (:style props))))
      [:rn/view {:style style/side-slot}
-      [icon-button {:icon       (:icon left)
+      [icon-button {:name       (:name left)
                     :on-press   (:on-press left)
                     :theme      theme
                     :background background}]]

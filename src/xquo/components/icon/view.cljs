@@ -1,7 +1,14 @@
 (ns xquo.components.icon.view
-  (:require [xquo.components.icon.icons :as icons]
+  (:require [reagent.core :as r]
+            [xquo.components.icon.icons :as icons]
             [xquo.context :as context]
             [xquo.foundations.colors :as colors]))
+
+(def create-nano-icon-set
+  (.-createNanoIconSet (js/require "../node_modules/react-native-nano-icons/lib/module/index.js")))
+
+(def glyph-map-20 (js/require "../resources/icons/nanoicons/icons20.glyphmap.json"))
+(def icon-20 (r/adapt-react-class (create-nano-icon-set glyph-map-20)))
 
 (defn- image-style [size color]
   (cond-> {:width  size
@@ -60,8 +67,8 @@
                  :fill      color}]]))
 
 (def svg-icons
-  {:icon/clear        clear-svg
-   :icon/check-circle circle-check-svg
+  {:icon/clear                clear-svg
+   :icon/check-circle         circle-check-svg
    :icon/check-circle-outline check-circle-outline-svg})
 
 (defn icon
@@ -69,7 +76,7 @@
 
   API:
   - `props` map
-    - `:icon` icon keyword (default `:icon/placeholder`)
+    - `:name` icon keyword (default `:icon/placeholder`)
     - `:size` icon size in points. This selects the bitmap asset size for
       bundled icons and scales SVG-backed icons (default `20`)
     - `:color` tint color for bitmap icons and primary fill for SVG-backed
@@ -82,14 +89,22 @@
   - SVG-backed icons use `:color` and `:color-2`
   - Any icon keyword present in `svg-icons` is rendered as SVG; all others use
     the bundled image source path."
-  [{:keys [color color-2 icon size style]
-    :or   {icon  :icon/placeholder
-           size  20
-           color :no-color}}]
-  [:rn/view {:style style}
-   (if-let [svg-icon (get svg-icons icon)]
-     [svg-icon {:size    size
-                :color   color
-                :color-2 color-2}]
-     [:rn/image {:source (icons/icon-source (str (name icon) size))
-                 :style  (image-style size color)}])])
+  [{:keys         [color color-2 icon size style]
+    provided-name :name
+    :or           {icon  :icon/placeholder
+                   size  20
+                   color :no-color}}]
+  (let [icon-name (or provided-name icon)]
+    (if (= size 20)
+      [:rn/view {:style style}
+       [icon-20 (cond-> {:name (name icon-name)
+                         :size 20}
+                  (and (some? color)
+                       (not= color :no-color)) (assoc :color color))]]
+      [:rn/view {:style style}
+       (if-let [svg-icon (get svg-icons icon-name)]
+         [svg-icon {:size    size
+                    :color   color
+                    :color-2 color-2}]
+         [:rn/image {:source (icons/icon-source (str (name icon-name) size))
+                     :style  (image-style size color)}])])))

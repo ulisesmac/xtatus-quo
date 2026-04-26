@@ -76,7 +76,7 @@
                  (:text segment)]))
          (description-segments description))
    (when description-icon
-     [icon/icon {:icon  description-icon
+     [icon/icon {:name  description-icon
                  :size  20
                  :color (style/icon-color theme blur?)
                  :style style/description-icon-scale}])])
@@ -86,7 +86,7 @@
    [title-view {:theme theme
                 :title title}]
    (when title-icon
-     [icon/icon {:icon  title-icon
+     [icon/icon {:name  title-icon
                  :size  20
                  :color (style/icon-color theme blur?)}])])
 
@@ -106,7 +106,7 @@
                              (:style button))))])
 
     info?
-    [icon/icon {:icon  :icon/info
+    [icon/icon {:name  :icon/info
                 :size  20
                 :color (style/icon-color theme blur?)}]
 

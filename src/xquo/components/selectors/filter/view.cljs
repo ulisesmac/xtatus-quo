@@ -16,14 +16,15 @@
     - `:selected?` optional boolean (default `false`)
     - `:size` one of `24` or `32` (default `32`)
     - `:background` one of `:none` or `:blur` (default `:none`)
-    - `:icon` optional icon keyword (`:icon/...`)
+    - `:name` optional icon keyword (`:icon/...`)
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/pressable` (for example
       `:on-press`, `:accessibility-label`, `:testID`)
   - `content` optional label. When omitted, the component renders icon-only.
 
   State is externally controlled through `:selected?`."
-  [{:keys [selected? size background icon on-press-in on-press-out]
+  [{:keys [selected? size background on-press-in on-press-out]
+    icon-name :name
     :or   {size       32
            background :none}
     :as   props}
@@ -50,7 +51,7 @@
                               button.style/pressable-pressed-state-style
                               button.style/pressable-default-state-style)}
      [:rn/pressable (-> props
-                        (dissoc :selected? :size :background :icon :style :hit-slop :on-press-in :on-press-out)
+                        (dissoc :selected? :size :background :name :icon :style :hit-slop :on-press-in :on-press-out)
                         (assoc :hit-slop     6
                                :on-press-in  on-press-in!
                                :on-press-out on-press-out!
@@ -60,10 +61,10 @@
                                               (style/surface-color-style theme background selected? color)
                                               (:style props))))
       (if (= size 24)
-        [icon/icon {:icon  (or icon :icon/placeholder)
+        [icon/icon {:name  (or icon-name :icon/placeholder)
                     :size  12
                     :color icon-color}]
-        [icon/icon {:icon  (or icon :icon/unread)
+        [icon/icon {:name  (or icon-name :icon/unread)
                     :size  20
                     :color icon-color}])
       (when text?

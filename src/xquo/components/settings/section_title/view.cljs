@@ -36,6 +36,6 @@
         ;; TODO: replace red placeholder with the real counter component once available.
         [:rn/view {:style style/counter-placeholder}])]
      (when right-icon?
-       [icon/icon {:icon  :icon/info
+       [icon/icon {:name  :icon/info
                    :size  20
                    :color (style/right-icon-color theme)}])]))

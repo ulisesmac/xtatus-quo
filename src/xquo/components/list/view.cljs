@@ -8,12 +8,13 @@
             [xquo.context :as context]))
 
 (defn- list-element
-  [{:keys [type button icon icon-color selected? step-number title description theme]
+  [{:keys [type button icon-color selected? step-number title description theme]
+    icon-name :name
     :or   {type :bullet}}]
   [:rn/view {:style style/element-container}
    (if (= type :step)
      [counter-step/step (if selected? {:type :active} {}) step-number]
-     [icon/icon {:icon (or icon :icon/bullet)
+     [icon/icon {:name (or icon-name :icon/bullet)
                  :size 20
                  :color (or icon-color (style/bullet-color theme))}])
    [:rn/view {:style style/content-container}
@@ -36,7 +37,7 @@
     - `:items` collection of list item prop maps
       - `:type` one of `:bullet`, `:step` (default `:bullet`)
       - `:button` optional `xquo/button` props plus `:label`, rendered on the right
-      - `:icon` optional icon keyword for `:bullet` items (default `:icon/bullet`)
+      - `:name` optional icon keyword for `:bullet` items (default `:icon/bullet`)
       - `:icon-color` optional icon tint for `:bullet` items
       - `:selected?` marks `:step` items as active
       - `:title` optional title text

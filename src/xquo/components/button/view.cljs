@@ -22,7 +22,7 @@
 
 (defn- button-icon [{:keys [icon-name side type size icon-color background icon-only? disabled? pressed?]}]
   (let [theme (context/use-theme)]
-    [icon/icon {:icon  icon-name
+    [icon/icon {:name  icon-name
                 :size  (style/icon-size size)
                 :color (or icon-color
                            (style/icon-color theme type background icon-only? disabled? pressed?))
@@ -30,10 +30,10 @@
 
 (defn- layout-type [icon-only? left-icon right-icon]
   (cond
-    icon-only?                 :icon-only
+    icon-only? :icon-only
     (and left-icon right-icon) :left-right
-    left-icon                  :left
-    right-icon                 :right
+    left-icon :left
+    right-icon :right
     :else                      nil))
 
 (defn button
