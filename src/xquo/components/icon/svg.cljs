@@ -80,12 +80,12 @@
                    :cy           7.5
                    :r            1.5
                    :stroke       color
-                   :stroke-width 1.1}]
+                   :stroke-width 1}]
      [:svg/circle {:cx           9.3
                    :cy           7.5
                    :r            1.5
                    :stroke       color
-                   :stroke-width 1.1}]]))
+                   :stroke-width 1}]]))
 
 (defn bridge-16 [{:keys [color size style]}]
   (let [color (icon-color color)]

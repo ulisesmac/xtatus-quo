@@ -12,7 +12,7 @@
          (= (:status description) :error))
     [:rn/view {:style style/top-error-row}
      [:rn/view {:style style/top-error-content}
-      [icon/view {:name  :icon/alert
+      [icon/view {:name  :icon/alert-outline
                   :size  16
                   :color (:color (style/description-text-style theme blur? scroll? :top :error))
                   :style style/top-error-icon}]
