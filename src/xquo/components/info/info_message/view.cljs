@@ -35,11 +35,11 @@
                                    style/default-size-base)
                                  (:style props))))
      (if tiny?
-       [icon/icon {:icon  :icon/info
+       [icon/icon {:name  :icon/info
                    :size  12
                    :color (:color message-color-style)
                    :style style/icon-tiny}]
-       [icon/icon {:icon  :icon/info
+       [icon/icon {:name  :icon/info
                    :size  16
                    :color (:color message-color-style)
                    :style style/icon-default}])
