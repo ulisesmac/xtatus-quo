@@ -30,14 +30,14 @@
        label]]
      [:rn/view {:style style/actions-row}
      [filter/filter {:size       24
-                      :name       :icon/arrow-top
+                      :icon       {:name :icon/arrow-top}
                       :selected?  (= selected :ascending)
                       :on-press   (when on-select
                                     (fn []
                                       (on-select :ascending)))}]
       [:rn/view {:style style/action-gap}
        [filter/filter {:size       24
-                       :name       :icon/arrow-down
+                       :icon       {:name :icon/arrow-down}
                        :selected?  (= selected :descending)
                        :on-press   (when on-select
                                      (fn []

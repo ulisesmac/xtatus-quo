@@ -1,110 +1,96 @@
 (ns xquo.components.icon.view
-  (:require [reagent.core :as r]
-            [xquo.components.icon.icons :as icons]
-            [xquo.context :as context]
-            [xquo.foundations.colors :as colors]))
+  (:require [applied-science.js-interop :as j]
+            [reagent.core :as r]
+            [xquo.components.icon.svg :as svg]))
 
 (def create-nano-icon-set
   (.-createNanoIconSet (js/require "../node_modules/react-native-nano-icons/lib/module/index.js")))
 
-(def glyph-map-20 (js/require "../resources/icons/nanoicons/icons20.glyphmap.json"))
+(defonce glyph-map-20 (js/require "../resources/icons/nanoicons/icons20.glyphmap.json"))
+(defonce glyph-map-16 (js/require "../resources/icons/nanoicons/icons16.glyphmap.json"))
+(defonce glyph-map-12 (js/require "../resources/icons/nanoicons/icons12.glyphmap.json"))
 (def icon-20 (r/adapt-react-class (create-nano-icon-set glyph-map-20)))
+(def icon-16 (r/adapt-react-class (create-nano-icon-set glyph-map-16)))
+(def icon-12 (r/adapt-react-class (create-nano-icon-set glyph-map-12)))
 
-(defn- image-style [size color]
-  (cond-> {:width  size
-           :height size}
-    (not= color :no-color)
-    (assoc :tint-color color)))
+(def ->icon-kw (partial keyword "icon"))
+(defn build-icon-set [glyph-map]
+  (->> (j/get glyph-map :i) (js-keys) (map ->icon-kw) (set)))
 
-(def svg-shapes
-  {:icon/clear        {:circle "M3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10Z"
-                       :x      "M9.15143 9.99998L7.07568 12.0757L7.92421 12.9243L9.99996 10.8485L12.0757 12.9242L12.9242 12.0757L10.8485 9.99998L12.9242 7.92421L12.0757 7.07568L9.99996 9.15145L7.92423 7.07572L7.0757 7.92425L9.15143 9.99998Z"}
-   :icon/check-circle {:check "M3.75 6.25L5.25 7.75L8.25 4.25"}
-   :icon/check-circle-outline
-   {:path "M1.54995 5.99995C1.54995 3.54228 3.54228 1.54995 5.99995 1.54995C8.45762 1.54995 10.45 3.54228 10.45 5.99995C10.45 8.45762 8.45762 10.45 5.99995 10.45C3.54228 10.45 1.54995 8.45762 1.54995 5.99995ZM5.99995 0.449951C2.93477 0.449951 0.449951 2.93477 0.449951 5.99995C0.449951 9.06513 2.93477 11.55 5.99995 11.55C9.06513 11.55 11.55 9.06513 11.55 5.99995C11.55 2.93477 9.06513 0.449951 5.99995 0.449951ZM5.66754 8.10789L8.66754 4.60789L7.83236 3.89202L5.21889 6.94107L4.13886 5.86104L3.36104 6.63886L4.86104 8.13886L5.28102 8.55883L5.66754 8.10789Z"}})
+(def icons
+  {20 (build-icon-set glyph-map-20)
+   16 (build-icon-set glyph-map-16)
+   12 (build-icon-set glyph-map-12)})
 
-(defn- clear-svg [{:keys [color color-2 size]}]
-  (let [{:keys [circle x]} (get svg-shapes :icon/clear)]
-    [:svg/svg {:width    size
-               :height   size
-               :view-box "0 0 20 20"
-               :fill     :none}
-     [:svg/path {:fill-rule :evenodd
-                 :clip-rule :evenodd
-                 :d         circle
-                 :fill      color}]
-     [:svg/path {:fill-rule :evenodd
-                 :clip-rule :evenodd
-                 :d         x
-                 :fill      color-2}]]))
+(def components
+  {20 icon-20
+   16 icon-16
+   12 icon-12})
 
-(defn- circle-check-svg [{:keys [size]}]
-  (let [theme        (context/use-theme)
-        check-color  (colors/get-color :color/white)
-        circle-color (colors/themed theme :color/success)
-        {check :check} (get svg-shapes :icon/check-circle)]
-    [:svg/svg {:width    size
-               :height   size
-               :view-box "0 0 12 12"
-               :fill     :none}
-     [:svg/circle {:cx   6
-                   :cy   6
-                   :r    5.5
-                   :fill circle-color}]
-     [:svg/path {:d            check
-                 :stroke       check-color
-                 :stroke-width 1.1}]]))
+(defn sizes-for [icon-name]
+  (->> icons
+       (keep (fn [[size icon-set]]
+               (when (icon-name icon-set)
+                 size)))
+       (set)))
 
-(defn- check-circle-outline-svg [{:keys [color size]}]
-  (let [{path :path} (get svg-shapes :icon/check-circle-outline)]
-    [:svg/svg {:width    size
-               :height   size
-               :view-box "0 0 12 12"
-               :fill     :none}
-     [:svg/path {:fill-rule :evenodd
-                 :clip-rule :evenodd
-                 :d         path
-                 :fill      color}]]))
+(defn closer-to [requested-size available-sizes]
+  (->> available-sizes
+       (map (fn [size]
+              [size (abs (- requested-size size))]))
+       (sort-by second)
+       (ffirst)))
 
-(def svg-icons
-  {:icon/clear                clear-svg
-   :icon/check-circle         circle-check-svg
-   :icon/check-circle-outline check-circle-outline-svg})
+(def family-component
+  (memoize
+   (fn [size icon-name]
+     (if (icon-name (icons size))
+       (get components size)
+       (let [available-sizes (sizes-for icon-name)
+             inferred-size   (closer-to size available-sizes)]
+         (get components inferred-size))))))
 
-(defn icon
-  "Icon component.
+(defn svg-sizes-for [icon-name]
+  (->> svg/icons
+       (keep (fn [[size icon-map]]
+               (when (get icon-map icon-name)
+                 size)))
+       (set)))
 
-  API:
-  - `props` map
-    - `:name` icon keyword (default `:icon/placeholder`)
-    - `:size` icon size in points. This selects the bitmap asset size for
-      bundled icons and scales SVG-backed icons (default `20`)
-    - `:color` tint color for bitmap icons and primary fill for SVG-backed
-      icons
-    - `:color-2` secondary fill for SVG-backed icons
-    - `:style` optional wrapper style applied to the root `:rn/view`
+(def svg-component
+  (memoize
+   (fn [size icon-name]
+     (let [available-sizes (svg-sizes-for icon-name)
+           icon-size       (if (icon-name (svg/icons size))
+                             size
+                             (closer-to size available-sizes))]
+       (icon-name (svg/icons icon-size))))))
 
-  Notes:
-  - Bitmap icons use `:color`
-  - SVG-backed icons use `:color` and `:color-2`
-  - Any icon keyword present in `svg-icons` is rendered as SVG; all others use
-    the bundled image source path."
-  [{:keys         [color color-2 icon size style]
-    provided-name :name
-    :or           {icon  :icon/placeholder
-                   size  20
-                   color :no-color}}]
-  (let [icon-name (or provided-name icon)]
-    (if (= size 20)
-      [:rn/view {:style style}
-       [icon-20 (cond-> {:name (name icon-name)
-                         :size 20}
-                  (and (some? color)
-                       (not= color :no-color)) (assoc :color color))]]
-      [:rn/view {:style style}
-       (if-let [svg-icon (get svg-icons icon-name)]
-         [svg-icon {:size    size
-                    :color   color
-                    :color-2 color-2}]
-         [:rn/image {:source (icons/icon-source (str (name icon-name) size))
-                     :style  (image-style size color)}])])))
+(defn- svg-icon [{:keys     [color size style]
+                  icon-name :name
+                  :or       {icon-name :icon/placeholder
+                             size      20}}]
+  [(svg-component size icon-name) {:color color
+                                   :size  size
+                                   ;:style style
+                                   }])
+
+(defn view
+  "Icon component"
+  [{:keys     [color size style]
+    icon-name :name
+    :or       {icon-name :icon/placeholder
+               size      20}
+    :as       props}]
+  (cond
+    (svg/iconset icon-name)
+    [svg-icon props]
+
+    (family-component size icon-name)
+    [:rn/view {:style style} ;; TODO: remove the view for styles
+     [(family-component size icon-name) {:name  icon-name
+                                         :size  size
+                                         :color color}]]
+    :else
+    [:rn/view {:style {:background-color :red}}
+     [:rn/text (str (name icon-name) size)]]))

@@ -75,20 +75,20 @@
                 [:rn/text {:style (style/description-segment-style (:color segment))}
                  (:text segment)]))
          (description-segments description))
-   (when description-icon
-     [icon/icon {:name  description-icon
-                 :size  20
-                 :color (style/icon-color theme blur?)
-                 :style style/description-icon-scale}])])
+   (when (:name description-icon)
+     [icon/view (merge {:size  20
+                        :color (style/icon-color theme blur?)
+                        :style style/description-icon-scale}
+                       description-icon)])])
 
 (defn- title-inline-view [{:keys [theme blur? title title-icon]}]
   [:rn/view {:style style/title-inline-row}
    [title-view {:theme theme
                 :title title}]
-   (when title-icon
-     [icon/icon {:name  title-icon
-                 :size  20
-                 :color (style/icon-color theme blur?)}])])
+   (when (:name title-icon)
+     [icon/view (merge {:size  20
+                        :color (style/icon-color theme blur?)}
+                       title-icon)])])
 
 (defn- trailing-view [{:keys [theme blur? info? counter button]}]
   (cond
@@ -98,15 +98,15 @@
       [button/button
        (cond-> (assoc button :size 24)
          (= button-type :primary)
-         (assoc :icon-color (get button
-                                 :icon-color
-                                 (colors/get-color :color/white-100))
-                :style      (rec.xf/add-styles
-                             (style/primary-button-style theme color)
-                             (:style button))))])
+         (assoc :icon  (assoc (:icon button)
+                         :color (:color (:icon button)
+                                 (colors/get-color :color/white-100)))
+                :style (rec.xf/add-styles
+                        (style/primary-button-style theme color)
+                        (:style button))))])
 
     info?
-    [icon/icon {:name  :icon/info
+    [icon/view {:name  :icon/info
                 :size  20
                 :color (style/icon-color theme blur?)}]
 
@@ -219,8 +219,8 @@
     - `:info?` optional right-side info icon
     - `:button` optional trailing button props forwarded to `xquo/button`
       and forced to `:size 24`
-    - `:title-icon` optional icon shown inline after the title
-    - `:description-icon` optional icon shown inline after the description
+    - `:title-icon` optional icon props map shown inline after the title
+    - `:description-icon` optional icon props map shown inline after the description
     - `:leading` optional leading placeholder map
       - `:type` one of `:account-avatar`, `:icon-avatar`, `:user-avatar`, `:token-avatar`
     - `:context-tags` optional vector

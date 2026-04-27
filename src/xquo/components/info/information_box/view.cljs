@@ -7,13 +7,13 @@
             [xquo.context :as context]))
 
 (defn- leading-icon-view
-  [{:keys [theme blur? status theme-color close-button title button color use-15-font?]
-    provided-name :name}]
-  (let [icon-name (or provided-name
+  [{:keys [theme blur? status theme-color close-button title button icon use-15-font?]}]
+  (let [provided-name (:name icon)
+        icon-name (or provided-name
                       (cond
-                        (= status :error)   :icon/alert
-                        (= status :warning) :icon/alert-octagonal-alt ;; TODO: rename to outline and fix related
-                        close-button        :icon/close
+                        (= status :error)   :icon/alert-outline
+                        (= status :warning) :icon/alert-octagon-outline
+                        close-button        :icon/cross
                         :else               :icon/info-outline))
         icon-size (cond
                     provided-name                                       20
@@ -24,11 +24,11 @@
                     (= status :warning)                                 16
                     use-15-font?                                        20
                     :else                                               16)]
-    [icon/icon {:name  icon-name
-                :size  icon-size
-                :color (or color
-                           (style/leading-icon-color theme blur? status theme-color))
-                :style (style/leading-icon-style close-button title button use-15-font?)}]))
+    [icon/view (merge {:name  icon-name
+                       :size  icon-size
+                       :color (style/leading-icon-color theme blur? status theme-color)
+                       :style (style/leading-icon-style close-button title button use-15-font?)}
+                      icon)]))
 
 (defn- close-button-view
   [{:keys [theme status title button]
@@ -36,11 +36,11 @@
   (if on-press
     [:rn/pressable {:on-press on-press
                     :style    (style/close-button-style title button)}
-     [icon/icon {:name  :icon/close
+     [icon/view {:name  :icon/close
                  :size  12
                  :color (style/close-button-color theme status)}]]
     [:rn/view {:style (style/close-button-style title button)}
-     [icon/icon {:name  :icon/close
+     [icon/view {:name  :icon/close
                  :size  12
                  :color (style/close-button-color theme status)}]]))
 
@@ -67,8 +67,7 @@
 
   - `props` map
     - `:status` one of `:default`, `:info`, `:success`, `:warning`, `:error` (default `:default`)
-    - `:name` optional leading icon override
-    - `:color` optional leading icon color override
+    - `:icon` optional leading icon props map
     - `:title` optional title text
     - `:description` optional body text. When present, it overrides the child content
     - `:use-15-font?` optional boolean; when true the description uses `:font/regular-15`
@@ -82,15 +81,14 @@
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`.
   - `content` optional body node rendered as-is."
-  [{:keys [status color title description use-15-font? button close-button blur?]
-    provided-name :name
+  [{:keys [status icon title description use-15-font? button close-button blur?]
     :or   {status :default}
     :as   props}
    content]
   (let [{theme :theme
          theme-color :color} (context/use-theme-color)]
     [:rn/view (-> props
-                  (dissoc :status :name :icon :color :title :description :use-15-font? :button
+                  (dissoc :status :icon :title :description :use-15-font? :button
                           :close-button :blur? :background :style)
                   (assoc :style (rec.xf/add-styles
                                  style/container-base
@@ -105,8 +103,7 @@
                             :blur?         blur?
                             :status        status
                             :theme-color   theme-color
-                            :name          provided-name
-                            :color         color
+                            :icon          icon
                             :close-button  close-button
                             :title         title
                             :button        button
@@ -140,8 +137,7 @@
                            :blur?         blur?
                            :status        status
                            :theme-color   theme-color
-                           :name          provided-name
-                           :color         color
+                           :icon          icon
                            :close-button  close-button
                            :title         title
                            :button        button

@@ -1,17 +1,10 @@
 (ns xquo.components.selectors.selector.view
   (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+            [xquo.components.icon.view :as icon]
             [xquo.components.selectors.selector.style :as style]
             [xquo.context :as context]
             [xquo.foundations.colors :as colors]
             [xquo.react-native :as rn]))
-
-(def checkbox-check-image
-  (js/require "../xtatus-quo/resources/icons/12/checkbox-check.png"))
-
-(defn- checkmark-tint-color [type theme]
-  (if (and (= type :filled-checkbox) (= theme :theme/light))
-    (colors/get-color :color/neutral-100)
-    (colors/get-color :color/white-100)))
 
 (defn selector
   "Selectors component.
@@ -33,48 +26,48 @@
     :or   {type       :toggle
            background :none}
     :as   props}]
-  (let [theme             (context/use-theme)
-        color             (context/use-color)
-        controlled?       (some? selected?)
+  (let [theme            (context/use-theme)
+        color            (context/use-color)
+        controlled?      (some? selected?)
         [internal-selected?
          set-internal-selected?] (rn/use-state false)
-        [pressed? set-pressed?]  (rn/use-state false)
-        selected-now?     (if controlled?
-                            selected?
-                            internal-selected?)
-        on-press-in!      (rn/use-callback (fn [event]
-                                             (set-pressed? true)
-                                             (when on-press-in
-                                               (on-press-in event)))
-                                           [on-press-in])
-        on-press-out!     (rn/use-callback (fn [event]
-                                             (set-pressed? false)
-                                             (when on-press-out
-                                               (on-press-out event)))
-                                           [on-press-out])
-        on-press-toggle!  (rn/use-callback (fn [event]
-                                             (let [next-selected? (not selected-now?)]
-                                               (when-not controlled?
-                                                 (set-internal-selected? next-selected?))
-                                               (when on-select
-                                                 (on-select next-selected?))
-                                               (when on-press
-                                                 (on-press event))))
-                                           [selected-now? controlled? on-select on-press])]
+        [pressed? set-pressed?] (rn/use-state false)
+        selected-now?    (if controlled?
+                           selected?
+                           internal-selected?)
+        on-press-in!     (rn/use-callback (fn [event]
+                                            (set-pressed? true)
+                                            (when on-press-in
+                                              (on-press-in event)))
+                                          [on-press-in])
+        on-press-out!    (rn/use-callback (fn [event]
+                                            (set-pressed? false)
+                                            (when on-press-out
+                                              (on-press-out event)))
+                                          [on-press-out])
+        on-press-toggle! (rn/use-callback (fn [event]
+                                            (let [next-selected? (not selected-now?)]
+                                              (when-not controlled?
+                                                (set-internal-selected? next-selected?))
+                                              (when on-select
+                                                (on-select next-selected?))
+                                              (when on-press
+                                                (on-press event))))
+                                          [selected-now? controlled? on-select on-press])]
     [:animated/view {:style (if pressed?
                               style/pressable-pressed-state-style
                               style/pressable-default-state-style)}
      [:rn/pressable (-> props
                         (dissoc :type :selected? :disabled? :background :on-select :on-press-in :on-press-out :style :hit-slop)
-                        (assoc :disabled     disabled?
-                               :hit-slop     6
-                               :on-press     on-press-toggle!
-                               :on-press-in  on-press-in!
+                        (assoc :disabled disabled?
+                               :hit-slop 6
+                               :on-press on-press-toggle!
+                               :on-press-in on-press-in!
                                :on-press-out on-press-out!
-                               :style        (rec.xf/add-styles
-                                              (style/container-style type)
-                                              (style/state-style theme type background selected-now? disabled? color)
-                                              (:style props))))
+                               :style (rec.xf/add-styles
+                                       (style/container-style type)
+                                       (style/state-style theme type background selected-now? disabled? color)
+                                       (:style props))))
       (cond
         (= type :toggle)
         [:animated/view {:style [style/toggle-handle-base
@@ -88,9 +81,8 @@
         (and (or (= type :checkbox)
                  (= type :filled-checkbox))
              selected-now?)
-        [:rn/image {:source checkbox-check-image
-                    :style  [style/checkmark-image-base
-                             {:tint-color (checkmark-tint-color type theme)}]}]
-
-        :else
-        nil)]]))
+        [icon/view {:name  :icon/check-thick
+                    :size  12
+                    :color (if (and (= type :filled-checkbox) (= theme :theme/light))
+                             (colors/get-color :color/neutral-100)
+                             (colors/get-color :color/white-100))}])]]))

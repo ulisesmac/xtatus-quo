@@ -24,7 +24,7 @@
                           on-select (assoc :on-select on-select))]]
 
     selected?
-    [icon/icon {:name  :icon/check
+    [icon/view {:name  :icon/check
                 :size  20
                 :color (style/trailing-icon-color theme background true danger? action-color)}]
 
@@ -32,7 +32,7 @@
     [:animated/view {:style (if pressed?
                               style/arrow-slot-pressed-state-style
                               style/arrow-slot-default-state-style)}
-     [icon/icon {:name  :icon/chevron-right
+     [icon/view {:name  :icon/chevron-right
                  :size  20
                  :color (style/trailing-icon-color theme background false danger? action-color)}]]))
 
@@ -43,7 +43,7 @@
   - `props` map
     - `:title` action title (default `\"Action\"`)
     - `:description` optional secondary text
-    - `:name` optional leading icon keyword
+    - `:icon` optional leading icon props map
     - `:color` optional color family keyword
     - `:danger?` optional boolean
     - `:selected?` optional boolean
@@ -54,8 +54,7 @@
     - `:style` optional caller style
     - Any additional keys are forwarded to `:rn/pressable`."
   [{:keys [title description color danger? selected? arrow? toggle? background on-select on-press
-           on-press-in on-press-out]
-    icon-name :name
+           on-press-in on-press-out icon]
     :or   {title "Action"}
     :as   props}]
   (let [theme                   (context/use-theme)
@@ -91,7 +90,7 @@
                                      (on-press-out event)))
                                  [on-press-out])]
     [:rn/pressable (-> props
-                       (dissoc :title :description :name :icon :color :danger? :selected? :arrow?
+                       (dissoc :title :description :icon :color :danger? :selected? :arrow?
                                :toggle? :background :on-select :style :on-press
                                :on-press-in :on-press-out)
                        (assoc :on-press on-press!
@@ -112,11 +111,11 @@
                                 style/row-pressed-state-style
                                 style/row-default-state-style)
                               style/row-base
-                              (when icon-name style/gap-12)]}
-      (when icon-name
-        [icon/icon {:name  icon-name
-                    :size  20
-                    :color (style/icon-color theme background danger? color)}])
+                              (when (:name icon) style/gap-12)]}
+      (when (:name icon)
+        [icon/view (merge {:size  20
+                           :color (style/icon-color theme background danger? color)}
+                          icon)])
       [:rn/view {:style (if description
                           [style/content-base style/content-gap-2]
                           style/content-base)}

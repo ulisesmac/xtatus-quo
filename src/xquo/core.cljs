@@ -43,7 +43,7 @@
 (def drawer-action xquo.components.drawer.drawer-action.view/drawer-action)
 (def drawer-handle xquo.components.drawer.top.view/drawer-handle)
 (def drawer-top xquo.components.drawer.top.view/drawer-top)
-(def icon xquo.components.icon.view/icon)
+(def icon xquo.components.icon.view/view)
 (def info-message xquo.components.info.info-message.view/info-message)
 (def information-box xquo.components.info.information-box.view/information-box)
 (def input xquo.components.input.view/input)

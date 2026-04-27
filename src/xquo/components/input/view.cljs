@@ -23,14 +23,14 @@
        :right  8
        :bottom 8}})
 
-(defn- layout-type [icon-name clearable? trailing-button]
+(defn- layout-type [icon clearable? trailing-button]
   (cond
-    (and trailing-button icon-name clearable?) :button-icon-clear
-    (and trailing-button icon-name)            :button-icon
+    (and trailing-button icon clearable?) :button-icon-clear
+    (and trailing-button icon)            :button-icon
     (and trailing-button clearable?)           :button-clear
     trailing-button                            :button
-    (and icon-name clearable?)                 :icon-clear
-    icon-name                                  :icon
+    (and icon clearable?)                      :icon-clear
+    icon                                       :icon
     clearable?                                 :clear))
 
 (defn- labels-view [{:keys [blur? current-value label max-length]}]
@@ -49,13 +49,12 @@
                    :number-of-lines 1}
         (str (count current-value) "/" max-length)])]))
 
-(defn- leading-icon-view [{:keys [blur?]
-                           icon-name :name}]
+(defn- leading-icon-view [{:keys [blur? icon]}]
   (let [{:keys [dark-theme?]} (context/use-theme-color)]
-    [icon/icon {:name  icon-name
-                :size  20
-                :color (:color (style/leading-icon-color dark-theme? blur?))
-                :style style/icon-slot-base}]))
+    [icon/view (merge {:size  20
+                       :color (:color (style/leading-icon-color dark-theme? blur?))
+                       :style style/icon-slot-base}
+                      icon)]))
 
 (defn- clear-button-view [_]
   (let [clear-timeout (atom nil)]
@@ -90,7 +89,7 @@
                          :on-press-in  on-press-in!
                          :on-press-out on-press-out!
                          :style        style/clear-icon-slot}
-          [icon/icon {:name  :icon/clear
+          [icon/view {:name  :icon/cross-circle
                       :size  20
                       :color [(:color (style/clear-icon-color dark-theme? blur?))
                               (colors/get-color :color/white-100)]}]]]))))
@@ -184,7 +183,7 @@
                                                  [on-blur])]
     [:rn/text-input (cond-> props
                       :always (dissoc :auto-focus? :blur? :button :default-value :disabled?
-                                      :error? :name :icon :clearable? :input-container-style
+                                      :error? :icon :clearable? :input-container-style
                                       :label :max-height :max-length :min-height :multiline
                                       :multiline? :on-blur :on-change-text :on-clear
                                       :on-content-size-change :on-focus :size :style :value)
@@ -230,7 +229,7 @@
     - `:min-height` optional minimum surface height for multiline inputs. When omitted,
                     multiline starts at the single-line height and grows from content
     - `:max-height` optional maximum surface height for multiline inputs
-    - `:name` optional leading icon
+    - `:icon` optional leading icon props map
     - `:clearable?` optional boolean that renders the clear button when the input has content
     - `:on-clear` optional callback fired when the clear button is pressed
     - `:button` optional trailing button map. `:label` is rendered as the button
@@ -243,8 +242,7 @@
   [{:keys               [auto-focus? blur? clearable? default-value disabled? error?
                          label max-height max-length min-height multiline? on-blur
                          on-change-text on-clear on-content-size-change on-focus
-                         size value]
-    icon-name           :name
+                         size value icon]
     trailing-button     :button
     component-style     :style
     :or                 {size 40}
@@ -257,7 +255,7 @@
          set-internal-value!] (rn/use-state (or default-value ""))
         current-value           (if controlled? value internal-value)
         show-clear-button?      (and clearable? (seq current-value))
-        layout                  (layout-type icon-name show-clear-button? trailing-button)
+        layout                  (layout-type (:name icon) show-clear-button? trailing-button)
         slot-gap-style          (get container-slot-gap-styles size)
         focus-input!            (rn/use-callback (fn []
                                                    (when-not disabled?
@@ -302,9 +300,9 @@
       [:rn/view {:style [style/content-base
                          (if multiline? style/content-multiline style/content-single-line)
                          slot-gap-style]}
-       (when icon-name
+       (when (:name icon)
          [leading-icon-view {:blur? blur?
-                             :name  icon-name}])
+                             :icon  icon}])
        [text-input-view (assoc props
                           :blur? blur?
                           :controlled? controlled?
@@ -321,8 +319,8 @@
                   :or   {label "Button" type :outline}} trailing-button]
         [button/button (assoc trailing-button
                          :background (when blur? :blur)
-                         :disabled?  (or disabled? (:disabled? trailing-button))
-                         :hit-slop   (get trailing-button-hit-slops size)
-                         :size       24
-                         :type       type)
+                         :disabled? (or disabled? (:disabled? trailing-button))
+                         :hit-slop (get trailing-button-hit-slops size)
+                         :size 24
+                         :type type)
          label])]]))

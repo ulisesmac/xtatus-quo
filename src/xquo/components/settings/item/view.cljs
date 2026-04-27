@@ -18,6 +18,7 @@
 (defn- description-view [{:keys [theme blur? pressed? description]}]
   (let [{description-text :text
          description-name :name
+         description-icon :icon
          status-color     :status-color
          status-text      :status-text} description
         description-type (:type description)
@@ -33,9 +34,10 @@
        [text/text {:font  :font/regular-13
                    :style {:color text-color}}
         (or description-text "This is a description")]
-       [icon/icon {:name  (or description-name :icon/browser)
-                   :size  16
-                   :color (style/trailing-icon-color theme blur? pressed?)}]]
+       [icon/view (merge {:name  (or description-name :icon/browser)
+                          :size  16
+                          :color (style/trailing-icon-color theme blur? pressed?)}
+                         description-icon)]]
 
       (= description-type :status)
       [:rn/view {:style style/status-row}
@@ -56,12 +58,13 @@
 (defn- leading-view [{:keys [theme blur? pressed? image]}]
   (let [image-type (or (:type image) :icon)
         image-name (:name image)
-        image-color (:color image)]
+        image-icon (:icon image)]
     (cond
       (= image-type :icon)
-      [icon/icon {:name  (or image-name :icon/browser)
-                  :size  20
-                  :color (or image-color (style/leading-icon-color theme blur? pressed?))}]
+      [icon/view (merge {:name  (or image-name :icon/browser)
+                         :size  20
+                         :color (style/leading-icon-color theme blur? pressed?)}
+                        image-icon)]
 
       (= image-type :image)
       [:rn/view {:style style/image-placeholder}]
@@ -73,7 +76,8 @@
   (let [{label-text  :text
          label-color :color
          label-value :counter
-         label-name  :name} label
+         label-name  :name
+         label-icon  :icon} label
         label-type (:type label)]
     (cond
       (= label-type :text)
@@ -92,9 +96,10 @@
        (or label-value 1)]
 
       (= label-type :icon)
-      [icon/icon {:name  (or label-name :icon/placeholder)
-                  :size  20
-                  :color (style/trailing-icon-color theme blur? pressed?)}])))
+      [icon/view (merge {:name  (or label-name :icon/placeholder)
+                         :size  20
+                         :color (style/trailing-icon-color theme blur? pressed?)}
+                        label-icon)])))
 
 (defn- action-view [{:keys [theme blur? pressed? action selector-selected?]}]
   (let [{action-type        :type
@@ -103,7 +108,7 @@
          action-disabled?   :disabled?} action]
     (cond
       (= action-type :arrow)
-      [icon/icon {:name  :icon/chevron-right
+      [icon/view {:name  :icon/chevron-right
                   :size  20
                   :color (style/trailing-icon-color theme blur? pressed?)}]
 
@@ -188,12 +193,13 @@
     - `:blur?` optional boolean for blur styling
     - `:image` map
       - `:type` one of `:icon`, `:image`, `:avatar`, `:none`
-      - `:name` icon keyword for `:icon` type (default `:icon/browser`)
-      - `:color` optional icon color override
+      - `:name` icon keyword for `:icon` type
+      - `:icon` optional icon props override map for `:icon` type
     - `:description` map
       - `:type` one of `:none`, `:text`, `:text-icon`, `:status`
       - `:text` description text for `:text` / `:text-icon`
-      - `:name` icon keyword for `:text-icon` (default `:icon/browser`)
+      - `:name` icon keyword for `:text-icon`
+      - `:icon` optional icon props override map for `:text-icon`
       - `:status-color` color family keyword for `:status`
       - `:status-text` status text for `:status`
     - `:tag` map
@@ -201,7 +207,7 @@
     - `:right` map
       - `:label` map
         - `:type` one of `:none`, `:text`, `:color`, `:counter`, `:icon`
-        - `:text`, `:color`, `:counter`, `:name`
+        - `:text`, `:color`, `:counter`, `:name`, `:icon`
       - `:action` map
         - `:type` one of `:none`, `:arrow`, `:selector`, `:button`
         - `:on-press` callback

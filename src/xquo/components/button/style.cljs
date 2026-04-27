@@ -206,74 +206,75 @@
     {40 {nil         (style {:padding-horizontal 16
                              :padding-vertical   9
                              :border-radius      sizes-40-56
-                             :min-height         40})
+                             :height             40})
          :right      (style {:padding-left     16
                              :padding-right    12
                              :padding-vertical 9
                              :border-radius    sizes-40-56
-                             :min-height       40})
+                             :height           40})
          :left       (style {:padding-left     12
                              :padding-right    16
                              :padding-vertical 9
                              :border-radius    sizes-40-56
-                             :min-height       40})
-         :left-right (style {:padding-horizontal 12
-                             :padding-vertical   9
-                             :border-radius      sizes-40-56
-                             :min-height         40})
+                             :height           40})
          :icon-only  (style {:width         40
                              :height        40
                              :border-radius max})}
      32 {nil         (style {:padding-horizontal 12
                              :padding-vertical   5
                              :border-radius      size-32
-                             :min-height         32})
+                             :height             32})
          :right      (style {:padding-left     12
                              :padding-right    8
                              :padding-vertical 5
                              :border-radius    size-32
-                             :min-height       32})
+                             :height           32})
          :left       (style {:padding-left     8
                              :padding-right    12
                              :padding-vertical 5
                              :border-radius    size-32
-                             :min-height       32})
-         :left-right (style {:padding-horizontal 8
-                             :padding-vertical   5
-                             :border-radius      size-32
-                             :min-height         32})
+                             :height           32})
          :icon-only  (style {:width         32
                              :height        32
                              :border-radius size-32})}
      24 {nil         (style {:padding-horizontal 8
-                             :padding-top        2.5
-                             :padding-bottom     3.5
+                             :padding-vertical   3
                              :border-radius      size-24
-                             :min-height         24})
+                             :height             24})
          :right      (style {:padding-horizontal 8
                              :padding-vertical   3
                              :border-radius      size-24
-                             :min-height         24})
+                             :height             24})
          :left       (style {:padding-horizontal 8
                              :padding-vertical   3
                              :border-radius      size-24
-                             :min-height         24})
-         :left-right (style {:padding-horizontal 8
-                             :padding-vertical   3
-                             :border-radius      size-24
-                             :min-height         24})
+                             :height             24})
          :icon-only  (style {:width         24
                              :height        24
                              :border-radius size-24})}}))
 
-(defn container-layout-style [size icon]
-  (get-in container-layout-styles [size icon]))
+(defstyle size-24-outline-content-style
+  {:padding-horizontal 7
+   :padding-vertical   2
+   :border-radius      (:border/size-24 borders/border-radius-values)
+   :height             24})
+
+(defn container-layout-style [size icon type]
+  (cond
+    (and (= size 24) (= type :outline) (= icon :icon-only))
+    (get-in container-layout-styles [24 icon])
+
+    (and (= size 24) (= type :outline))
+    size-24-outline-content-style
+
+    :else
+    (get-in container-layout-styles [size icon])))
 
 (defn- component-state [disabled? pressed?]
   (cond
     disabled? :disabled
-    pressed?  :pressed
-    :else     :default))
+    pressed? :pressed
+    :else :default))
 
 (defn- normalized-background [background]
   (case background
@@ -284,12 +285,12 @@
   (cond
     (and (= theme :theme/dark) (= state :disabled)) (style {:background-color (colors/get-color color 60)
                                                             :opacity          0.3})
-    (and (= theme :theme/dark) (= state :pressed))  (style {:background-color (colors/get-color color 50)})
-    (= theme :theme/dark)                           (style {:background-color (colors/get-color color 60)})
+    (and (= theme :theme/dark) (= state :pressed)) (style {:background-color (colors/get-color color 50)})
+    (= theme :theme/dark) (style {:background-color (colors/get-color color 60)})
     (= state :disabled) (style {:background-color (colors/get-color color 50)
                                 :opacity          0.3})
-    (= state :pressed)  (style {:background-color (colors/get-color color 60)})
-    :else               (style {:background-color (colors/get-color color 50)})))
+    (= state :pressed) (style {:background-color (colors/get-color color 60)})
+    :else (style {:background-color (colors/get-color color 50)})))
 
 (defn pressable-type-style [theme type background color disabled? pressed?]
   (let [state (component-state disabled? pressed?)]
@@ -314,12 +315,6 @@
 
 (defstyle icon-right-gap
   {:margin-left 4})
-
-(defn icon-gap-style [side]
-  (case side
-    :left icon-left-gap
-    :right icon-right-gap
-    nil))
 
 (def neutral-icon-only-types
   #{:grey :dark-grey :outline :ghost})
@@ -370,5 +365,8 @@
           (get-in background-type-styles [(normalized-background background) theme type :icon-color])
           (get-in type-styles [theme type :icon-color])))))
 
-(defn text-style [theme type background]
-  (style {:color (text-color theme type background)}))
+(defn text-style [theme type background size]
+  (cond-> {:color                (text-color theme type background)
+           :include-font-padding false}
+    (= size 24) (assoc :height      18
+                       :line-height 18)))

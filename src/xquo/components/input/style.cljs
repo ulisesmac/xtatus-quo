@@ -194,6 +194,11 @@
    :justify-content  :flex-start
    :align-items      :center})
 
+(defstyle trailing-button-slot
+  {:height          24
+   :justify-content :center
+   :align-items     :center})
+
 (defn labels-color [dark-theme? blur?]
   {:color (cond
             (and dark-theme? blur?) (colors/get-color :color/white-40)
@@ -210,7 +215,7 @@
 
 (defn clear-icon-color [dark-theme? blur?]
   {:color (cond
-            (and dark-theme? blur?) (colors/get-color :color/white-40)
+            (and dark-theme? blur?) (colors/get-color :color/white-10)
             blur?                   (colors/get-color :color/neutral-80-30)
             dark-theme?             (colors/get-color :color/neutral-60)
             :else                   (colors/get-color :color/neutral-40))})

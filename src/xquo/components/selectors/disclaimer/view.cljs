@@ -13,19 +13,18 @@
   - `props` map
     - `:selected?` optional boolean (`true`, `false`, or `nil`)
     - `:background` one of `:none`, `:blur` (default `:none`)
-    - `:name` optional right icon keyword (`:icon/...`)
+    - `:icon` optional right icon props map
     - `:on-select` optional callback invoked with next selected state boolean
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`.
   - `content` label shown in the row."
-  [{:keys [selected? background on-select]
-    icon-name :name
+  [{:keys [selected? background on-select icon]
     :or   {background :none}
     :as   props}
    content]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
-                  (dissoc :selected? :background :name :icon :on-select :disabled? :style)
+                  (dissoc :selected? :background :icon :on-select :disabled? :style)
                   (assoc :style (rec.xf/add-styles
                                  style/container-base
                                  (style/container-color-style theme background)
@@ -39,8 +38,8 @@
       [text/text {:font  :font/regular-13
                   :style {:color (style/text-color theme)}}
        content]]
-     (when icon-name
-       [icon/icon {:name  icon-name
-                   :size  20
-                   :color (style/icon-color theme background)
-                   :style style/icon-style}])]))
+     (when (:name icon)
+       [icon/view (merge {:size  20
+                          :color (style/icon-color theme background)
+                          :style style/icon-style}
+                         icon)])]))

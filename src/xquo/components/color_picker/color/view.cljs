@@ -33,6 +33,6 @@
      [:rn/view {:style [style/swatch-base
                         (style/swatch-color-style theme background color)]}
       (when selected?
-        [icon/icon {:name  :icon/check
+        [icon/view {:name  :icon/check
                     :size  20
                     :color (colors/get-color :color/white-100)}])]]))

@@ -50,7 +50,8 @@
                      (dissoc :label)
                      (assoc :type  :outline
                             :size  24
-                            :icons {:right :icon/info}))
+                            :icon  {:name :icon/info
+                                    :side :right}))
            background
            (assoc :background background)
 
@@ -58,7 +59,10 @@
            (assoc :style      (rec.xf/add-styles
                                style/cta-button-dark-solid-style
                                (:style button-props))
-                  :icon-color (colors/get-color :color/white 100)))
+                  :icon       (assoc (:icon button-props {:name :icon/info
+                                                          :side :right})
+                                :color (:color (:icon button-props)
+                                        (colors/get-color :color/white 100)))))
          (:label button-props)]])]))
 
 (defn drawer
