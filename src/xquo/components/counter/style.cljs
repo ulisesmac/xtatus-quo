@@ -21,14 +21,6 @@
    :negative          {:width 32 :padding-left 4 :padding-right 5}
    :four              {:width 42 :padding-left 4.5 :padding-right 4.5}})
 
-(def ^:private default-value-slot-insets
-  {:one               {:top 2 :right 2 :bottom 2 :left 2}
-   :two               {:top 2 :right 0 :bottom 2 :left 0}
-   :three             {:top 2 :right 2 :bottom 2 :left 2}
-   :ninety-nine-plus  {:top 2 :right 2 :bottom 2 :left 3}
-   :negative          {:top 2 :right 3 :bottom 2 :left 2}
-   :four              {:top 2 :right 0 :bottom 2 :left 0}})
-
 (defstyle default-root-base
   {:height        20
    :overflow      :hidden
@@ -81,87 +73,6 @@
     dark-theme?            (colors/get-color color 60)
     :else                  (colors/get-color color 50)))
 
-(defn- default-type-style [color type dark-theme? blur?]
-  (case type
-    :default
-    {:background-color (default-fill-color color dark-theme? blur?)}
-
-    :secondary
-    {:background-color (if dark-theme?
-                         (colors/get-color :color/white 5)
-                         (colors/get-color :color/neutral 80 5))}
-
-    :grey
-    {:background-color (cond
-                         (and dark-theme? blur?) (colors/get-color :color/white 10)
-                         dark-theme?            (colors/get-color :color/neutral 80)
-                         blur?                  (colors/get-color :color/neutral 80 10)
-                         :else                  (colors/get-color :color/neutral 10))}
-
-    :outline
-    {:border-width 1
-     :border-color (outline-border-color dark-theme? blur?)}
-
-    :outline-color
-    {:border-width 1
-     :border-color (outline-color-border-color color dark-theme? blur?)}
-
-    :warning
-    {:background-color (colors/get-color :color/warning 50 10)
-     :border-width     1
-     :border-color     (colors/get-color :color/warning 50 20)}
-
-    :error
-    {:background-color (colors/get-color :color/danger 50 10)
-     :border-width     1
-     :border-color     (colors/get-color :color/danger 50 20)}
-
-    {:background-color (cond
-                         (and dark-theme? blur?) (colors/get-color color 50)
-                         dark-theme?            (colors/get-color color 60)
-                         :else                  (colors/get-color color 50))}))
-
-(defn- large-type-style [color type dark-theme? blur?]
-  (case type
-    :default
-    {:background-color (if dark-theme?
-                         (colors/get-color color 60)
-                         (colors/get-color color 50))}
-
-    :secondary
-    {:background-color (if dark-theme?
-                         (colors/get-color :color/white 5)
-                         (colors/get-color :color/neutral 80 5))}
-
-    :grey
-    {:background-color (cond
-                         (and dark-theme? blur?) (colors/get-color :color/white 10)
-                         dark-theme?            (colors/get-color :color/neutral 80)
-                         blur?                  (colors/get-color :color/neutral 80 10)
-                         :else                  (colors/get-color :color/neutral 10))}
-
-    :outline
-    {:border-width 1
-     :border-color (outline-border-color dark-theme? blur?)}
-
-    :outline-color
-    {:border-width 1
-     :border-color (outline-color-border-color color dark-theme? blur?)}
-
-    :warning
-    {:background-color (colors/get-color :color/warning 50 10)
-     :border-width     1
-     :border-color     (colors/get-color :color/warning 50 20)}
-
-    :error
-    {:background-color (colors/get-color :color/danger 50 10)
-     :border-width     1
-     :border-color     (colors/get-color :color/danger 50 20)}
-
-    {:background-color (if dark-theme?
-                         (colors/get-color color 60)
-                         (colors/get-color color 50))}))
-
 (defn default-root-style [color layout-key type dark-theme? blur?]
   (style {:width            (get default-widths layout-key)
           :background-color (when (and (= type :default) dark-theme? blur?)
@@ -169,21 +80,78 @@
 
 (defn default-surface-style [color layout-key type dark-theme? blur?]
   (let [horizontal-inset (if (= layout-key :one) 2 0)]
-    (style (merge {:top    2
-                   :right  horizontal-inset
-                   :bottom 2
-                   :left   horizontal-inset}
-                  (default-type-style color type dark-theme? blur?)))))
+    (style {:top              2
+            :right            horizontal-inset
+            :bottom           2
+            :left             horizontal-inset
+            :background-color (case type
+                                :default (default-fill-color color dark-theme? blur?)
+                                :secondary (if dark-theme?
+                                             (colors/get-color :color/white 5)
+                                             (colors/get-color :color/neutral 80 5))
+                                :grey (cond
+                                        (and dark-theme? blur?) (colors/get-color :color/white 10)
+                                        dark-theme?            (colors/get-color :color/neutral 80)
+                                        blur?                  (colors/get-color :color/neutral 80 10)
+                                        :else                  (colors/get-color :color/neutral 10))
+                                :warning (colors/get-color :color/warning 50 10)
+                                :error (colors/get-color :color/danger 50 10)
+                                (cond
+                                  (and dark-theme? blur?) (colors/get-color color 50)
+                                  dark-theme?            (colors/get-color color 60)
+                                  :else                  (colors/get-color color 50)))
+            :border-width     (case type
+                                (:outline :outline-color :warning :error) 1
+                                nil)
+            :border-color     (case type
+                                :outline (outline-border-color dark-theme? blur?)
+                                :outline-color (outline-color-border-color color dark-theme? blur?)
+                                :warning (colors/get-color :color/warning 50 20)
+                                :error (colors/get-color :color/danger 50 20)
+                                nil)})))
 
 (defn default-value-slot-style [layout-key]
-  (style (get default-value-slot-insets layout-key)))
+  (style {:top    2
+          :right  (case layout-key
+                    (:two :four) 0
+                    :negative 3
+                    2)
+          :bottom 2
+          :left   (case layout-key
+                    :ninety-nine-plus 3
+                    2)}))
 
 (defn large-root-style [color layout-key type dark-theme? blur?]
   (let [{:keys [width padding-left padding-right]} (get large-layouts layout-key)]
-    (style (merge {:width         width
-                   :padding-left  padding-left
-                   :padding-right padding-right}
-                  (large-type-style color type dark-theme? blur?)))))
+    (style {:width            width
+            :padding-left     padding-left
+            :padding-right    padding-right
+            :background-color (case type
+                                :default (if dark-theme?
+                                           (colors/get-color color 60)
+                                           (colors/get-color color 50))
+                                :secondary (if dark-theme?
+                                             (colors/get-color :color/white 5)
+                                             (colors/get-color :color/neutral 80 5))
+                                :grey (cond
+                                        (and dark-theme? blur?) (colors/get-color :color/white 10)
+                                        dark-theme?            (colors/get-color :color/neutral 80)
+                                        blur?                  (colors/get-color :color/neutral 80 10)
+                                        :else                  (colors/get-color :color/neutral 10))
+                                :warning (colors/get-color :color/warning 50 10)
+                                :error (colors/get-color :color/danger 50 10)
+                                (if dark-theme?
+                                  (colors/get-color color 60)
+                                  (colors/get-color color 50)))
+            :border-width     (case type
+                                (:outline :outline-color :warning :error) 1
+                                nil)
+            :border-color     (case type
+                                :outline (outline-border-color dark-theme? blur?)
+                                :outline-color (outline-color-border-color color dark-theme? blur?)
+                                :warning (colors/get-color :color/warning 50 20)
+                                :error (colors/get-color :color/danger 50 20)
+                                nil)})))
 
 (defn large-value-text-style [layout-key]
   (case layout-key
