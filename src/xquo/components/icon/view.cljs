@@ -90,7 +90,8 @@
     [:rn/view {:style style} ;; TODO: remove the view for styles
      [(family-component size icon-name) {:name  icon-name
                                          :size  size
-                                         :color color}]]
+                                         :color color
+                                         :allowFontScaling false}]]
     :else
     [:rn/view {:style {:background-color :red}}
      [:rn/text (str (name icon-name) size)]]))

@@ -279,15 +279,225 @@
                    :stroke       color
                    :stroke-width 1.2}]]))
 
+(defn arrow-down-fade-20 [{:keys [color size style]}]
+  (let [color (icon-color color)]
+    [:svg/svg {:width   size
+               :height  size
+               :viewBox "0 0 20 20"
+               :fill    "none"
+               :style   style}
+     [:svg/defs
+      [:svg/linear-gradient {:id             "xquo-arrow-down-fade-20-gradient"
+                             :x1             "6.5"
+                             :y1             "0.708333"
+                             :x2             "6.5"
+                             :y2             "8.5"
+                             :gradient-units "userSpaceOnUse"}
+       [:svg/stop {:stop-color   color
+                   :stop-opacity 0}]
+       [:svg/stop {:offset     "1"
+                   :stop-color color}]]
+      [:svg/mask {:id         "xquo-arrow-down-fade-20-mask"
+                  :mask-type  "alpha"
+                  :mask-units "userSpaceOnUse"
+                  :x          3
+                  :y          2
+                  :width      14
+                  :height     17}
+       [:svg/rect {:width     13
+                   :height    17
+                   :transform "matrix(-1 8.74228e-08 8.74228e-08 1 16.5 2)"
+                   :fill      "url(#xquo-arrow-down-fade-20-gradient)"}]]]
+     [:svg/g {:mask "url(#xquo-arrow-down-fade-20-mask)"}
+      [:svg/path {:fill-rule "evenodd"
+                  :clip-rule "evenodd"
+                  :d         "M9.39996 13.1469L4.9043 9.05994L4.09709 9.94787L9.59709 14.9479L10.0007 15.3148L10.4043 14.9479L15.9043 9.94787L15.0971 9.05994L10.6 13.1482L10.6 2.5L9.39996 2.5L9.39996 13.1469Z"
+                  :fill      color}]]]))
+
+(defn arrow-up-fade-20 [{:keys [color size style]}]
+  (let [color (icon-color color)]
+    [:svg/svg {:width   size
+               :height  size
+               :viewBox "0 0 20 20"
+               :fill    "none"
+               :style   style}
+     [:svg/path {:fill-rule "evenodd"
+                 :clip-rule "evenodd"
+                 :d         "M10.0008 4.68909L10.4044 5.056L15.9044 10.056L15.0972 10.9439L10.0008 6.31084L4.90438 10.9439L4.09717 10.056L9.59717 5.056L10.0008 4.68909Z"
+                 :fill      color}]
+     [:svg/defs
+      [:svg/linear-gradient {:id             "xquo-arrow-up-fade-20-gradient"
+                             :x1             "12"
+                             :y1             "18"
+                             :x2             "12"
+                             :y2             "23.5"
+                             :gradient-units "userSpaceOnUse"}
+       [:svg/stop {:stop-color   color
+                   :stop-opacity 0}]
+       [:svg/stop {:offset     "1"
+                   :stop-color color}]]
+      [:svg/mask {:id         "xquo-arrow-up-fade-20-mask"
+                  :mask-type  "alpha"
+                  :mask-units "userSpaceOnUse"
+                  :x          9
+                  :y          5
+                  :width      2
+                  :height     13}
+       [:svg/rect {:x         11
+                   :y         17.5
+                   :width     2
+                   :height    12
+                   :transform "rotate(-180 11 17.5)"
+                   :fill      "url(#xquo-arrow-up-fade-20-gradient)"}]]]
+     [:svg/g {:mask "url(#xquo-arrow-up-fade-20-mask)"}
+      [:svg/path {:d            "M10 17.5L10 6"
+                  :stroke       color
+                  :stroke-width 1.2}]]]))
+
+(defn arrows-left-right-fade-20 [{:keys [color size style]}]
+  (let [color (icon-color color)]
+    [:svg/svg {:width   size
+               :height  size
+               :viewBox "0 0 20 20"
+               :fill    "none"
+               :style   style}
+     [:svg/path {:fill-rule "evenodd"
+                 :clip-rule "evenodd"
+                 :d         "M12.4517 10.8953L15.952 6.8953L16.2978 6.50017L15.952 6.10505L12.4517 2.1051L11.5486 2.89535L14.7032 6.50018L11.5486 10.1051L12.4517 10.8953ZM7.5487 9.10511L4.0484 13.1052L3.70264 13.5003L4.0484 13.8954L7.5487 17.8954L8.45176 17.1051L5.29722 13.5003L8.45176 9.89535L7.5487 9.10511Z"
+                 :fill      color}]
+     [:svg/defs
+      [:svg/linear-gradient {:id             "xquo-arrows-left-right-fade-20-gradient-a"
+                             :x1             "4"
+                             :y1             "8.00012"
+                             :x2             "4"
+                             :y2             "13.5001"
+                             :gradient-units "userSpaceOnUse"}
+       [:svg/stop {:stop-color   color
+                   :stop-opacity 0}]
+       [:svg/stop {:offset     "1"
+                   :stop-color color}]]
+      [:svg/linear-gradient {:id             "xquo-arrows-left-right-fade-20-gradient-b"
+                             :x1             "1"
+                             :y1             "0.5"
+                             :x2             "1"
+                             :y2             "6"
+                             :gradient-units "userSpaceOnUse"}
+       [:svg/stop {:stop-color   color
+                   :stop-opacity 0}]
+       [:svg/stop {:offset     "1"
+                   :stop-color color}]]
+      [:svg/mask {:id         "xquo-arrows-left-right-fade-20-mask-a"
+                  :mask-type  "alpha"
+                  :mask-units "userSpaceOnUse"
+                  :x          3
+                  :y          5
+                  :width      12
+                  :height     3}
+       [:svg/rect {:x         3
+                   :y         "7.50012"
+                   :width     2
+                   :height    12
+                   :transform "rotate(-90 3 7.50012)"
+                   :fill      "url(#xquo-arrows-left-right-fade-20-gradient-a)"}]]
+      [:svg/mask {:id         "xquo-arrows-left-right-fade-20-mask-b"
+                  :mask-type  "alpha"
+                  :mask-units "userSpaceOnUse"
+                  :x          5
+                  :y          12
+                  :width      12
+                  :height     3}
+       [:svg/rect {:width     2
+                   :height    12
+                   :transform "matrix(4.37114e-08 -1 -1 -4.37114e-08 17 14.5001)"
+                   :fill      "url(#xquo-arrows-left-right-fade-20-gradient-b)"}]]]
+     [:svg/g {:mask "url(#xquo-arrows-left-right-fade-20-mask-a)"}
+      [:svg/path {:d            "M3.5 6.50018L15 6.50018"
+                  :stroke       color
+                  :stroke-width 1.2}]]
+     [:svg/g {:mask "url(#xquo-arrows-left-right-fade-20-mask-b)"}
+      [:svg/path {:d            "M16.5 13.5002L5 13.5002"
+                  :stroke       color
+                  :stroke-width 1.2}]]]))
+
+(defn arrows-top-bottom-fade-20 [{:keys [color size style]}]
+  (let [color (icon-color color)]
+    [:svg/svg {:width   size
+               :height  size
+               :viewBox "0 0 20 20"
+               :fill    "none"
+               :style   style}
+     [:svg/path {:fill-rule "evenodd"
+                 :clip-rule "evenodd"
+                 :d         "M10.8952 7.54854L6.89517 4.04824L6.50005 3.70248L6.10493 4.04824L2.10498 7.54854L2.89523 8.4516L6.50006 5.29706L10.105 8.4516L10.8952 7.54854ZM9.10499 12.4515L13.105 15.9518L13.5002 16.2976L13.8953 15.9518L17.8952 12.4515L17.105 11.5485L13.5002 14.703L9.89522 11.5485L9.10499 12.4515Z"
+                 :fill      color}]
+     [:svg/defs
+      [:svg/linear-gradient {:id             "xquo-arrows-top-bottom-fade-20-gradient-a"
+                             :x1             "8.5"
+                             :y1             "17.5002"
+                             :x2             "8.5"
+                             :y2             "23.0002"
+                             :gradient-units "userSpaceOnUse"}
+       [:svg/stop {:stop-color   color
+                   :stop-opacity 0}]
+       [:svg/stop {:offset     "1"
+                   :stop-color color}]]
+      [:svg/linear-gradient {:id             "xquo-arrows-top-bottom-fade-20-gradient-b"
+                             :x1             "13.5"
+                             :y1             "3.50024"
+                             :x2             "13.5"
+                             :y2             "9.00024"
+                             :gradient-units "userSpaceOnUse"}
+       [:svg/stop {:stop-color   color
+                   :stop-opacity 0}]
+       [:svg/stop {:offset     "1"
+                   :stop-color color}]]
+      [:svg/mask {:id         "xquo-arrows-top-bottom-fade-20-mask-a"
+                  :mask-type  "alpha"
+                  :mask-units "userSpaceOnUse"
+                  :x          5
+                  :y          5
+                  :width      3
+                  :height     13}
+       [:svg/rect {:x         7.5
+                   :y         "17.0002"
+                   :width     2
+                   :height    12
+                   :transform "rotate(180 7.5 17.0002)"
+                   :fill      "url(#xquo-arrows-top-bottom-fade-20-gradient-a)"}]]
+      [:svg/mask {:id         "xquo-arrows-top-bottom-fade-20-mask-b"
+                  :mask-type  "alpha"
+                  :mask-units "userSpaceOnUse"
+                  :x          12
+                  :y          3
+                  :width      3
+                  :height     13}
+       [:svg/rect {:x      12.5
+                   :y      "3.00024"
+                   :width  2
+                   :height 12
+                   :fill   "url(#xquo-arrows-top-bottom-fade-20-gradient-b)"}]]]
+     [:svg/g {:mask "url(#xquo-arrows-top-bottom-fade-20-mask-a)"}
+      [:svg/path {:d            "M6.5 16.5002L6.5 5.00024"
+                  :stroke       color
+                  :stroke-width 1.2}]]
+     [:svg/g {:mask "url(#xquo-arrows-top-bottom-fade-20-mask-b)"}
+      [:svg/path {:d            "M13.5 3.50024L13.5 15.0002"
+                  :stroke       color
+                  :stroke-width 1.2}]]]))
+
 (def icons
   {12 {:icon/bridge  bridge-12
        :icon/loading loading-12}
    16 {:icon/bridge  bridge-16
        :icon/loading loading-16}
-   20 {:icon/bridge         bridge-20
-       :icon/bridge-blur    bridge-blur-20
-       :icon/loading        loading-20
-       :icon/loading-circle loading-circle-20
-       :icon/loading-fade   loading-20}})
+   20 {:icon/arrow-down-fade        arrow-down-fade-20
+       :icon/arrow-top-fade          arrow-up-fade-20
+       :icon/arrows-left-right-fade arrows-left-right-fade-20
+       :icon/arrows-top-bottom-fade arrows-top-bottom-fade-20
+       :icon/bridge                 bridge-20
+       :icon/bridge-blur            bridge-blur-20
+       :icon/loading                loading-20
+       :icon/loading-circle         loading-circle-20
+       :icon/loading-fade           loading-20}})
 
 (def iconset (->> icons vals (mapcat keys) set))
