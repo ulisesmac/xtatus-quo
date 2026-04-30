@@ -1,6 +1,6 @@
 (ns xquo.components.counter.style
-  (:require-macros [reagent-extended-compiler.utils.transforms :refer [defstyle style]])
-  (:require [xquo.foundations.colors :as colors]))
+  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+            [xquo.foundations.colors :as colors]))
 
 (def ^:private default-radius 6)
 (def ^:private large-radius 8)
@@ -21,6 +21,10 @@
    :negative          {:width 32 :padding-left 4 :padding-right 5}
    :four              {:width 42 :padding-left 4.5 :padding-right 4.5}})
 
+(def ^:private value-heights
+  {:default 16
+   :large   20})
+
 (defstyle default-root-base
   {:height        20
    :overflow      :hidden
@@ -39,21 +43,36 @@
 (defstyle large-root-base
   {:height           20
    :overflow         :hidden
+   :position         :relative
    :flex-direction   :row
    :justify-content  :center
    :align-items      :center
    :border-radius    large-radius})
+
+(defstyle large-surface-base
+  {:position      :absolute
+   :top           0
+   :right         0
+   :bottom        0
+   :left          0
+   :border-radius large-radius})
+
+(defstyle large-value-slot-base
+  {:position        :absolute
+   :top             0
+   :right           0
+   :bottom          0
+   :left            0
+   :justify-content :center
+   :align-items     :center})
 
 (defn- outline-color-border-color [color dark-theme? blur?]
   (cond
     (and dark-theme? blur?) (colors/get-color :color/white 10)
     :else                   (colors/get-color color 50 20)))
 
-(defn- outline-color-text-color [color dark-theme? blur?]
-  (cond
-    (and dark-theme? blur?) (colors/get-color :color/white 40)
-    dark-theme?            (colors/get-color color 60)
-    :else                  (colors/get-color color 50)))
+(defn- outline-color-text-color [_color _dark-theme? _blur?]
+  (colors/get-color :color/white 100))
 
 (defn- outline-border-color [dark-theme? blur?]
   (cond
@@ -111,90 +130,60 @@
                                 nil)})))
 
 (defn default-value-slot-style [layout-key]
-  (style {:top    2
-          :right  (case layout-key
-                    (:two :four) 0
-                    :negative 3
-                    2)
-          :bottom 2
-          :left   (case layout-key
-                    :ninety-nine-plus 3
-                    2)}))
+  (let [horizontal-inset (if (= layout-key :one) 2 0)]
+    (style {:top    2
+            :right  horizontal-inset
+            :bottom 2
+            :left   horizontal-inset})))
 
-(defn large-root-style [color layout-key type dark-theme? blur?]
-  (let [{:keys [width padding-left padding-right]} (get large-layouts layout-key)]
-    (style {:width            width
-            :padding-left     padding-left
-            :padding-right    padding-right
-            :background-color (case type
-                                :default (if dark-theme?
-                                           (colors/get-color color 60)
-                                           (colors/get-color color 50))
-                                :secondary (if dark-theme?
-                                             (colors/get-color :color/white 5)
-                                             (colors/get-color :color/neutral 80 5))
-                                :grey (cond
-                                        (and dark-theme? blur?) (colors/get-color :color/white 10)
-                                        dark-theme?            (colors/get-color :color/neutral 80)
-                                        blur?                  (colors/get-color :color/neutral 80 10)
-                                        :else                  (colors/get-color :color/neutral 10))
-                                :warning (colors/get-color :color/warning 50 10)
-                                :error (colors/get-color :color/danger 50 10)
-                                (if dark-theme?
-                                  (colors/get-color color 60)
-                                  (colors/get-color color 50)))
-            :border-width     (case type
-                                (:outline :outline-color :warning :error) 1
-                                nil)
-            :border-color     (case type
-                                :outline (outline-border-color dark-theme? blur?)
-                                :outline-color (outline-color-border-color color dark-theme? blur?)
-                                :warning (colors/get-color :color/warning 50 20)
-                                :error (colors/get-color :color/danger 50 20)
-                                nil)})))
+(defn large-root-style [_color layout-key _type _dark-theme? _blur?]
+  (style {:width (:width (get large-layouts layout-key))}))
 
-(defn large-value-text-style [layout-key]
-  (case layout-key
-    :four
-    (style {:flex-shrink 0})
+(defn large-surface-style [color _layout-key type dark-theme? blur?]
+  (style {:background-color (case type
+                              :default (if dark-theme?
+                                         (colors/get-color color 60)
+                                         (colors/get-color color 50))
+                              :secondary (if dark-theme?
+                                           (colors/get-color :color/white 5)
+                                           (colors/get-color :color/neutral 80 5))
+                              :grey (cond
+                                      (and dark-theme? blur?) (colors/get-color :color/white 10)
+                                      dark-theme?            (colors/get-color :color/neutral 80)
+                                      blur?                  (colors/get-color :color/neutral 80 10)
+                                      :else                  (colors/get-color :color/neutral 10))
+                              :warning (colors/get-color :color/warning 50 10)
+                              :error (colors/get-color :color/danger 50 10)
+                              (if dark-theme?
+                                (colors/get-color color 60)
+                                (colors/get-color color 50)))
+          :border-width     (case type
+                              (:outline :outline-color :warning :error) 1
+                              nil)
+          :border-color     (case type
+                              :outline (outline-border-color dark-theme? blur?)
+                              :outline-color (outline-color-border-color color dark-theme? blur?)
+                              :warning (colors/get-color :color/warning 50 20)
+                              :error (colors/get-color :color/danger 50 20)
+                              nil)}))
 
-    :one
-    (style {:width      "100%"
-            :flex-grow  1
-            :flex-shrink 0
-            :flex-basis 0
-            :min-width  1
-            :min-height 1})
-
-    :ninety-nine-plus
-    (style {:width      "100%"
-            :flex-grow  1
-            :flex-shrink 0
-            :flex-basis 0
-            :min-width  1
-            :min-height 1})
-
-    (style {:height     "100%"
-            :flex-grow  1
-            :flex-shrink 0
-            :flex-basis 0
-            :min-width  1
-            :min-height 1})))
-
-(defn value-text-style [color type dark-theme? blur?]
-  (style {:color     (case type
-                       :default       (colors/get-color :color/white 100)
-                       :outline       (outline-text-color dark-theme?)
-                       :outline-color (outline-color-text-color color dark-theme? blur?)
-                       :warning       (if dark-theme?
-                                        (colors/get-color :color/warning 60)
-                                        (colors/get-color :color/warning 50))
-                       :error         (if dark-theme?
-                                        (colors/get-color :color/danger 60)
-                                        (colors/get-color :color/danger 50))
-                       (if dark-theme?
-                         (colors/get-color :color/white 100)
-                         (colors/get-color :color/neutral 100)))
+(defn value-text-style [color size type dark-theme? blur?]
+  (let [height (get value-heights size)]
+    (style {:color     (case type
+                         :default       (colors/get-color :color/white 100)
+                         :outline       (outline-text-color dark-theme?)
+                         :outline-color (outline-color-text-color color dark-theme? blur?)
+                         :warning       (if dark-theme?
+                                          (colors/get-color :color/warning 60)
+                                          (colors/get-color :color/warning 50))
+                         :error         (if dark-theme?
+                                          (colors/get-color :color/danger 60)
+                                          (colors/get-color :color/danger 50))
+                         (if dark-theme?
+                           (colors/get-color :color/white 100)
+                           (colors/get-color :color/neutral 100)))
+          :height               height
+          :line-height          height
           :text-align           :center
           :text-align-vertical  :center
-          :include-font-padding false}))
+          :include-font-padding false})))

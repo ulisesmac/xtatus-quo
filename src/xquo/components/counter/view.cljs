@@ -22,7 +22,7 @@
               :ellipsize-mode  :clip
               :number-of-lines 1
               :style           [text-style
-                                (counter-style/value-text-style color type dark-theme? blur?)]}
+                                (counter-style/value-text-style color size type dark-theme? blur?)]}
    label])
 
 (defn- default-counter-view [{:keys [blur? color dark-theme? root-props style type value]}]
@@ -50,13 +50,15 @@
                                         counter-style/large-root-base
                                         (counter-style/large-root-style color layout-key type dark-theme? blur?)
                                         style))
-     [value-view {:blur?       blur?
-                  :color       color
-                  :dark-theme? dark-theme?
-                  :size        :large
-                  :text-style  (counter-style/large-value-text-style layout-key)
-                  :type        type}
-      label]]))
+     [:rn/view {:style [counter-style/large-surface-base
+                        (counter-style/large-surface-style color layout-key type dark-theme? blur?)]}]
+     [:rn/view {:style counter-style/large-value-slot-base}
+      [value-view {:blur?       blur?
+                   :color       color
+                   :dark-theme? dark-theme?
+                   :size        :large
+                   :type        type}
+       label]]]))
 
 (defn counter
   "Counter component.

@@ -35,9 +35,6 @@
    :align-items    :center
    :column-gap     8})
 
-(defstyle disabled-state
-  {:opacity 0.3})
-
 (def overlay-base
   rn/style-sheet-absolute-fill)
 
@@ -106,6 +103,12 @@
                                        (blur-background? background))
                                 (colors/get-color :color/white-10)
                                 (colors/get-color color 50 10))})))
+
+(defn disabled-color-style [theme background]
+  (style {:background-color (if (and (dark-theme? theme)
+                                     (blur-background? background))
+                              (colors/get-color :color/neutral-95-70)
+                              (colors/themed theme :color/white-70 :color/neutral-95-70))}))
 
 (defn active-overlay-state-style [active?]
   (style {:opacity                    (if active? 1 0)

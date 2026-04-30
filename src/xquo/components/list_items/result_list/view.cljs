@@ -33,7 +33,7 @@
     - `:right` optional trailing slot rendered as-is
     - `:background` one of `:none` or `:blur` (default `:none`)
     - `:active?` optional boolean (default `false`)
-    - `:disabled?` optional boolean that disables interaction and dims the item
+    - `:disabled?` optional boolean that disables interaction and mutes row background
     - `:unpressable?` optional boolean that renders a static row without any
       `on-press*` handling
     - `:style` optional caller style (map/vector/js style)
@@ -71,7 +71,6 @@
                                   :always
                                   (assoc :style (rec.xf/add-styles
                                                  style/container-base
-                                                 (when disabled? style/disabled-state)
                                                  (:style props)))
                                   (not unpressable?)
                                   (assoc :disabled     disabled?
@@ -117,4 +116,8 @@
        content]]
      (when right
        [:rn/view {:style style/right-slot}
-        right])]]))
+        right])]
+     (when disabled?
+       [:animated/view {:pointer-events :none
+                        :style          [style/overlay-base
+                                         (style/disabled-color-style theme background)]}])]))
