@@ -7,8 +7,11 @@
   "Divider line component.
   - `props` map
     - `:style` optional caller style (map/vector/js style)
-    - Any additional keys are forwarded to `:rn/view`."
+    - Any additional keys are forwarded to the root container."
   [{:as props}]
   (let [theme (context/use-theme)]
-    [:rn/view (update props :style rec.xf/add-styles style/container-base)
+    [:rn/view
+     (-> props
+         (dissoc :layout :entering :exiting)
+         (update :style rec.xf/add-styles style/container-base))
      [:rn/view {:style [style/line-base (style/line-color-style theme)]}]]))
