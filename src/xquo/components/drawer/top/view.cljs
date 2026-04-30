@@ -90,7 +90,17 @@
                         :color (style/icon-color theme blur?)}
                        title-icon)])])
 
-(defn- trailing-view [{:keys [theme blur? info? counter button]}]
+(defn- counter-view [{:keys [theme blur? counter counter-font counter-style]}]
+  (if (vector? counter)
+    counter
+    [text/text {:font            (or counter-font :font/regular-13)
+                :number-of-lines 1
+                :style           [style/counter-text
+                                  (style/counter-text-style theme blur?)
+                                  counter-style]}
+     counter]))
+
+(defn- trailing-view [{:keys [theme blur? info? counter counter-font counter-style button]}]
   (cond
     button
     (let [button-type  (or (:type button) :primary)
@@ -111,26 +121,26 @@
                 :color (style/icon-color theme blur?)}]
 
     counter
-    [text/text {:font            :font/regular-13
-                :number-of-lines 1
-                :style           [style/counter-text
-                                  (style/counter-text-style theme blur?)]}
-     counter]))
+    [counter-view {:theme         theme
+                   :blur?         blur?
+                   :counter       counter
+                   :counter-font  counter-font
+                   :counter-style counter-style}]))
 
-(defn- counter-row-view [{:keys [theme blur? title counter]}]
+(defn- counter-row-view [{:keys [theme blur? title counter counter-font counter-style]}]
   [:rn/view {:style [style/title-row
                      style/title-row-baseline
                      style/title-row-gap-12]}
    [:rn/view {:style style/title-slot}
     [title-view {:theme theme
                  :title title}]]
-   [text/text {:font            :font/regular-13
-               :number-of-lines 1
-               :style           [style/counter-text
-                                 (style/counter-text-style theme blur?)]}
-    counter]])
+   [counter-view {:theme         theme
+                  :blur?         blur?
+                  :counter       counter
+                  :counter-font  counter-font
+                  :counter-style counter-style}]])
 
-(defn- plain-row-view [{:keys [theme blur? title title-icon info? button]}]
+(defn- plain-row-view [{:keys [theme blur? title title-icon info? counter counter-font counter-style button]}]
   [:rn/view {:style [style/title-row
                      style/title-row-center
                      (cond
@@ -144,7 +154,10 @@
    [trailing-view {:theme  theme
                    :blur?  blur?
                    :info?  info?
-                   :button button}]])
+                   :counter       counter
+                   :counter-font  counter-font
+                   :counter-style counter-style
+                   :button        button}]])
 
 (defn- leading-content-view
   [{:keys [theme blur? title description description-icon title-icon leading subcontent
@@ -171,23 +184,28 @@
 
 (defn- standard-content-view
   [{:keys [theme blur? title description context-tags info? counter button
-           title-icon subcontent compact?]}]
+           counter-font counter-style title-icon subcontent compact?]}]
   [:rn/view {:style [style/content-base
                      (if compact?
                        style/content-bottom-8
                        style/content-bottom-12)
                      style/content-column]}
    (if counter
-     [counter-row-view {:theme      theme
-                        :blur?      blur?
-                        :title      title
-                        :counter    counter}]
-     [plain-row-view {:theme       theme
-                      :blur?       blur?
-                      :title       title
-                      :title-icon  title-icon
-                      :info?       info?
-                      :button      button}])
+     [counter-row-view {:theme         theme
+                        :blur?         blur?
+                        :title         title
+                        :counter       counter
+                        :counter-font  counter-font
+                        :counter-style counter-style}]
+     [plain-row-view {:theme         theme
+                      :blur?         blur?
+                      :title         title
+                      :title-icon    title-icon
+                      :info?         info?
+                      :counter       counter
+                      :counter-font  counter-font
+                      :counter-style counter-style
+                      :button        button}])
    (when context-tags
      [:rn/view {:style style/context-row-slot}
       [context-tags-view {:theme        theme
@@ -215,7 +233,9 @@
     - `:description` optional string or vector of segment maps `{:text ... :color :color/...}`
     - `:subcontent` optional custom hiccup rendered in a fixed 24px slot beneath
       the main text content; overflow outside that height remains visible
-    - `:counter` optional right-side counter text (for example `\"00/00\"`)
+    - `:counter` optional right-side counter text or hiccup (for example `\"00/00\"`)
+    - `:counter-font` optional counter text font
+    - `:counter-style` optional caller style for counter text
     - `:info?` optional right-side info icon
     - `:button` optional trailing button props forwarded to `xquo/button`
       and forced to `:size 24`
@@ -230,14 +250,14 @@
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`."
   [{:keys [skip-handle? label compact? title description subcontent counter info? button
-           title-icon description-icon leading context-tags blur? handle-style]
+           counter-font counter-style title-icon description-icon leading context-tags blur? handle-style]
     :or   {title "Title"}
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
                   (dissoc :skip-handle? :label :compact? :title :description :subcontent :counter
-                          :info? :button :title-icon :description-icon :leading :context-tags
-                          :blur? :style :handle-style)
+                          :counter-font :counter-style :info? :button :title-icon
+                          :description-icon :leading :context-tags :blur? :style :handle-style)
                   (assoc :style (rec.xf/add-styles style/container-base (:style props))))
      [drawer-handle {:skip-handle? skip-handle?
                      :handle-style handle-style}]
@@ -256,14 +276,16 @@
                                 :title-icon       title-icon
                                 :leading          leading
                                 :compact?         compact?}]
-         [standard-content-view {:theme       theme
-                                 :blur?       blur?
-                                 :title       title
-                                 :description description
-                                 :subcontent  subcontent
-                                 :context-tags context-tags
-                                 :info?       info?
-                                 :counter     counter
-                                 :button      button
-                                 :title-icon  title-icon
-                                 :compact?    compact?}]))]))
+         [standard-content-view {:theme         theme
+                                 :blur?         blur?
+                                 :title         title
+                                 :description   description
+                                 :subcontent    subcontent
+                                 :context-tags  context-tags
+                                 :info?         info?
+                                 :counter       counter
+                                 :counter-font  counter-font
+                                 :counter-style counter-style
+                                 :button        button
+                                 :title-icon    title-icon
+                                 :compact?      compact?}]))]))
