@@ -24,9 +24,9 @@
   {24 1
    32 0.8})
 
-(def ^:private chevron-icon-scale
-  {24 0.8
-   32 1})
+(def ^:private chevron-icon-size
+  {24 16
+   32 20})
 
 (def ^:private multi-icon-size
   {24 16
@@ -183,7 +183,7 @@
                   :scale 1
                   :size  (get inline-icon-size size)}])))
 
-(defn- label-view [{:keys [blur? dark-theme? label size suffix]}]
+(defn- label-view [{:keys [blur? chevron-icon dark-theme? label size suffix]}]
   (let [title-text-style     (style/title-text-style dark-theme?)
         secondary-text-style (style/secondary-text-style dark-theme? blur?)]
     [:rn/view {:style style/label-row}
@@ -196,23 +196,24 @@
         label]
        label)
      (when suffix
-       [icon/view {:style (style/scaled-icon (get chevron-icon-scale size))
-                   :name  :icon/chevron-right
-                   :size  20
-                   :color (:color secondary-text-style)}])
+       [:rn/view {:style style/suffix-chevron-slot}
+        [icon/view {:name  chevron-icon
+                    :size  (get chevron-icon-size size)
+                    :color (:color secondary-text-style)}]])
      (when suffix
-       (if (string? suffix)
-         [text/text {:style           title-text-style
-                     :font            (get text-font size)
-                     :number-of-lines 1
-                     :ellipsize-mode  :tail}
-          suffix]
-         suffix))]))
+       [:rn/view {:style style/suffix-slot}
+        (if (string? suffix)
+          [text/text {:style           title-text-style
+                      :font            (get text-font size)
+                      :number-of-lines 1
+                      :ellipsize-mode  :tail}
+           suffix]
+          suffix)])]))
 
 (defn- context-tag-body
   [{:keys [blur? color dark-theme? emoji image-source image-sources number number-position
            on-press-in! on-press-out! pressed? pressable? root-props root-style selected-border-style
-           selected? shape size suffix type icon]}
+           selected? shape size suffix chevron-icon type icon]}
    label]
   (let [root-component (if pressable? :rn/pressable :rn/view)
         root-props     (cond-> (assoc root-props :style root-style)
@@ -242,11 +243,12 @@
                      :size            size
                      :type            type}]
       (when (and (not= type :multi) (some? label))
-        [label-view {:blur?       blur?
-                     :dark-theme? dark-theme?
-                     :label       label
-                     :size        size
-                     :suffix      suffix}])]]))
+        [label-view {:blur?               blur?
+                     :chevron-icon        chevron-icon
+                     :dark-theme?         dark-theme?
+                     :label               label
+                     :size                size
+                     :suffix              suffix}])]]))
 
 (defn context-tag
   "Context tag component.
@@ -272,19 +274,25 @@
                 provided it is rendered with the built-in text styling, and
                 when present a chevron is inserted automatically between label
                 and suffix
+    - `:embedded?` optional boolean for tags rendered inside another context tag.
+                   Embedded tags keep their content styling but remove their own
+                   background and right padding.
+    - `:chevron-icon` optional icon used between label and suffix
+                      (default `:icon/chevron-right`)
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to the root `:rn/view`.
   - `label` optional child content for non-`multi` variants; strings use the
     built-in text styling and non-strings are rendered directly."
   ([props]
    (context-tag props nil))
-  ([{:keys [blur? border color emoji image-source image-sources number number-position on-press
+  ([{:keys [blur? border chevron-icon color embedded? emoji image-source image-sources number number-position on-press
             on-press-in on-press-out shape size state style suffix type icon]
-     :or   {blur?           false
-            number-position :end
-            size            24
-            state           :default
-            type            :default}
+     :or   {blur?               false
+            chevron-icon        :icon/chevron-right
+            number-position     :end
+            size                24
+            state               :default
+            type                :default}
      :as   props}
     label]
    (let [{context-color :color
@@ -309,8 +317,8 @@
                                  (when (and emoji (= type :image))
                                    :squircle)
                                  :circle)
-         root-props          (cond-> (dissoc props :blur? :border :emoji :icon :image-source :image-sources
-                                             :color
+         root-props          (cond-> (dissoc props :blur? :border :embedded? :emoji :icon :image-source :image-sources
+                                             :chevron-icon :color
                                              :number :number-position :on-press-in :on-press-out :shape
                                              :size :state :style :suffix :type)
                                (not pressable?)
@@ -332,7 +340,7 @@
                         :root-props            root-props
                         :root-style            (rec.xf/add-styles
                                                 style/root-base
-                                                (style/container size type shape border dark-theme? blur? (:name icon))
+                                                (style/container size type shape border dark-theme? blur? embedded? (:name icon))
                                                 (when pressable?
                                                   (button.style/pressable-type-style theme :grey nil resolved-color false pressed?))
                                                 (when (and (= border :outline)
@@ -345,5 +353,6 @@
                         :shape                 shape
                         :size                  size
                         :suffix                suffix
+                        :chevron-icon          chevron-icon
                         :type                  type}
       label])))

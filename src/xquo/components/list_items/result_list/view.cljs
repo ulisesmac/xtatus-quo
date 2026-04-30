@@ -50,7 +50,6 @@
          theme         :theme} (context/use-theme-color)
 
         overlay-color          (or result-color context-color)
-        _ (def --oc overlay-color)
         [pressed? set-pressed!] (rn/use-state false)
         on-press-in!            (rn/use-callback (fn [event]
                                                    (set-pressed! true)

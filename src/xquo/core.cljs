@@ -6,6 +6,7 @@
             [xquo.components.color-picker.color.view]
             [xquo.components.color-picker.picker.view]
             [xquo.components.counter.step.view]
+            [xquo.components.divider.divider-label.view]
             [xquo.components.divider.divider-line.view]
             [xquo.components.drawer.bottom-actions.view]
             [xquo.components.drawer.drawer.view]
@@ -37,6 +38,7 @@
 (def color xquo.components.color-picker.color.view/color)
 (def color-picker xquo.components.color-picker.picker.view/picker)
 (def step xquo.components.counter.step.view/step)
+(def divider-label xquo.components.divider.divider-label.view/divider-label)
 (def divider-line xquo.components.divider.divider-line.view/divider-line)
 (def bottom-actions xquo.components.drawer.bottom-actions.view/bottom-actions)
 (def drawer xquo.components.drawer.drawer.view/drawer)

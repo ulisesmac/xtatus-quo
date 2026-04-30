@@ -86,6 +86,13 @@
   {:min-width   1
    :flex-shrink 1})
 
+(defstyle suffix-chevron-slot
+  {:flex-shrink 0})
+
+(defstyle suffix-slot
+  {:min-width   1
+   :flex-shrink 1})
+
 (defstyle multi-stack-row
   {:flex-direction :row
    :align-items    :center})
@@ -95,13 +102,13 @@
             (colors/get-color :color/white-100)
             (colors/get-color :color/neutral-100))})
 
-(defn- container-background-color [border dark-theme? blur?]
+(defn- container-background-color [border dark-theme? blur? embedded?]
   (cond
-    (= border :outline)       "transparent"
-    (and dark-theme? blur?) (colors/get-color :color/white-5)
-    dark-theme?             (colors/get-color :color/neutral-90)
-    blur?                   (colors/get-color :color/neutral-80-5)
-    :else                   (colors/get-color :color/neutral-10)))
+    (or embedded? (= border :outline)) "transparent"
+    (and dark-theme? blur?)            (colors/get-color :color/white-5)
+    dark-theme?                        (colors/get-color :color/neutral-90)
+    blur?                              (colors/get-color :color/neutral-80-5)
+    :else                              (colors/get-color :color/neutral-10)))
 
 (defn secondary-text-style [dark-theme? blur?]
   {:color (cond
@@ -138,7 +145,7 @@
     :else
     (/ size 2)))
 
-(defn container [size type shape border dark-theme? blur? icon]
+(defn container [size type shape border dark-theme? blur? embedded? icon]
   (let [layout        (cond
                         (= type :icon)  (get icon-layout size)
                         (= type :multi) (get-in multi-layout [size (some? icon)])
@@ -146,16 +153,19 @@
         padding-left  (if (= border :outline)
                         (dec (:padding-left layout))
                         (:padding-left layout))
+        padding-right (if embedded?
+                        0
+                        (:padding-right layout))
         border-radius (container-border-radius size type shape)]
     (style {:padding-left     padding-left
-            :padding-right    (:padding-right layout)
+            :padding-right    padding-right
             :padding-top      (:padding-top layout)
             :padding-bottom   (:padding-bottom layout)
             :gap              (:gap layout)
             :height           size
             :flex-direction   :row
             :align-items      :center
-            :background-color (container-background-color border dark-theme? blur?)
+            :background-color (container-background-color border dark-theme? blur? embedded?)
             :border-radius    border-radius})))
 
 (defn outline-border [size type shape theme]
@@ -203,7 +213,7 @@
           :height        (multi-stack-item-size size)
           :overflow      :hidden
           :border-width  1
-          :border-color  (container-background-color nil dark-theme? blur?)
+          :border-color  (container-background-color nil dark-theme? blur? false)
           :border-radius (container-border-radius size :multi shape)}))
 
 (defn squircle-surface [size color]

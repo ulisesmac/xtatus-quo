@@ -1,9 +1,7 @@
 (ns xquo.react-native-reanimated
   (:require ["react-native-reanimated"
              :refer [LinearTransition SlideInUp SlideOutUp
-                     useSharedValue withTiming withSpring
-                     FadeIn FadeOut
-                     FadeInUp]
+                     useSharedValue withTiming withSpring FadeIn FadeOut FadeInUp]
              :as reanimated
              :default Animated]
             [applied-science.js-interop :as j])
