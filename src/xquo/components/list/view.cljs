@@ -56,10 +56,13 @@
                           :size  (:size icon 20)
                           :color (:color icon (style/bullet-color theme)))])
       [:rn/view {:style style/content-container}
-       (when title
-         [text/text {:font :font/semibold-13}
-          title])
-       [description-view {:description description}]]
+       (if description
+         [:<>
+          (when title
+            [text/text {:font :font/semibold-13}
+             title])
+          [description-view {:description description}]]
+         [description-view {:description title}])]
       (when button
         [:rn/view {:style style/button-container}
          [button/button (-> button
@@ -70,22 +73,36 @@
 (defn- section-content [{:keys [color items theme visible?]}]
   (let [content-items                        (keep identity items)
         [content-height set-content-height!] (rn/use-state nil)
-        measuring?                           (and (nil? content-height) (not visible?))
+        previous-visible-ref                 (rn/use-ref visible?)
+        previous-visible?                    (.-current previous-visible-ref)
+        visible-changed?                     (not= previous-visible? visible?)
+        [height-transition? set-height-transition!] (rn/use-state false)
+        animate-height?                      (or visible-changed? height-transition?)
+        measuring?                           (not visible?)
         measure-content!                     (rn/use-callback
                                                (fn [event]
                                                  (let [height (j/get-in event [:nativeEvent :layout :height])]
                                                    (when (pos? height)
                                                      (set-content-height! (fn [current-height]
-                                                                            (or current-height height))))))
+                                                                            (if (= current-height height)
+                                                                              current-height
+                                                                              height))))))
                                                [])
-        content-props                        (cond-> {:style [style/section-content
-                                                              (when measuring?
-                                                                style/section-content-measuring)
-                                                              (style/section-content-opacity visible?)]}
-                                               (nil? content-height)
-                                               (assoc :on-layout measure-content!))]
+        content-props                        {:style     [style/section-content
+                                                          (when measuring?
+                                                            style/section-content-measuring)
+                                                          (style/section-content-opacity visible?)]
+                                              :on-layout measure-content!}]
+    (rn/use-effect (fn []
+                     (when visible-changed?
+                       (set! (.-current previous-visible-ref) visible?)
+                       (set-height-transition! true)
+                       (let [timeout-id (js/setTimeout #(set-height-transition! false)
+                                                       style/section-content-transition-duration-ms)]
+                         #(js/clearTimeout timeout-id))))
+                   [visible?])
     [:animated/view {:collapsable false
-                     :style       (style/section-content-container visible? content-height)}
+                     :style       (style/section-content-container visible? content-height animate-height?)}
      (into [:animated/view content-props]
            (map-indexed (fn [index item]
                           [list-item {:color color
@@ -98,10 +115,12 @@
   [{section-style :style
     label-props   :divider-label
     :keys         [color items theme]}]
-  (let [initial-open?     (:initial-open? label-props)
+  (let [collapsible?      (:collapsible? label-props true)
+        initial-open?     (:initial-open? label-props)
         [open? set-open!] (rn/use-state initial-open?)
         on-press          (:on-press label-props)
-        toggleable?       (or on-press (:chevron label-props) (:counter label-props))
+        toggleable?       (and collapsible?
+                                (or on-press (:chevron label-props) (:counter label-props)))
         on-press!         (rn/use-callback
                             (fn [event]
                               (set-open! not)
@@ -119,7 +138,7 @@
      [section-content {:color color
                        :items items
                        :theme theme
-                       :visible? open?}]]))
+                       :visible? (or (not collapsible?) open?)}]]))
 
 (defn- list-item
   [{:keys [color index item theme]}]
@@ -154,6 +173,8 @@
           :items [...]}` renders a divider label plus child items in a shared
         clipped content container. The section owns its open state and keeps
         child items mounted while hiding/showing them.
+        Set `:collapsible? false` inside `:divider-label` to render the section
+        open and keep `:chevron` visual only.
       - `:button` optional `xquo/button` props plus `:label`, rendered on the right
       - `:icon` optional icon props map for `:bullet` items
       - `:on-press` optional row press callback

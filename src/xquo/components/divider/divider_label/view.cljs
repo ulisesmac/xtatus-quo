@@ -8,11 +8,12 @@
             [xquo.foundations.animations :as animations]
             [xquo.react-native :as rn]))
 
-(defn- chevron-view [{:keys [theme blur? open? toggle-duration toggle-timing-function]}]
+(defn- chevron-view [{:keys [theme blur? chevron-icon open? toggle-duration toggle-timing-function]}]
   [:animated/view {:style (style/chevron-state open? toggle-duration toggle-timing-function)}
-   [icon/view {:name  :icon/chevron-down
-               :size  20
-               :color (style/icon-color theme blur?)}]])
+   [icon/view (assoc chevron-icon
+                     :name  (:name chevron-icon :icon/chevron-down)
+                     :size  (:size chevron-icon 20)
+                     :color (:color chevron-icon (style/icon-color theme blur?)))]])
 
 (defn- right-view [{:keys [blur? counter right]}]
   [:rn/view {:style (if right style/right-slot style/counter-slot)}
@@ -22,15 +23,16 @@
                        :blur? blur?}
       counter])])
 
-(defn- content-view [{:keys [theme blur? chevron-side counter open? right title toggle-duration
-                             toggle-timing-function]}]
+(defn- content-view [{:keys [theme blur? chevron-icon chevron-side counter open? right title
+                             toggle-duration toggle-timing-function]}]
   [:<>
    (when (= chevron-side :left)
      [:rn/view {:style style/left-chevron-slot}
-      [chevron-view {:theme theme
-                     :blur? blur?
-                     :open? open?
-                     :toggle-duration toggle-duration
+      [chevron-view {:theme                  theme
+                     :blur?                  blur?
+                     :chevron-icon           chevron-icon
+                     :open?                  open?
+                     :toggle-duration        toggle-duration
                      :toggle-timing-function toggle-timing-function}]])
    [:rn/view {:style style/title-slot}
     [text/text {:font            :font/medium-13
@@ -39,10 +41,11 @@
      title]]
    (when (= chevron-side :right)
      [:rn/view {:style style/right-chevron-slot}
-      [chevron-view {:theme theme
-                     :blur? blur?
-                     :open? open?
-                     :toggle-duration toggle-duration
+      [chevron-view {:theme                  theme
+                     :blur?                  blur?
+                     :chevron-icon           chevron-icon
+                     :open?                  open?
+                     :toggle-duration        toggle-duration
                      :toggle-timing-function toggle-timing-function}]])
    (when (or right counter)
      [right-view {:blur?   blur?
@@ -57,8 +60,13 @@
     - `:title` label text
     - `:initial-open?` optional initial open state (default `false`)
     - `:compact?` optional compact vertical spacing (default `true`)
+    - `:collapsible?` optional boolean for chevron/counter toggle behavior
+      (default `true`)
+    - `:divider-line?` optional boolean for the top divider line
+      (default `true`)
     - `:blur?` optional boolean for blur styling
     - `:chevron` optional `:left` or `:right`
+    - `:chevron-icon` optional icon props map for the chevron slot
     - `:counter` optional right counter value. Forces the chevron to the left.
     - `:right` optional custom right-side hiccup in the counter slot.
     - `:style` optional caller style (map/vector/js style)
@@ -71,27 +79,30 @@
     - `:toggle-timing-function` optional chevron animation timing function
     - Any additional keys are forwarded to the root container."
   [{controlled-open? :open?
-    :keys            [title initial-open? compact? blur? chevron counter right on-press
-                      on-press-in on-press-out disabled? toggle-duration toggle-timing-function]
+    :keys            [title initial-open? compact? collapsible? divider-line? blur? chevron
+                      chevron-icon counter right on-press on-press-in on-press-out disabled?
+                      toggle-duration toggle-timing-function]
     :or   {compact?               true
+           collapsible?           true
+           divider-line?          true
            initial-open?          false
            toggle-duration        (:toggle-duration animations/state-change)
            toggle-timing-function (:transition-timing-function animations/state-change)}
     :as   props}]
   (let [theme                   (context/use-theme)
         chevron-side            (if counter :left chevron)
-        pressable               (or on-press chevron-side)
+        pressable               (or on-press (and collapsible? chevron-side))
         [local-open? set-open!] (rn/use-state initial-open?)
         [pressed? set-pressed!] (rn/use-state false)
         controlled?             (some? controlled-open?)
         open?                   (if controlled? controlled-open? local-open?)
         on-press!               (rn/use-callback
                                   (fn [event]
-                                    (when-not controlled?
+                                    (when (and collapsible? (not controlled?))
                                       (set-open! not))
                                     (when on-press
                                       (on-press event)))
-                                  [controlled? on-press])
+                                  [collapsible? controlled? on-press])
         on-press-in!            (rn/use-callback
                                   (fn [event]
                                     (set-pressed! true)
@@ -107,14 +118,17 @@
         root-component          (if pressable :rn/pressable :rn/view)]
     [root-component
      (-> props
-         (dissoc :title :initial-open? :compact? :blur? :chevron :counter :right :style
-                 :on-press :on-press-in :on-press-out :disabled? :open? :toggle-duration
-                 :toggle-timing-function :layout :entering :exiting)
+         (dissoc :title :initial-open? :compact? :collapsible? :divider-line? :blur?
+                 :chevron :chevron-icon :counter :right :style :on-press :on-press-in
+                 :on-press-out :disabled? :open? :toggle-duration :toggle-timing-function
+                 :layout :entering :exiting)
          (assoc :style (rec.xf/add-styles
                         style/container-base
                         (style/border-color theme blur?)
                         (when compact? style/compact-container)
-                        (when (= chevron-side :right) style/right-chevron-container)
+                        (when-not divider-line?
+                          (style/divider-line-style compact?))
+                        (when (= chevron-side :left) style/left-chevron-container)
                         (:style props)))
          (cond-> pressable (assoc :disabled     disabled?
                                   :on-press     on-press!
@@ -127,6 +141,7 @@
                                          (style/overlay-state pressed?)]}])
      [content-view {:theme           theme
                     :blur?           blur?
+                    :chevron-icon    chevron-icon
                     :chevron-side    chevron-side
                     :counter         counter
                     :open?           open?

@@ -17,15 +17,18 @@
   {:align-self :stretch})
 
 (def section-content-bottom-padding 8)
-(def section-content-transition-duration "300ms")
+(def section-content-transition-duration-ms 300)
+(def section-content-transition-duration (str section-content-transition-duration-ms "ms"))
 (def section-content-transition-timing-function "linear")
 
-(defn section-content-container [visible? height]
-  (cond-> {:align-self                 "stretch"
-           :overflow                   "hidden"
-           :transition-property        "height"
+(defn section-content-container [visible? height animate-height?]
+  (cond-> {:align-self "stretch"
+           :overflow   "hidden"}
+    animate-height?
+    (assoc :transition-property        "height"
            :transition-duration        section-content-transition-duration
-           :transition-timing-function section-content-transition-timing-function}
+           :transition-timing-function section-content-transition-timing-function)
+
     (or height (not visible?))
     (assoc :height (if visible? height 0))))
 

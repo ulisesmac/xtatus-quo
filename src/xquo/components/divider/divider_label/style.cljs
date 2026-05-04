@@ -21,7 +21,11 @@
 (defstyle compact-container
   {:padding-top 7})
 
-(defstyle right-chevron-container
+(defn divider-line-style [compact?]
+  {:border-top-width 0
+   :padding-top      (if compact? 8 16)})
+
+(defstyle left-chevron-container
   {:padding-left 16})
 
 (defstyle title-slot
@@ -34,7 +38,7 @@
    :height          20
    :align-items     :center
    :justify-content :center
-   :margin-right    12})
+   :margin-right    2})
 
 (defstyle right-chevron-slot
   {:width           20
