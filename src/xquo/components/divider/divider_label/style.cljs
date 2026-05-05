@@ -12,18 +12,17 @@
    :align-items      :center
    :overflow         :hidden
    :position         :relative
-   :border-top-width 1
-   :padding-top      15
+   :padding-top      16
    :padding-bottom   8
    :padding-left     20
    :padding-right    20})
 
 (defstyle compact-container
-  {:padding-top 7})
+  {:padding-top 8})
 
 (defn divider-line-style [compact?]
-  {:border-top-width 0
-   :padding-top      (if compact? 8 16)})
+  {:border-top-width 1
+   :padding-top      (if compact? 7 15)})
 
 (defstyle left-chevron-container
   {:padding-left 16})

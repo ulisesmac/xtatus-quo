@@ -124,9 +124,10 @@
                  :layout :entering :exiting)
          (assoc :style (rec.xf/add-styles
                         style/container-base
-                        (style/border-color theme blur?)
                         (when compact? style/compact-container)
-                        (when-not divider-line?
+                        (when divider-line?
+                          (style/border-color theme blur?))
+                        (when divider-line?
                           (style/divider-line-style compact?))
                         (when (= chevron-side :left) style/left-chevron-container)
                         (:style props)))

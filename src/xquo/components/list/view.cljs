@@ -19,6 +19,12 @@
      description]
     description))
 
+(defn- title-view [{:keys [title]}]
+  (if (string? title)
+    [text/text {:font :font/semibold-13}
+     title]
+    title))
+
 (defn- list-element
   [{row-style :style
     :keys     [type button collapsable color description icon on-press
@@ -59,8 +65,7 @@
        (if description
          [:<>
           (when title
-            [text/text {:font :font/semibold-13}
-             title])
+            [title-view {:title title}])
           [description-view {:description description}]]
          [description-view {:description title}])]
       (when button
@@ -179,7 +184,7 @@
       - `:icon` optional icon props map for `:bullet` items
       - `:on-press` optional row press callback
       - `:selected?` marks `:step` items as active
-      - `:title` optional title text
+      - `:title` optional title text or renderable node
       - `:description` required description text
       - `:style` optional item style owned by that row/item
     - `:style` optional caller style (map/vector/js style)
