@@ -71,8 +71,8 @@
     (and dark-theme? blur?) (colors/get-color :color/white 10)
     :else                   (colors/get-color color 50 20)))
 
-(defn- outline-color-text-color [_color _dark-theme? _blur?]
-  (colors/get-color :color/white 100))
+(defn- outline-color-text-color [color dark-theme? _blur?]
+  (colors/get-color color (if dark-theme? 60 50)))
 
 (defn- outline-border-color [dark-theme? blur?]
   (cond
@@ -113,6 +113,7 @@
                                         dark-theme?            (colors/get-color :color/neutral 80)
                                         blur?                  (colors/get-color :color/neutral 80 10)
                                         :else                  (colors/get-color :color/neutral 10))
+                                :outline-color (colors/get-color color (if dark-theme? 60 50) 10)
                                 :warning (colors/get-color :color/warning 50 10)
                                 :error (colors/get-color :color/danger 50 10)
                                 (cond
@@ -152,6 +153,7 @@
                                       dark-theme?            (colors/get-color :color/neutral 80)
                                       blur?                  (colors/get-color :color/neutral 80 10)
                                       :else                  (colors/get-color :color/neutral 10))
+                              :outline-color (colors/get-color color (if dark-theme? 60 50) 10)
                               :warning (colors/get-color :color/warning 50 10)
                               :error (colors/get-color :color/danger 50 10)
                               (if dark-theme?
