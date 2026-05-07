@@ -30,6 +30,7 @@
             [xquo.components.selectors.options.view]
             [xquo.components.selectors.selector.view]
             [xquo.components.tags.context-tag.view]
+            [xquo.components.unified-tab.view]
             [xquo.components.text.view]))
 
 (def button xquo.components.button.view/button)
@@ -65,4 +66,6 @@
 (def options xquo.components.selectors.options.view/view)
 (def selector xquo.components.selectors.selector.view/selector)
 (def context-tag xquo.components.tags.context-tag.view/context-tag)
+(def unified-tab xquo.components.unified-tab.view/view)
+(def unified-tab-content xquo.components.unified-tab.view/unified-tab-content)
 (def text xquo.components.text.view/text)

@@ -8,7 +8,7 @@
 
 (defn nav-surface-color [theme background]
   (case background
-    :white       (colors/get-color :color/white-100)
+    :white       (colors/get-color :color/white)
     :neutral-5   (colors/get-color :color/neutral-5)
     :neutral-90  (colors/get-color :color/neutral-90)
     :neutral-95  (colors/get-color :color/neutral-95)
@@ -17,11 +17,11 @@
     :blur        :transparent
     (if (= theme :theme/dark)
       (colors/get-color :color/neutral-95)
-      (colors/get-color :color/white-100))))
+      (colors/get-color :color/white))))
 
 (defn title-color [theme background]
   (if (or (= theme :theme/dark) (dark-background? background))
-    (colors/get-color :color/white-100)
+    (colors/get-color :color/white)
     (colors/get-color :color/neutral-100)))
 
 (defn description-color [theme background]
@@ -31,7 +31,7 @@
 
 (defn icon-color [theme background]
   (if (or (= theme :theme/dark) (dark-background? background))
-    (colors/get-color :color/white-100)
+    (colors/get-color :color/white)
     (colors/get-color :color/neutral-100)))
 
 (defn dropdown-surface-style [theme background]

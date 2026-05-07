@@ -246,7 +246,6 @@
   - `:wallet-networks` -> up to 2 items
   - `:no-title`, `:token`, `:channel`, `:community`, `:network`, `:custom` -> up to 3 items"
   [{:keys [background left right center center-opacity]
-    :or   {background :white}
     :as   props}]
   (let [theme     (context/use-theme)
         centered? (centered-layout? center)]

@@ -1,7 +1,8 @@
 (ns xquo.react-native-reanimated
   (:require ["react-native-reanimated"
              :refer [LinearTransition SlideInUp SlideOutUp
-                     useSharedValue withTiming withSpring FadeIn FadeOut FadeInUp]
+                     useSharedValue withTiming withSpring FadeIn FadeOut FadeInUp
+                     cubicBezier]
              :as reanimated
              :default Animated]
             [applied-science.js-interop :as j])
@@ -28,6 +29,7 @@
 
 (def with-timing withTiming)
 (def with-spring withSpring)
+(def cubic-bezier cubicBezier)
 
 (defn appear-in []
   (j/call fade-in :duration appear-in-duration))
