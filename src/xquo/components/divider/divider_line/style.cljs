@@ -3,11 +3,10 @@
             [xquo.foundations.colors :as colors]))
 
 (defstyle container-base
-  {:width              "100%"
-   :align-self         :stretch
-   :padding-top        12
-   :padding-bottom     8
-   :padding-horizontal 20})
+  {:width          "100%"
+   :align-self     :stretch
+   :padding-top    12
+   :padding-bottom 8})
 
 (defstyle line-base
   {:height 1})

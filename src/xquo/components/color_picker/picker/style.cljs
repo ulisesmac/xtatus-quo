@@ -5,7 +5,9 @@
   {:width "100%"})
 
 (defstyle content-container-base
-  {:flex-grow 1})
+  {:flex-grow          1
+   :padding-vertical   8
+   :padding-horizontal 16})
 
 (defstyle row-base
   {:flex-direction :row

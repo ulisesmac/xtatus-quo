@@ -13,5 +13,5 @@
     [:rn/view
      (-> props
          (dissoc :layout :entering :exiting)
-         (update :style rec.xf/add-styles style/container-base))
+         (update :style rec.xf/add-styles style/container-base (:style props)))
      [:rn/view {:style [style/line-base (style/line-color-style theme)]}]]))

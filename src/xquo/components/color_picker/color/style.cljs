@@ -47,9 +47,9 @@
 (defn selection-ring-right-style [color]
   {:background-color (colors/get-color color 50 40)})
 
-(defn swatch-color-style [theme background color]
+(defn swatch-color-style [theme blur? color]
   {:background-color (colors/get-color color
                                        (if (and (= theme :theme/dark)
-                                                (not background))
+                                                (not blur?))
                                          60
                                          50))})

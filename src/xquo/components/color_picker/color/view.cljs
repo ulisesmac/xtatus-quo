@@ -12,15 +12,15 @@
   - `props` map
     - `:color` color family keyword (default `:color/primary`)
     - `:selected?` optional boolean
-    - `:background` optional `:blur`
+    - `:blur?` optional boolean
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/pressable`."
-  [{:keys [color selected? background]
+  [{:keys [color selected? blur?]
     :or   {color :color/primary}
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/pressable (-> props
-                       (dissoc :color :selected? :background :style)
+                       (dissoc :color :selected? :blur? :style)
                        (assoc :style (rec.xf/add-styles
                                       style/container-base
                                       (:style props))))
@@ -31,7 +31,7 @@
         [:rn/view {:style [style/selection-ring-right
                            (style/selection-ring-right-style color)]}]])
      [:rn/view {:style [style/swatch-base
-                        (style/swatch-color-style theme background color)]}
+                        (style/swatch-color-style theme blur? color)]}
       (when selected?
         [icon/view {:name  :icon/check
                     :size  20
