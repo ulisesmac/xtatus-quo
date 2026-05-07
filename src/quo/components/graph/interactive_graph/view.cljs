@@ -5,7 +5,7 @@
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.charts :as charts]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [reagent.core :as reagent]))
 
 (def chart-height 375)

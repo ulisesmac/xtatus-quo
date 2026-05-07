@@ -3,7 +3,7 @@
     [quo.context :as quo.context]
     [quo.core :as quo]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.biometric.utils :as biometric]
     [status-im.common.standard-authentication.forgot-password-doc.view :as forgot-password-doc]
     [status-im.common.standard-authentication.password-input.style :as style]

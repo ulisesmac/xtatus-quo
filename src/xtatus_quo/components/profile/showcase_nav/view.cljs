@@ -3,7 +3,7 @@
    [xtatus-quo.components.buttons.button.view :as button]
    [xtatus-quo.components.profile.showcase-nav.style :as style]
    [quo.context :as quo.context]
-   [react-native.core :as rn]))
+   [react-native.corex :as rn]))
 
 (defn- render-button
   [{:keys [icon id]} index _ {:keys [state on-press active-id]}]

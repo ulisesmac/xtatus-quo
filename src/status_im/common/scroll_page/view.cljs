@@ -3,7 +3,7 @@
     [oops.core :as oops]
     [quo.context]
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.reanimated :as reanimated]
     [react-native.safe-area :as safe-area]
     [reagent.core :as reagent]

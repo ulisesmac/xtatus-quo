@@ -5,7 +5,7 @@
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.audio-toolkit :as audio]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.platform :as platform]
     [react-native.slider :as slider]
     [mock.timbre :as log]))

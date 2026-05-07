@@ -6,7 +6,7 @@
     [quo.components.selectors.reaction-resource :as reaction.resource]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [emoji clicks state use-case on-press accessibility-label on-long-press container-style]}]

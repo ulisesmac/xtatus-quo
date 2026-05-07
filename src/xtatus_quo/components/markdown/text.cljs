@@ -2,7 +2,7 @@
   (:require
    [clojure.string :as string]
    [quo.context :as quo.context]
-   [react-native.core :as rn]
+   ;[react-native.corex :as rn]
    [react-native.utils :as rn.utils]
    [reagent-extended-compiler.utils.transforms :as transforms]
    [xtatus-quo.context :as context]
@@ -93,7 +93,7 @@
   (let [[props children] (rn.utils/get-props-and-children argv)
         theme  (quo.context/use-theme)
         styles (text-styles props theme)]
-    (into [rn/text (assoc (dissoc props :style :size :align :weight :color)
+    (into [:rn/text (assoc (dissoc props :style :size :align :weight :color)
                      :style styles)]
           children)))
 

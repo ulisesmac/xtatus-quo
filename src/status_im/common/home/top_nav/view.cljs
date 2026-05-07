@@ -3,7 +3,7 @@
     [cljs-time.core :as t]
     [quo.context]
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.home.top-nav.style :as style]
     [status-im.constants :as constants]
     [status-im.contexts.profile.utils :as profile.utils]

@@ -2,7 +2,7 @@
   (:require
     [quo.core :as quo]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [reagent.core :as reagent]
     [status-im.contexts.preview.quo.preview :as preview]
     [utils.re-frame :as rf]))

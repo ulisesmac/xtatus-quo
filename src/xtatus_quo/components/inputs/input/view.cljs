@@ -4,7 +4,7 @@
             [xtatus-quo.components.inputs.input.style :as style]
             [xtatus-quo.components.markdown.text :as text]
             [quo.context :as quo.context]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [react-native.platform :as platform]))
 
 (defn- label-line

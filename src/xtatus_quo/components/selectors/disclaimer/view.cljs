@@ -6,7 +6,7 @@
     [xtatus-quo.components.selectors.selectors.view :as selectors]
     [quo.context :as context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [checked? blur? accessibility-label container-style on-change icon]} label]

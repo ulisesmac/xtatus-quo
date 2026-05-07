@@ -5,7 +5,7 @@
     [quo.components.settings.reorder-item.style :as style]
     [quo.components.tabs.segmented-tab :as quo]
     [quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn render-tab-item
   [item]

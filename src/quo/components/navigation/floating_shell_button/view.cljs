@@ -2,7 +2,7 @@
   (:require
     [quo.components.buttons.dynamic-button.view :as dynamic-button]
     [quo.components.navigation.floating-shell-button.style :as style]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.reanimated :as reanimated]))
 
 (defn dynamic-button-view

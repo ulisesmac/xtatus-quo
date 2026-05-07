@@ -1,7 +1,7 @@
 (ns status-im.common.data-confirmation-sheet.view
   (:require
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.data-confirmation-sheet.style :as style]
     [status-im.common.events-helper :as events-helper]
     [utils.i18n :as i18n]

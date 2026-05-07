@@ -8,7 +8,7 @@
     [quo.context]
     [quo.foundations.colors :as colors]
     [quo.foundations.gradients :as gradients]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.reanimated :as reanimated]
     [schema.core :as schema]
     [utils.i18n :as i18n]))

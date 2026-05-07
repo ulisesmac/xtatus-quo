@@ -4,7 +4,7 @@
     [quo.core :as quo]
     [quo.foundations.colors :as colors]
     [re-frame.core :as rf]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.fast-image :as fast-image]
     [react-native.reanimated :as reanimated]))
 

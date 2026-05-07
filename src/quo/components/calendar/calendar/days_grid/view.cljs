@@ -4,7 +4,7 @@
     [quo.components.calendar.calendar-day.view :as calendar-day]
     [quo.components.calendar.calendar.days-grid.style :as style]
     [quo.components.calendar.calendar.days-grid.utils :as utils]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn- day-view
   [day _ _ {:keys [year month selection-range on-press customization-color]}]

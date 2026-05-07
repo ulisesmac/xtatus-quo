@@ -1,7 +1,7 @@
 (ns status-im.contexts.preview.quo.drawers.bottom-actions
   (:require
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.contexts.preview.quo.preview :as preview]))
 
 (def button-two "Cancel")

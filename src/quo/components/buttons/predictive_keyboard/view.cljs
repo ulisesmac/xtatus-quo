@@ -5,7 +5,7 @@
     [quo.components.info.info-message.view :as info-message]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.linear-gradient :as linear-gradient]))
 
 (def ^:private gradients

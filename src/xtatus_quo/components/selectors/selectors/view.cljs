@@ -3,7 +3,7 @@
     [xtatus-quo.components.icon :as icons]
     [xtatus-quo.components.selectors.selectors.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn- base-selector
   [{:keys [default-checked? checked? disabled? blur? customization-color on-change container-style

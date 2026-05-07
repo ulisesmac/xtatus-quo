@@ -1,7 +1,7 @@
 (ns quo.components.drawers.drawer-buttons.component-spec
   (:require
     [quo.components.drawers.drawer-buttons.view :as drawer-buttons]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.safe-area :as safe-area]
     [test-helpers.component :as h]))
 

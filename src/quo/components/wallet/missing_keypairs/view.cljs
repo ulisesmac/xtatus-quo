@@ -7,7 +7,7 @@
     [quo.components.wallet.missing-keypairs.style :as style]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [utils.i18n :as i18n]))
 
 (defn title-view

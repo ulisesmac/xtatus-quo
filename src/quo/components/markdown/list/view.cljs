@@ -7,7 +7,7 @@
     [quo.components.tags.context-tag.view :as context-tag]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn get-colors
   [theme blur?]

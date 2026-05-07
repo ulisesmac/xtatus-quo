@@ -1,7 +1,7 @@
 (ns quo.components.password.password-tips.view
   (:require [quo.components.password.password-tips.style :as style]
             [quo.components.password.tips.view :as tips]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [schema.core :as schema]
             [utils.i18n :as i18n]))
 

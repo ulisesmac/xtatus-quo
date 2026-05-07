@@ -4,7 +4,7 @@
             [quo.components.icon :as icon]
             quo.context
             [quo.foundations.colors :as colors]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [schema.core :as schema]))
 
 (defn- view-internal

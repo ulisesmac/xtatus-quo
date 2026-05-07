@@ -1,6 +1,6 @@
 (ns status-im.contexts.preview.quo.component-preview.view
   (:require
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [utils.re-frame :as rf]))
 
 (def ^:private container-style

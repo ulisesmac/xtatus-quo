@@ -1,7 +1,7 @@
 (ns quo.foundations.customization-colors
   (:require
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn get-overlay-color
   [theme pressed? customization-color]

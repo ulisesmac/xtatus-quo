@@ -1,7 +1,7 @@
 (ns status-im.contexts.preview.quo.record-audio.record-audio
   (:require
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.permissions :as permissions]
     [reagent.core :as reagent]
     [status-im.common.alert.effects :as alert.effects]

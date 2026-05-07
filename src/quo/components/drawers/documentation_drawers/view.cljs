@@ -4,7 +4,7 @@
     [quo.components.drawers.documentation-drawers.style :as style]
     [quo.components.markdown.text :as text]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.gesture :as gesture]))
 
 (defn view

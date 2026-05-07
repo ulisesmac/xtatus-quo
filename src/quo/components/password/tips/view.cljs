@@ -2,7 +2,7 @@
   (:require
     [quo.components.markdown.text :as text]
     [quo.components.password.tips.style :as style]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   "Options

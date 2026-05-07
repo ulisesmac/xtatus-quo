@@ -2,7 +2,7 @@
   (:require
     [quo.context]
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.mute-drawer.style :as style]
     [status-im.constants :as constants]
     [utils.i18n :as i18n]

@@ -4,7 +4,7 @@
     [quo.components.settings.category.style :as style]
     [quo.components.settings.settings-item.view :as settings-item]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn settings-category
   [{:keys [label data blur? container-style customization-color]}]

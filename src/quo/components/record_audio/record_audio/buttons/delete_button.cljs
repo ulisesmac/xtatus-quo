@@ -4,7 +4,7 @@
     [quo.components.record-audio.record-audio.helpers :as helpers]
     [quo.components.record-audio.record-audio.style :as style]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.reanimated :as reanimated]))
 
 (defn delete-button

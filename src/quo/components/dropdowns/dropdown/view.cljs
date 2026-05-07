@@ -7,7 +7,7 @@
     [xtatus-quo.components.markdown.text :as text]
     [quo.context]
     [quo.foundations.customization-colors :as customization-colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   "Props:

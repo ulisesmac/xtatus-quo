@@ -5,7 +5,7 @@
     [quo.components.settings.reorder-item.style :as style]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.fast-image :as fast-image]))
 
 (defn view

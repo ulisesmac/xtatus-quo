@@ -7,7 +7,7 @@
             [quo.components.tags.token-tag.view :as token-tag]
             [quo.context]
             [quo.foundations.colors :as colors]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [utils.i18n :as i18n]))
 
 (defn- token-view

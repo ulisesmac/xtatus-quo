@@ -5,7 +5,7 @@
     [quo.components.tags.base-tag :as base-tag]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn outer-resource-container
   [size background-color]

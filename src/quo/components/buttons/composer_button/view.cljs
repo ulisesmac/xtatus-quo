@@ -3,7 +3,7 @@
     [quo.components.buttons.composer-button.style :as style]
     [quo.components.icon :as quo.icons]
     [quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [on-press on-long-press disabled? blur? icon accessibility-label container-style]}]

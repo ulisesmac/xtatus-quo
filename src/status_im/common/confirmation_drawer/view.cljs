@@ -2,7 +2,7 @@
   (:require
     [quo.context]
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [reagent.core :as reagent]
     [status-im.common.confirmation-drawer.style :as style]
     [status-im.constants :as constants]

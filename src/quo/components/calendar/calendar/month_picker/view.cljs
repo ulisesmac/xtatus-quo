@@ -5,7 +5,7 @@
     [quo.components.calendar.calendar.month-picker.utils :as utils]
     [quo.components.markdown.text :as text]
     [quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [utils.number :as utils.number]))
 
 (defn view

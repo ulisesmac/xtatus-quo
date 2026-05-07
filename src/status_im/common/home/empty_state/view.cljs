@@ -1,7 +1,7 @@
 (ns status-im.common.home.empty-state.view
   (:require
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.home.empty-state.style :as style]
     [utils.re-frame :as rf]))
 

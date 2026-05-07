@@ -5,7 +5,7 @@
     [quo.components.list-items.preview-list.properties :as properties]
     [quo.components.tags.number-tag.view :as number-tag]
     [quo.components.utilities.token.view :as token]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.hole-view :as hole-view]))
 
 (defn- preview-item

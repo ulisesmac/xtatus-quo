@@ -1,6 +1,6 @@
 (ns quo.components.avatars.dapp-avatar.view
   (:require [quo.components.avatars.dapp-avatar.style :as style]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [react-native.hole-view :as hole-view]
             [react-native.platform :as platform]
             [schema.core :as schema]))

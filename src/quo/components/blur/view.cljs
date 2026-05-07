@@ -2,7 +2,7 @@
   (:require [quo.context]
             [quo.foundations.colors :as colors]
             [react-native.blur :as blur]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [react-native.platform :as platform]))
 
 (defn- view-android

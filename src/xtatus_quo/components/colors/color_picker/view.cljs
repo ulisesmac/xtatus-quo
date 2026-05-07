@@ -2,7 +2,7 @@
   (:require
    [oops.core :as oops]
    [quo.foundations.colors :as colors]
-   [react-native.core :as rn]
+   [react-native.corex :as rn]
    [reagent.core :as reagent]
    [xtatus-quo.components.icon :as icons]
    [xtatus-quo.components.colors.color-picker.style :as style]))

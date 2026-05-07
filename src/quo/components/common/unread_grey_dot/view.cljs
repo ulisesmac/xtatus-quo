@@ -2,7 +2,7 @@
   (:require
     [quo.components.common.unread-grey-dot.style :as style]
     [quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn unread-grey-dot
   [accessibility-label]

@@ -6,7 +6,7 @@
     [quo.components.messages.author.view :as author]
     [quo.components.selectors.selectors.view :as selectors]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (def container
   {:margin-horizontal  8

@@ -4,7 +4,7 @@
     [quo.components.icons.icons :as icons]
     [quo.components.navigation.bottom-nav-tab.styles :as styles]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.hole-view :as hole-view]
     [react-native.platform :as platform]
     [react-native.reanimated :as reanimated]))

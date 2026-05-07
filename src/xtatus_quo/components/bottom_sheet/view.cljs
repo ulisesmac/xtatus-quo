@@ -1,7 +1,7 @@
 (ns xtatus-quo.components.bottom-sheet.view
   (:require
    [applied-science.js-interop :as j]
-   [react-native.core :as rn]
+   [react-native.corex :as rn]
    [react-native.safe-area :as safe-area]
    [react-native.reanimated :as reanimated]
    [react-native.gesture :as gesture]))

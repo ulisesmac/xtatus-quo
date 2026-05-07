@@ -3,7 +3,7 @@
             [quo.components.markdown.text :as text]
             [quo.components.text-combinations.channel-name.style :as style]
             [quo.context]
-            [react-native.core :as rn]))
+            [react-native.corex :as rn]))
 
 (defn icons
   [{:keys [unlocked? muted? blur?]}]

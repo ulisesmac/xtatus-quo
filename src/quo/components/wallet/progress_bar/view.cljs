@@ -3,7 +3,7 @@
     [quo.components.wallet.progress-bar.schema :as progress-bar-schema]
     [quo.components.wallet.progress-bar.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]))
 
 (defn- view-internal

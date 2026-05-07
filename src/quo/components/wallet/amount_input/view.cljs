@@ -5,7 +5,7 @@
     [quo.components.wallet.amount-input.schema :as amount-input.schema]
     [quo.components.wallet.amount-input.style :as style]
     [quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]))
 
 (defn- amount-button

@@ -1,7 +1,7 @@
 (ns quo.components.settings.reorder-item.items.item-skeleton
   (:require
     [quo.components.settings.reorder-item.style :as style]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [theme]

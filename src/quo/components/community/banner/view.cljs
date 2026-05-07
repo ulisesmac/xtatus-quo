@@ -4,7 +4,7 @@
     [quo.components.markdown.text :as text]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn- card-title-and-description
   [title description theme]

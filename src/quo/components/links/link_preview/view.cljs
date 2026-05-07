@@ -6,7 +6,7 @@
     [quo.components.links.link-preview.style :as style]
     [quo.components.markdown.text :as text]
     [quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.platform :as platform]
     [react-native.svg :as svg]
     [mock.timbre :as log]))

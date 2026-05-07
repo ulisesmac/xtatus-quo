@@ -1,7 +1,7 @@
 (ns quo.components.avatars.token-avatar.view
   (:require [quo.components.avatars.token-avatar.style :as style]
             [quo.components.utilities.token.view :as token]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [react-native.hole-view :as hole-view]
             [react-native.platform :as platform]
             [schema.core :as schema]))

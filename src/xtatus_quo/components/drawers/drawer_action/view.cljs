@@ -2,7 +2,7 @@
   (:require
    [xtatus-quo.components.drawers.drawer-action.style :as style]
    [quo.context]
-   [react-native.core :as rn]
+   [react-native.corex :as rn]
    [xtatus-quo.components.icon :as icon]
    [xtatus-quo.components.inputs.input.view :as input]
    [xtatus-quo.components.markdown.text :as text]

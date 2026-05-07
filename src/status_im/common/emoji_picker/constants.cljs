@@ -1,6 +1,6 @@
 (ns status-im.common.emoji-picker.constants
   (:require
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (def ^:const default-category :people)
 

@@ -6,7 +6,7 @@
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [react-native.clipboard :as clipboard]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.platform :as platform]
     [utils.i18n :as i18n]))
 

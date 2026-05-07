@@ -4,7 +4,7 @@
     [quo.components.markdown.text :as text]
     [quo.components.onboarding.small-option-card.style :as style]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.fast-image :as fast-image]))
 
 (defn- icon-variant

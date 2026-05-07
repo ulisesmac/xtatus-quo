@@ -8,7 +8,7 @@
     [quo.components.wallet.token-input.schema :as component-schema]
     [quo.components.wallet.token-input.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]))
 
 (defn- token-name-text

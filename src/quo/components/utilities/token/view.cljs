@@ -2,7 +2,7 @@
   (:require
     [clojure.string :as string]
     [quo.components.utilities.token.loader :as token-loader]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]
     [utils.number]))
 

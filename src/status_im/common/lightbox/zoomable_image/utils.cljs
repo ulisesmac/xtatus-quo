@@ -1,7 +1,7 @@
 (ns status-im.common.lightbox.zoomable-image.utils
   (:require
     [clojure.string :as string]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.navigation :as navigation]
     [react-native.orientation :as orientation]
     [react-native.platform :as platform]

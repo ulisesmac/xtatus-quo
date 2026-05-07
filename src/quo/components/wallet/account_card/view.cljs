@@ -9,7 +9,7 @@
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [quo.foundations.customization-colors :as customization-colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.linear-gradient :as linear-gradient]
     [schema.core :as schema]))
 

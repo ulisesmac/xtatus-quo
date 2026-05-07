@@ -2,7 +2,7 @@
   (:require
     [quo.core :as quo]
     [quo.foundations.resources :as resources]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.safe-area :as safe-area]
     [reagent.core :as reagent]
     [status-im.common.controlled-input.utils :as controlled-input]

@@ -6,7 +6,7 @@
     [quo.components.markdown.text :as text]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.svg :as svg]))
 
 (def base64-svg-prefix "data:image/svg;base64,")

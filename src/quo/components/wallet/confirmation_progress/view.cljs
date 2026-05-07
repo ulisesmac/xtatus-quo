@@ -2,7 +2,7 @@
   (:require [quo.components.wallet.confirmation-progress.schema :as component-schema]
             [quo.components.wallet.confirmation-progress.style :as style]
             [quo.components.wallet.progress-bar.view :as progress-box]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [schema.core :as schema]))
 
 (def ^:private max-progress 100)

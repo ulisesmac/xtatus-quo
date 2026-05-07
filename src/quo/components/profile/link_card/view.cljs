@@ -4,7 +4,7 @@
             [quo.components.profile.link-card.style :as style]
             [quo.components.utilities.social.view :as social]
             [quo.context]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [react-native.linear-gradient :as linear-gradient]))
 
 (defn view

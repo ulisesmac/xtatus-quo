@@ -6,7 +6,7 @@
     [quo.components.wallet.network-link.style :as style]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.svg :as svg]
     [schema.core :as schema]))
 

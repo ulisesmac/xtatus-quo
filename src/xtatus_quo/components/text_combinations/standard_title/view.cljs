@@ -6,12 +6,12 @@
             [quo.components.tags.tag :as tag]
             [xtatus-quo.components.text-combinations.standard-title.style :as style]
             [quo.context]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [utils.number]))
 
 (defn- right-counter
   [{:keys [blur? counter-left counter-right counter-suffix show-counter-warning?]}]
-  [rn/view {:style style/right-counter}
+  [:rn/view {:style style/right-counter}
    [fraction-counter/view
     {:blur?                 blur?
      :show-counter-warning? show-counter-warning?

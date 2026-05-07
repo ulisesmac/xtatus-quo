@@ -4,7 +4,7 @@
     [quo.components.buttons.button.view :as buttons]
     [quo.components.inputs.profile-input.style :as style]
     [quo.components.inputs.title-input.view :as title-input]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.hole-view :as hole-view]))
 
 (defn profile-input

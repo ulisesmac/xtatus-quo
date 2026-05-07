@@ -5,7 +5,7 @@
     [quo.components.buttons.button.view :as button]
     [quo.components.code.common.style :as style]
     [quo.components.markdown.text :as text]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.linear-gradient :as linear-gradient]
     [react-native.syntax-highlighter :as highlighter]
     [reagent.core :as reagent]))

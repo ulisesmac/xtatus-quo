@@ -6,7 +6,7 @@
     [quo.components.wallet.network-amount.schema :as network-amount-schema]
     [quo.components.wallet.network-amount.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]))
 
 (defn- view-internal

@@ -5,7 +5,7 @@
     [xtatus-quo.components.icon :as icons]
     [xtatus-quo.components.markdown.text :as text]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn- view-internal
   "Options:

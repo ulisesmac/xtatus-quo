@@ -7,7 +7,7 @@
     [quo.components.list-items.preview-list.view :as preview-list]
     [quo.components.markdown.text :as text]
     [quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]))
 
 (defn- internal-view

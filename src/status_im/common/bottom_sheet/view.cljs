@@ -4,7 +4,7 @@
     [quo.context :as quo.context]
     [quo.core :as quo]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.gesture :as gesture]
     [react-native.hooks :as hooks]
     [react-native.reanimated :as reanimated]

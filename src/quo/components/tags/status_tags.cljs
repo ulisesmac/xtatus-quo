@@ -4,7 +4,7 @@
     [xtatus-quo.components.markdown.text :as text]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (def default-container-style
   {:border-radius 20

@@ -3,7 +3,7 @@
     [clojure.string :as string]
     [quo.components.markdown.text :as text]
     [quo.components.notifications.activity-logs-photos.style :as style]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [photos message-text]}]

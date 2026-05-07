@@ -4,7 +4,7 @@
     [quo.components.markdown.text :as text]
     [quo.components.tags.network-tags.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [title networks status blur? container-style] :or {status :default}}]

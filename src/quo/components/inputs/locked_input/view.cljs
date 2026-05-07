@@ -5,7 +5,7 @@
     [quo.components.markdown.text :as text]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn- info-box
   [{:keys [icon value-text theme]}]

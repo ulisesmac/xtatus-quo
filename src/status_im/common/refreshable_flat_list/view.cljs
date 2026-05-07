@@ -1,5 +1,5 @@
 (ns status-im.common.refreshable-flat-list.view
-  (:require [react-native.core :as rn]
+  (:require [react-native.corex :as rn]
             [reagent.core :as reagent]))
 
 (defn view

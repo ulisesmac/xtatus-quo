@@ -1,7 +1,7 @@
 (ns status-im.common.lightbox.text-sheet.view
   (:require
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.gesture :as gesture]
     [react-native.linear-gradient :as linear-gradient]
     [react-native.platform :as platform]

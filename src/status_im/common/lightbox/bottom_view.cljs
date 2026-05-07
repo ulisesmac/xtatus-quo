@@ -1,7 +1,7 @@
 (ns status-im.common.lightbox.bottom-view
   (:require
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.platform :as platform]
     [react-native.reanimated :as reanimated]
     [status-im.common.lightbox.animations :as anim]

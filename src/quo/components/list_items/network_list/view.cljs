@@ -5,7 +5,7 @@
     [quo.components.list-items.network-list.style :as style]
     [quo.components.markdown.text :as text]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]))
 
 (defn- info

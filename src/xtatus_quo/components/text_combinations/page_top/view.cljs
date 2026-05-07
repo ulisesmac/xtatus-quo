@@ -7,7 +7,7 @@
             [quo.components.inputs.recovery-phrase.view :as recovery-phrase]
             [quo.components.inputs.search-input.view :as search-input]
             [quo.context]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [utils.number]
             [xtatus-quo.components.markdown.text :as text]
             [xtatus-quo.components.tags.context-tag.view :as context-tag]
@@ -24,7 +24,7 @@
 
 (defn- header-counter
   [counter-top counter-bottom]
-   [rn/view {:style style/header-counter}
+   [:rn/view {:style style/header-counter}
    [text/text {:style style/header-counter-text
                 :font :font/regular-13}
     (str (format-counter counter-top)
@@ -39,8 +39,8 @@
                            :title               title
                            :right               title-right
                            :accessibility-label title-accessibility-label)]
-    [rn/view {:style style/header}
-     [rn/view {:style style/header-title}
+    [:rn/view {:style style/header}
+     [:rn/view {:style style/header-title}
       (when avatar-props
         (let [avatar-props (assoc avatar-props :size :size-32)]
           (if (:group? avatar-props)
@@ -53,15 +53,15 @@
 (defn- summary-description
   [{:keys [row-1 row-2] :as _summary-props} blur?]
   (let [text-props {:font :font/medium-13}]
-    [rn/view {:style style/summary-description}
+    [:rn/view {:style style/summary-description}
      (when-let [{:keys [text-1 text-2 context-tag-1 context-tag-2]} row-1]
-       [rn/view {:style style/summary-description-row}
+       [:rn/view {:style style/summary-description-row}
         [text/text text-props text-1]
         [context-tag/view (assoc context-tag-1 :size 24 :blur? blur?)]
         [text/text text-props text-2]
         [context-tag/view (assoc context-tag-2 :size 24 :blur? blur?)]])
      (when-let [{:keys [text-1 text-2 context-tag-1 context-tag-2]} row-2]
-       [rn/view {:style style/summary-description-row}
+       [:rn/view {:style style/summary-description-row}
         [text/text text-props text-1]
         [context-tag/view (assoc context-tag-1 :size 24 :blur? blur?)]
         [text/text text-props text-2]
@@ -69,56 +69,56 @@
 
 (defn- community-logo
   [image]
-  [rn/view {:accessibility-label :community-logo}
-   [rn/image
+  [:rn/view {:accessibility-label :community-logo}
+   [:rn/image
     {:source image
      :style  style/community-logo}]
-   [rn/view {:style style/community-logo-ring}]])
+   [:rn/view {:style style/community-logo-ring}]])
 
 (defn- description-container
   [{:keys             [description description-text collection-text community-text blur?
                        collection-image community-image description-accessibility-label]
     context-tag-props :context-tag
     summary-props     :summary}]
-  [rn/view {:accessibility-label description-accessibility-label}
+  [:rn/view {:accessibility-label description-accessibility-label}
    (cond
      (and (= description :text) (not (string/blank? description-text)))
      [text/text {:font :font/regular-15}
       description-text]
 
      (and (= description :context-tag) context-tag-props)
-     [rn/view {:style style/context-tag-description}
+     [:rn/view {:style style/context-tag-description}
       [context-tag/view (assoc context-tag-props :size 24 :blur? blur?)]]
 
      (and (= description :summary) summary-props)
      [summary-description summary-props blur?]
 
      (= description :collection)
-     [rn/view {:style style/image-text-description}
+     [:rn/view {:style style/image-text-description}
       [collection-avatar/view {:image collection-image}]
       [text/text {:font :font/semibold-15}
        collection-text]]
 
      (= description :community)
-     [rn/view {:style style/image-text-description}
+     [:rn/view {:style style/image-text-description}
       [community-logo community-image]
       [text/text {:font :font/semibold-15}
        community-text]])])
 
 (defn- emoji-dash
   [emojis]
-  (into [rn/view {:style style/emoji-dash}]
+  (into [:rn/view {:style style/emoji-dash}]
         (map (fn [emoji]
-               [rn/view {:style style/emoji}
-                [rn/text {:adjusts-font-size-to-fit true} emoji]]))
+               [:rn/view {:style style/emoji}
+                [:rn/text {:adjusts-font-size-to-fit true} emoji]]))
         emojis))
 
 (defn view [{:keys  [description title input blur? input-props container-style]
              emojis :emoji-dash
              :as    props}]
   (let [theme (context/use-theme)]
-    [rn/view {:style container-style}
-     [rn/view {:style style/top-container}
+    [:rn/view {:style container-style}
+     [:rn/view {:style style/top-container}
       (when (or title input)
         [header props])
       (when description
@@ -126,7 +126,7 @@
       (when emojis
         [emoji-dash emojis])]
      (when input
-       [rn/view {:style (style/input-container theme input blur?)}
+       [:rn/view {:style (style/input-container theme input blur?)}
         (case input
           :search
           [search-input/search-input

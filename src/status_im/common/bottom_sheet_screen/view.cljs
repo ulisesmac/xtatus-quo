@@ -2,7 +2,7 @@
   (:require
     [oops.core :as oops]
     [quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.gesture :as gesture]
     [react-native.platform :as platform]
     [react-native.reanimated :as reanimated]

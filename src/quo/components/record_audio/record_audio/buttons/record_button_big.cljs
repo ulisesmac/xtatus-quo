@@ -7,7 +7,7 @@
     [quo.context]
     [quo.foundations.colors :as colors]
     [react-native.audio-toolkit :as audio]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.reanimated :as reanimated]
     [reagent.core :as reagent]
     [mock.timbre :as log]

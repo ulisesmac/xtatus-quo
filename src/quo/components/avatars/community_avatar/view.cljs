@@ -1,6 +1,6 @@
 (ns quo.components.avatars.community-avatar.view
   (:require [quo.components.avatars.community-avatar.style :as style]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [schema.core :as schema]))
 
 (def ?schema

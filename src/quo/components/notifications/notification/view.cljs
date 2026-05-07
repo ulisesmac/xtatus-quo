@@ -5,7 +5,7 @@
     [quo.components.markdown.text :as text]
     [quo.components.notifications.notification.style :as style]
     [quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn header-container
   [& children]

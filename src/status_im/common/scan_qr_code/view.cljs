@@ -4,7 +4,7 @@
             [quo.core :as quo]
             [quo.foundations.colors :as colors]
             [react-native.camera-kit :as camera-kit]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [react-native.hole-view :as hole-view]
             [react-native.permissions :as permissions]
             [react-native.safe-area :as safe-area]

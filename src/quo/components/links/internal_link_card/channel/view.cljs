@@ -5,7 +5,7 @@
     [quo.components.links.internal-link-card.schema :as component-schema]
     [quo.components.markdown.text :as text]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]))
 
 (defn- description-comp

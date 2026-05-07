@@ -6,7 +6,7 @@
     [quo.components.settings.reorder-item.view :as reorder-item]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.draggable-flatlist :as draggable-flatlist]))
 
 (defn key-fn [item index] (str (:title item) index))

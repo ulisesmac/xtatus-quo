@@ -4,7 +4,7 @@
    [xtatus-quo.components.inputs.title-input.style :as style]
    [xtatus-quo.components.markdown.text :as text]
    [quo.context :as quo.context]
-   [react-native.core :as rn]))
+   [react-native.corex :as rn]))
 
 (defn- pad-0
   [value]

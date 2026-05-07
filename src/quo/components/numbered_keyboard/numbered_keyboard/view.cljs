@@ -3,7 +3,7 @@
     [quo.components.numbered-keyboard.keyboard-key.view :as keyboard-key]
     [quo.components.numbered-keyboard.numbered-keyboard.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn keyboard-item
   [{:keys [item type disabled? on-press on-long-press blur? theme]}]

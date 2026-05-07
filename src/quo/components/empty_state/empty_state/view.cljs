@@ -3,7 +3,7 @@
     [quo.components.buttons.button.view :as button]
     [quo.components.empty-state.empty-state.styles :as styles]
     [quo.components.markdown.text :as text]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.fast-image :as fast-image]))
 
 (defn empty-state

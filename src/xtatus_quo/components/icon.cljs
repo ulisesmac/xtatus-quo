@@ -1,11 +1,12 @@
 (ns xtatus-quo.components.icon
   (:require
-    [clojure.string :as string]
-    [quo.components.icons.icons :as icons]
-    [quo.components.icons.svg :as icons.svg]
-    [quo.context :as quo.context]
-    [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+   [clojure.string :as string]
+   [quo.components.icons.icons :as icons]
+   [quo.components.icons.svg :as icons.svg]
+   [quo.context :as quo.context]
+   [quo.foundations.colors :as colors]
+   ;[react-native.corex :as rn]
+   ))
 
 
 ;; Runtime capture of icon usage for tooling
@@ -54,7 +55,7 @@
                  :style               container-style}
           (valid-color? color) (assoc :color color)
           (valid-color? color-2) (assoc :color-2 color-2))]
-       [rn/image
+       [:rn/image
         {:style               (image-icon-style (assoc props :size size) theme)
          :accessibility-label accessibility-label
          :source              (icons/icon-source (str (name icon-name) size))}])

@@ -2,7 +2,7 @@
   (:require
     [quo.components.ios.drawer-bar.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [_]

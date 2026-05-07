@@ -6,7 +6,7 @@
    [quo.context]
    [quo.foundations.colors :as colors]
    [quo.extra.components.above-keyboard-container.view :as above-keyboard]
-   [react-native.core :as rn]
+   [react-native.corex :as rn]
    [react-native.safe-area :as safe-area]
    [reagent.core :as reagent]
    [status-im.common.emoji-picker.constants :as constants]

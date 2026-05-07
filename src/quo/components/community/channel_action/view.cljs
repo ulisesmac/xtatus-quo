@@ -5,7 +5,7 @@
     [quo.components.icon :as icons]
     [quo.components.markdown.text :as text]
     [quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [big? customization-color label counter-value icon on-press accessibility-label disabled?]}]

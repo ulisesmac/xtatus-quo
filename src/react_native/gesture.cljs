@@ -10,7 +10,7 @@
       gestureHandlerRootHOC
       FlatList
       ScrollView)]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
    ;[react-native.flat-list :as rn-flat-list]
     [reagent.core :as reagent]))
 

@@ -3,7 +3,7 @@
    [quo.components.avatars.user-avatar.style :as style]
    [quo.components.common.no-flicker-image :as no-flicker-image]
    [quo.context]
-   [react-native.core :as rn]
+   [react-native.corex :as rn]
    [utils.image-server :as image-server]
    [utils.string]
    [xtatus-quo.components.markdown.text :as text]))

@@ -3,7 +3,7 @@
     [clojure.string :as string]
     [quo.components.markdown.text :as text]
     [quo.components.profile.collectible.style :as style]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn remaining-tiles
   [amount theme]

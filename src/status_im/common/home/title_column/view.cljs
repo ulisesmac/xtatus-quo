@@ -1,7 +1,7 @@
 (ns status-im.common.home.title-column.view
   (:require
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.home.title-column.style :as style]
     [status-im.common.plus-button.view :as plus-button]
     [utils.i18n :as i18n]))

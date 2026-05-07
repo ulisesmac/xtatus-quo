@@ -1,7 +1,7 @@
 (ns status-im.common.lightbox.zoomable-image.view
   (:require
     [oops.core :refer [oget]]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.gesture :as gesture]
     [react-native.orientation :as orientation]
     [react-native.platform :as platform]

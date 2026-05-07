@@ -2,7 +2,7 @@
   (:require
     [oops.core :refer [oget]]
     [quo.components.tags.tag :as tag]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.linear-gradient :as linear-gradient]
     [react-native.masked-view :as masked-view]
     [reagent.core :as reagent]

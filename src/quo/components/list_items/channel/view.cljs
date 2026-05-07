@@ -6,7 +6,7 @@
     [quo.components.list-items.channel.style :as style]
     [quo.components.markdown.text :as quo.text]
     [quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   "Options:

@@ -2,7 +2,7 @@
   (:require
     [quo.context]
     [quo.foundations.colors :as quo.colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn separator
   [{:keys [style]}]

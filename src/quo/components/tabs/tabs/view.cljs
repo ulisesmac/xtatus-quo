@@ -4,7 +4,7 @@
     [quo.components.tabs.tab.view :as tab]
     [quo.components.tabs.tabs.schema :as component-schema]
     [quo.components.tabs.tabs.style :as style]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.gesture :as gesture]
     [react-native.linear-gradient :as linear-gradient]
     [react-native.masked-view :as masked-view]

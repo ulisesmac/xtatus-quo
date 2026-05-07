@@ -3,7 +3,7 @@
     [clojure.string :as string]
     [quo.core :as quo]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.constants :as constants]
     [status-im.contexts.preview.quo.preview :as preview]))
 

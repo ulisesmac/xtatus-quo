@@ -6,7 +6,7 @@
     [quo.components.wallet.account-overview.style :as style]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]
     [utils.i18n :as i18n]))
 

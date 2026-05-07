@@ -1,7 +1,7 @@
 (ns quo.components.common.dot-separator
   (:require [quo.context :as quo.context]
             [quo.foundations.colors :as colors]
-            [react-native.core :as rn]))
+            [react-native.corex :as rn]))
 
 (defn view
   [{:keys [color size container-style]

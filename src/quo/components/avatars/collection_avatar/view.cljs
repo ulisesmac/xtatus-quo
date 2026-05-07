@@ -2,7 +2,7 @@
   (:require
     [quo.components.avatars.collection-avatar.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.fast-image :as fast-image]))
 
 (defn view

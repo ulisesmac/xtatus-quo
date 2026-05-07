@@ -1,6 +1,6 @@
 (ns status-im.common.alert.effects
   (:require
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [utils.i18n :as i18n]
     [utils.re-frame :as rf]))
 

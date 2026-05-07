@@ -3,7 +3,7 @@
    [xtatus-quo.components.tabs.tab.view :as tab]
    [quo.context :as quo.context]
    [quo.foundations.colors :as colors]
-   [react-native.core :as rn]))
+   [react-native.corex :as rn]))
 
 (def themes-for-blur
   {:theme/light {:background-color colors/neutral-80-opa-5}

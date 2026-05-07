@@ -2,7 +2,7 @@
   (:require
     [quo.context :as quo.context]
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.floating-button-page.floating-container.style :as style]))
 
 (defn- blur-container

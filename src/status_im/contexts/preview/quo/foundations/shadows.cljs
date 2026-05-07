@@ -4,7 +4,7 @@
     [quo.core :as quo]
     [quo.foundations.colors :as colors]
     [quo.foundations.shadows :as shadows]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [reagent.core :as reagent]
     [status-im.contexts.preview.quo.preview :as preview]))
 

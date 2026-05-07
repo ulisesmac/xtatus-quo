@@ -8,7 +8,7 @@
     [quo.components.utilities.token.view :as token]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn- left-view
   [{:keys [label type customization-color emoji image-source token]}]

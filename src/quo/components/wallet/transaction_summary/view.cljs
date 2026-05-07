@@ -6,7 +6,7 @@
     [quo.components.wallet.transaction-summary.schema :as component-schema]
     [quo.components.wallet.transaction-summary.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]
     [utils.i18n :as i18n]))
 

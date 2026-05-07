@@ -2,7 +2,7 @@
   (:require
     [quo.components.blur.view :as blur]
     [xtatus-quo.components.overlay.style :as style]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.safe-area :as safe-area]))
 
 (defn view

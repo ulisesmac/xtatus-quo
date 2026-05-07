@@ -6,7 +6,7 @@
    [quo.foundations.colors :as colors]
    [quo.foundations.customization-colors :as customization-colors]
    ["react-native" :as react-native]
-   [react-native.core :as rn]
+   [react-native.corex :as rn]
    [xtatus-quo.components.icon :as quo.icons]
    [xtatus-quo.components.markdown.text :as text]))
 

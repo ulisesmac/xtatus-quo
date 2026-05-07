@@ -1,7 +1,7 @@
 (ns status-im.contexts.preview.quo.gradient.gradient-cover
   (:require
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [reagent.core :as reagent]
     [status-im.common.resources :as resources]
     [status-im.contexts.preview.quo.preview :as preview]

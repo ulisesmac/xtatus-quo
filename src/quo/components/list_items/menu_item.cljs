@@ -4,7 +4,7 @@
     [quo.components.markdown.text :as text]
     [quo.context]
     [quo.foundations.colors :as colors :refer [theme-colors]]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn themes
   [type theme]

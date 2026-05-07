@@ -7,7 +7,7 @@
     [quo.components.profile.profile-card.style :as style]
     [quo.components.tags.tag :as tag]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.hole-view :as hole-view]
     [utils.i18n :as i18n]))
 

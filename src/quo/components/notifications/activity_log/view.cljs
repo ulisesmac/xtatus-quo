@@ -9,7 +9,7 @@
     [quo.components.tags.status-tags :as status-tags]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [utils.i18n :as i18n]))
 
 (defn- activity-reply-text-input

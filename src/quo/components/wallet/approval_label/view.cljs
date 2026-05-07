@@ -7,7 +7,7 @@
             [quo.components.wallet.approval-label.style :as style]
             quo.context
             [quo.foundations.colors :as colors]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [react-native.hole-view :as hole-view]
             [schema.core :as schema]
             [utils.i18n :as i18n]))

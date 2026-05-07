@@ -2,7 +2,7 @@
   (:require
     [quo.components.links.url-preview-list.style :as style]
     [quo.components.links.url-preview.view :as url-preview]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.gesture :as gesture]))
 
 (defn- use-scroll-to-last-item

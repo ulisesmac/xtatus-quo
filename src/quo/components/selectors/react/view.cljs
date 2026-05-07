@@ -2,7 +2,7 @@
   (:require
     [quo.components.selectors.react-selector.view :as react-selector]
     [quo.components.selectors.react.style :as style]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [reactions on-press on-long-press hide-new-reaction-button? on-press-add use-case

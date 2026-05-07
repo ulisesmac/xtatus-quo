@@ -6,7 +6,7 @@
    [quo.components.dropdowns.dropdown.view :as dropdown]
    [quo.components.dropdowns.network-dropdown.view :as network-dropdown]
    [quo.context]
-   [react-native.core :as rn]
+   [react-native.corex :as rn]
    [react-native.reanimated :as reanimated]
    [utils.worklets.profile-header :as header-worklet]
    [xtatus-quo.components.avatars.account-avatar.view :as account-avatar]

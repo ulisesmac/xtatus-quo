@@ -1,7 +1,7 @@
 (ns quo.components.pin-input.pin.view
   (:require quo.context
             [quo.foundations.colors :as colors]
-            [react-native.core :as rn]))
+            [react-native.corex :as rn]))
 
 (defn view
   [{:keys [theme state blur?]}]

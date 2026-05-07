@@ -1,7 +1,7 @@
 (ns status-im.common.new-device-sheet.view
   (:require
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.events-helper :as events-helper]
     [status-im.common.new-device-sheet.style :as style]
     [utils.i18n :as i18n]

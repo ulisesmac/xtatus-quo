@@ -4,7 +4,7 @@
     [quo.components.settings.category.style :as style]
     [xtatus-quo.components.settings.data-item.view :as data-item]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [label data container-style blur?]}]

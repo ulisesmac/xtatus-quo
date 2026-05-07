@@ -3,7 +3,7 @@
     [quo.components.markdown.text :as text]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.linear-gradient :as linear-gradient]))
 
 (defn view

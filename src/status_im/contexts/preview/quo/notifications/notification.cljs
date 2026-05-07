@@ -1,7 +1,7 @@
 (ns status-im.contexts.preview.quo.notifications.notification
   (:require
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.contexts.preview.quo.code.snippet :as snippet-preview]
     [status-im.contexts.preview.quo.preview :as preview]
     [utils.re-frame :as rf]))

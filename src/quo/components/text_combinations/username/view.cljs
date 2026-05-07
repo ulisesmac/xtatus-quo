@@ -4,7 +4,7 @@
             [quo.components.text-combinations.username.style :as style]
             [quo.context]
             [quo.foundations.colors :as colors]
-            [react-native.core :as rn]))
+            [react-native.corex :as rn]))
 
 (defn- username-text
   [{:keys     [name-type username accessibility-label blur?]

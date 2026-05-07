@@ -1,7 +1,7 @@
 (ns status-im.common.check-before-syncing.view
   (:require
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.check-before-syncing.style :as style]
     [utils.i18n :as i18n]
     [utils.re-frame :as rf]))

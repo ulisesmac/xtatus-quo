@@ -6,7 +6,7 @@
     [quo.components.counter.counter.view :as counter]
     [quo.components.navigation.top-nav.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.hole-view :as hole-view]))
 
 (def notification-dot-hole

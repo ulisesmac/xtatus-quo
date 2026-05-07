@@ -2,7 +2,7 @@
   (:require
     [quo.context]
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.contact-list.style :as style]))
 
 (defn contacts-section-footer

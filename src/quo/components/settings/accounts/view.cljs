@@ -5,7 +5,7 @@
     [quo.components.markdown.text :as text]
     [quo.components.settings.accounts.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn card-background
   [{:keys [customization-color theme]}]

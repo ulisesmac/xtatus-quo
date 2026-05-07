@@ -5,7 +5,7 @@
     [quo.components.icon :as icon]
     [quo.components.markdown.text :as text]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.platform :as platform]
     [react-native.reanimated :as reanimated]
     [react-native.safe-area :as safe-area]))

@@ -1,7 +1,7 @@
 (ns status-im.contexts.preview.quo.avatars.community-avatar
   (:require
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.resources :as resources]
     [status-im.contexts.preview.quo.preview :as preview]))
 

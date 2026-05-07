@@ -3,7 +3,7 @@
             [quo.components.pin-input.pin.view :as pin]
             quo.context
             [quo.foundations.colors :as colors]
-            [react-native.core :as rn]))
+            [react-native.corex :as rn]))
 
 (defn view
   [{:keys [number-of-pins number-of-filled-pins error? info info-error?]

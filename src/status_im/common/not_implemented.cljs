@@ -1,6 +1,6 @@
 (ns status-im.common.not-implemented
   (:require
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn not-implemented
   [content]

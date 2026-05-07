@@ -2,7 +2,7 @@
   (:require
     [quo.core :as quo]
     [quo.foundations.resources :as resources]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.resources :as common.resources]
     [status-im.contexts.preview.quo.preview :as preview]))
 

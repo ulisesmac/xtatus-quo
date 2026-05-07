@@ -7,7 +7,7 @@
     [quo.components.calendar.calendar.weekdays-header.view :as weekdays-header]
     [quo.components.calendar.calendar.years-list.view :as years-list]
     [quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [utils.number :as utils.number]))
 
 (defn view

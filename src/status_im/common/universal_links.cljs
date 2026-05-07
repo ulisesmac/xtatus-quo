@@ -4,7 +4,7 @@
     [goog.string :as gstring]
     [re-frame.core :as re-frame]
     [react-native.async-storage :as async-storage]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]
     [status-im.constants :as constants]
     [status-im.contexts.communities.events :as communities.events]

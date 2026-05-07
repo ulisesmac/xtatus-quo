@@ -2,7 +2,7 @@
   (:require
     [quo.components.common.list.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [data render-fn blur? container-style]}]

@@ -3,7 +3,7 @@
     [quo.components.calendar.calendar-year.style :as style]
     [quo.components.markdown.text :as text]
     [quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [selected? disabled? on-press]} year]

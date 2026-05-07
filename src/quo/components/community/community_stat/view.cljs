@@ -4,7 +4,7 @@
             [quo.components.markdown.text :as quo.text]
             [quo.context :as quo.context]
             [quo.foundations.colors :as colors]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             utils.money))
 
 (defn view

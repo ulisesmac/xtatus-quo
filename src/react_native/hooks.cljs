@@ -2,7 +2,7 @@
   (:require
     ["@react-native-community/hooks" :as hooks]
     [oops.core :as oops]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn- add-keyboard-listener
   [listener callback]

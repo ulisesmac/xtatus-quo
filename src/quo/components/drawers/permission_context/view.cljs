@@ -11,7 +11,7 @@
     [quo.components.tags.token-tag.view :as token-tag]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.platform :as platform]
     [react-native.shadow :as shadow]
     [schema.core :as schema]

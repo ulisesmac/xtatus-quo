@@ -3,7 +3,7 @@
     [xtatus-quo.components.icon :as icons]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (def ^:private sizes
   {:size-48 {:component 48

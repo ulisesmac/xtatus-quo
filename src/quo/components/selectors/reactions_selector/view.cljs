@@ -3,7 +3,7 @@
     [quo.components.selectors.reaction-resource :as reactions.resource]
     [quo.components.selectors.reactions-selector.style :as style]
     [quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [emoji container-style on-press

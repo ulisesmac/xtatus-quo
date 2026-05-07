@@ -4,7 +4,7 @@
    [xtatus-quo.components.icon :as icon]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn- feng-shui
   [{:keys [color theme]}]

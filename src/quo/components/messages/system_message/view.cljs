@@ -6,7 +6,7 @@
     [quo.components.markdown.text :as text]
     [quo.components.messages.system-message.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.reanimated :as reanimated]
     [utils.i18n :as i18n]))
 

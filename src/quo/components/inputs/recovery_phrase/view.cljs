@@ -3,7 +3,7 @@
     [clojure.string :as string]
     [quo.components.inputs.recovery-phrase.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (def ^:private custom-props
   [:customization-color :theme :blur? :cursor-color :multiline :on-focus :on-blur

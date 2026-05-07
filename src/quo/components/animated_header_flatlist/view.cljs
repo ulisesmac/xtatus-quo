@@ -5,7 +5,7 @@
     [quo.components.icon :as icon]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.fast-image :as fast-image]
     [react-native.platform :as platform]
     [react-native.reanimated :as reanimated]

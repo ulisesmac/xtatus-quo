@@ -4,7 +4,7 @@
     [quo.components.markdown.text :as text]
     [quo.components.numbered-keyboard.keyboard-key.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn- label->accessibility-label
   [label]

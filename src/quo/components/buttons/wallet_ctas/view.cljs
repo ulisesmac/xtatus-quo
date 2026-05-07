@@ -4,7 +4,7 @@
     [quo.components.buttons.wallet-ctas.style :as style]
     [quo.components.markdown.text :as text]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [utils.i18n :as i18n]))
 
 

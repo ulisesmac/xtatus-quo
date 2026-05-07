@@ -4,7 +4,7 @@
     [quo.components.community.icon :as icon]
     [quo.components.community.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn- loading-card-view
   [{:keys [width]}]

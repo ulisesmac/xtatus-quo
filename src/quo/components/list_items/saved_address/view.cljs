@@ -7,7 +7,7 @@
     [quo.components.wallet.address-text.view :as address-text]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn- left-container
   [{:keys [blur? name ens address customization-color]}]

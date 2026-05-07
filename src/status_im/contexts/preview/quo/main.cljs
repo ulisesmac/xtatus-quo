@@ -3,7 +3,7 @@
   (:require
     [quo.context]
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [reagent.core :as reagent]
     [status-im.contexts.preview.quo.animated-header-list.animated-header-list
      :as animated-header-list]

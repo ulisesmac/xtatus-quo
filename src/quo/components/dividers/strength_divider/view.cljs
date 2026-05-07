@@ -4,7 +4,7 @@
     [quo.components.icon :as icon]
     [quo.components.markdown.text :as text]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.linear-gradient :as linear-gradient]
     [react-native.svg :as svg]
     [utils.i18n :as i18n]))

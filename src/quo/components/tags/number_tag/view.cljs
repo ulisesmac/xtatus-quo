@@ -4,7 +4,7 @@
     [xtatus-quo.components.markdown.text :as text]
     [quo.components.tags.number-tag.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [number size blur?] :as props}]

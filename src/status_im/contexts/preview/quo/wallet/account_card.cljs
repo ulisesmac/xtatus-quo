@@ -1,7 +1,7 @@
 (ns status-im.contexts.preview.quo.wallet.account-card
   (:require
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [reagent.core :as reagent]
     [status-im.contexts.preview.quo.preview :as preview]
     [utils.collection]))

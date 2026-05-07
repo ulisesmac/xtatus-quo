@@ -1,7 +1,7 @@
 (ns status-im.common.standard-authentication.forgot-password-doc.view
   (:require
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [status-im.common.standard-authentication.forgot-password-doc.style :as style]
     [utils.i18n :as i18n]))
 

@@ -7,7 +7,7 @@
     [xtatus-quo.components.tags.context-tag.view :as context-tag]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [utils.i18n :as i18n]))
 
 (def ^:private role-icon

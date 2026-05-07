@@ -6,7 +6,7 @@
     [quo.foundations.colors :as colors]
     [quo.foundations.resources :as resources]
     [react-native.charts :as charts]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.fast-image :as fast-image]
     [react-native.linear-gradient :as linear-gradient]))
 

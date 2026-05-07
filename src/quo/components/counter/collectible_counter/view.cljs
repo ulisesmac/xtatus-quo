@@ -3,7 +3,7 @@
     [quo.components.counter.collectible-counter.style :as style]
     [quo.components.markdown.text :as text]
     [quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]))
 
 (def ?schema

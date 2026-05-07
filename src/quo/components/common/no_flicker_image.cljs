@@ -1,7 +1,7 @@
 (ns quo.components.common.no-flicker-image
   (:require
     [oops.core :as oops]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.platform :as platform]
     [reagent.core :as reagent]))
 

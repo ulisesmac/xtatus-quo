@@ -3,7 +3,7 @@
     [quo.components.slideshow.slider-bar.schema :as component-schema]
     [quo.components.slideshow.slider-bar.style :as style]
     [quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.reanimated :as reanimated]
     [schema.core :as schema]))
 

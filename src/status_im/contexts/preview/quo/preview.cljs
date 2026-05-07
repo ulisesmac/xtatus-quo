@@ -7,7 +7,7 @@
     [quo.core :as quo]
     [quo.foundations.colors :as colors]
     [react-native.clipboard :as clipboard]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.safe-area :as safe-area]
     [reagent.core :as reagent]
     [status-im.common.resources :as resources]

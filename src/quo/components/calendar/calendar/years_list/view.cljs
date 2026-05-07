@@ -4,7 +4,7 @@
     [quo.components.calendar.calendar.utils :as utils]
     [quo.components.calendar.calendar.years-list.style :as style]
     [quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.linear-gradient :as linear-gradient]))
 
 (defn- year-view

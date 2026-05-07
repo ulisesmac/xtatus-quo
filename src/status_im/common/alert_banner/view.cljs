@@ -2,7 +2,7 @@
   (:require quo.context
             [quo.core :as quo]
             [quo.foundations.colors :as colors]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [react-native.hole-view :as hole-view]
             [react-native.safe-area :as safe-area]
             [status-im.common.alert-banner.style :as style]

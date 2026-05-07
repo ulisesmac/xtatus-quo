@@ -5,7 +5,7 @@
     [quo.components.tags.base-tag :as base-tag]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (def themes
   {:theme/light {:default  {:border-color         colors/neutral-20
@@ -36,7 +36,7 @@
     (if (string? resource)
       [rn/text {:style {:margin-right 4 :font-size dimension}}
        resource]
-      [rn/image
+      [:rn/image
        {:source resource
         :style  {:margin-right 4 :width dimension :height dimension}}])))
 
@@ -99,7 +99,7 @@
         {:keys [border-color
                 blurred-border-color
                 text-color]} (get-in themes [theme state])]
-    [rn/view {:style {:align-items :center}}
+    [:rn/view {:style {:align-items :center}}
      [base-tag/base-tag
       {:id                  id
        :size                size

@@ -7,7 +7,7 @@
     [quo.components.tags.tag :as tag]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.gesture :as gesture]))
 
 (defn community-stats-column

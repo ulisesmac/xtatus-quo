@@ -3,7 +3,7 @@
     [quo.components.buttons.button.view :as button]
     [quo.components.record-audio.record-audio.helpers :as helpers]
     [quo.components.record-audio.record-audio.style :as style]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.reanimated :as reanimated]))
 
 (defn record-button

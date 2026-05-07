@@ -2,7 +2,7 @@
   (:require
     [oops.core :as oops]
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.gesture :as gesture]
     [react-native.platform :as platform]
     [react-native.safe-area :as safe-area]

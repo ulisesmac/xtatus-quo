@@ -1,6 +1,6 @@
 (ns quo.components.community.icon
   (:require
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn community-icon
   [{:keys [images]} size]

@@ -4,7 +4,7 @@
     [quo.components.markdown.text :as quo]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (def themes
   {:theme/light {:default     {:bg           colors/neutral-10

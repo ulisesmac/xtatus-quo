@@ -6,7 +6,7 @@
     [quo.components.wallet.wallet-activity.schema :as component-schema]
     [quo.components.wallet.wallet-activity.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.hole-view :as hole-view]
     [schema.core :as schema]
     [utils.i18n :as i18n]))

@@ -6,7 +6,7 @@
     [quo.components.tags.collectible-tag.schema :as component-schema]
     [quo.components.tags.collectible-tag.style :as style]
     [quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.hole-view :as hole-view]
     [schema.core :as schema]))
 

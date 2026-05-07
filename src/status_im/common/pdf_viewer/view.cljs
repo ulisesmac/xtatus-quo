@@ -2,7 +2,7 @@
   (:require
     [quo.context]
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.pdf-viewer :as pdf-viewer]
     [status-im.common.events-helper :as events-helper]))
 

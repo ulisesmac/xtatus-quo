@@ -2,7 +2,7 @@
   (:require
     [legacy.status-im.ui.components.colors :as legacy-colors]
     [oops.core :refer [oget]]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.platform :as platform]
     [utils.re-frame :as rf]))
 

@@ -4,7 +4,7 @@
     [quo.core :as quo]
     [quo.foundations.colors :as colors]
     [quo.foundations.resources :as quo.resources]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [reagent.core :as reagent]
     [status-im.common.resources :as resources]
     [status-im.contexts.preview.quo.preview :as preview]))

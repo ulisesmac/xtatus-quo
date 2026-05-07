@@ -16,7 +16,7 @@
     [quo.context]
     [quo.foundations.colors :as colors]
     [react-native.audio-toolkit :as audio]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [mock.timbre :as log]
     [utils.datetime :as datetime]))
 

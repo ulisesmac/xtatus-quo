@@ -2,7 +2,7 @@
   (:require
     [clojure.string :as string]
     [quo.core :as quo]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [reagent.core :as r]
     [status-im.constants :as constants]
     [status-im.contexts.preview.quo.preview :as preview]))

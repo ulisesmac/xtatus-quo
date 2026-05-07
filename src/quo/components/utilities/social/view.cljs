@@ -1,6 +1,6 @@
 (ns quo.components.utilities.social.view
   (:require [quo.components.utilities.social.loader :as social-loader]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [schema.core :as schema]
             [utils.number]))
 

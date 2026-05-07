@@ -7,7 +7,7 @@
     [quo.components.markdown.text :as text]
     [quo.components.utilities.token.view :as token]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]))
 
 (defn- info

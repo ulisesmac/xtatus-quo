@@ -14,7 +14,7 @@
             [quo.components.tags.tiny-tag.view :as tiny-tag]
             quo.context
             [quo.foundations.colors :as colors]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [schema.core :as schema]))
 
 (def ?schema

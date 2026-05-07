@@ -2,7 +2,7 @@
   (:require
     [quo.core :as quo]
     [react-native.background-timer :as background-timer]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.gesture :as gesture]
     [react-native.reanimated :as reanimated]
     [reagent.core :as reagent]

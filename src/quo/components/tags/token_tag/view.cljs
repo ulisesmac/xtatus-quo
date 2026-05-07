@@ -6,7 +6,7 @@
     [quo.components.tags.token-tag.style :as style]
     [quo.components.utilities.token.view :as token]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.hole-view :as hole-view]))
 
 (defn view

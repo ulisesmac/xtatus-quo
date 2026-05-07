@@ -15,7 +15,7 @@
     [quo.components.utilities.token.view :as token]
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.reanimated :as reanimated]
     [utils.i18n :as i18n]))
 

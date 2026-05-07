@@ -5,7 +5,7 @@
    [xtatus-quo.components.markdown.text :as text]
    [quo.components.tabs.tab.style :as style]
    [quo.context :as quo.context]
-   [react-native.core :as rn]
+   [react-native.corex :as rn]
    ;[react-native.svg :as svg]
    ))
 

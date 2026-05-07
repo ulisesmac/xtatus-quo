@@ -4,7 +4,7 @@
     [quo.components.icon :as quo.icons]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [on-press on-long-press disabled? icon accessibility-label container-style]}]

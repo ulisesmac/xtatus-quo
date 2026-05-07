@@ -1,7 +1,7 @@
 (ns quo.components.community.channel-actions.view
   (:require
     [quo.components.community.channel-action.view :as channel-action]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [container-style actions]}]

@@ -4,7 +4,7 @@
             [quo.components.icon :as icon]
             [quo.components.markdown.text :as text]
             [quo.context :as quo.context]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [react-native.fast-image :as fast-image]
             [schema.core :as schema]))
 

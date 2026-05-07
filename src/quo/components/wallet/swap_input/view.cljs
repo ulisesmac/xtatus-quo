@@ -10,7 +10,7 @@
             [quo.components.wallet.swap-input.style :as style]
             quo.context
             [quo.foundations.colors :as colors]
-            [react-native.core :as rn]
+            [react-native.corex :as rn]
             [react-native.linear-gradient :as linear-gradient]
             [schema.core :as schema]))
 

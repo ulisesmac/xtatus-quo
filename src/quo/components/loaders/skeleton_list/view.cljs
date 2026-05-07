@@ -4,7 +4,7 @@
     [quo.components.loaders.skeleton-list.style :as style]
     [quo.context]
     [quo.foundations.colors :as colors]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.masked-view :as masked-view]
     [react-native.reanimated :as reanimated]
     [reagent.core :as reagent]))

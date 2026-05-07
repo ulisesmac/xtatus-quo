@@ -10,7 +10,7 @@
     [quo.context :as quo.context]
     [quo.foundations.colors :as colors]
     [quo.foundations.resources :as resources]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [schema.core :as schema]))
 
 (defn- network-amount

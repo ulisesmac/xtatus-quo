@@ -1,7 +1,7 @@
 (ns xtatus-quo.components.empty-state.view
   (:require
    [quo.context]
-   [react-native.core :as rn]
+   [react-native.corex :as rn]
    [xtatus-quo.components.buttons.button.view :as button]
    [xtatus-quo.components.icon :as icon]
    [xtatus-quo.components.markdown.text :as text]

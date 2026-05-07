@@ -3,7 +3,7 @@
    [goog.string :as gstring]
    [quo.context :as quo.context]
    [quo.foundations.colors :as colors]
-   [react-native.core :as rn]
+   [react-native.corex :as rn]
    ;[react-native.svg :as svg]
    ))
 

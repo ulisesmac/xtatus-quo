@@ -5,7 +5,7 @@
     [quo.components.wallet.network-routing.schema :as network-routing-schema]
     [quo.components.wallet.network-routing.style :as style]
     [quo.context :as quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [react-native.gesture :as gesture]
     [react-native.reanimated :as reanimated]
     [schema.core :as schema]

@@ -1,6 +1,6 @@
 (ns quo.components.tags.base-tag
   (:require
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn style-container
   [size disabled border-color border-width background-color labelled? type]

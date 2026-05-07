@@ -3,7 +3,7 @@
     [quo.components.calendar.calendar-day.style :as style]
     [quo.components.markdown.text :as text]
     [quo.context]
-    [react-native.core :as rn]))
+    [react-native.corex :as rn]))
 
 (defn view
   [{:keys [state in-range on-press customization-color]

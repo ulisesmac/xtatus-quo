@@ -7,7 +7,7 @@
     [quo.components.notifications.count-down-circle :as count-down-circle]
     [xtatus-quo.components.notifications.toast.style :as style]
     [quo.context]
-    [react-native.core :as rn]
+    [react-native.corex :as rn]
     [utils.i18n :as i18n]))
 
 (defn toast-action-container
