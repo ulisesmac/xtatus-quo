@@ -1,7 +1,7 @@
 (ns xquo.components.unified-tab.view
   (:require [applied-science.js-interop :as j]
             [react-native-gesture-handler :as gh]
-            [react-native.core :as rn-core]
+            [react-native.safe-area-context :as safe-area]
             [xquo.components.icon.view :as icon]
             [xquo.components.unified-tab.style :as style]
             [xquo.context :as context]
@@ -140,7 +140,7 @@
    & children]
   (let [content-count       (count children)
         last-tab-index      (dec (count items))
-        window-width        (:width (rn-core/use-window-dimensions))
+        window-width        (:width (safe-area/use-window))
         gesture-start-index (rnr/use-shared-value selected-index)
         content-translate-x (unified-tab-worklets/use-content-translate-x tab-progress window-width)
         select-index!       (rn/use-callback

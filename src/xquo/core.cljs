@@ -12,6 +12,7 @@
             [xquo.components.drawer.drawer.view]
             [xquo.components.drawer.drawer-action.view]
             [xquo.components.drawer.top.view]
+            [xquo.components.emoji-picker.view]
             [xquo.components.icon.view]
             [xquo.components.info.info-message.view]
             [xquo.components.info.information-box.view]
@@ -47,6 +48,9 @@
 (def drawer-action xquo.components.drawer.drawer-action.view/drawer-action)
 (def drawer-handle xquo.components.drawer.top.view/drawer-handle)
 (def drawer-top xquo.components.drawer.top.view/drawer-top)
+(def emoji-picker xquo.components.emoji-picker.view/emoji-picker)
+(def emoji-picker-header xquo.components.emoji-picker.view/emoji-picker-header)
+(def emoji-picker-footer xquo.components.emoji-picker.view/emoji-picker-footer)
 (def icon xquo.components.icon.view/view)
 (def info-message xquo.components.info.info-message.view/info-message)
 (def information-box xquo.components.info.information-box.view/information-box)
