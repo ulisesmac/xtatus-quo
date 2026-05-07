@@ -226,7 +226,7 @@
   API:
   - `props` map
     - `:skip-handle?` optional boolean that keeps the top handle container but
-      hides the inner handle bar when true
+      hides the inner handle bar when true. Defaults to true.
     - `:label` optional label variant. When present, title props are ignored.
     - `:compact?` optional boolean for the tighter documentation top spacing
     - `:title` title string or hiccup vector (default `\"Title\"`)
@@ -251,7 +251,8 @@
     - Any additional keys are forwarded to `:rn/view`."
   [{:keys [skip-handle? label compact? title description subcontent counter info? button
            counter-font counter-style title-icon description-icon leading context-tags blur? handle-style]
-    :or   {title "Title"}
+    :or   {skip-handle? true
+           title        "Title"}
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
