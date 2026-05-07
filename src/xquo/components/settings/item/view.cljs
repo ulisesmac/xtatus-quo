@@ -105,7 +105,8 @@
   (let [{action-type        :type
          action-on-press    :on-press
          action-button-text :button-text
-         action-disabled?   :disabled?} action]
+         action-disabled?   :disabled?
+         selector-type      :selector-type} action]
     (cond
       (= action-type :arrow)
       [icon/view {:name  :icon/chevron-right
@@ -114,7 +115,7 @@
 
       (= action-type :selector)
       [:rn/view {:pointer-events :none}
-       [selector/selector (cond-> {:type :toggle}
+       [selector/selector (cond-> {:type (or selector-type :toggle)}
                             action-disabled? (assoc :disabled? true)
                             (or selector-selected?
                                 (contains? action :selected?)) (assoc :selected? selector-selected?))]]
@@ -210,6 +211,8 @@
         - `:text`, `:color`, `:counter`, `:name`, `:icon`
       - `:action` map
         - `:type` one of `:none`, `:arrow`, `:selector`, `:button`
+        - `:selector-type` one of `:toggle`, `:radio`, `:checkbox`,
+          `:filled-checkbox` for selector action
         - `:on-press` callback
         - `:on-select` callback for selector action
         - `:selected?` optional selector selected state
