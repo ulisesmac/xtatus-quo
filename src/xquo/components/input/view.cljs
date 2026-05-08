@@ -167,7 +167,8 @@
         on-content-size-change! (rn/use-callback
                                  (fn [event]
                                    (when multiline?
-                                     (set-content-height! #(updated-content-height % (next-content-height event))))
+                                     (let [next-height (next-content-height event)]
+                                       (set-content-height! #(updated-content-height % next-height))))
                                    (when on-content-size-change
                                      (on-content-size-change event)))
                                  [multiline? on-content-size-change])

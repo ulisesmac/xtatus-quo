@@ -98,7 +98,6 @@
     group-flags           {:index 7 :id :flags}
     nil))
 
-
 (def ^:private categorized-and-partitioned
   (->> emoji-data
        (reduce (fn [acc {:keys [group] :as emoji}]

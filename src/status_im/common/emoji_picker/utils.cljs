@@ -2,7 +2,13 @@
   (:require
     [clojure.string :as string]
     [status-im.common.emoji-picker.constants :as constants]
-    [status-im.common.emoji-picker.data :refer [emoji-data]]))
+    [status-im.common.emoji-picker.data :refer [emoji-data group-flags group-symbols]]))
+
+(def ^:private random-emoji-data
+  (remove #(let [group (:group %)]
+             (or (= group group-flags)
+                 (= group group-symbols)))
+          emoji-data))
 
 (defn search-emoji
   [search-query]
@@ -19,4 +25,4 @@
 
 (defn random-emoji
   []
-  (:unicode (rand-nth emoji-data)))
+  (:unicode (rand-nth random-emoji-data)))

@@ -173,7 +173,8 @@
                             :data                            data
                             :render-item                     render-item!
                             :key-extractor                   key-extractor
-                            :shows-vertical-scroll-indicator false}
+                            :shows-vertical-scroll-indicator false
+                            :keyboard-should-persist-taps    :always}
                      (not searching?) (assoc :scroll-event-throttle 300
                                              :on-scroll scroll!
                                              :get-item-layout get-item-layout!))]))

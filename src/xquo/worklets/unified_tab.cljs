@@ -4,6 +4,7 @@
 
 (def pan-on-begin (.-panOnBegin worklets))
 (def pan-on-end (.-panOnEnd worklets))
+(def pan-on-finalize (.-panOnFinalize worklets))
 (def pan-on-update (.-panOnUpdate worklets))
 (def select-tab (.-selectTab worklets))
 (def use-content-translate-x (.-useContentTranslateX worklets))

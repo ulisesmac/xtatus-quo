@@ -19,6 +19,7 @@
             [xquo.components.input.view]
             [xquo.components.list.view]
             [xquo.components.list-items.result-list.view]
+            [xquo.components.notification.view]
             [xquo.components.page-nav.view]
             [xquo.components.page-top.view]
             [xquo.components.settings.category.view]
@@ -57,6 +58,7 @@
 (def input xquo.components.input.view/input)
 (def list xquo.components.list.view/view)
 (def result-list xquo.components.list-items.result-list.view/result-list)
+(def notification xquo.components.notification.view/notification)
 (def page-nav xquo.components.page-nav.view/page-nav)
 (def page-nav-left-action xquo.components.page-nav.view/nav-left-action)
 (def page-nav-title xquo.components.page-nav.view/nav-title)

@@ -26,6 +26,8 @@
                                                             window-width
                                                             last-tab-index
                                                             select-index!))
+    (j/call gesture :onFinalize (unified-tab-worklets/pan-on-finalize tab-progress
+                                                                      gesture-start-index))
     gesture))
 
 (defn- tab-text [{:keys [content-style dark-theme? ellipsize-mode selected? size]} child]

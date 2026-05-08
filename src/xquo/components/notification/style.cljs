@@ -1,0 +1,32 @@
+(ns xquo.components.notification.style
+  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+            [xquo.foundations.colors :as colors]))
+
+(defstyle container-base
+  {:padding-horizontal 12
+   :align-self         :stretch})
+
+(defstyle root-base
+  {:align-self       :stretch
+   :min-width        0
+   :border-radius    12
+   :padding          10
+   :flex-direction   :row
+   :align-items      :flex-start
+   :column-gap       4})
+
+(defstyle text-slot
+  {:flex      1
+   :min-width 1})
+
+(defn root-color-style [theme]
+  (style {:background-color (colors/themed theme :color/neutral-80-95 :color/white-95)}))
+
+(defn text-color-style [theme]
+  (style {:color (colors/themed theme :color/white :color/neutral-100)}))
+
+(defn icon-color [theme type]
+  (case type
+    :notification/positive (colors/themed theme :color/success)
+    :notification/negative (colors/themed theme :color/danger)
+    (colors/themed theme :color/white-40 :color/neutral-80-40)))
