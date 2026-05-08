@@ -6,7 +6,7 @@
             [xquo.components.unified-tab.style :as style]
             [xquo.context :as context]
             [xquo.foundations.typography :as typography]
-            [xquo.react-native :as rn]
+            [react-native.core :as rn]
             [xquo.react-native-reanimated :as rnr]
             [xquo.worklets.unified-tab :as unified-tab-worklets]))
 

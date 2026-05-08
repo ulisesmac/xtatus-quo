@@ -6,7 +6,7 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]
             [xquo.foundations.animations :as animations]
-            [xquo.react-native :as rn]))
+            [react-native.core :as rn]))
 
 (defn- chevron-view [{:keys [theme blur? chevron-icon open? toggle-duration toggle-timing-function]}]
   [:animated/view {:style (style/chevron-state open? toggle-duration toggle-timing-function)}

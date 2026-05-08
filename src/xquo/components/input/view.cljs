@@ -9,7 +9,7 @@
             [xquo.context :as context]
             [xquo.foundations.colors :as colors]
             [xquo.react-native-reanimated :as rnr]
-            [xquo.react-native :as rn]))
+            [react-native.core :as rn]))
 
 (def clear-button-delay 120)
 (def text-input-content-height 22)

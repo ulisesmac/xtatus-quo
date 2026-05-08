@@ -5,7 +5,7 @@
             [xquo.components.selectors.selector.view :as selector]
             [xquo.components.text.view :as text]
             [xquo.context :as context]
-            [xquo.react-native :as rn]))
+            [react-native.core :as rn]))
 
 (defn- description-view [{:keys [theme background description]}]
   [text/text {:font  :font/regular-13

@@ -6,7 +6,7 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]
             [xquo.foundations.colors :as colors]
-            [xquo.react-native :as rn]))
+            [react-native.core :as rn]))
 
 (def ^:private text-font
   {24 :font/medium-13

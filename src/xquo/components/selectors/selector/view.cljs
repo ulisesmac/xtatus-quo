@@ -4,7 +4,7 @@
             [xquo.components.selectors.selector.style :as style]
             [xquo.context :as context]
             [xquo.foundations.colors :as colors]
-            [xquo.react-native :as rn]))
+            [react-native.core :as rn]))
 
 (defn selector
   "Selectors component.

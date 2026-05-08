@@ -4,7 +4,7 @@
             [xquo.components.selectors.options.style :as style]
             [xquo.components.selectors.selector.view :as selector]
             [xquo.context :as context]
-            [xquo.react-native :as rn]))
+            [react-native.core :as rn]))
 
 (defn- option-view
   [{:keys [component on-select option option-id option-layout option-style selected-id]}]

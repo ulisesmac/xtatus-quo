@@ -4,7 +4,7 @@
             [xquo.components.settings.item.style :as settings-item-style]
             [xquo.foundations.animations :as animations]
             [xquo.foundations.colors :as colors]
-            [xquo.react-native :as rn]))
+            [react-native.core :as rn]))
 
 (defstyle container-base
   {:width            "100%"

@@ -9,7 +9,7 @@
             [xquo.components.list.style :as style]
             [xquo.components.text.view :as text]
             [xquo.context :as context]
-            [xquo.react-native :as rn]))
+            [react-native.core :as rn]))
 
 (declare list-item)
 

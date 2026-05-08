@@ -1,6 +1,6 @@
 (ns xquo.components.list-items.result-list.style
   (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
-            [xquo.react-native :as rn]
+            [react-native.core :as rn]
             [xquo.foundations.animations :as animations]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))

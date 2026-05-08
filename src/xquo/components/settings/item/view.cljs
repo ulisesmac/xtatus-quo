@@ -7,7 +7,7 @@
             [xquo.components.settings.item.style :as style]
             [xquo.components.text.view :as text]
             [xquo.context :as context]
-            [xquo.react-native :as rn]))
+            [react-native.core :as rn]))
 
 (defn- title-view [{:keys [theme title]}]
   [text/text {:font            :font/medium-15

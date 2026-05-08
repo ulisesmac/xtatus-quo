@@ -1,10 +1,8 @@
 (ns xquo.react-native-reanimated
-  (:require ["react-native-reanimated"
-             :refer [LinearTransition SlideInUp SlideOutUp
-                     useSharedValue withTiming withSpring FadeIn FadeOut FadeInUp
-                     cubicBezier]
-             :as reanimated
-             :default Animated]
+  (:require ["react-native-reanimated" :refer [LinearTransition SlideInUp SlideOutUp useSharedValue
+                                               withTiming withSpring FadeIn FadeOut FadeInUp
+                                               cubicBezier]
+             :as reanimated]
             [applied-science.js-interop :as j])
   (:refer-clojure :exclude [set get]))
 

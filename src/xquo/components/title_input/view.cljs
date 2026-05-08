@@ -4,7 +4,7 @@
             [xquo.components.title-input.style :as style]
             [xquo.context :as context]
             [xquo.foundations.colors :as colors]
-            [xquo.react-native :as rn]))
+            [react-native.core :as rn]))
 
 (defn title-input [{:keys [blur? counter-value default-value disabled? max-chars
                            on-blur on-change-text on-focus value]

@@ -4,7 +4,7 @@
             [xquo.components.icon.view :as icon]
             [xquo.components.text.view :as text]
             [xquo.context :as context]
-            [xquo.react-native :as rn]))
+            [react-native.core :as rn]))
 
 (defn- button-text [{:keys [type size background]} content]
   (let [theme (context/use-theme)]
