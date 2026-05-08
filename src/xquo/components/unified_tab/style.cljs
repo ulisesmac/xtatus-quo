@@ -87,6 +87,20 @@
    :justify-content :center
    :gap             4})
 
+(defstyle icon-frame
+  {:position :relative})
+
+(defstyle selected-icon-layer
+  {:position :absolute
+   :top      0
+   :left     0})
+
+(defn icon-layer [visible?]
+  (style {:opacity                    (if visible? 1 0)
+          :transition-property        "opacity"
+          :transition-duration        text-color-transition-duration
+          :transition-timing-function tab-transition-easing}))
+
 (defstyle content-text
   {:min-width   0
    :flex-shrink 1})

@@ -46,6 +46,17 @@
                            index))
                        items)))
 
+(defn- tab-icon [{:keys [icon selected-icon selected?]}]
+  (let [selected-icon (into (assoc icon :color style/selected-content-color)
+                            selected-icon)]
+    [:rn/view {:style          style/icon-frame
+               :pointer-events :none}
+     [:rn/view {:style (style/icon-layer (not selected?))}
+      [icon/view icon]]
+     [:rn/view {:style [style/selected-icon-layer
+                        (style/icon-layer selected?)]}
+      [icon/view selected-icon]]]))
+
 (defn- selected-indicator-view
   [{:keys [blur? dark-theme? gap-translate-x item-count selected-index translate-x type]}]
   (into [:rn/view {:style          style/selected-indicator-frame
@@ -72,11 +83,9 @@
                     :accessibility-state {:selected selected?}}
      [:rn/view {:style style/tab-content}
       (if icon
-        [icon/view (if selected?
-                     (-> icon
-                         (assoc :color style/selected-content-color)
-                         (into selected-icon))
-                     icon)]
+        [tab-icon {:icon          icon
+                   :selected-icon selected-icon
+                   :selected?     selected?}]
         (when emoji
           [tab-text {:dark-theme?    dark-theme?
                      :ellipsize-mode :clip

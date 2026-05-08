@@ -14,7 +14,7 @@
 
 (defn- trailing-view
   [{:keys [theme background selected? selected-provided? arrow? toggle? on-select danger?
-           action-color pressed?]}]
+           action-color arrow-icon pressed?]}]
   (cond
     toggle?
     [:rn/view {:pointer-events :none}
@@ -32,7 +32,7 @@
     [:animated/view {:style (if pressed?
                               style/arrow-slot-pressed-state-style
                               style/arrow-slot-default-state-style)}
-     [icon/view {:name  :icon/chevron-right
+     [icon/view {:name  (or arrow-icon :icon/chevron-right)
                  :size  20
                  :color (style/trailing-icon-color theme background false danger? action-color)}]]))
 
@@ -48,13 +48,14 @@
     - `:danger?` optional boolean
     - `:selected?` optional boolean
     - `:arrow?` optional boolean
+    - `:arrow-icon` optional trailing icon for the arrow slot
     - `:toggle?` optional boolean
     - `:on-select` optional callback used by the toggle variant
     - `:background` optional `:blur`
     - `:style` optional caller style
     - Any additional keys are forwarded to `:rn/pressable`."
   [{:keys [title description color danger? selected? arrow? toggle? background on-select on-press
-           on-press-in on-press-out icon]
+           on-press-in on-press-out icon arrow-icon]
     :or   {title "Action"}
     :as   props}]
   (let [theme                   (context/use-theme)
@@ -90,7 +91,7 @@
                                      (on-press-out event)))
                                  [on-press-out])]
     [:rn/pressable (-> props
-                       (dissoc :title :description :icon :color :danger? :selected? :arrow?
+                       (dissoc :title :description :icon :color :danger? :selected? :arrow? :arrow-icon
                                :toggle? :background :on-select :style :on-press
                                :on-press-in :on-press-out)
                        (assoc :on-press on-press!
@@ -136,5 +137,6 @@
                       :toggle?            toggle?
                       :on-select          on-select
                       :danger?            danger?
-                      :action-color       (or color accent-color)
+                      :action-color       color
+                      :arrow-icon         arrow-icon
                       :pressed?           pressed?}]]]))

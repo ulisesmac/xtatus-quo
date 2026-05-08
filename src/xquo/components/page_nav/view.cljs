@@ -50,6 +50,7 @@
     :title           (= (:text-align center) :center)
     :dropdown        true
     :wallet-networks true
+    :custom          true
     false))
 
 (defn- right-content [{:keys [right center centered-content? theme background]}]

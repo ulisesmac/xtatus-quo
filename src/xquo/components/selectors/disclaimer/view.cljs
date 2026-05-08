@@ -35,9 +35,11 @@
                          :on-select  on-select
                          :style      style/selector-style}]
      [:rn/view {:style style/text-wrapper}
-      [text/text {:font  :font/regular-13
-                  :style {:color (style/text-color theme)}}
-       content]]
+      (if (string? content)
+        [text/text {:font  :font/regular-13
+                    :style {:color (style/text-color theme)}}
+         content]
+        content)]
      (when (:name icon)
        [icon/view (merge {:size  20
                           :color (style/icon-color theme background)
