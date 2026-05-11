@@ -9,15 +9,24 @@
    ["react-native-safe-area-context" :refer [useSafeAreaInsets]]))
 
 (defonce keyboard-height (r/atom 0))
+(defonce keyboard-visible? (r/atom (rn/keyboard-visible?)))
 
-(defn set-kb-height! [_event]
+(defn set-kb-height! []
   (reset! keyboard-height (or (:height (rn/keyboard-metrics)) 0)))
+
+(defn keyboard-did-show! [_event]
+  (reset! keyboard-visible? true)
+  (set-kb-height!))
+
+(defn keyboard-did-hide! [_event]
+  (reset! keyboard-visible? false)
+  (set-kb-height!))
 
 (defn use-keyboard-height-listener []
   (react/use-effect
    (fn []
-     (let [show-sub (rn/add-keyboard-listener! :keyboardDidShow set-kb-height!)
-           hide-sub (rn/add-keyboard-listener! :keyboardDidHide set-kb-height!)]
+     (let [show-sub (rn/add-keyboard-listener! :keyboardDidShow keyboard-did-show!)
+           hide-sub (rn/add-keyboard-listener! :keyboardDidHide keyboard-did-hide!)]
        (fn []
          (j/call show-sub :remove)
          (j/call hide-sub :remove))))
@@ -46,7 +55,7 @@
         children     (if props params (conj params p1))
         transform-y  (useSharedValue @keyboard-height)
         bottom-inset (-> (useSafeAreaInsets) (j/get :bottom))
-        target-y     (if (rn/keyboard-visible?)
+        target-y     (if @keyboard-visible?
                        (- (+ @keyboard-height bottom-inset (- open-inset)))
                        0)]
     (react/use-effect
