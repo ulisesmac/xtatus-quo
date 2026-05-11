@@ -1,6 +1,6 @@
 (ns xquo.components.unified-tab.view
   (:require [applied-science.js-interop :as j]
-            [react-native-gesture-handler :as gh]
+            [react-native.gesture-handler :as gh]
             [react-native.safe-area-context :as safe-area]
             [xquo.components.icon.view :as icon]
             [xquo.components.unified-tab.style :as style]

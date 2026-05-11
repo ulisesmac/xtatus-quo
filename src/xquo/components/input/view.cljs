@@ -1,5 +1,6 @@
 (ns xquo.components.input.view
   (:require [applied-science.js-interop :as j]
+            [react-native.core :as rn]
             [reagent-extended-compiler.utils.transforms :as rec.xf]
             [xquo.components.button.style :as button.style]
             [xquo.components.button.view :as button]
@@ -8,8 +9,7 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]
             [xquo.foundations.colors :as colors]
-            [xquo.react-native-reanimated :as rnr]
-            [react-native.core :as rn]))
+            [xquo.react-native-reanimated :as rnr]))
 
 (def clear-button-delay 120)
 (def text-input-content-height 22)
@@ -154,10 +154,10 @@
         input-height            (input-height content-height min-content-height max-content-height)
         placeholder-text-color  (style/placeholder-color dark-theme? blur? focused?)
         text-input-layout-style (cond
-                                  (and multiline? rn/platform-android?) style/text-input-multiline-android
+                                  (and multiline? rn/android?) style/text-input-multiline-android
                                   multiline? style/text-input-multiline-ios
-                                  rn/platform-android? style/text-input-single-line-android
-                                  (not rn/platform-android?) style/text-input-single-line-ios)
+                                  rn/android? style/text-input-single-line-android
+                                  (not rn/android?) style/text-input-single-line-ios)
         on-change-text!         (rn/use-callback (fn [next-value]
                                                    (when-not controlled?
                                                      (set-internal-value! next-value))

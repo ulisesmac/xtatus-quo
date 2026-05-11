@@ -12,7 +12,7 @@
             [xquo.components.drawer.drawer.view]
             [xquo.components.drawer.drawer-action.view]
             [xquo.components.drawer.top.view]
-            [xquo.components.emoji-picker.view]
+   ;[xquo.components.emoji-picker.view]
             [xquo.components.icon.view]
             [xquo.components.info.info-message.view]
             [xquo.components.info.information-box.view]
@@ -33,7 +33,7 @@
             [xquo.components.selectors.selector.view]
             [xquo.components.tags.context-tag.view]
             [xquo.components.title-input.view]
-            [xquo.components.unified-tab.view]
+   ;[xquo.components.unified-tab.view]
             [xquo.components.text.view]))
 
 (def button xquo.components.button.view/button)
@@ -49,9 +49,9 @@
 (def drawer-action xquo.components.drawer.drawer-action.view/drawer-action)
 (def drawer-handle xquo.components.drawer.top.view/drawer-handle)
 (def drawer-top xquo.components.drawer.top.view/drawer-top)
-(def emoji-picker xquo.components.emoji-picker.view/emoji-picker)
-(def emoji-picker-header xquo.components.emoji-picker.view/emoji-picker-header)
-(def emoji-picker-footer xquo.components.emoji-picker.view/emoji-picker-footer)
+;(def emoji-picker xquo.components.emoji-picker.view/emoji-picker)
+;(def emoji-picker-header xquo.components.emoji-picker.view/emoji-picker-header)
+;(def emoji-picker-footer xquo.components.emoji-picker.view/emoji-picker-footer)
 (def icon xquo.components.icon.view/view)
 (def info-message xquo.components.info.info-message.view/info-message)
 (def information-box xquo.components.info.information-box.view/information-box)
@@ -74,6 +74,6 @@
 (def selector xquo.components.selectors.selector.view/selector)
 (def context-tag xquo.components.tags.context-tag.view/context-tag)
 (def title-input xquo.components.title-input.view/title-input)
-(def unified-tab xquo.components.unified-tab.view/view)
-(def unified-tab-content xquo.components.unified-tab.view/unified-tab-content)
+;(def unified-tab xquo.components.unified-tab.view/view)
+;(def unified-tab-content xquo.components.unified-tab.view/unified-tab-content)
 (def text xquo.components.text.view/text)
