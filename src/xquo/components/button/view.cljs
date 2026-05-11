@@ -50,12 +50,12 @@
     - `:icon` optional icon props map passed to `xquo/icon`
       - `:name` icon keyword
       - `:side` one of `:left` or `:right` when content is present
-    - `:container-style` optional outer animated wrapper style
+    - `:container-style` optional animated pressable layout style
     - `:disabled?` optional boolean
     - `:on-press-in` optional callback `(fn [event] ...)`
     - `:on-press-out` optional callback `(fn [event] ...)`
     - `:style` optional caller style (map/vector/js style)
-    - Any additional keys are forwarded to `:rn/pressable` (for example
+    - Any additional keys are forwarded to `:animated/pressable` (for example
       `:on-press`, `:on-long-press`
   - `content` optional label string or arbitrary content node.
 
@@ -68,7 +68,7 @@
                          background :none
                          size       40}
     :as                 props}
-   content]
+  content]
   (let [theme          (context/use-theme)
         resolved-color (or color (context/use-color))
         icon-name      (:name icon)
@@ -87,63 +87,62 @@
                                           (when on-press-out
                                             (on-press-out event)))
                                         [on-press-out])]
-    [:animated/view {:style (rec.xf/add-styles
-                             (if pressed?
-                               style/pressable-pressed-state-style
-                               style/pressable-default-state-style)
-                             container-style)}
-     [:rn/pressable (-> props
-                        (dissoc :type :size :background :icon :state :disabled? :style
-                                :on-press-in :on-press-out :container-style :color)
-                        (assoc :disabled disabled?
-                               :style (rec.xf/add-styles
-                                       style/pressable-base-style
-                                       (style/container-layout-style size layout type)
-                                       (style/icon-only-shape-style layout type)
-                                       (style/pressable-type-style theme type background resolved-color disabled? pressed?)
-                                       (:style props))
-                               :on-press-in on-press-in!
-                               :on-press-out on-press-out!))
-      (cond
-        icon-only?
-        [button-icon {:icon       (dissoc icon :side)
-                      :type       type
-                      :size       size
-                      :background background
-                      :icon-only? true
-                      :disabled?  disabled?
-                      :pressed?   pressed?}]
+    [:animated/pressable (-> props
+                             (dissoc :type :size :background :icon :state :disabled?
+                                     :on-press-in :on-press-out :container-style :color)
+                             (assoc :disabled (boolean disabled?)
+                                    :style (rec.xf/add-styles
+                                            (if pressed?
+                                              style/pressable-pressed-state-style
+                                              style/pressable-default-state-style)
+                                            container-style
+                                            style/pressable-base-style
+                                            (style/container-layout-style size layout type)
+                                            (style/icon-only-shape-style layout type)
+                                            (style/pressable-type-style theme type background resolved-color disabled? pressed?)
+                                            (:style props))
+                                    :on-press-in on-press-in!
+                                    :on-press-out on-press-out!))
+     (cond
+       icon-only?
+       [button-icon {:icon       (dissoc icon :side)
+                     :type       type
+                     :size       size
+                     :background background
+                     :icon-only? true
+                     :disabled?  disabled?
+                     :pressed?   pressed?}]
 
-        (= layout :right)
-        [:<>
-         [button-content {:type       type
-                          :size       size
-                          :background background}
-          content]
-         [button-icon {:icon      (dissoc icon :side)
-                       :side      :right
-                       :type      type
-                       :size      size
-                       :background background
-                       :disabled?  disabled?
-                       :pressed?   pressed?}]]
-
-        (= layout :left)
-        [:<>
-         [button-icon {:icon      (dissoc icon :side)
-                       :side      :left
-                       :type      type
-                       :size      size
-                       :background background
-                       :disabled?  disabled?
-                       :pressed?   pressed?}]
-         [button-content {:type       type
-                          :size       size
-                          :background background}
-          content]]
-
-        :else
+       (= layout :right)
+       [:<>
         [button-content {:type       type
                          :size       size
                          :background background}
-         content])]]))
+         content]
+        [button-icon {:icon       (dissoc icon :side)
+                      :side       :right
+                      :type       type
+                      :size       size
+                      :background background
+                      :disabled?  disabled?
+                      :pressed?   pressed?}]]
+
+       (= layout :left)
+       [:<>
+        [button-icon {:icon       (dissoc icon :side)
+                      :side       :left
+                      :type       type
+                      :size       size
+                      :background background
+                      :disabled?  disabled?
+                      :pressed?   pressed?}]
+        [button-content {:type       type
+                         :size       size
+                         :background background}
+         content]]
+
+       :else
+       [button-content {:type       type
+                        :size       size
+                        :background background}
+        content])]))
