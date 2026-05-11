@@ -17,14 +17,14 @@
   {:align-self :stretch})
 
 (def section-content-bottom-padding 8)
-(def section-content-transition-duration-ms 300)
+(def section-content-transition-duration-ms 200)
 (def section-content-transition-duration (str section-content-transition-duration-ms "ms"))
 (def section-content-transition-timing-function "linear")
 
-(defn section-content-container [visible? height animate-height?]
+(defn section-content-container [visible? height]
   (cond-> {:align-self "stretch"
            :overflow   "hidden"}
-    animate-height?
+    height
     (assoc :transition-property        "height"
            :transition-duration        section-content-transition-duration
            :transition-timing-function section-content-transition-timing-function)
@@ -39,30 +39,14 @@
   {:position :absolute
    :top      0
    :right    0
-   :left     0})
-
-(defstyle section-content-opacity-opening
-  {:opacity                    1
-   :animation-name             {"0%"   {:opacity 0}
-                                "30%"  {:opacity 0}
-                                "100%" {:opacity 1}}
-   :animation-duration         section-content-transition-duration
-   :animation-timing-function  section-content-transition-timing-function
-   :animation-iteration-count  1})
-
-(defstyle section-content-opacity-closing
-  {:opacity                    0
-   :animation-name             {"0%"   {:opacity 1}
-                                "70%"  {:opacity 0}
-                                "100%" {:opacity 0}}
-   :animation-duration         section-content-transition-duration
-   :animation-timing-function  section-content-transition-timing-function
-   :animation-iteration-count  1})
+   :left     0
+   :opacity  0})
 
 (defn section-content-opacity [visible?]
-  (if visible?
-    section-content-opacity-opening
-    section-content-opacity-closing))
+  {:opacity                    (if visible? 1 0)
+   :transition-property        "opacity"
+   :transition-duration        section-content-transition-duration
+   :transition-timing-function section-content-transition-timing-function})
 
 (defstyle element-padding
   {:padding-horizontal (spacing/spacing-values 8)

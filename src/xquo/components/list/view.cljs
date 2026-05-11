@@ -75,51 +75,66 @@
                             (assoc :size 24))
           (:label button)]])]]))
 
-(defn- section-content [{:keys [color items theme visible?]}]
-  (let [content-items                        (keep identity items)
-        [content-height set-content-height!] (rn/use-state nil)
-        previous-visible-ref                 (rn/use-ref visible?)
-        previous-visible?                    (.-current previous-visible-ref)
-        visible-changed?                     (not= previous-visible? visible?)
-        [height-transition? set-height-transition!] (rn/use-state false)
-        animate-height?                      (or visible-changed? height-transition?)
-        measuring?                           (not visible?)
-        measure-content!                     (rn/use-callback
-                                               (fn [event]
-                                                 (let [height (j/get-in event [:nativeEvent :layout :height])]
-                                                   (when (pos? height)
-                                                     (set-content-height! (fn [current-height]
-                                                                            (if (= current-height height)
-                                                                              current-height
-                                                                              height))))))
-                                               [])
-        content-props                        {:style     [style/section-content
-                                                          (when measuring?
-                                                            style/section-content-measuring)
-                                                          (style/section-content-opacity visible?)]
-                                              :on-layout measure-content!}]
-    (rn/use-effect (fn []
-                     (when visible-changed?
-                       (set! (.-current previous-visible-ref) visible?)
-                       (set-height-transition! true)
-                       (let [timeout-id (js/setTimeout #(set-height-transition! false)
-                                                       style/section-content-transition-duration-ms)]
-                         #(js/clearTimeout timeout-id))))
-                   [visible?])
+(defn- into-section-items [root {:keys [color items theme]}]
+  (into root
+        (map-indexed (fn [index item]
+                       [list-item {:color color
+                                   :index index
+                                   :item  item
+                                   :theme theme}]))
+        (keep identity items)))
+
+(defn- static-section-content [props]
+  (into-section-items [:rn/view {:style style/section-content}]
+                      props))
+
+(defn- collapsible-section-content [{:keys [content-key visible?] :as props}]
+  (let [[measurement set-measurement!]             (rn/use-state {:content-key content-key})
+        content-height                             (:height measurement)
+        content-key-changed?                       (not= (:content-key measurement) content-key)
+        measured-height                            (when-not content-key-changed? content-height)
+        needs-measure?                             (or content-key-changed? (nil? content-height))
+        measure-visible?                           (and needs-measure? visible?)
+        render-content?                            (or visible? measured-height)
+        render-measuring?                          (and needs-measure? (not visible?))
+        measure-content!                           (rn/use-callback
+                                                    (fn [event]
+                                                      (let [height (j/get-in event [:nativeEvent :layout :height])]
+                                                        (when (pos? height)
+                                                          (set-measurement!
+                                                           (fn [current-measurement]
+                                                             (if (and (= (:content-key current-measurement) content-key)
+                                                                      (= (:height current-measurement) height))
+                                                               current-measurement
+                                                               {:content-key content-key
+                                                                :height      height}))))))
+                                                    [content-key])
+        content-props                              (cond-> {:style [style/section-content
+                                                                    (style/section-content-opacity visible?)]}
+                                                     measure-visible?
+                                                     (assoc :on-layout measure-content!))]
     [:animated/view {:collapsable false
-                     :style       (style/section-content-container visible? content-height animate-height?)}
-     (into [:animated/view content-props]
-           (map-indexed (fn [index item]
-                          [list-item {:color color
-                                      :index index
-                                      :item  item
-                                      :theme theme}]))
-           content-items)]))
+                     :style       (style/section-content-container visible? measured-height)}
+     (when render-content?
+       (into-section-items [:animated/view content-props]
+                           props))
+     (when render-measuring?
+       (into-section-items [:rn/view {:collapsable    false
+                                      :on-layout      measure-content!
+                                      :pointer-events :none
+                                      :style          [style/section-content
+                                                       style/section-content-measuring]}]
+                           props))]))
+
+(defn- section-content [{:keys [collapsible?] :as props}]
+  (if collapsible?
+    [collapsible-section-content props]
+    [static-section-content props]))
 
 (defn- section-view
   [{section-style :style
     label-props   :divider-label
-    :keys         [color items theme]}]
+    :keys         [color content-key items theme]}]
   (let [collapsible?      (:collapsible? label-props true)
         initial-open?     (:initial-open? label-props)
         [open? set-open!] (rn/use-state initial-open?)
@@ -140,10 +155,12 @@
                                            :open?           open?
                                            :toggle-duration style/section-content-transition-duration
                                            :toggle-timing-function style/section-content-transition-timing-function))]
-     [section-content {:color color
-                       :items items
-                       :theme theme
-                       :visible? (or (not collapsible?) open?)}]]))
+     [section-content {:collapsible? collapsible?
+                       :color        color
+                       :content-key  content-key
+                       :items        items
+                       :theme        theme
+                       :visible?     (or (not collapsible?) open?)}]]))
 
 (defn- list-item
   [{:keys [color index item theme]}]
@@ -175,11 +192,13 @@
       - `{:type :divider-label}` renders an `xquo/divider-label` between rows
       - `{:type :section
           :divider-label {...}
-          :items [...]}` renders a divider label plus child items in a shared
-        clipped content container. The section owns its open state and keeps
+          :items [...]}` renders a divider label plus child items. Collapsible
+        sections use a clipped content container, own their open state, and keep
         child items mounted while hiding/showing them.
         Set `:collapsible? false` inside `:divider-label` to render the section
         open and keep `:chevron` visual only.
+        Set `:content-key` when a collapsible section's child content changes
+        and the cached height must be measured again.
       - `:button` optional `xquo/button` props plus `:label`, rendered on the right
       - `:icon` optional icon props map for `:bullet` items
       - `:on-press` optional row press callback
