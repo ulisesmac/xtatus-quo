@@ -28,7 +28,7 @@
 (defn- list-element
   [{row-style :style
     :keys     [type button collapsable color description icon on-press
-               selected? step-number theme title]
+               right selected? step-number theme title]
     :or       {type :bullet}}]
   (let [[pressed? set-pressed!] (rn/use-state false)
         on-press-in!           (rn/use-callback #(set-pressed! true) [])
@@ -68,7 +68,12 @@
             [title-view {:title title}])
           [description-view {:description description}]]
          [description-view {:description title}])]
-      (when button
+      (cond
+        right
+        [:rn/view {:style style/button-container}
+         right]
+
+        button
         [:rn/view {:style style/button-container}
          [button/button (-> button
                             (dissoc :label)
@@ -200,6 +205,7 @@
         Set `:content-key` when a collapsible section's child content changes
         and the cached height must be measured again.
       - `:button` optional `xquo/button` props plus `:label`, rendered on the right
+      - `:right` optional custom trailing node, rendered on the right
       - `:icon` optional icon props map for `:bullet` items
       - `:on-press` optional row press callback
       - `:selected?` marks `:step` items as active
