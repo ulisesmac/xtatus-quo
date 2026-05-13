@@ -113,32 +113,19 @@
       :else
       (colors/get-color :color/neutral 40))))
 
-(defn trailing-icon-color [theme background selected? danger? color]
-  (let [action-color (if danger? :color/danger color)]
-    (cond
-      (and selected? action-color (= theme :theme/dark) (not= background :blur))
-      (colors/get-color action-color 60)
+(defn trailing-icon-color [theme background danger?]
+  (cond
+    (and danger? (= theme :theme/dark) (not= background :blur))
+    (colors/get-color :color/danger 60)
 
-      (and selected? action-color)
-      (colors/get-color action-color 50)
+    danger?
+    (colors/get-color :color/danger 50)
 
-      action-color
-      (:color (title-text-style theme background danger? color))
+    (= theme :theme/light)
+    (colors/get-color :color/neutral 50)
 
-      (and selected? (= background :blur))
-      (colors/get-color :color/white 70)
+    (= background :blur)
+    (colors/get-color :color/white 70)
 
-      (and selected? (= theme :theme/dark))
-      (colors/get-color :color/primary 60)
-
-      selected?
-      (colors/get-color :color/primary 50)
-
-      (= theme :theme/light)
-      (colors/get-color :color/neutral 50)
-
-      (= background :blur)
-      (colors/get-color :color/white 70)
-
-      :else
-      (colors/get-color :color/neutral 40))))
+    :else
+    (colors/get-color :color/neutral 40)))

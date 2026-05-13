@@ -14,7 +14,7 @@
 
 (defn- trailing-view
   [{:keys [theme background selected? selected-provided? arrow? toggle? on-select danger?
-           action-color arrow-icon pressed?]}]
+           arrow-icon pressed?]}]
   (cond
     toggle?
     [:rn/view {:pointer-events :none}
@@ -26,7 +26,7 @@
     selected?
     [icon/view {:name  :icon/check
                 :size  20
-                :color (style/trailing-icon-color theme background true danger? action-color)}]
+                :color (style/trailing-icon-color theme background danger?)}]
 
     arrow?
     [:animated/view {:style (if pressed?
@@ -34,7 +34,7 @@
                               style/arrow-slot-default-state-style)}
      [icon/view {:name  (or arrow-icon :icon/chevron-right)
                  :size  20
-                 :color (style/trailing-icon-color theme background false danger? action-color)}]]))
+                 :color (style/trailing-icon-color theme background danger?)}]]))
 
 (defn drawer-action
   "Drawer action component.
@@ -137,6 +137,5 @@
                       :toggle?            toggle?
                       :on-select          on-select
                       :danger?            danger?
-                      :action-color       (or color accent-color)
                       :arrow-icon         arrow-icon
                       :pressed?           pressed?}]]]))

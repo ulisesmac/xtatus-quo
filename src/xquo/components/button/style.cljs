@@ -367,6 +367,7 @@
 
 (defn text-style [theme type background size]
   (cond-> {:color                (text-color theme type background)
-           :include-font-padding false}
+           :include-font-padding false
+           :flex-shrink          1}
     (= size 24) (assoc :height      18
                        :line-height 18)))

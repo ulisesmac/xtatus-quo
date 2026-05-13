@@ -8,8 +8,10 @@
 
 (defn- button-text [{:keys [type size background]} content]
   (let [theme (context/use-theme)]
-    [text/text {:font  (get style/font-type size)
-                :style (style/text-style theme type background size)}
+    [text/text {:font            (get style/font-type size)
+                :style           (style/text-style theme type background size)
+                :number-of-lines 1
+                :ellipsize-mode  :tail}
      content]))
 
 (defn- button-content [{:keys [background size type]} content]
