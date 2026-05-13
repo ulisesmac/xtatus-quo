@@ -57,11 +57,15 @@
           emoji-picker.data/flatten-data))
 
 (defn- current-focused-index [layout-offsets offset]
-  (loop [index 0]
-    (if (and (< index (count layout-offsets))
-             (<= (nth layout-offsets index) offset))
-      (recur (inc index))
-      (dec index))))
+  (loop [low 0
+         high (dec (count layout-offsets))
+         focused-index -1]
+    (if (> low high)
+      focused-index
+      (let [mid (quot (+ low high) 2)]
+        (if (<= (nth layout-offsets mid) offset)
+          (recur (inc mid) high mid)
+          (recur low (dec mid) focused-index))))))
 
 (defn- index->category [index]
   (or (reduce (fn [category [next-category section-index]]
@@ -120,23 +124,19 @@
                                 :compact?     false
                                 :collapsible? false}])
 
-(defn- emoji-button [{:keys [emoji-style on-emoji-press unicode]}]
-  (let [on-press! (react/use-callback (fn []
-                                        (on-emoji-press unicode))
-                                      [on-emoji-press unicode])]
-    [:rn/pressable {:style    [style/emoji-pressable-base emoji-style]
-                    :on-press on-press!}
-     [:rn/text {:style                style/emoji-text
-                :adjustsFontSizeToFit true}
-      unicode]]))
+(defn- emoji-press-handler [on-emoji-press unicode]
+  (fn []
+    (on-emoji-press unicode)))
 
 (defn- emoji-row [{:keys [emoji-style emojis on-emoji-press]}]
   (into [:rn/view {:style style/emoji-row}]
         (map (fn [{:keys [unicode]}]
                ^{:key unicode}
-               [emoji-button {:emoji-style    emoji-style
-                              :on-emoji-press on-emoji-press
-                              :unicode        unicode}]))
+               [:rn/pressable {:style    [style/emoji-pressable-base emoji-style]
+                                :on-press (emoji-press-handler on-emoji-press unicode)}
+                [:rn/text {:style                style/emoji-text
+                           :adjustsFontSizeToFit true}
+                 unicode]]))
         emojis))
 
 (defn- render-item [{:keys [emoji-style item on-emoji-press]}]
@@ -181,40 +181,47 @@
   [{:keys [category emoji-size input layout-offsets on-emoji-press row-height scroll-ref state*]}]
   (let [bottom-safe-area (safe-area/use-bottom)
         [search-term set-search-term!] (react/use-state nil)
-        search-string    (emoji-picker.data/normalize-search-text search-term)
-        searching?       (seq search-string)
-        data             (react/use-memo #(with-meta (emojis-to-render search-string) {:keep-items true})
-                                         [search-string])
-        emoji-style      (react/use-memo #(style/emoji-pressable-size emoji-size) [emoji-size])
-        layout-id        (peek layout-offsets)
-        set-category!    (react/use-callback #(swap! state* assoc :category %) [])
-        scroll!          (react/use-callback (fn [event]
-                                               (on-scroll category set-category! layout-offsets event))
-                                             [category layout-id set-category!])
-        render-item!     (react/use-callback
-                          (fn [js-data]
-                            (reagent/as-element
-                             [render-item {:emoji-style    emoji-style
-                                           :item           (j/get js-data :item)
-                                           :on-emoji-press on-emoji-press}]))
-                          [emoji-style on-emoji-press])
-        get-item-layout! (react/use-callback
-                          (fn [data index]
-                            (get-item-layout layout-offsets row-height emoji-section-height data index))
-                          [layout-id row-height])
+        search-string      (emoji-picker.data/normalize-search-text search-term)
+        searching?         (seq search-string)
+        data               (react/use-memo #(with-meta (emojis-to-render search-string) {:keep-items true})
+                                           [search-string])
+        emoji-style        (react/use-memo #(style/emoji-pressable-size emoji-size) [emoji-size])
+        list-content-style (react/use-memo #(style/list-content bottom-safe-area searching?)
+                                           [bottom-safe-area searching?])
+        layout-id          (peek layout-offsets)
+        set-category!      (react/use-callback #(swap! state* assoc :category %) [])
+        scroll!            (react/use-callback (fn [event]
+                                                 (on-scroll category set-category! layout-offsets event))
+                                               [category layout-id set-category!])
+        render-item!       (react/use-callback
+                            (fn [js-data]
+                              (reagent/as-element
+                               [render-item {:emoji-style    emoji-style
+                                             :item           (j/get js-data :item)
+                                             :on-emoji-press on-emoji-press}]))
+                            [emoji-style on-emoji-press])
+        get-item-layout!   (react/use-callback
+                            (fn [data index]
+                              (get-item-layout layout-offsets row-height emoji-section-height data index))
+                            [layout-id row-height])
         get-search-item-layout! (react/use-callback
                                  (fn [data index]
                                    (get-search-item-layout row-height data index))
                                  [row-height])
-        change-search!   (react/use-memo #(gfns/debounce set-search-term! search-debounce-ms) [])]
+        change-search!     (react/use-memo #(gfns/debounce set-search-term! search-debounce-ms) [])]
     (react/use-effect #(change-search! input)
                       [input])
     [:rn/flat-list (cond-> {:ref                             scroll-ref
                             :style                           style/list-root
-                            :content-container-style         (style/list-content bottom-safe-area searching?)
+                            :content-container-style         list-content-style
                             :data                            data
                             :render-item                     render-item!
                             :key-extractor                   key-extractor
+                            :initial-num-to-render           6
+                            :max-to-render-per-batch         4
+                            :window-size                     5
+                            :update-cells-batching-period    32
+                            :remove-clipped-subviews         true
                             :shows-vertical-scroll-indicator false
                             :keyboard-should-persist-taps    :always
                             :get-item-layout                 (if searching?
@@ -278,11 +285,10 @@
     (react/use-effect
      (fn []
        (swap! state* assoc
-              :category active-category
               :layout-offsets layout-offsets
               :scroll-ref scroll-ref)
        nil)
-     [active-category row-height])
+     [row-height])
     [:rn/view {:style style/root}
      [emoji-list {:category         active-category
                   :emoji-size       size

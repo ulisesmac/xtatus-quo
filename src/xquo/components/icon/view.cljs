@@ -30,7 +30,7 @@
 (defn sizes-for [icon-name]
   (->> icons
        (keep (fn [[size icon-set]]
-               (when (icon-name icon-set)
+               (when (contains? icon-set icon-name)
                  size)))
        (set)))
 
@@ -44,7 +44,7 @@
 (def family-component
   (memoize
    (fn [size icon-name]
-     (if (icon-name (icons size))
+     (if (contains? (get icons size) icon-name)
        (get components size)
        (let [available-sizes (sizes-for icon-name)
              inferred-size   (closer-to size available-sizes)]
@@ -61,10 +61,10 @@
   (memoize
    (fn [size icon-name]
      (let [available-sizes (svg-sizes-for icon-name)
-           icon-size       (if (icon-name (svg/icons size))
+           icon-size       (if (get (get svg/icons size) icon-name)
                              size
                              (closer-to size available-sizes))]
-       (icon-name (svg/icons icon-size))))))
+       (get (get svg/icons icon-size) icon-name)))))
 
 (defn- svg-icon [{:keys     [color size style]
                   icon-name :name
@@ -82,16 +82,14 @@
     :or       {icon-name :icon/placeholder
                size      20}
     :as       props}]
-  (cond
-    (svg/iconset icon-name)
+  (if (svg/iconset icon-name)
     [svg-icon props]
-
-    (family-component size icon-name)
-    [:rn/view {:style style} ;; TODO: remove the view for styles
-     [(family-component size icon-name) {:name  icon-name
-                                         :size  size
-                                         :color color
-                                         :allowFontScaling false}]]
-    :else
-    [:rn/view {:style {:background-color :red}}
-     [:rn/text (str (name icon-name) size)]]))
+    (let [component (family-component size icon-name)]
+      (if component
+        [:rn/view {:style style} ;; TODO: remove the view for styles
+         [component {:name             icon-name
+                     :size             size
+                     :color            color
+                     :allowFontScaling false}]]
+        [:rn/view {:style {:background-color :red}}
+         [:rn/text (str (name icon-name) size)]]))))
