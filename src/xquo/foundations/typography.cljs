@@ -59,11 +59,14 @@
 (def monospace-11
   {:font-size      11
    :line-height    15.62
-   :letter-spacing 0.055})
+   :letter-spacing 0.055
+   :font-variant   ["tabular-nums"]})
 
-(def monospace-13 paragraph-2-13)
+(def monospace-13
+  (assoc paragraph-2-13 :font-variant ["tabular-nums"]))
 
-(def monospace-15 paragraph-1-15)
+(def monospace-15
+  (assoc paragraph-1-15 :font-variant ["tabular-nums"]))
 
 (def font-styles
   {11 {:regular            (assoc label-11 :font-family (:regular font-families))

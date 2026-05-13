@@ -1,8 +1,7 @@
 (ns xquo.components.input.style
   (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
             [xquo.foundations.borders :as borders]
-            [xquo.foundations.colors :as colors]
-            [xquo.foundations.typography :as typography]))
+            [xquo.foundations.colors :as colors]))
 
 (def container-layout-styles
   {40 {nil                (style {:padding-horizontal 16
@@ -148,9 +147,6 @@
 (defstyle text-input-base
   {:flex                 1
    :min-width            1
-   :font-family          (:regular typography/font-families)
-   :font-size            (:font-size typography/paragraph-1-15)
-   :letter-spacing       (:letter-spacing typography/paragraph-1-15)
    :include-font-padding false
    :padding              0
    :padding-horizontal   0

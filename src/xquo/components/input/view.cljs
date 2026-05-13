@@ -9,6 +9,7 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]
             [xquo.foundations.colors :as colors]
+            [xquo.foundations.typography :as typography]
             [xquo.react-native-reanimated :as rnr]))
 
 (def clear-button-delay 120)
@@ -138,10 +139,11 @@
     :else                (max min-content-height content-height)))
 
 (defn- text-input-view
-  [{:keys [blur? controlled? disabled? focused? input-ref max-height
+  [{:keys [blur? controlled? current-value default-value disabled? focused? font input-ref max-height
            max-length min-height multiline? on-blur on-change-text on-content-size-change
            on-focus set-focused! set-internal-value! size value]
     trailing-button :button
+    :or   {font :font/regular-15}
     :as   props}]
   (let [{:keys [color dark-theme?]} (context/use-theme-color)
         [content-height
@@ -154,10 +156,20 @@
         input-height            (input-height content-height min-content-height max-content-height)
         placeholder-text-color  (style/placeholder-color dark-theme? blur? focused?)
         text-input-layout-style (cond
-                                  (and multiline? rn/android?) style/text-input-multiline-android
+                                  (and multiline? rn/platform-android?) style/text-input-multiline-android
                                   multiline? style/text-input-multiline-ios
-                                  rn/android? style/text-input-single-line-android
-                                  (not rn/android?) style/text-input-single-line-ios)
+                                  rn/platform-android? style/text-input-single-line-android
+                                  (not rn/platform-android?) style/text-input-single-line-ios)
+        text-input-style        [style/text-input-base
+                                 (typography/get-style font)
+                                 (if dark-theme?
+                                   text/dark-text-style
+                                   text/light-text-style)
+                                 text-input-layout-style
+                                 (when multiline?
+                                   {:min-height min-content-height})
+                                 (when input-height
+                                   {:height input-height})]
         on-change-text!         (rn/use-callback (fn [next-value]
                                                    (when-not controlled?
                                                      (set-internal-value! next-value))
@@ -182,34 +194,32 @@
                                                    (when on-blur
                                                      (on-blur event)))
                                                  [on-blur])]
-    [:rn/text-input (cond-> props
-                      :always (dissoc :auto-focus? :blur? :button :default-value :disabled?
-                                      :error? :icon :clearable? :input-container-style
-                                      :label :max-height :max-length :min-height :multiline
-                                      :multiline? :on-blur :on-change-text :on-clear
-                                      :on-content-size-change :on-focus :size :style :value)
-                      :always (assoc :ref input-ref
-                                     :style [style/text-input-base
-                                             (if dark-theme?
-                                               text/dark-text-style
-                                               text/light-text-style)
-                                             text-input-layout-style
-                                             (when multiline?
-                                               {:min-height min-content-height})
-                                             (when input-height
-                                               {:height input-height})]
-                                     :cursor-color selection-color
-                                     :on-blur on-blur!
-                                     :on-change-text on-change-text!
-                                     :on-content-size-change on-content-size-change!
-                                     :on-focus on-focus!
-                                     :placeholder-text-color placeholder-text-color
-                                     :selection-color selection-color
-                                     :value value)
-                      disabled? (assoc :editable false)
-                      max-length (assoc :max-length max-length)
-                      multiline? (assoc :multiline      true
-                                        :scroll-enabled content-overflow?))]))
+    (into [:rn/text-input (cond-> props
+                            :always (dissoc :auto-focus? :blur? :button :current-value :default-value
+                                            :disabled? :error? :icon :clearable? :input-container-style
+                                            :input-ref :font
+                                            :label :max-height :max-length :min-height :multiline
+                                            :multiline? :on-blur :on-change-text :on-clear
+                                            :on-content-size-change :on-focus :size :style :value)
+                            :always (assoc :ref input-ref
+                                           :style text-input-style
+                                           :cursor-color selection-color
+                                           :on-blur on-blur!
+                                           :on-change-text on-change-text!
+                                           :on-content-size-change on-content-size-change!
+                                           :on-focus on-focus!
+                                           :placeholder-text-color placeholder-text-color
+                                           :selection-color selection-color)
+                            (and controlled? (not rn/platform-android?)) (assoc :value value)
+                            (and (not rn/platform-android?) (not controlled?) (some? default-value))
+                            (assoc :default-value default-value)
+                            disabled? (assoc :editable false)
+                            max-length (assoc :max-length max-length)
+                            multiline? (assoc :multiline      true
+                                              :scroll-enabled content-overflow?))]
+          (when rn/platform-android?
+            [[:rn/text {:style text-input-style}
+              (or current-value "")]]))))
 
 (defn input
   "Input component.
@@ -238,19 +248,23 @@
       blur styling are enforced internally
     - `:error?` optional boolean
     - `:disabled?` optional boolean
+    - `:font` optional typography token for the internal text input
+    - `:input-ref` optional ref to the internal text input
     - `:style` optional caller style for the outer component wrapper
     - Any additional keys are forwarded to `:rn/text-input`."
-  [{:keys               [auto-focus? blur? clearable? default-value disabled? error?
-                         label max-height max-length min-height multiline? on-blur
-                         on-change-text on-clear on-content-size-change on-focus
-                         size value icon]
+  [{external-input-ref :input-ref
+    :keys              [auto-focus? blur? clearable? default-value disabled? error?
+                        label max-height max-length min-height multiline? on-blur
+                        on-change-text on-clear on-content-size-change on-focus
+                        size value icon]
     trailing-button     :button
     component-style     :style
     :or                 {size 40}
     :as                 props}]
   (let [{:keys [dark-theme?]}       (context/use-theme-color)
         controlled?                 (contains? props :value)
-        input-ref                   (rn/use-ref nil)
+        internal-input-ref          (rn/use-ref nil)
+        input-ref                   (or external-input-ref internal-input-ref)
         [focused? set-focused!]     (rn/use-state false)
         [internal-value
          set-internal-value!] (rn/use-state (or default-value ""))
@@ -265,6 +279,8 @@
                                                  [disabled?])
         clear-input!            (rn/use-callback (fn []
                                                    (when-not controlled?
+                                                     (when-let [input-instance (j/get input-ref :current)]
+                                                       (j/call input-instance :clear))
                                                      (set-internal-value! ""))
                                                    (when on-clear
                                                      (on-clear)))
@@ -307,11 +323,11 @@
        [text-input-view (assoc props
                           :blur? blur?
                           :controlled? controlled?
+                          :current-value current-value
                           :focused? focused?
                           :input-ref input-ref
                           :set-focused! set-focused!
-                          :set-internal-value! set-internal-value!
-                          :value current-value)]]
+                          :set-internal-value! set-internal-value!)]]
       (when show-clear-button?
         [clear-button-view {:blur?        blur?
                             :clear-input! clear-input!

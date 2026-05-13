@@ -137,6 +137,6 @@
                       :toggle?            toggle?
                       :on-select          on-select
                       :danger?            danger?
-                      :action-color       color
+                      :action-color       (or color accent-color)
                       :arrow-icon         arrow-icon
                       :pressed?           pressed?}]]]))

@@ -27,6 +27,6 @@
 
 (defn icon-color [theme type]
   (case type
-    :notification/positive (colors/themed theme :color/success)
-    :notification/negative (colors/themed theme :color/danger)
-    (colors/themed theme :color/white-40 :color/neutral-80-40)))
+    :notification/positive (colors/themed theme :color/success-60 :color/success-50)
+    :notification/negative (colors/themed theme :color/danger-60 :color/danger-50)
+    (colors/themed theme :color/white-60 :color/neutral-50)))

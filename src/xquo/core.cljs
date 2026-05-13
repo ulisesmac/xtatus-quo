@@ -1,40 +1,40 @@
 (ns ^:dev/always xquo.core
   (:refer-clojure :exclude [filter list])
   (:require [xquo.components.button.view]
-            [xquo.components.counter.view]
-            [xquo.components.empty-state.view]
             [xquo.components.color-picker.color.view]
             [xquo.components.color-picker.picker.view]
             [xquo.components.counter.step.view]
+            [xquo.components.counter.view]
             [xquo.components.divider.divider-label.view]
             [xquo.components.divider.divider-line.view]
             [xquo.components.drawer.bottom-actions.view]
-            [xquo.components.drawer.drawer.view]
             [xquo.components.drawer.drawer-action.view]
+            [xquo.components.drawer.drawer.view]
             [xquo.components.drawer.top.view]
-   ;[xquo.components.emoji-picker.view]
+            [xquo.components.emoji-picker.view]
+            [xquo.components.empty-state.view]
             [xquo.components.icon.view]
             [xquo.components.info.info-message.view]
             [xquo.components.info.information-box.view]
             [xquo.components.input.view]
-            [xquo.components.list.view]
             [xquo.components.list-items.result-list.view]
+            [xquo.components.list.view]
             [xquo.components.notification.view]
             [xquo.components.page-nav.view]
             [xquo.components.page-top.view]
+            [xquo.components.selectors.disclaimer.view]
+            [xquo.components.selectors.filter.view]
+            [xquo.components.selectors.options.view]
+            [xquo.components.selectors.selector.view]
             [xquo.components.settings.category.view]
             [xquo.components.settings.item.view]
             [xquo.components.settings.section-label.view]
             [xquo.components.settings.section-title.view]
             [xquo.components.settings.sort-item.view]
-            [xquo.components.selectors.disclaimer.view]
-            [xquo.components.selectors.filter.view]
-            [xquo.components.selectors.options.view]
-            [xquo.components.selectors.selector.view]
             [xquo.components.tags.context-tag.view]
+            [xquo.components.text.view]
             [xquo.components.title-input.view]
-   ;[xquo.components.unified-tab.view]
-            [xquo.components.text.view]))
+            [xquo.components.unified-tab.view]))
 
 (def button xquo.components.button.view/button)
 (def counter xquo.components.counter.view/counter)
@@ -49,9 +49,9 @@
 (def drawer-action xquo.components.drawer.drawer-action.view/drawer-action)
 (def drawer-handle xquo.components.drawer.top.view/drawer-handle)
 (def drawer-top xquo.components.drawer.top.view/drawer-top)
-;(def emoji-picker xquo.components.emoji-picker.view/emoji-picker)
-;(def emoji-picker-header xquo.components.emoji-picker.view/emoji-picker-header)
-;(def emoji-picker-footer xquo.components.emoji-picker.view/emoji-picker-footer)
+(def emoji-picker xquo.components.emoji-picker.view/emoji-picker)
+(def emoji-picker-header xquo.components.emoji-picker.view/emoji-picker-header)
+(def emoji-picker-footer xquo.components.emoji-picker.view/emoji-picker-footer)
 (def icon xquo.components.icon.view/view)
 (def info-message xquo.components.info.info-message.view/info-message)
 (def information-box xquo.components.info.information-box.view/information-box)
@@ -74,6 +74,6 @@
 (def selector xquo.components.selectors.selector.view/selector)
 (def context-tag xquo.components.tags.context-tag.view/context-tag)
 (def title-input xquo.components.title-input.view/title-input)
-;(def unified-tab xquo.components.unified-tab.view/view)
-;(def unified-tab-content xquo.components.unified-tab.view/unified-tab-content)
+(def unified-tab xquo.components.unified-tab.view/view)
+(def unified-tab-content xquo.components.unified-tab.view/unified-tab-content)
 (def text xquo.components.text.view/text)
