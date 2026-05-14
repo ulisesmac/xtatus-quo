@@ -11,22 +11,29 @@
 (defonce keyboard-height (r/atom 0))
 (defonce keyboard-visible? (r/atom (rn/keyboard-visible?)))
 
-(defn set-kb-height! []
-  (reset! keyboard-height (or (:height (rn/keyboard-metrics)) 0)))
+(defn- event-keyboard-height [event]
+  (j/get-in event [:endCoordinates :height]))
 
-(defn keyboard-did-show! [_event]
+(defn set-kb-height! [event]
+  (reset! keyboard-height (or (event-keyboard-height event)
+                              (:height (rn/keyboard-metrics))
+                              0)))
+
+(defn keyboard-show! [event]
   (reset! keyboard-visible? true)
-  (set-kb-height!))
+  (set-kb-height! event))
 
-(defn keyboard-did-hide! [_event]
+(defn keyboard-hide! [_event]
   (reset! keyboard-visible? false)
-  (set-kb-height!))
+  (reset! keyboard-height 0))
 
 (defn use-keyboard-height-listener []
   (react/use-effect
    (fn []
-     (let [show-sub (rn/add-keyboard-listener! :keyboardDidShow keyboard-did-show!)
-           hide-sub (rn/add-keyboard-listener! :keyboardDidHide keyboard-did-hide!)]
+     (let [show-sub (rn/add-keyboard-listener! (if rn/ios? :keyboardWillShow :keyboardDidShow)
+                                               keyboard-show!)
+           hide-sub (rn/add-keyboard-listener! (if rn/ios? :keyboardWillHide :keyboardDidHide)
+                                               keyboard-hide!)]
        (fn []
          (j/call show-sub :remove)
          (j/call hide-sub :remove))))
@@ -56,7 +63,9 @@
         transform-y  (useSharedValue @keyboard-height)
         bottom-inset (-> (useSafeAreaInsets) (j/get :bottom))
         target-y     (if @keyboard-visible?
-                       (- (+ @keyboard-height bottom-inset (- open-inset)))
+                       (if rn/ios?
+                         (- open-inset @keyboard-height)
+                         (- (+ @keyboard-height bottom-inset (- open-inset))))
                        0)]
     (react/use-effect
      (fn []
