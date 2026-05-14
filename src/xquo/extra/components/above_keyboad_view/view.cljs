@@ -50,10 +50,10 @@
   (set! (.-value shared-value) (withSpring to animation-params)))
 
 (defn view-style [shared-value]
-  (style {:position :absolute
-          :bottom   0
-          :left     0
-          :right    0
+  (style {:position  :absolute
+          :bottom    0
+          :left      0
+          :right     0
           :transform [{:translate-y shared-value}]}))
 
 (defn view [p1 & params]
