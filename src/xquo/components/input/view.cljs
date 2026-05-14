@@ -156,10 +156,10 @@
         input-height            (input-height content-height min-content-height max-content-height)
         placeholder-text-color  (style/placeholder-color dark-theme? blur? focused?)
         text-input-layout-style (cond
-                                  (and multiline? rn/platform-android?) style/text-input-multiline-android
+                                  (and multiline? rn/android?) style/text-input-multiline-android
                                   multiline? style/text-input-multiline-ios
-                                  rn/platform-android? style/text-input-single-line-android
-                                  (not rn/platform-android?) style/text-input-single-line-ios)
+                                  rn/android? style/text-input-single-line-android
+                                  (not rn/android?) style/text-input-single-line-ios)
         text-input-style        [style/text-input-base
                                  (typography/get-style font)
                                  (if dark-theme?
@@ -210,14 +210,14 @@
                                            :on-focus on-focus!
                                            :placeholder-text-color placeholder-text-color
                                            :selection-color selection-color)
-                            (and controlled? (not rn/platform-android?)) (assoc :value value)
-                            (and (not rn/platform-android?) (not controlled?) (some? default-value))
+                            (and controlled? (not rn/android?)) (assoc :value value)
+                            (and (not rn/android?) (not controlled?) (some? default-value))
                             (assoc :default-value default-value)
                             disabled? (assoc :editable false)
                             max-length (assoc :max-length max-length)
                             multiline? (assoc :multiline      true
                                               :scroll-enabled content-overflow?))]
-          (when rn/platform-android?
+          (when rn/android?
             [[:rn/text {:style text-input-style}
               (or current-value "")]]))))
 
