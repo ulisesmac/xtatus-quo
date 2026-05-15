@@ -2,7 +2,6 @@
   (:require [applied-science.js-interop :as j]
             [clojure.string :as string]
             [goog.functions :as gfns]
-            [react-native.core :as rn]
             [react-native.safe-area-context :as safe-area]
             [reagent-extended.react :as react]
             [reagent.core :as reagent]
@@ -11,7 +10,8 @@
             [xquo.components.emoji-picker.data :as emoji-picker.data]
             [xquo.components.emoji-picker.style :as style]
             [xquo.components.input.view :as input]
-            [xquo.context :as context]))
+            [xquo.context :as context]
+            [xquo.extra.components.above-keyboad-view.view :as above-keyboad-view]))
 
 (def ^:private emojis-per-row 7)
 (def ^:private search-debounce-ms 200)
@@ -290,17 +290,8 @@
 
 (defn- category-footer [{:keys [category scroll-ref state*]}]
   (let [bottom-inset  (safe-area/use-bottom)
-        [keyboard-visible? set-keyboard-visible!] (react/use-state (rn/keyboard-visible?))
-        footer-inset  (if keyboard-visible? 0 bottom-inset)
+        footer-inset  (if @above-keyboad-view/keyboard-visible? 0 bottom-inset)
         theme         (context/use-theme)]
-    (react/use-effect
-     (fn []
-       (let [show-sub (rn/add-keyboard-listener! :keyboardDidShow #(set-keyboard-visible! true))
-             hide-sub (rn/add-keyboard-listener! :keyboardDidHide #(set-keyboard-visible! false))]
-         (fn []
-           (j/call show-sub :remove)
-           (j/call hide-sub :remove))))
-     [])
     (into [:rn/view {:style [(style/category-footer-container footer-inset)
                              (style/sheet-region-background theme)]}]
           (map (fn [{:keys [id]}]
