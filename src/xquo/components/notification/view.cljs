@@ -32,10 +32,11 @@
       `:notification/neutral` (default `:notification/neutral`)
     - `:icon` optional leading icon props map
     - `:container-style` optional outer container style
+    - `:glass?` optional boolean, renders the notification surface as glass
     - `:style` optional notification row style
     - Any additional keys are forwarded to the outer `:rn/view`.
   - `content` notification text."
-  [{:keys [container-style icon type]
+  [{:keys [container-style glass? icon type]
     caller-style :style
     :or   {type :notification/neutral}
     :as   props}
@@ -43,14 +44,18 @@
   (let [theme (context/use-theme)
         type  (notification-type type)]
     [:rn/view (-> props
-                  (dissoc :container-style :icon :type)
+                  (dissoc :container-style :glass? :icon :type)
                   (assoc :style (rec.xf/add-styles
                                  style/container-base
                                  container-style)))
-     [:rn/view {:style (rec.xf/add-styles
-                        [style/root-base
-                         (style/root-color-style theme)]
-                        caller-style)}
+     [(if glass? :effect/view :rn/view)
+      (cond-> {:style (rec.xf/add-styles
+                       [style/root-base
+                        (style/root-color-style theme)]
+                       caller-style)}
+        glass? (assoc :effect       :glass
+                      :intensity    :regular
+                      :interactive? true))
       [notification-icon {:icon  icon
                           :theme theme
                           :type  type}]

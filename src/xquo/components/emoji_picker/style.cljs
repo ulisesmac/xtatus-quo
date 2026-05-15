@@ -1,5 +1,6 @@
 (ns xquo.components.emoji-picker.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+  (:require [react-native.core :as rn]
+            [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
             [xquo.foundations.colors :as colors]))
 
 (defstyle root
@@ -13,8 +14,11 @@
    :padding-bottom     12
    :height             (+ 32 20 12)})
 
+
 (defn sheet-region-background [theme]
-  (style {:background-color (colors/themed theme :color/white-95 :color/neutral-95-95)}))
+  (style {:background-color (if rn/ios?
+                              (colors/themed theme :color/white-70 :color/neutral-80-70)
+                              (colors/themed theme :color/white-95 :color/neutral-95-95))}))
 
 (defstyle emoji-row
   {:flex-direction     :row

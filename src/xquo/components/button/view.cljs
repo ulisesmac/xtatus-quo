@@ -49,6 +49,7 @@
     - `:color` optional color token used by `:primary`; falls back to context color
     - `:size` one of `40`, `32`, `24` (default `40`)
     - `:background` one of `:none`, `:photo`, `:blur` (default `:none`)
+    - `:glass?` optional boolean; renders the button through glass effect
     - `:icon` optional icon props map passed to `xquo/icon`
       - `:name` icon keyword
       - `:side` one of `:left` or `:right` when content is present
@@ -57,15 +58,15 @@
     - `:on-press-in` optional callback `(fn [event] ...)`
     - `:on-press-out` optional callback `(fn [event] ...)`
     - `:style` optional caller style (map/vector/js style)
-    - Any additional keys are forwarded to `:animated/pressable` (for example
-      `:on-press`, `:on-long-press`
+    - Any additional keys are forwarded to the underlying pressable (for
+      example `:on-press`, `:on-long-press`
   - `content` optional label string or arbitrary content node.
 
   Layout behavior:
   - If `content` is nil and `:icon` has `:name`, it renders icon-only.
   - With `content`, `:icon :side` controls whether the icon is rendered left
     or right of the content."
-  [{:keys               [color type size background disabled? on-press-in on-press-out icon container-style] ;; TODO: horrendous API: container-style shouldn't be used
+  [{:keys               [color type size background disabled? glass? on-press-in on-press-out icon container-style] ;; TODO: horrendous API: container-style shouldn't be used
     :or                 {type       :primary
                          background :none
                          size       40}
@@ -89,22 +90,26 @@
                                           (when on-press-out
                                             (on-press-out event)))
                                         [on-press-out])]
-    [:animated/pressable (-> props
-                             (dissoc :type :size :background :icon :state :disabled?
-                                     :on-press-in :on-press-out :container-style :color)
-                             (assoc :disabled (boolean disabled?)
-                                    :style (rec.xf/add-styles
-                                            (if pressed?
-                                              style/pressable-pressed-state-style
-                                              style/pressable-default-state-style)
-                                            container-style
-                                            style/pressable-base-style
-                                            (style/container-layout-style size layout type)
-                                            (style/icon-only-shape-style layout type)
-                                            (style/pressable-type-style theme type background resolved-color disabled? pressed?)
-                                            (:style props))
-                                    :on-press-in on-press-in!
-                                    :on-press-out on-press-out!))
+    [(if glass? :effect/pressable :animated/pressable)
+     (cond-> (-> props
+                 (dissoc :type :size :background :icon :state :disabled?
+                         :glass? :on-press-in :on-press-out :container-style :color)
+                 (assoc :disabled (boolean disabled?)
+                        :style (rec.xf/add-styles
+                                (if pressed?
+                                  style/pressable-pressed-state-style
+                                  style/pressable-default-state-style)
+                                container-style
+                                style/pressable-base-style
+                                (style/container-layout-style size layout type)
+                                (style/icon-only-shape-style layout type)
+                                (style/pressable-type-style theme type background resolved-color disabled? pressed?)
+                                (:style props))
+                        :on-press-in on-press-in!
+                        :on-press-out on-press-out!))
+       glass? (assoc :effect       :glass
+                     :intensity    (if (= type :outline) :regular :clear)
+                     :interactive? true))
      (cond
        icon-only?
        [button-icon {:icon       (dissoc icon :side)

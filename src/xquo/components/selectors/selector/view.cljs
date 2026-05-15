@@ -16,13 +16,14 @@
     - `:selected?` optional boolean (`true`, `false`, or `nil`)
     - `:disabled?` optional boolean (default `false`)
     - `:background` one of `:none`, `:blur` (default `:none`)
+    - `:glass?` optional boolean; only applies when `:type` is `:checkbox`
     - `:on-select` optional callback invoked with next selected state boolean
     - `:on-press-in` optional callback `(fn [event] ...)`
     - `:on-press-out` optional callback `(fn [event] ...)`
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/pressable` (for example
       `:on-press`, `:accessibility-label`, `:testID`)."
-  [{:keys [type selected? disabled? background on-select on-press on-press-in on-press-out]
+  [{:keys [type selected? disabled? background glass? on-select on-press on-press-in on-press-out]
     :or   {type       :toggle
            background :none}
     :as   props}]
@@ -35,6 +36,10 @@
         selected-now?    (if controlled?
                            selected?
                            internal-selected?)
+        glass-checkbox?  (and glass?
+                              (= type :checkbox))
+        container-style  (style/container-style type)
+        state-style      (style/state-style theme type background selected-now? disabled? color)
         on-press-in!     (rn/use-callback (fn [event]
                                             (set-pressed? true)
                                             (when on-press-in
@@ -57,17 +62,22 @@
     [:animated/view {:style (if pressed?
                               style/pressable-pressed-state-style
                               style/pressable-default-state-style)}
-     [:rn/pressable (-> props
-                        (dissoc :type :selected? :disabled? :background :on-select :on-press-in :on-press-out :style :hit-slop)
-                        (assoc :disabled disabled?
-                               :hit-slop 6
-                               :on-press on-press-toggle!
-                               :on-press-in on-press-in!
-                               :on-press-out on-press-out!
-                               :style (rec.xf/add-styles
-                                       (style/container-style type)
-                                       (style/state-style theme type background selected-now? disabled? color)
-                                       (:style props))))
+     [(if glass-checkbox? :effect/pressable :rn/pressable)
+      (cond-> (-> props
+                  (dissoc :type :selected? :disabled? :background :glass? :on-select
+                          :on-press-in :on-press-out :style :hit-slop)
+                  (assoc :disabled disabled?
+                         :hit-slop 6
+                         :on-press on-press-toggle!
+                         :on-press-in on-press-in!
+                         :on-press-out on-press-out!
+                         :style (rec.xf/add-styles
+                                 container-style
+                                 state-style
+                                 (:style props))))
+        glass-checkbox? (assoc :effect       :glass
+                               :intensity    :clear
+                               :interactive? true))
       (cond
         (= type :toggle)
         [:animated/view {:style [style/toggle-handle-base

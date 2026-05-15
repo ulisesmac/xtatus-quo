@@ -2,6 +2,7 @@
   (:require [applied-science.js-interop :as j]
             [clojure.string :as string]
             [goog.functions :as gfns]
+            [react-native.core :as rn]
             [react-native.safe-area-context :as safe-area]
             [reagent-extended.react :as react]
             [reagent.core :as reagent]
@@ -292,8 +293,10 @@
   (let [bottom-inset  (safe-area/use-bottom)
         footer-inset  (if @above-keyboad-view/keyboard-visible? 0 bottom-inset)
         theme         (context/use-theme)]
-    (into [:rn/view {:style [(style/category-footer-container footer-inset)
-                             (style/sheet-region-background theme)]}]
+    (into [:effect/view {:effect    :glass
+                         :intensity :regular
+                         :style     [(style/category-footer-container footer-inset)
+                                     (when rn/android? (style/sheet-region-background theme))]}]
           (map (fn [{:keys [id]}]
                  [category-button {:category       id
                                    :scroll-ref     scroll-ref

@@ -1,5 +1,6 @@
 (ns xquo.components.notification.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+  (:require [react-native.core :as rn]
+            [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
             [xquo.foundations.colors :as colors]))
 
 (defstyle container-base
@@ -20,7 +21,9 @@
    :min-width 1})
 
 (defn root-color-style [theme]
-  (style {:background-color (colors/themed theme :color/neutral-80-95 :color/white-95)}))
+  (style {:background-color (colors/themed theme
+                                           (if rn/ios? :color/neutral-80-70 :color/neutral-80-95)
+                                           (if rn/ios? :color/white-70 :color/white-95))}))
 
 (defn text-color-style [theme]
   (style {:color (colors/themed theme :color/white :color/neutral-100)}))

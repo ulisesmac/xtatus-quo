@@ -192,6 +192,8 @@
   - `props` map
     - `:title` item title (default `\"Account\"`)
     - `:blur?` optional boolean for blur styling
+    - `:glass?` optional boolean; renders the item through a glass effect
+      pressable
     - `:image` map
       - `:type` one of `:icon`, `:image`, `:avatar`, `:none`
       - `:name` icon keyword for `:icon` type
@@ -219,7 +221,7 @@
         - `:button-text` button label
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/pressable`."
-  [{:keys [title blur? image description tag right on-press on-press-in on-press-out]
+  [{:keys [title blur? glass? image description tag right on-press on-press-in on-press-out]
     :or   {title "Account"}
     :as   props}]
   (let [theme                (context/use-theme)
@@ -278,20 +280,24 @@
                                 (when on-press-out
                                   (on-press-out event)))
                               [on-press-out])]
-    [:rn/pressable (-> props
-                       (dissoc :title :blur? :image :description :tag :right :style :on-press
-                               :on-press-in :on-press-out)
-                       (assoc :disabled     item-disabled?
-                              :on-press     on-press!
-                              :on-press-in  (when-not item-disabled? on-press-in!)
-                              :on-press-out (when-not item-disabled? on-press-out!)
-                              :style        (rec.xf/add-styles
-                                             style/container-base
-                                             (style/container-padding-style
-                                              image-type
-                                              description-visible?
-                                              tag-visible?)
-                                             (:style props))))
+    [(if glass? :effect/pressable :rn/pressable)
+     (cond-> (-> props
+                 (dissoc :title :blur? :glass? :image :description :tag :right :style :on-press
+                         :on-press-in :on-press-out)
+                 (assoc :disabled     item-disabled?
+                        :on-press     on-press!
+                        :on-press-in  (when-not item-disabled? on-press-in!)
+                        :on-press-out (when-not item-disabled? on-press-out!)
+                        :style        (rec.xf/add-styles
+                                       style/container-base
+                                       (style/container-padding-style
+                                        image-type
+                                        description-visible?
+                                        tag-visible?)
+                                       (:style props))))
+       glass? (assoc :effect       :glass
+                     :intensity    :clear
+                     :interactive? true))
      [:animated/view {:pointer-events :none
                       :style          [style/overlay-base
                                        (style/pressed-overlay-color-style theme blur?)

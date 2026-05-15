@@ -11,6 +11,7 @@
     [button/button (cond-> {:type       (style/action-button-type theme background)
                             :size       32
                             :background background
+                            :glass?     true
                             :icon       (merge {:color (style/icon-color theme background)}
                                                icon)}
                      on-press (assoc :on-press on-press))]))

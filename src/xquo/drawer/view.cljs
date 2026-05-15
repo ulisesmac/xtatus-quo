@@ -1,5 +1,6 @@
 (ns xquo.drawer.view
-  (:require [reagent-extended-compiler.utils.transforms :as xf]
+  (:require [react-native.core :as rn]
+            [reagent-extended-compiler.utils.transforms :as xf]
             [xquo.foundations.colors :as colors]))
 
 (defn handle [theme]
@@ -12,7 +13,9 @@
 (defn screen-options [{:keys [theme handle?]
                        :or   {handle? true}}]
   (xf/prop {:dimmed-background-color (colors/get-color :color/neutral-100-70)
-            :background-color        (colors/themed theme :color/white :color/neutral-95)
+            :background-color        (if rn/ios?
+                                       (colors/themed theme :color/white-70 :color/neutral-80-70)
+                                       (colors/themed theme :color/white :color/neutral-95))
             :corner-radius           20
             :grabber                 handle?
             :grabber-options         (when handle?

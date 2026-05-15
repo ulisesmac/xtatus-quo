@@ -12,7 +12,6 @@
 
 (defstyle surface-base
   {:align-self    :stretch
-   :overflow      :hidden
    :border-radius (:border/card-section borders/border-radius-values)})
 
 (defstyle item-container-in-surface
@@ -24,8 +23,7 @@
 
 (defn surface-color-style [theme blur?]
   (cond
-    (and (= theme :theme/dark)
-         blur?)
+    (and (= theme :theme/dark) blur?)
     {:background-color (colors/get-color :color/white-5)}
 
     (= theme :theme/dark)

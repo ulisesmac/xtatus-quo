@@ -104,7 +104,7 @@
     :as   props}]
   (let [{:keys [theme]} (context/use-theme-color)]
     [:rn/view (-> props
-                  (dissoc :blur? :buttons :description :context-tag? :scroll? :style)
+                  (dissoc :blur? :buttons :description :context-tag? :scroll?)
                   (assoc :style (rec.xf/add-styles style/container-base (:style props))))
      (when (= (:position description) :top)
        [description-view {:theme        theme
