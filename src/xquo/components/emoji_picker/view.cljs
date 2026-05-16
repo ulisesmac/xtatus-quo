@@ -307,6 +307,7 @@
 (defn emoji-picker [{:keys [on-emoji-press state*]}]
   (let [scroll-ref              (react/use-ref nil)
         {:keys [width]}         (safe-area/use-window)
+        theme-color             (context/use-theme-color)
         {:keys [input]}         @state*
         size                    (emoji-size width)
         row-height              (emoji-row-height size)
@@ -314,10 +315,9 @@
                                                 [row-height])]
     (react/use-effect
      (fn []
-       (swap! state* assoc :scroll-ref scroll-ref)
-       nil)
+       (swap! state* assoc :scroll-ref scroll-ref))
      [])
-    [:rn/view {:style style/root}
+    [:rn/view {:style [style/root (style/sheet-region-background theme-color)]}
      [emoji-list {:emoji-size       size
                   :input            input
                   :layout-offsets   layout-offsets

@@ -15,9 +15,15 @@
    :height             (+ 32 20 12)})
 
 
-(defn sheet-region-background [theme]
-  (style {:background-color (if rn/ios?
-                              (colors/themed theme :color/white-70 :color/neutral-80-70)
+(defn sheet-region-background [{:keys [theme dark-theme?]}]
+  (style {:background-color (cond
+                              (and rn/ios? dark-theme?)
+                              (colors/get-color :color/neutral-95-40)
+
+                              rn/ios?
+                              (colors/get-color :color/white-70)
+
+                              :else
                               (colors/themed theme :color/white-95 :color/neutral-95-95))}))
 
 (defstyle emoji-row
