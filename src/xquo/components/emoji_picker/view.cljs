@@ -17,26 +17,6 @@
 (def ^:private emojis-per-row 7)
 (def ^:private search-debounce-ms 200)
 
-(def ^:private title-kw->text
-  {:t/emoji-people   "Personas"
-   :t/emoji-food     "Comida"
-   :t/emoji-nature   "Naturaleza"
-   :t/emoji-travel   "Viajes"
-   :t/emoji-activity "Actividades"
-   :t/emoji-symbols  "Símbolos"
-   :t/emoji-objects  "Objetos"
-   :t/emoji-flags    "Banderas"})
-
-(def ^:private category-icons
-  {:people   :icon/face-happy
-   :nature   :icon/leaf
-   :food     :icon/food
-   :activity :icon/activity
-   :travel   :icon/ship
-   :objects  :icon/floor-lamp
-   :symbols  :icon/hashtag
-   :flags    :icon/flag})
-
 (def ^:private section-sorted
   (sort-by val emoji-picker.data/section-header-indexes))
 
@@ -120,58 +100,60 @@
     (matching-emoji-rows (search-candidates search-string) search-string)
     emoji-picker.data/flatten-data))
 
+(def ^:private title-kw->text
+  {:t/emoji-people   "Personas"
+   :t/emoji-food     "Comida"
+   :t/emoji-nature   "Naturaleza"
+   :t/emoji-travel   "Viajes"
+   :t/emoji-activity "Actividades"
+   :t/emoji-symbols  "Símbolos"
+   :t/emoji-objects  "Objetos"
+   :t/emoji-flags    "Banderas"})
+
 (defn- emoji-section [{:keys [title]}]
   [divider-label/divider-label {:title        (get title-kw->text title title)
                                 :compact?     false
                                 :collapsible? false}])
 
-(defn- emoji-press-handler [on-emoji-press unicode]
-  (fn []
-    (on-emoji-press unicode)))
+(defn- emoji-button [{:keys [on-emoji-press size unicode]}]
+  (let [on-press! (react/use-callback #(on-emoji-press unicode) [on-emoji-press unicode])]
+    [:rn/pressable {:style    [style/emoji-pressable-base (style/emoji-pressable-size size)]
+                    :on-press on-press!}
+     [:rn/text {:style                style/emoji-text
+                :adjustsFontSizeToFit true}
+      unicode]]))
 
-(defn- emoji-row [{:keys [emoji-style emojis on-emoji-press]}]
+(defn- emoji-row [{:keys [emojis on-emoji-press size]}]
   (into [:rn/view {:style style/emoji-row}]
         (map (fn [{:keys [unicode]}]
-               ^{:key unicode}
-               [:rn/pressable {:style    [style/emoji-pressable-base emoji-style]
-                                :on-press (emoji-press-handler on-emoji-press unicode)}
-                [:rn/text {:style                style/emoji-text
-                           :adjustsFontSizeToFit true}
-                 unicode]]))
+               [emoji-button {:on-emoji-press on-emoji-press
+                              :size           size
+                              :unicode        unicode}]))
         emojis))
 
-(defn- render-item [{:keys [emoji-style item on-emoji-press]}]
+(defn- render-item [{:keys [item on-emoji-press size]}]
   (if (:header? item)
     [emoji-section item]
-    [emoji-row {:emoji-style    emoji-style
-                :emojis         item
-                :on-emoji-press on-emoji-press}]))
+    [emoji-row {:emojis         item
+                :on-emoji-press on-emoji-press
+                :size           size}]))
 
 (defn- key-extractor [item index]
   (if (:header? item)
     (str "header-" index)
     (:unicode (first item))))
 
-(defn- get-item-layout [layout-offsets row-height section-height data index]
-  (let [height (if (:header? (aget data index)) section-height row-height)]
-    #js{:length height
-        :offset (get layout-offsets index)
+(defn- get-item-layout [layout-offsets index]
+  (let [offset      (get layout-offsets index)
+        next-offset (get layout-offsets (inc index))]
+    #js{:length (- next-offset offset)
+        :offset offset
         :index  index}))
 
-(defn- get-search-item-layout [row-height _ index]
+(defn- get-search-item-layout [row-height index]
   #js{:length row-height
       :offset (* row-height index)
       :index  index})
-
-(defn- scroll-to-category! [scroll-ref category]
-  (let [index (get emoji-picker.data/section-header-indexes category)]
-    (when (and index scroll-ref)
-      (when-let [scroll-list (j/get scroll-ref :current)]
-        (when (j/get scroll-list :scrollToIndex)
-          (j/call scroll-list :scrollToIndex #js{:index        index
-                                                 :animated     true
-                                                 :viewPosition 0})
-          true)))))
 
 (defn- release-scroll-target [state next-category]
   (-> state
@@ -182,7 +164,9 @@
   (let [{:keys [category scroll-target-category]} state]
     (cond
       release-target?
-      (release-scroll-target state next-category)
+      (if (or scroll-target-category (not= category next-category))
+        (release-scroll-target state (or scroll-target-category next-category))
+        state)
 
       (= scroll-target-category next-category)
       (release-scroll-target state next-category)
@@ -196,14 +180,6 @@
       :else
       (assoc state :category next-category))))
 
-(defn- on-category-press [scroll-ref category state*]
-  (swap! state* assoc
-         :category category
-         :scroll-target-category category)
-  (reagent/flush)
-  (when-not (scroll-to-category! scroll-ref category)
-    (swap! state* dissoc :scroll-target-category)))
-
 (defn- category-from-scroll-event [layout-offsets event]
   (let [offset (j/get-in event [:nativeEvent :contentOffset :y])]
     (index->category (current-focused-index layout-offsets offset))))
@@ -216,64 +192,112 @@
       (reset! state* next-state))))
 
 (defn- emoji-list
-  [{:keys [emoji-size input layout-offsets on-emoji-press row-height scroll-ref state*]}]
-  (let [bottom-safe-area (safe-area/use-bottom)
-        [search-term set-search-term!] (react/use-state nil)
-        search-string      (emoji-picker.data/normalize-search-text search-term)
-        searching?         (seq search-string)
-        data               (react/use-memo #(with-meta (emojis-to-render search-string) {:keep-items true})
-                                           [search-string])
-        emoji-style        (react/use-memo #(style/emoji-pressable-size emoji-size) [emoji-size])
-        list-content-style (react/use-memo #(style/list-content bottom-safe-area searching?)
-                                           [bottom-safe-area searching?])
-        layout-id          (peek layout-offsets)
-        scroll!            (react/use-callback (fn [event]
-                                                 (sync-category-from-scroll! state* layout-offsets false event))
-                                               [layout-id state*])
-        scroll-end!        (react/use-callback (fn [event]
-                                                 (sync-category-from-scroll! state* layout-offsets true event))
-                                               [layout-id state*])
-        render-item!       (react/use-callback
-                            (fn [js-data]
-                              (reagent/as-element
-                               [render-item {:emoji-style    emoji-style
-                                             :item           (j/get js-data :item)
-                                             :on-emoji-press on-emoji-press}]))
-                            [emoji-style on-emoji-press])
-        get-item-layout!   (react/use-callback
-                            (fn [data index]
-                              (get-item-layout layout-offsets row-height emoji-section-height data index))
-                            [layout-id row-height])
-        get-search-item-layout! (react/use-callback
-                                 (fn [data index]
-                                   (get-search-item-layout row-height data index))
-                                 [row-height])
-        change-search!     (react/use-memo #(gfns/debounce set-search-term! search-debounce-ms) [])]
-    (react/use-effect #(change-search! input)
-                      [input])
-    [:rn/flat-list (cond-> {:ref                             scroll-ref
-                            :style                           style/list-root
-                            :content-container-style         list-content-style
-                            :data                            data
-                            :render-item                     render-item!
-                            :key-extractor                   key-extractor
-                            :initial-num-to-render           6
-                            :max-to-render-per-batch         4
-                            :window-size                     5
-                            :update-cells-batching-period    32
-                            :remove-clipped-subviews         true
-                            :shows-vertical-scroll-indicator false
-                            :keyboard-should-persist-taps    :always
-                            :get-item-layout                 (if searching?
-                                                               get-search-item-layout!
-                                                               get-item-layout!)}
-                     (not searching?) (assoc :scroll-event-throttle 300
-                                             :on-scroll scroll!
-                                             :on-momentum-scroll-end scroll-end!))]))
+  [{:keys [state*]}]
+  (let [input* (reagent/cursor state* [:input])]
+    (fn [{:keys [on-emoji-press state*]}]
+      (let [scroll-ref       (react/use-ref nil)
+            {:keys [width]}  (safe-area/use-window)
+            size             (emoji-size width)
+            row-height       (emoji-row-height size)
+            layout-offsets   (data-layout-offsets row-height emoji-section-height)
+            layout-id        (peek layout-offsets)
+            bottom-safe-area (safe-area/use-bottom)
+            input            @input*
+            [search-term set-search-term!] (react/use-state nil)
+            search-string      (emoji-picker.data/normalize-search-text search-term)
+            searching?         (seq search-string)
+            data               (with-meta (emojis-to-render search-string) {:keep-items true})
+            scroll!            (react/use-callback (fn [event]
+                                                     (sync-category-from-scroll! state* layout-offsets false event))
+                                                   [layout-id state*])
+            scroll-end!        (react/use-callback (fn [event]
+                                                     (sync-category-from-scroll! state* layout-offsets true event))
+                                                   [layout-id state*])
+            render-item!       (react/use-callback
+                                (fn [js-data]
+                                  (reagent/as-element
+                                   [render-item {:item           (j/get js-data :item)
+                                                 :on-emoji-press on-emoji-press
+                                                 :size           size}]))
+                                [on-emoji-press size])
+            get-item-layout!   (react/use-callback (fn [_ index]
+                                                      (get-item-layout layout-offsets index))
+                                                    [layout-id])
+            get-search-item-layout! (react/use-callback
+                                     (fn [_ index]
+                                       (get-search-item-layout row-height index))
+                                     [row-height])
+            change-search!     (react/use-memo #(gfns/debounce set-search-term! search-debounce-ms) [])]
+        (react/use-effect
+         (fn []
+           (swap! state* assoc
+                  :layout-id layout-id
+                  :layout-offsets layout-offsets
+                  :scroll-ref scroll-ref))
+         [layout-id state*])
+        (react/use-effect #(change-search! input)
+                          [input])
+        [:rn/flat-list (cond-> {:ref                             scroll-ref
+                                :style                           style/list-root
+                                :content-container-style         (style/list-content bottom-safe-area searching?)
+                                :data                            data
+                                :render-item                     render-item!
+                                :key-extractor                   key-extractor
+                                :initial-num-to-render           10
+                                :max-to-render-per-batch         10
+                                :window-size                     7
+                                :update-cells-batching-period    50
+                                :remove-clipped-subviews         true
+                                :shows-vertical-scroll-indicator false
+                                :keyboard-should-persist-taps    :always
+                                :get-item-layout                 (if searching?
+                                                                   get-search-item-layout!
+                                                                   get-item-layout!)}
+                         (not searching?) (assoc :scroll-event-throttle 160
+                                                 :on-scroll scroll!
+                                                 :on-momentum-scroll-end scroll-end!))]))))
 
-(defn- category-button [{:keys [category scroll-ref selected? state*]}]
-  (let [on-press! (react/use-callback #(on-category-press scroll-ref category state*)
-                                      [category scroll-ref state*])]
+(def ^:private category-icons
+  {:people   :icon/face-happy
+   :nature   :icon/leaf
+   :food     :icon/food
+   :activity :icon/activity
+   :travel   :icon/ship
+   :objects  :icon/floor-lamp
+   :symbols  :icon/hashtag
+   :flags    :icon/flag})
+
+(defn- scroll-to-category! [scroll-ref layout-offsets category]
+  (let [index (get emoji-picker.data/section-header-indexes category)]
+    (when (and index scroll-ref)
+      (when-let [scroll-list (j/get scroll-ref :current)]
+        (let [offset (get layout-offsets index)]
+          (cond
+            (and (some? offset) (j/get scroll-list :scrollToOffset))
+            (do
+              (j/call scroll-list :scrollToOffset #js{:offset   offset
+                                                      :animated true})
+              true)
+
+            (j/get scroll-list :scrollToIndex)
+            (do
+              (j/call scroll-list :scrollToIndex #js{:index        index
+                                                     :animated     true
+                                                     :viewPosition 0})
+              true)))))))
+
+(defn- on-category-press [scroll-ref layout-offsets category state*]
+  (swap! state* assoc
+         :category category
+         :scroll-target-category category)
+  (reagent/flush)
+  (when-not (scroll-to-category! scroll-ref layout-offsets category)
+    (swap! state* dissoc :scroll-target-category)))
+
+(defn- category-button [{:keys [category layout-id layout-offsets scroll-ref selected? state*]}]
+  (let [on-press! (react/use-callback (fn []
+                                        (on-category-press scroll-ref layout-offsets category state*))
+                                      [category layout-id scroll-ref state*])]
     [button/button {:type     (if selected? :grey :ghost)
                     :icon     {:name (get category-icons category)}
                     :size     32
@@ -289,47 +313,35 @@
                    :icon           {:name :icon/search}
                    :on-change-text set-input!}]]))
 
-(defn- category-footer [{:keys [category scroll-ref state*]}]
+(defn- category-footer [{:keys [category layout-id layout-offsets scroll-ref state*]}]
   (let [bottom-inset  (safe-area/use-bottom)
         footer-inset  (if @above-keyboad-view/keyboard-visible? 0 bottom-inset)
         theme-color   (context/use-theme-color)]
-    (into [:effect/view {:effect    :glass
+    (into [:effect/view {:style     [(style/category-footer-container footer-inset)
+                                     (when rn/android? (style/sheet-region-background theme-color))]
+                         :effect    :glass
                          :intensity :regular
-                         :theme     (:theme theme-color)
-                         :style     [(style/category-footer-container footer-inset)
-                                     (when rn/android? (style/sheet-region-background theme-color))]}]
+                         :theme     (:theme theme-color)}]
           (map (fn [{:keys [id]}]
                  [category-button {:category       id
+                                   :layout-id      layout-id
+                                   :layout-offsets layout-offsets
                                    :scroll-ref     scroll-ref
                                    :selected?      (= category id)
                                    :state*         state*}]))
           emoji-picker.data/categories)))
 
 (defn emoji-picker [{:keys [on-emoji-press state*]}]
-  (let [scroll-ref              (react/use-ref nil)
-        {:keys [width]}         (safe-area/use-window)
-        theme-color             (context/use-theme-color)
-        {:keys [input]}         @state*
-        size                    (emoji-size width)
-        row-height              (emoji-row-height size)
-        layout-offsets          (react/use-memo #(data-layout-offsets row-height emoji-section-height)
-                                                [row-height])]
-    (react/use-effect
-     (fn []
-       (swap! state* assoc :scroll-ref scroll-ref))
-     [])
+  (let [theme-color (context/use-theme-color)]
     [:rn/view {:style [style/root (style/sheet-region-background theme-color)]}
-     [emoji-list {:emoji-size       size
-                  :input            input
-                  :layout-offsets   layout-offsets
-                  :on-emoji-press   on-emoji-press
-                  :row-height       row-height
-                  :scroll-ref       scroll-ref
-                  :state*           state*}]]))
+     [emoji-list {:on-emoji-press on-emoji-press
+                  :state*         state*}]]))
 
 (defn emoji-picker-footer [{:keys [state*]}]
-  (when-let [{:keys [category input scroll-ref]} @state*]
+  (when-let [{:keys [category input layout-id layout-offsets scroll-ref]} @state*]
     (when-not (search-term? input)
       [category-footer {:category         (or category :people)
+                        :layout-id        layout-id
+                        :layout-offsets   layout-offsets
                         :scroll-ref       scroll-ref
                         :state*           state*}])))
