@@ -11,18 +11,31 @@
             :adaptive   false}))
 
 (defn- background-color [{:keys [theme dark-theme?]}]
-  (if (and rn/ios? dark-theme?)
+  (cond
+    (and rn/ios? dark-theme?)
     (colors/get-color :color/neutral-95-40)
+
+    rn/ios?
+    (colors/get-color :color/white-70)
+
+    :else
     (colors/themed theme :color/white :color/neutral-95)))
+
+(defn- background-blur [{:keys [dark-theme?]}]
+  (when rn/ios?
+    (if dark-theme?
+      :system-ultra-thin-material-dark
+      :system-ultra-thin-material-light)))
 
 (defn screen-options [{:keys [theme dark-theme? handle?]
                        :or   {handle? true}
                        :as   theme-color}]
-  (let [background-color (background-color theme-color)]
+  (let [background-color (background-color theme-color)
+        background-blur  (background-blur theme-color)]
     (xf/->js-prop-obj (cond-> {:background-color background-color
                                :corner-radius    20
                                :grabber          handle?
                                :grabber-options  (when handle?
                                                    (handle theme))}
-                        (and rn/ios? dark-theme?) (assoc :background-blur :system-ultra-thin-material-dark)
-                        rn/android? (assoc :dimmed-background-color (colors/get-color :color/neutral-100-70))))))
+                        background-blur (assoc :background-blur background-blur)
+                        rn/android?     (assoc :dimmed-background-color (colors/get-color :color/neutral-100-70))))))

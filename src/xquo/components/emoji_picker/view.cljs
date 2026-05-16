@@ -280,10 +280,10 @@
                     :on-press on-press!}]))
 
 (defn emoji-picker-header [{:keys [state*]}]
-  (let [theme      (context/use-theme)
+  (let [theme-color (context/use-theme-color)
         set-input! (react/use-callback #(swap! state* assoc :input %) [])]
     [:rn/view {:style [style/search-input-container
-                       (style/sheet-region-background theme)]}
+                       (style/sheet-region-background theme-color)]}
      [input/input {:size           32
                    :placeholder    "Busca emojis"
                    :icon           {:name :icon/search}
@@ -292,11 +292,11 @@
 (defn- category-footer [{:keys [category scroll-ref state*]}]
   (let [bottom-inset  (safe-area/use-bottom)
         footer-inset  (if @above-keyboad-view/keyboard-visible? 0 bottom-inset)
-        theme         (context/use-theme)]
+        theme-color   (context/use-theme-color)]
     (into [:effect/view {:effect    :glass
                          :intensity :regular
                          :style     [(style/category-footer-container footer-inset)
-                                     (when rn/android? (style/sheet-region-background theme))]}]
+                                     (when rn/android? (style/sheet-region-background theme-color))]}]
           (map (fn [{:keys [id]}]
                  [category-button {:category       id
                                    :scroll-ref     scroll-ref
