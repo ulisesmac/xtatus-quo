@@ -77,6 +77,7 @@
                                  (:style props))))
         glass-checkbox? (assoc :effect       :glass
                                :intensity    :clear
+                               :theme        theme
                                :interactive? true))
       (cond
         (= type :toggle)

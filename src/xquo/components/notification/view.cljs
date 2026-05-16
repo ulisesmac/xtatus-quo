@@ -55,6 +55,7 @@
                        caller-style)}
         glass? (assoc :effect       :glass
                       :intensity    :regular
+                      :theme        theme
                       :interactive? true))
       [notification-icon {:icon  icon
                           :theme theme

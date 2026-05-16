@@ -295,6 +295,7 @@
         theme-color   (context/use-theme-color)]
     (into [:effect/view {:effect    :glass
                          :intensity :regular
+                         :theme     (:theme theme-color)
                          :style     [(style/category-footer-container footer-inset)
                                      (when rn/android? (style/sheet-region-background theme-color))]}]
           (map (fn [{:keys [id]}]

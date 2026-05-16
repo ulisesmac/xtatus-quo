@@ -38,6 +38,7 @@
                                (when-not glass? {:overflow :hidden})]}
                 glass? (assoc :effect       :glass
                               :intensity    (or intensity :regular)
+                              :theme        theme
                               :interactive? true))]
              (map-indexed
               (fn [index item]

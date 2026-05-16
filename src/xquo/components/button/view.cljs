@@ -109,6 +109,7 @@
                         :on-press-out on-press-out!))
        glass? (assoc :effect       :glass
                      :intensity    (if (= type :outline) :regular :clear)
+                     :theme        theme
                      :interactive? true))
      (cond
        icon-only?

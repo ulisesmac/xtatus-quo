@@ -297,6 +297,7 @@
                                        (:style props))))
        glass? (assoc :effect       :glass
                      :intensity    :clear
+                     :theme        theme
                      :interactive? true))
      [:animated/view {:pointer-events :none
                       :style          [style/overlay-base
