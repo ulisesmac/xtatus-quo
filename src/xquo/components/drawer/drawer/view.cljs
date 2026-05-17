@@ -1,5 +1,5 @@
 (ns xquo.components.drawer.drawer.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.button.view :as button]
             [xquo.components.drawer.bottom-actions.view :as bottom-actions-view]
             [xquo.components.drawer.drawer.style :as style]
@@ -56,7 +56,7 @@
            (assoc :background background)
 
            dark-solid?
-           (assoc :style      (rec.xf/add-styles
+           (assoc :style      (rn.utils/add-styles
                                style/cta-button-dark-solid-style
                                (:style button-props))
                   :icon       (assoc (:icon button-props {:name :icon/info
@@ -87,7 +87,7 @@
     [:rn/view (-> props
                  (dissoc :title :body :button :actions-label :actions
                           :bottom-actions :background :style)
-                  (assoc :style (rec.xf/add-styles
+                  (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  (style/container-color-style theme background)
                                  (:style props))))

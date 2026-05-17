@@ -1,6 +1,7 @@
-(ns xquo.worklets.unified-tab)
+(ns xquo.worklets.unified-tab
+  (:require [react-native.utils :as rn.utils]))
 
-(def worklets (js/require "../src/js/worklets/unified_tab_content"))
+(def worklets (rn.utils/asset-require "xquo/worklets/unified_tab_content.js"))
 
 (def pan-on-begin (.-panOnBegin worklets))
 (def pan-on-end (.-panOnEnd worklets))

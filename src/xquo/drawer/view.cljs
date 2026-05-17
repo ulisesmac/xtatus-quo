@@ -1,10 +1,10 @@
 (ns xquo.drawer.view
   (:require [react-native.core :as rn]
-            [reagent-extended-compiler.utils.transforms :as xf]
+            [react-native.utils :as rn.utils]
             [xquo.foundations.colors :as colors]))
 
 (defn handle [theme]
-  (xf/prop {:width      32
+  (rn.utils/prop {:width      32
             :height     4
             :top-margin 8
             :color      (colors/themed theme :color/neutral-100-5 :color/white-10)
@@ -32,7 +32,7 @@
                        :as   theme-color}]
   (let [background-color (background-color theme-color)
         background-blur  (background-blur theme-color)]
-    (xf/->js-prop-obj (cond-> {:background-color background-color
+    (rn.utils/->js-prop-obj (cond-> {:background-color background-color
                                :corner-radius    20
                                :grabber          handle?
                                :grabber-options  (when handle?

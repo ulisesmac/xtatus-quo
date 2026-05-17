@@ -1,5 +1,5 @@
 (ns xquo.components.drawer.top.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.button.view :as button]
             [xquo.components.drawer.top.style :as style]
             [xquo.components.icon.view :as icon]
@@ -34,7 +34,7 @@
   (let [theme (context/use-theme)]
     [:rn/view (-> props
                   (dissoc :skip-handle?)
-                  (assoc :style (rec.xf/add-styles style/handle-container handle-style)))
+                  (assoc :style (rn.utils/add-styles style/handle-container handle-style)))
      (when-not skip-handle?
        [:rn/view {:style (style/handle-bar-style theme)}])]))
 
@@ -111,7 +111,7 @@
          (assoc :icon  (assoc (:icon button)
                          :color (:color (:icon button)
                                  (colors/get-color :color/white-100)))
-                :style (rec.xf/add-styles
+                :style (rn.utils/add-styles
                         (style/primary-button-style theme color)
                         (:style button))))])
 
@@ -259,7 +259,7 @@
                   (dissoc :skip-handle? :label :compact? :title :description :subcontent :counter
                           :counter-font :counter-style :info? :button :title-icon
                           :description-icon :leading :context-tags :blur? :style :handle-style)
-                  (assoc :style (rec.xf/add-styles style/container-base (:style props))))
+                  (assoc :style (rn.utils/add-styles style/container-base (:style props))))
      [drawer-handle {:skip-handle? skip-handle?
                      :handle-style handle-style}]
      (if label

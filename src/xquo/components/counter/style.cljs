@@ -1,5 +1,5 @@
 (ns xquo.components.counter.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+  (:require [react-native.utils :refer [defstyle style]]
             [xquo.foundations.colors :as colors]))
 
 (def ^:private default-radius 6)

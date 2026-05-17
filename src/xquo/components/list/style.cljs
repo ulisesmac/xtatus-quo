@@ -1,7 +1,7 @@
 (ns xquo.components.list.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle]]
             [xquo.foundations.colors :as colors]
-            [xquo.foundations.spacing :as spacing]))
+            [xquo.foundations.spacing :refer [spacing]]))
 
 (defstyle container-base
   {:width      "100%"
@@ -49,8 +49,8 @@
    :transition-timing-function section-content-transition-timing-function})
 
 (defstyle element-padding
-  {:padding-horizontal (spacing/spacing-values 8)
-   :padding-vertical   (spacing/spacing-values 3)})
+  {:padding-horizontal (spacing 8)
+   :padding-vertical   (spacing 3)})
 
 (defstyle pressable-element-padding
   {:padding-horizontal 12
@@ -62,7 +62,7 @@
 (defstyle element-container
   {:flex-direction     :row
    :align-items        :flex-start
-   :gap                (spacing/spacing-values 4)
+   :gap                (spacing 4)
    :z-index            1})
 
 (defstyle overlay-base
@@ -86,7 +86,7 @@
 (defstyle content-container
   {:flex      1
    :min-width 0
-   :gap       (spacing/spacing-values 1)})
+   :gap       (spacing 1)})
 
 (defstyle button-container
   {:align-self  :center

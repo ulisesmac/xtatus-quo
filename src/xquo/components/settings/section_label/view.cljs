@@ -1,5 +1,5 @@
 (ns xquo.components.settings.section-label.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.settings.section-label.style :as style]
             [xquo.components.text.view :as text]
             [xquo.context :as context]))
@@ -24,7 +24,7 @@
         label-color   (style/label-color theme blur?)]
     [:rn/view (-> props
                   (dissoc :label :counter :description :blur? :style)
-                  (assoc :style (rec.xf/add-styles
+                  (assoc :style (rn.utils/add-styles
                                  (if description style/description-base style/row-base)
                                  (when counter? style/row-gap-12)
                                  (:style props))))

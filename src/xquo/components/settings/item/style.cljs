@@ -1,12 +1,12 @@
 (ns xquo.components.settings.item.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+  (:require [react-native.utils :refer [defstyle style]]
             [xquo.foundations.animations :as animations]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
 (defstyle container-base
   {:overflow      :hidden
-   :border-radius (:border/sizes-40-56 borders/border-radius-values)})
+   :border-radius (borders/radius 40)})
 
 (defstyle gap-12
   {:gap 12})
@@ -101,7 +101,7 @@
 (defstyle status-dot
   {:width         8
    :height        8
-   :border-radius (:border/max borders/border-radius-values)})
+   :border-radius (borders/radius :max)})
 
 (defstyle right-content-base
   {:flex-direction :row

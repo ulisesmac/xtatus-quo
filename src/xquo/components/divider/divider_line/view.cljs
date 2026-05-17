@@ -1,5 +1,5 @@
 (ns xquo.components.divider.divider-line.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.divider.divider-line.style :as style]
             [xquo.context :as context]))
 
@@ -13,5 +13,5 @@
     [:rn/view
      (-> props
          (dissoc :layout :entering :exiting)
-         (update :style rec.xf/add-styles style/container-base (:style props)))
+         (update :style rn.utils/add-styles style/container-base (:style props)))
      [:rn/view {:style [style/line-base (style/line-color-style theme)]}]]))

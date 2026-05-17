@@ -1,15 +1,92 @@
-## About
+# Xquo
 
-This project is based on [status-im/status-mobile](https://github.com/status-im/status-mobile), originally licensed under the [Mozilla Public License 2.0](https://www.mozilla.org/MPL/2.0/).
+## Install
 
-This repository starts with the Quo Component Library used by Status-mobile. This project aims to make them reusable and improve them or extend them. Feel free to submit any suggestion/issue/PR to contribute. 
+Add xquo to both runtimes.
 
-⚠️ This Project is not ready to be used ⚠️
+```clojure
+xtatus-quo/xtatus-quo {:local/root "xtatus-quo"}
+```
 
-## Design Token Docs
+```json
+"xquo": "file:./xtatus-quo"
+```
 
-- [Color generator strategy (Figma -> tokens)](docs/color-generator-strategy.md)
+The app must also provide the React Native JS libraries used by xquo:
 
-## License
+```json
+"react-native-gesture-handler": "...",
+"react-native-reanimated": "...",
+"react-native-safe-area-context": "...",
+"react-native-svg": "..."
+```
 
-This project remains under the [MPL-2.0](LICENSE.md) license.
+Then install native deps and rebuild the app:
+
+```sh
+npm install
+cd ios && pod install
+```
+
+The effect native component is installed by React Native autolinking/codegen.
+
+## Init
+
+`xquo.$init` only defines compiler props. The app creates and installs the
+Reagent compiler:
+
+```clojure
+(ns app.$init
+  (:require [react-native.reagent-compiler.core :as rec]
+            [reagent.core :as r]
+            [xquo.$init :as xquo-init]))
+
+(defonce reagent-compiler
+  (rec/create xquo-init/compiler-props))
+
+(r/set-default-compiler! reagent-compiler)
+```
+
+If the app has extra JS component libs, merge them into xquo's props:
+
+```clojure
+(rec/create (update xquo-init/compiler-props
+                    :js-component-libs
+                    merge
+                    {:edge-to-edge edge-to-edge}))
+```
+
+Wrap the app with xquo context. It provides xquo theme/color, Gesture Handler
+root view, and Safe Area provider:
+
+```clojure
+[xquo.context/provider {:theme theme :color color}
+ [app-root]]
+```
+
+## Fonts
+
+Fonts live in `resources/fonts`.
+
+After adding, removing, or renaming fonts, update the app font registration:
+
+```sh
+npx react-native-asset
+```
+
+On iOS, also keep `ios/mailtracker/Info.plist` `UIAppFonts` aligned with the
+actual font filenames, then rebuild the native app.
+
+## Icons
+
+Icon SVG sources live in `resources/icons/12`, `resources/icons/16`, and
+`resources/icons/20`.
+
+After changing SVGs, regenerate the icon fonts and glyph maps:
+
+```sh
+npm run icons:generate
+```
+
+This reads `xtatus-quo/.nanoicons.json` and writes the generated `.ttf` and
+`.glyphmap.json` files into `resources/icons`.

@@ -1,13 +1,13 @@
 (ns xquo.components.selectors.options.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle]]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]
-            [xquo.foundations.spacing :as spacing]))
+            [xquo.foundations.spacing :refer [spacing]]))
 
 (defstyle option-base
   {:position       :relative
    :border-width   1
-   :border-radius  (:border/card-section borders/border-radius-values)
+   :border-radius  (borders/radius :card-section)
    :overflow       :hidden
    :flex-direction :column})
 
@@ -24,9 +24,9 @@
   (if horizontal?
     {:align-items    :stretch
      :flex-direction :row
-     :column-gap     (spacing/spacing-values 4)}
+     :column-gap     (spacing 4)}
     {:align-items :stretch
-     :row-gap     (spacing/spacing-values 4)}))
+     :row-gap     (spacing 4)}))
 
 (defn option-border-style [dark-theme? selected? color]
   {:border-color (cond

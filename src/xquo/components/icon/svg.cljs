@@ -1,5 +1,5 @@
 (ns xquo.components.icon.svg
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]))
+  (:require [react-native.utils :refer [defstyle]]))
 
 (def default-color "#09101C")
 (def white-color "white")

@@ -1,5 +1,5 @@
 (ns xquo.components.selectors.options.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.button.style :as button.style]
             [xquo.components.selectors.options.style :as style]
             [xquo.components.selectors.selector.view :as selector]
@@ -18,7 +18,7 @@
                                          [on-select option-id-value])
         on-press-in!    (rn/use-callback #(set-pressed! true) [])
         on-press-out!   (rn/use-callback #(set-pressed! false) [])]
-    [:animated/pressable (cond-> {:style        (rec.xf/add-styles
+    [:animated/pressable (cond-> {:style        (rn.utils/add-styles
                                                  (if pressed?
                                                    button.style/pressable-pressed-state-style
                                                    button.style/pressable-default-state-style)
@@ -81,8 +81,8 @@
                                            :content-container-style :initial-selected
                                            :selected-id :option-layout
                                            :on-select :option-id :option-style :style)
-                                   (assoc :style (rec.xf/add-styles style/root-base style)
-                                          :content-container-style (rec.xf/add-styles
+                                   (assoc :style (rn.utils/add-styles style/root-base style)
+                                          :content-container-style (rn.utils/add-styles
                                                                     (style/container-style horizontal?)
                                                                     content-container-style)))]
           (map (fn [option]

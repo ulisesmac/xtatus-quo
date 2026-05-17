@@ -1,5 +1,5 @@
 (ns xquo.components.empty-state.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.button.view :as button]
             [xquo.components.empty-state.style :as style]
             [xquo.components.text.view :as text]))
@@ -65,7 +65,7 @@
     :as                               props}]
   [:rn/view (-> props
                 (dissoc :blur? :buttons :description :image :image-spacing :image-tint :style :title)
-                (assoc :style (rec.xf/add-styles style/root-base (:style props))))
+                (assoc :style (rn.utils/add-styles style/root-base (:style props))))
    [:rn/view {:style style/content-base}
     [:rn/view {:style style/top-base}
      [illustration-view {:image      image

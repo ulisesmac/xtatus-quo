@@ -2,7 +2,7 @@
   (:require [xquo.context :as context]
             [xquo.foundations.colors :as colors]
             [xquo.foundations.typography :as typography]
-            [reagent-extended-compiler.utils.transforms :as rec.xf]))
+            [react-native.utils :as rn.utils]))
 
 (def light-text-style
   {:color (colors/get-color :color/neutral-100)})
@@ -17,7 +17,7 @@
   (let [theme (context/use-theme)]
     (into [:rn/text (-> props
                         (dissoc :font :style)
-                        (assoc :style (rec.xf/add-styles
+                        (assoc :style (rn.utils/add-styles
                                        (typography/get-style font)
                                        (if (= theme :theme/dark)
                                          dark-text-style

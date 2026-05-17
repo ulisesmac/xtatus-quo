@@ -1,7 +1,8 @@
 (ns xquo.components.emoji-picker.data
   (:require
    [cljs-bean.core :refer [->clj]]
-   [clojure.string :as string]))
+   [clojure.string :as string]
+   [react-native.utils :as rn.utils]))
 
 (def group-smileys-emotion 0)
 (def group-people-body 1)
@@ -51,7 +52,7 @@
   (assoc emoji :search-text (string/join " " (cons label tags))))
 
 (def emoji-data
-  (->> (js/require "../resources/data/emojis/es.json")
+  (->> (rn.utils/asset-require "emojis/es.json")
        (->clj)
        (filter (comp valid-groups :group))
        (map emoji-search-text)

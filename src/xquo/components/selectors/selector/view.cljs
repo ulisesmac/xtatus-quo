@@ -1,5 +1,5 @@
 (ns xquo.components.selectors.selector.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.icon.view :as icon]
             [xquo.components.selectors.selector.style :as style]
             [xquo.context :as context]
@@ -71,7 +71,7 @@
                          :on-press on-press-toggle!
                          :on-press-in on-press-in!
                          :on-press-out on-press-out!
-                         :style (rec.xf/add-styles
+                         :style (rn.utils/add-styles
                                  container-style
                                  state-style
                                  (:style props))))

@@ -1,7 +1,8 @@
 (ns xquo.components.input.view
   (:require [applied-science.js-interop :as j]
             [react-native.core :as rn]
-            [reagent-extended-compiler.utils.transforms :as rec.xf]
+            [react-native.reanimated.core :as rnr]
+            [react-native.utils :as rn.utils]
             [xquo.components.button.style :as button.style]
             [xquo.components.button.view :as button]
             [xquo.components.icon.view :as icon]
@@ -9,8 +10,7 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]
             [xquo.foundations.colors :as colors]
-            [xquo.foundations.typography :as typography]
-            [xquo.react-native-reanimated :as rnr]))
+            [xquo.foundations.typography :as typography]))
 
 (def clear-button-delay 120)
 (def text-input-content-height 22)
@@ -301,7 +301,7 @@
                      :max-length    max-length}])
      [:rn/pressable {:disabled disabled?
                      :on-press focus-input!
-                     :style    (rec.xf/add-styles
+                     :style    (rn.utils/add-styles
                                 style/container-base
                                 (if multiline?
                                   style/container-multiline

@@ -1,12 +1,11 @@
 (ns xquo.extra.components.above-keyboad-view.view
-  (:require
-   [applied-science.js-interop :as j]
-   [reagent-extended-compiler.utils.transforms :as xf :refer [style]]
-   [reagent-extended.react :as react]
-   [reagent-extended.react-native :as rn]
-   [reagent.core :as r]
-   ["react-native-reanimated" :refer [useSharedValue withSpring]]
-   ["react-native-safe-area-context" :refer [useSafeAreaInsets]]))
+  (:require [applied-science.js-interop :as j]
+            [react-native.core :as rn]
+            [react-native.react.core :as react]
+            [react-native.reanimated.core :as rnr]
+            [react-native.safe-area-context.core :as safe-area]
+            [react-native.utils :as rn.utils :refer [style]]
+            [reagent.core :as r]))
 
 (defonce keyboard-height (r/atom 0))
 (defonce keyboard-visible? (r/atom (rn/keyboard-visible?)))
@@ -47,7 +46,7 @@
       :restSpeedThreshold 0.7})
 
 (defn- animate-view! [shared-value to]
-  (set! (.-value shared-value) (withSpring to animation-params)))
+  (rnr/sv-set! shared-value (rnr/with-spring to animation-params)))
 
 (defn view-style [shared-value]
   (style {:position  :absolute
@@ -60,8 +59,8 @@
   (let [{:keys [open-inset]
          :as   props} (when (map? p1) p1)
         children     (if props params (conj params p1))
-        transform-y  (useSharedValue @keyboard-height)
-        bottom-inset (-> (useSafeAreaInsets) (j/get :bottom))
+        transform-y  (rnr/use-shared-value @keyboard-height)
+        bottom-inset (safe-area/use-bottom)
         target-y     (if @keyboard-visible?
                        (if rn/ios?
                          (- open-inset @keyboard-height)
@@ -72,7 +71,7 @@
        (animate-view! transform-y target-y))
      [target-y open-inset])
     (into [:animated/view (-> props
-                              (update :style xf/add-styles (view-style transform-y))
+                              (update :style rn.utils/add-styles (view-style transform-y))
                               (dissoc :open-inset)
                               (assoc :pointer-events :box-none))]
           children)))
@@ -82,5 +81,5 @@
  (not (identical? "object" (goog/typeOf #js{})))
  (reagent.impl.util/js-val? 1)
  (js-keys --shv)
- (reagent-extended-compiler.compiler/reanimated-val? #js{})
+ (react-native.reagent-compiler.compiler/reanimated-val? #js{})
  )

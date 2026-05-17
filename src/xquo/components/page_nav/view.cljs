@@ -1,5 +1,5 @@
 (ns xquo.components.page-nav.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.button.view :as button]
             [xquo.components.icon.view :as icon]
             [xquo.components.page-nav.style :as style]
@@ -253,7 +253,7 @@
         centered? (centered-layout? center)]
     [:rn/view (-> props
                   (dissoc :background :left :right :center :center-opacity :style)
-                  (assoc :style (rec.xf/add-styles
+                  (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  (style/nav-surface-style theme background)
                                  (:style props))))

@@ -1,5 +1,5 @@
 (ns xquo.components.tags.context-tag.style
-  (:require-macros [reagent-extended-compiler.utils.transforms :refer [defstyle style]])
+  (:require-macros [react-native.utils :refer [defstyle style]])
   (:require [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
@@ -8,16 +8,16 @@
    32 28})
 
 (def ^:private squircle-image-radius
-  {24 (:border/size-16 borders/border-radius-values)
-   32 (:border/size-24 borders/border-radius-values)})
+  {24 (borders/radius 16)
+   32 (borders/radius 24)})
 
 (def ^:private squircle-container-radius
-  {24 (:border/size-24 borders/border-radius-values)
-   32 (:border/size-32 borders/border-radius-values)})
+  {24 (borders/radius 24)
+   32 (borders/radius 32)})
 
 (def ^:private multi-container-radius
-  {24 (:border/size-24 borders/border-radius-values)
-   32 (:border/size-32 borders/border-radius-values)})
+  {24 (borders/radius 24)
+   32 (borders/radius 32)})
 
 (def ^:private leading-layout
   {24 {:padding-left   2

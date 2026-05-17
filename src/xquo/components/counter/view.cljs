@@ -1,5 +1,5 @@
 (ns xquo.components.counter.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.counter.style :as counter-style]
             [xquo.components.text.view :as text]
             [xquo.context :as context]))
@@ -28,7 +28,7 @@
 (defn- default-counter-view [{:keys [blur? color dark-theme? root-props style type value]}]
   (let [label      (str value)
         layout-key (value-layout-key label)]
-    [:rn/view (assoc root-props :style (rec.xf/add-styles
+    [:rn/view (assoc root-props :style (rn.utils/add-styles
                                         counter-style/default-root-base
                                         (counter-style/default-root-style color layout-key type dark-theme? blur?)
                                         style))
@@ -46,7 +46,7 @@
 (defn- large-counter-view [{:keys [blur? color dark-theme? root-props style type value]}]
   (let [label      (str value)
         layout-key (value-layout-key label)]
-    [:rn/view (assoc root-props :style (rec.xf/add-styles
+    [:rn/view (assoc root-props :style (rn.utils/add-styles
                                         counter-style/large-root-base
                                         (counter-style/large-root-style color layout-key type dark-theme? blur?)
                                         style))

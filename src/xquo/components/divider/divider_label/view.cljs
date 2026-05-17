@@ -1,5 +1,5 @@
 (ns xquo.components.divider.divider-label.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.counter.view :as counter]
             [xquo.components.divider.divider-label.style :as style]
             [xquo.components.icon.view :as icon]
@@ -122,7 +122,7 @@
                  :chevron :chevron-icon :counter :right :style :on-press :on-press-in
                  :on-press-out :disabled? :open? :toggle-duration :toggle-timing-function
                  :layout :entering :exiting)
-         (assoc :style (rec.xf/add-styles
+         (assoc :style (rn.utils/add-styles
                         style/container-base
                         (when compact? style/compact-container)
                         (when divider-line?

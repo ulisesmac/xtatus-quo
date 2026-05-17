@@ -1,5 +1,5 @@
 (ns xquo.components.settings.category.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.settings.category.style :as style]
             [xquo.components.settings.item.view :as settings-item]
             [xquo.components.settings.section-label.view :as section-label]
@@ -25,7 +25,7 @@
   (let [theme (context/use-theme)]
     [:rn/view (-> props
                   (dissoc :label :items :blur? :glass? :intensity :style)
-                  (assoc :style (rec.xf/add-styles
+                  (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  (:style props))))
      (when label
@@ -48,6 +48,6 @@
                                       (style/divider-color-style theme blur?)]}])
                  [settings-item/settings-item (-> item
                                                   (assoc :blur? blur?)
-                                                  (update :style rec.xf/add-styles
+                                                  (update :style rn.utils/add-styles
                                                           style/item-container-in-surface))]]))
              items))]))

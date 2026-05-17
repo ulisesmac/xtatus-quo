@@ -1,5 +1,5 @@
 (ns xquo.components.input.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+  (:require [react-native.utils :refer [defstyle style]]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
@@ -7,87 +7,87 @@
   {40 {nil                (style {:padding-horizontal 16
                                   :padding-right      12
                                   :padding-vertical   9
-                                  :border-radius      (:border/sizes-40-56 borders/border-radius-values)
+                                  :border-radius      (borders/radius 40)
                                   :min-height         40})
        :icon              (style {:padding-left     12
                                   :padding-right    16
                                   :padding-vertical 9
-                                  :border-radius    (:border/sizes-40-56 borders/border-radius-values)
+                                  :border-radius    (borders/radius 40)
                                   :min-height       40})
        :clear             (style {:padding-left     16
                                   :padding-right    12
                                   :padding-vertical 9
-                                  :border-radius    (:border/sizes-40-56 borders/border-radius-values)
+                                  :border-radius    (borders/radius 40)
                                   :min-height       40})
        :icon-clear        (style {:padding-horizontal 12
                                   :padding-vertical   9
-                                  :border-radius      (:border/sizes-40-56 borders/border-radius-values)
+                                  :border-radius      (borders/radius 40)
                                   :min-height         40})
        :button            (style {:padding-left   16
                                   :padding-right  8
                                   :padding-top    8
                                   :padding-bottom 8
-                                  :border-radius  (:border/sizes-40-56 borders/border-radius-values)
+                                  :border-radius  (borders/radius 40)
                                   :min-height     40})
        :button-icon       (style {:padding-left   12
                                   :padding-right  8
                                   :padding-top    8
                                   :padding-bottom 8
-                                  :border-radius  (:border/sizes-40-56 borders/border-radius-values)
+                                  :border-radius  (borders/radius 40)
                                   :min-height     40})
        :button-clear      (style {:padding-left   16
                                   :padding-right  8
                                   :padding-top    8
                                   :padding-bottom 8
-                                  :border-radius  (:border/sizes-40-56 borders/border-radius-values)
+                                  :border-radius  (borders/radius 40)
                                   :min-height     40})
        :button-icon-clear (style {:padding-left   12
                                   :padding-right  8
                                   :padding-top    8
                                   :padding-bottom 8
-                                  :border-radius  (:border/sizes-40-56 borders/border-radius-values)
+                                  :border-radius  (borders/radius 40)
                                   :min-height     40})}
    32 {nil                (style {:padding-horizontal 12
                                   :padding-vertical   5
-                                  :border-radius      (:border/size-32 borders/border-radius-values)
+                                  :border-radius      (borders/radius 32)
                                   :min-height         32})
        :icon              (style {:padding-left     8
                                   :padding-right    12
                                   :padding-vertical 5
-                                  :border-radius    (:border/size-32 borders/border-radius-values)
+                                  :border-radius    (borders/radius 32)
                                   :min-height       32})
        :clear             (style {:padding-left     12
                                   :padding-right    8
                                   :padding-vertical 5
-                                  :border-radius    (:border/size-32 borders/border-radius-values)
+                                  :border-radius    (borders/radius 32)
                                   :min-height       32})
        :icon-clear        (style {:padding-horizontal 8
                                   :padding-vertical   5
-                                  :border-radius      (:border/size-32 borders/border-radius-values)
+                                  :border-radius      (borders/radius 32)
                                   :min-height         32})
        :button            (style {:padding-left   12
                                   :padding-right  4
                                   :padding-top    4
                                   :padding-bottom 4
-                                  :border-radius  (:border/size-32 borders/border-radius-values)
+                                  :border-radius  (borders/radius 32)
                                   :min-height     32})
        :button-icon       (style {:padding-left   8
                                   :padding-right  4
                                   :padding-top    4
                                   :padding-bottom 4
-                                  :border-radius  (:border/size-32 borders/border-radius-values)
+                                  :border-radius  (borders/radius 32)
                                   :min-height     32})
        :button-clear      (style {:padding-left   12
                                   :padding-right  4
                                   :padding-top    4
                                   :padding-bottom 4
-                                  :border-radius  (:border/size-32 borders/border-radius-values)
+                                  :border-radius  (borders/radius 32)
                                   :min-height     32})
        :button-icon-clear (style {:padding-left   8
                                   :padding-right  4
                                   :padding-top    4
                                   :padding-bottom 4
-                                  :border-radius  (:border/size-32 borders/border-radius-values)
+                                  :border-radius  (borders/radius 32)
                                   :min-height     32})}})
 
 (defn container-layout-style [size layout]

@@ -1,11 +1,11 @@
 (ns xquo.components.info.information-box.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle]]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
 (defstyle container-base
   {:border-width  1
-   :border-radius (:border/sizes-40-56 borders/border-radius-values)})
+   :border-radius (borders/radius 40)})
 
 (defstyle rich-layout-base
   {:padding-left   12

@@ -1,8 +1,8 @@
 (ns xquo.components.drawer.top.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle]]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]
-            [xquo.foundations.spacing :as spacing]))
+            [xquo.foundations.spacing :refer [spacing]]))
 
 (defstyle container-base
   {:align-self :stretch})
@@ -29,18 +29,18 @@
 
 (defstyle subcontent-slot
   {:align-self :stretch
-   :height     (spacing/spacing-values 9)
-   :margin-top (spacing/spacing-values 2)
+   :height     (spacing 9)
+   :margin-top (spacing 2)
    :overflow   :visible})
 
 (defstyle context-row-slot
-  {:margin-top (spacing/spacing-values 2)})
+  {:margin-top (spacing 2)})
 
 (defstyle description-row-slot
-  {:margin-top (spacing/spacing-values 1)})
+  {:margin-top (spacing 1)})
 
 (defstyle description-row-slot-with-context
-  {:margin-top (spacing/spacing-values 2)})
+  {:margin-top (spacing 2)})
 
 (defstyle title-row
   {:flex-direction :row})
@@ -146,12 +146,12 @@
 
 (defn leading-placeholder-style []
   {:background-color (colors/get-color :color/danger-50)
-   :border-radius    (:border/bounding-area borders/border-radius-values)})
+   :border-radius    (borders/radius :bounding-area)})
 
 (defn context-placeholder-style [width]
   {:width            width
    :background-color (colors/get-color :color/danger-50)
-   :border-radius    (:border/bounding-area borders/border-radius-values)})
+   :border-radius    (borders/radius :bounding-area)})
 
 (defn description-segment-style [color]
   (when color

@@ -1,7 +1,7 @@
 (ns xquo.context
   (:require [applied-science.js-interop :as j]
-            [reagent-extended.react :as react]
-            [reagent-extended.react-native :as rn]
+            [react-native.react.core :as react]
+            [react-native.core :as rn]
             [reagent.core :as r]))
 
 (defonce ^:private app-context (react/create-context nil))
@@ -14,8 +14,10 @@
         value          (or new-color (j/get prev-context :color))
         provider-value (react/use-memo (fn [] #js{:theme theme :color value})
                                        [theme value])]
-    (into [:> (j/get app-context :Provider) {:value provider-value}]
-          children)))
+    [:gh/gesture-handler-root-view {:style #js{:flex 1}}
+     [:safe-area/safe-area-provider
+      (into [:> (j/get app-context :Provider) {:value provider-value}]
+            children)]]))
 
 (defn use-theme-color []
   (let [context     (react/use-context app-context)

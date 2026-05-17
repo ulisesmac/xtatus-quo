@@ -1,5 +1,5 @@
 (ns xquo.components.selectors.disclaimer.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.icon.view :as icon]
             [xquo.components.selectors.disclaimer.style :as style]
             [xquo.components.selectors.selector.view :as selector]
@@ -26,7 +26,7 @@
   (let [theme (context/use-theme)]
     [:rn/view (-> props
                   (dissoc :selected? :background :glass? :icon :on-select :disabled? :style)
-                  (assoc :style (rec.xf/add-styles
+                  (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  (style/container-color-style theme background)
                                  (:style props))))

@@ -1,6 +1,6 @@
 (ns xquo.components.selectors.filter.view
   (:refer-clojure :exclude [filter])
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.button.style :as button.style]
             [xquo.components.icon.view :as icon]
             [xquo.components.selectors.filter.style :as style]
@@ -54,7 +54,7 @@
                         (assoc :hit-slop     6
                                :on-press-in  on-press-in!
                                :on-press-out on-press-out!
-                               :style        (rec.xf/add-styles
+                               :style        (rn.utils/add-styles
                                               style/container-base
                                               (style/container-size-style size text?)
                                               (style/surface-color-style theme background selected? color)

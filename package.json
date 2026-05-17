@@ -1,0 +1,39 @@
+{
+  "name": "xquo",
+  "version": "0.1.0",
+  "description": "Xquo React Native design system",
+  "main": "index.js",
+  "react-native": "index.js",
+  "files": [
+    "android/build.gradle",
+    "android/src",
+    "effect",
+    "effect.js",
+    "index.js",
+    "ios/MTREffectView.h",
+    "ios/MTREffectView.mm",
+    "react-native.config.js",
+    "specs",
+    "xquo.podspec"
+  ],
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "nativePackage": true,
+  "codegenConfig": {
+    "name": "XquoSpec",
+    "type": "components",
+    "jsSrcsDir": "./specs",
+    "android": {
+      "javaPackageName": "com.xquo"
+    },
+    "ios": {
+      "components": {
+        "MTREffectView": {
+          "className": "MTREffectView"
+        }
+      }
+    }
+  }
+}

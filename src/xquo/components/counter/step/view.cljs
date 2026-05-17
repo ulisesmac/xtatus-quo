@@ -1,5 +1,5 @@
 (ns xquo.components.counter.step.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.counter.step.style :as style]
             [xquo.components.text.view :as text]
             [xquo.context :as context]))
@@ -36,7 +36,7 @@
         characters (characters-count label)]
     [:rn/view (-> props
                   (dissoc :type :background :style)
-                  (assoc :style (rec.xf/add-styles
+                  (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  (style/container-width-style characters)
                                  (:style props))))

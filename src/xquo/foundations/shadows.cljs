@@ -1,5 +1,5 @@
 (ns xquo.foundations.shadows
-  (:require [reagent-extended-compiler.utils.transforms :as transforms]))
+  (:require [react-native.utils :as rn.utils]))
 
 (def shadow-tokens
   {:normal
@@ -46,7 +46,7 @@
 (defn to-box-shadow-value
   ([shadow] (to-box-shadow-value shadow false))
   ([{:keys [x y blur spread color opacity]} inset?]
-   (transforms/->js-prop-obj
+   (rn.utils/->js-prop-obj
     {:offset-x        x
      :offset-y        (- y)
      :blur-radius     blur

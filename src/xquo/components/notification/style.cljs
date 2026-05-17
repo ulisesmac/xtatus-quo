@@ -1,6 +1,6 @@
 (ns xquo.components.notification.style
   (:require [react-native.core :as rn]
-            [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+            [react-native.utils :refer [defstyle style]]
             [xquo.foundations.colors :as colors]))
 
 (defstyle container-base

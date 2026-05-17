@@ -1,7 +1,7 @@
 (ns xquo.components.color-picker.picker.view
   (:require [applied-science.js-interop :as j]
-            [reagent-extended.react :as react]
-            [reagent-extended-compiler.utils.transforms :as rec.xf]
+            [react-native.react.core :as react]
+            [react-native.utils :as rn.utils]
             [xquo.components.color-picker.color.view :as color]
             [xquo.components.color-picker.picker.style :as style]))
 
@@ -70,7 +70,7 @@
                                 :horizontal true
                                 :shows-horizontal-scroll-indicator false
                                 :on-layout on-layout!
-                                :style (rec.xf/add-styles style/container-base (:style props))
+                                :style (rn.utils/add-styles style/container-base (:style props))
                                 :content-container-style style/content-container-base))
      (into [:rn/view {:style [style/row-base
                               (when (and viewport-width

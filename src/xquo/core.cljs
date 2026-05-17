@@ -1,4 +1,4 @@
-(ns ^:dev/always xquo.core
+(ns xquo.core
   (:refer-clojure :exclude [filter list])
   (:require [xquo.components.button.view]
             [xquo.components.color-picker.color.view]

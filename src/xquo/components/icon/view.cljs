@@ -1,14 +1,16 @@
 (ns xquo.components.icon.view
   (:require [applied-science.js-interop :as j]
+            [react-native.utils :as rn.utils]
+            ["react-native-nano-icons" :as nano-icons]
             [reagent.core :as r]
             [xquo.components.icon.svg :as svg]))
 
 (def create-nano-icon-set
-  (.-createNanoIconSet (js/require "../node_modules/react-native-nano-icons/lib/module/index.js")))
+  (.-createNanoIconSet nano-icons))
 
-(defonce glyph-map-20 (js/require "../resources/icons/nanoicons/icons20.glyphmap.json"))
-(defonce glyph-map-16 (js/require "../resources/icons/nanoicons/icons16.glyphmap.json"))
-(defonce glyph-map-12 (js/require "../resources/icons/nanoicons/icons12.glyphmap.json"))
+(defonce glyph-map-20 (rn.utils/asset-require "icons/icons20.glyphmap.json"))
+(defonce glyph-map-16 (rn.utils/asset-require "icons/icons16.glyphmap.json"))
+(defonce glyph-map-12 (rn.utils/asset-require "icons/icons12.glyphmap.json"))
 (def icon-20 (r/adapt-react-class (create-nano-icon-set glyph-map-20)))
 (def icon-16 (r/adapt-react-class (create-nano-icon-set glyph-map-16)))
 (def icon-12 (r/adapt-react-class (create-nano-icon-set glyph-map-12)))

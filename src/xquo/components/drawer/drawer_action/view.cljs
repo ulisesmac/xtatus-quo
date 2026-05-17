@@ -1,5 +1,5 @@
 (ns xquo.components.drawer.drawer-action.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.drawer.drawer-action.style :as style]
             [xquo.components.icon.view :as icon]
             [xquo.components.selectors.selector.view :as selector]
@@ -97,7 +97,7 @@
                        (assoc :on-press on-press!
                               :on-press-in on-press-in!
                               :on-press-out on-press-out!
-                              :style (rec.xf/add-styles
+                              :style (rn.utils/add-styles
                                       style/container-base
                                       (if description
                                         style/padding-description

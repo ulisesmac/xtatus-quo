@@ -1,5 +1,5 @@
 (ns xquo.components.info.information-box.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.button.view :as button]
             [xquo.components.info.information-box.style :as style]
             [xquo.components.icon.view :as icon]
@@ -90,7 +90,7 @@
     [:rn/view (-> props
                   (dissoc :status :icon :title :description :use-15-font? :button
                           :close-button :blur? :background :style)
-                  (assoc :style (rec.xf/add-styles
+                  (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  (style/container-color-style theme blur? status theme-color)
                                  (if (or title button)

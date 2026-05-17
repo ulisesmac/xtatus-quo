@@ -1,5 +1,5 @@
 (ns xquo.components.settings.section-title.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.icon.view :as icon]
             [xquo.components.settings.section-title.style :as style]
             [xquo.components.text.view :as text]
@@ -21,7 +21,7 @@
   (let [theme (context/use-theme)]
     [:rn/view (-> props
                   (dissoc :label :counter-value :counter? :right-icon? :background :style)
-                  (assoc :style (rec.xf/add-styles
+                  (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  (when right-icon?
                                    style/container-gap-4)

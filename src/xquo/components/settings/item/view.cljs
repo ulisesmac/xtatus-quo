@@ -1,5 +1,5 @@
 (ns xquo.components.settings.item.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.button.view :as button]
             [xquo.components.icon.view :as icon]
             [xquo.components.selectors.selector.view :as selector]
@@ -288,7 +288,7 @@
                         :on-press     on-press!
                         :on-press-in  (when-not item-disabled? on-press-in!)
                         :on-press-out (when-not item-disabled? on-press-out!)
-                        :style        (rec.xf/add-styles
+                        :style        (rn.utils/add-styles
                                        style/container-base
                                        (style/container-padding-style
                                         image-type

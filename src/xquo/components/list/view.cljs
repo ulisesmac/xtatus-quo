@@ -1,6 +1,6 @@
 (ns xquo.components.list.view
   (:require [applied-science.js-interop :as j]
-            [reagent-extended-compiler.utils.transforms :as rec.xf]
+            [react-native.utils :as rn.utils]
             [xquo.components.button.view :as button]
             [xquo.components.counter.step.view :as counter-step]
             [xquo.components.divider.divider-label.view :as divider-label]
@@ -34,7 +34,7 @@
         on-press-in!           (rn/use-callback #(set-pressed! true) [])
         on-press-out!          (rn/use-callback #(set-pressed! false) [])
         root-component         (if on-press :rn/pressable :rn/view)
-        root-props             (cond-> {:style (rec.xf/add-styles
+        root-props             (cond-> {:style (rn.utils/add-styles
                                                 style/element-shell
                                                 (when on-press style/pressable-element-spacing)
                                                 (if on-press
@@ -153,7 +153,7 @@
                                 (on-press event)))
                             [on-press])]
     [:rn/view
-     {:style (rec.xf/add-styles style/section-shell section-style)}
+     {:style (rn.utils/add-styles style/section-shell section-style)}
      [divider-label/divider-label (cond-> label-props
                                     toggleable?
                                     (assoc :on-press        on-press!
@@ -222,7 +222,7 @@
            (-> props
                (dissoc :items :item-layout :layout :entering :exiting :collapsable :style)
                (assoc :collapsable false
-                      :style       (rec.xf/add-styles style/container-base (:style props))))]
+                      :style       (rn.utils/add-styles style/container-base (:style props))))]
           (map-indexed (fn [index item]
                          [list-item {:color       color
                                      :index       index

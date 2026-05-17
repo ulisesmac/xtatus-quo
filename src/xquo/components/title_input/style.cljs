@@ -1,5 +1,5 @@
 (ns xquo.components.title-input.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle]]
             [xquo.foundations.colors :as colors]
             [xquo.foundations.typography :as typography]))
 

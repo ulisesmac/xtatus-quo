@@ -1,5 +1,5 @@
 (ns xquo.components.settings.category.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle]]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
@@ -12,7 +12,7 @@
 
 (defstyle surface-base
   {:align-self    :stretch
-   :border-radius (:border/card-section borders/border-radius-values)})
+   :border-radius (borders/radius :card-section)})
 
 (defstyle item-container-in-surface
   {:border-radius 0})

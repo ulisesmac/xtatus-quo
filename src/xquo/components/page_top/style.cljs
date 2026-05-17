@@ -1,5 +1,5 @@
 (ns xquo.components.page-top.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]))
+  (:require [react-native.utils :refer [defstyle]]))
 
 (defstyle container
   {:width              "100%"

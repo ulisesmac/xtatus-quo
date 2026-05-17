@@ -1,5 +1,5 @@
 (ns xquo.components.settings.sort-item.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.selectors.filter.view :as filter]
             [xquo.components.settings.sort-item.style :as style]
             [xquo.components.text.view :as text]
@@ -21,7 +21,7 @@
   (let [theme (context/use-theme)]
     [:rn/view (-> props
                   (dissoc :label :selected :on-select :style)
-                  (assoc :style (rec.xf/add-styles
+                  (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  (:style props))))
      [:rn/view {:style style/label-wrapper}

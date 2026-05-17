@@ -1,5 +1,5 @@
 (ns xquo.components.color-picker.picker.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]))
+  (:require [react-native.utils :refer [defstyle]]))
 
 (defstyle container-base
   {:width "100%"})

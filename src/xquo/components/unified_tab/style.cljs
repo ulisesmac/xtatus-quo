@@ -1,8 +1,8 @@
 (ns xquo.components.unified-tab.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+  (:require [react-native.reanimated.core :as rnr]
+            [react-native.utils :refer [defstyle style]]
             [xquo.foundations.borders :as borders]
-            [xquo.foundations.colors :as colors]
-            [xquo.react-native-reanimated :as rnr]))
+            [xquo.foundations.colors :as colors]))
 
 (def ^:private tab-transition-easing (rnr/cubic-bezier 0.25 0.1 0.25 1))
 (def ^:private tab-transition-duration "300ms")
@@ -28,7 +28,7 @@
 
 (defn tab-container [size type dark-theme? blur?]
   (style {:height             size
-          :border-radius      (:border/size-32 borders/border-radius-values)
+          :border-radius      (borders/radius 32)
           :flex-direction     :row
           :padding            2
           :gap                2
@@ -60,13 +60,13 @@
   (if translate-x
     (style {:width            "100%"
             :height           "100%"
-            :border-radius    (:border/size-24 borders/border-radius-values)
+            :border-radius    (borders/radius 24)
             :background-color (selected-indicator-background-color type dark-theme? blur?)
             :transform        [{:translate-x translate-x}
                                {:translate-x gap-translate-x}]})
     (style {:width                      "100%"
             :height                     "100%"
-            :border-radius              (:border/size-24 borders/border-radius-values)
+            :border-radius              (borders/radius 24)
             :background-color           (selected-indicator-background-color type dark-theme? blur?)
             :transform                  [{:translate-x (str (* 100 selected-index) "%")}
                                          {:translate-x (* 2 selected-index)}]

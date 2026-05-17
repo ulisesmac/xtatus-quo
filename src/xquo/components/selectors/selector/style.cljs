@@ -1,5 +1,5 @@
 (ns xquo.components.selectors.selector.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle]]
             [xquo.foundations.animations :as animations]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
@@ -51,28 +51,28 @@
   {:width          30
    :height         20
    :padding        2
-   :border-radius  (:border/drawer borders/border-radius-values)
+   :border-radius  (borders/radius :drawer)
    :flex-direction :row
    :align-items    :center})
 
 (defstyle radio-base
   {:width           20
    :height          20
-   :border-radius   (:border/drawer borders/border-radius-values)
+   :border-radius   (borders/radius :drawer)
    :justify-content :center
    :align-items     :center})
 
 (defstyle checkbox-base
   {:width           20
    :height          20
-   :border-radius   (:border/size-16 borders/border-radius-values)
+   :border-radius   (borders/radius 16)
    :justify-content :center
    :align-items     :center})
 
 (defstyle filled-checkbox-base
   {:width           20
    :height          20
-   :border-radius   (:border/size-16 borders/border-radius-values)
+   :border-radius   (borders/radius 16)
    :justify-content :center
    :align-items     :center
    :overflow        :hidden})
@@ -80,7 +80,7 @@
 (defstyle toggle-handle-base
   {:width                      16
    :height                     16
-   :border-radius              (:border/drawer borders/border-radius-values)
+   :border-radius              (borders/radius :drawer)
    :background-color           (colors/get-color :color/white-100)
    :transition-property        (:transition-property animations/state-change)
    :transition-duration        (:toggle-duration animations/state-change)
@@ -92,7 +92,7 @@
 (defstyle radio-dot-base
   {:width                      14
    :height                     14
-   :border-radius              (:border/drawer borders/border-radius-values)
+   :border-radius              (borders/radius :drawer)
    :transition-property        (:transition-property animations/state-change)
    :transition-timing-function (:transition-timing-function animations/state-change)})
 

@@ -1,5 +1,5 @@
 (ns xquo.components.list-items.result-list.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+  (:require [react-native.utils :refer [defstyle style]]
             [react-native.core :as rn]
             [xquo.foundations.animations :as animations]
             [xquo.foundations.borders :as borders]
@@ -41,7 +41,7 @@
 (defstyle image
   {:width         40
    :height        40
-   :border-radius (:border/sizes-40-56 borders/border-radius-values)
+   :border-radius (borders/radius 40)
    :align-self    :center})
 
 (defstyle image-slot

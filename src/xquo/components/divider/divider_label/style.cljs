@@ -1,5 +1,5 @@
 (ns xquo.components.divider.divider-label.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+  (:require [react-native.utils :refer [defstyle style]]
             [xquo.components.button.style :as button-style]
             [xquo.components.settings.item.style :as settings-item-style]
             [xquo.foundations.animations :as animations]

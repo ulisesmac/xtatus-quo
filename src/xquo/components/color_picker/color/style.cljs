@@ -1,5 +1,5 @@
 (ns xquo.components.color-picker.color.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle]]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
@@ -18,7 +18,7 @@
    :width         48
    :height        48
    :overflow      :hidden
-   :border-radius (:border/max borders/border-radius-values)})
+   :border-radius (borders/radius :max)})
 
 (defstyle selection-ring-left
   {:position :absolute
@@ -39,7 +39,7 @@
    :height          40
    :align-items     :center
    :justify-content :center
-   :border-radius   (:border/max borders/border-radius-values)})
+   :border-radius   (borders/radius :max)})
 
 (defn selection-ring-left-style [color]
   {:background-color (colors/get-color color 50 20)})

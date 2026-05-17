@@ -1,5 +1,5 @@
 (ns xquo.components.info.info-message.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.info.info-message.style :as style]
             [xquo.components.icon.view :as icon]
             [xquo.components.text.view :as text]
@@ -28,7 +28,7 @@
         tiny?               (= size :tiny)]
     [:rn/view (-> props
                   (dissoc :status :size :background :style)
-                  (assoc :style (rec.xf/add-styles
+                  (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  (if tiny?
                                    style/tiny-size-base

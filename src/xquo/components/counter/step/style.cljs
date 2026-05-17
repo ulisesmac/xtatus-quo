@@ -1,18 +1,18 @@
 (ns xquo.components.counter.step.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+  (:require [react-native.utils :refer [defstyle style]]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
 (defstyle container-base
   {:height          20
-   :border-radius   (:border/size-16 borders/border-radius-values)
+   :border-radius   (borders/radius 16)
    :overflow        :hidden
    :justify-content :center
    :align-items     :center})
 
 (defstyle surface-base
   {:position      :absolute
-   :border-radius (:border/size-16 borders/border-radius-values)})
+   :border-radius (borders/radius 16)})
 
 (defstyle value-slot-base
   {:position        :absolute

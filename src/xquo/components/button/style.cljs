@@ -1,6 +1,6 @@
 (ns xquo.components.button.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
-            [reagent-extended.react-native :as rn]
+  (:require [react-native.utils :refer [defstyle style]]
+            [react-native.core :as rn]
             [xquo.foundations.animations :as animations]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
@@ -202,61 +202,60 @@
                                  :disabled (colors/get-color :color/white-40)}}}})
 
 (def container-layout-styles
-  (let [{:border/keys [sizes-40-56 size-32 size-24 max]} borders/border-radius-values]
-    {40 {nil         (style {:padding-horizontal 16
-                             :padding-vertical   9
-                             :border-radius      sizes-40-56
-                             :height             40})
-         :right      (style {:padding-left     16
-                             :padding-right    12
-                             :padding-vertical 9
-                             :border-radius    sizes-40-56
-                             :height           40})
-         :left       (style {:padding-left     12
-                             :padding-right    16
-                             :padding-vertical 9
-                             :border-radius    sizes-40-56
-                             :height           40})
-         :icon-only  (style {:width         40
-                             :height        40
-                             :border-radius max})}
-     32 {nil         (style {:padding-horizontal 12
-                             :padding-vertical   5
-                             :border-radius      size-32
-                             :height             32})
-         :right      (style {:padding-left     12
-                             :padding-right    8
-                             :padding-vertical 5
-                             :border-radius    size-32
-                             :height           32})
-         :left       (style {:padding-left     8
-                             :padding-right    12
-                             :padding-vertical 5
-                             :border-radius    size-32
-                             :height           32})
-         :icon-only  (style {:width         32
-                             :height        32
-                             :border-radius size-32})}
-     24 {nil         (style {:padding-horizontal 8
-                             :padding-vertical   3
-                             :border-radius      size-24
-                             :height             24})
-         :right      (style {:padding-horizontal 8
-                             :padding-vertical   3
-                             :border-radius      size-24
-                             :height             24})
-         :left       (style {:padding-horizontal 8
-                             :padding-vertical   3
-                             :border-radius      size-24
-                             :height             24})
-         :icon-only  (style {:width         24
-                             :height        24
-                             :border-radius size-24})}}))
+  {40 {nil         (style {:padding-horizontal 16
+                           :padding-vertical   9
+                           :border-radius      (borders/radius 40)
+                           :height             40})
+       :right      (style {:padding-left     16
+                           :padding-right    12
+                           :padding-vertical 9
+                           :border-radius    (borders/radius 40)
+                           :height           40})
+       :left       (style {:padding-left     12
+                           :padding-right    16
+                           :padding-vertical 9
+                           :border-radius    (borders/radius 40)
+                           :height           40})
+       :icon-only  (style {:width         40
+                           :height        40
+                           :border-radius (borders/radius :max)})}
+   32 {nil         (style {:padding-horizontal 12
+                           :padding-vertical   5
+                           :border-radius      (borders/radius 32)
+                           :height             32})
+       :right      (style {:padding-left     12
+                           :padding-right    8
+                           :padding-vertical 5
+                           :border-radius    (borders/radius 32)
+                           :height           32})
+       :left       (style {:padding-left     8
+                           :padding-right    12
+                           :padding-vertical 5
+                           :border-radius    (borders/radius 32)
+                           :height           32})
+       :icon-only  (style {:width         32
+                           :height        32
+                           :border-radius (borders/radius 32)})}
+   24 {nil         (style {:padding-horizontal 8
+                           :padding-vertical   3
+                           :border-radius      (borders/radius 24)
+                           :height             24})
+       :right      (style {:padding-horizontal 8
+                           :padding-vertical   3
+                           :border-radius      (borders/radius 24)
+                           :height             24})
+       :left       (style {:padding-horizontal 8
+                           :padding-vertical   3
+                           :border-radius      (borders/radius 24)
+                           :height             24})
+       :icon-only  (style {:width         24
+                           :height        24
+                           :border-radius (borders/radius 24)})}})
 
 (defstyle size-24-outline-content-style
   {:padding-horizontal 7
    :padding-vertical   2
-   :border-radius      (:border/size-24 borders/border-radius-values)
+   :border-radius      (borders/radius 24)
    :height             24})
 
 (defn container-layout-style [size icon type]
@@ -320,7 +319,7 @@
   #{:grey :dark-grey :outline :ghost})
 
 (defstyle icon-only-rounded-square-shape
-  {:border-radius (:border/size-32 borders/border-radius-values)})
+  {:border-radius (borders/radius 32)})
 
 (defn icon-only-shape-style [layout type]
   (when (and (= layout :icon-only) (neutral-icon-only-types type))

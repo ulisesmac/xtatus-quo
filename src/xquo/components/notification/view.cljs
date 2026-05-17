@@ -1,5 +1,5 @@
 (ns xquo.components.notification.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.icon.view :as icon]
             [xquo.components.notification.style :as style]
             [xquo.components.text.view :as text]
@@ -45,11 +45,11 @@
         type  (notification-type type)]
     [:rn/view (-> props
                   (dissoc :container-style :glass? :icon :type)
-                  (assoc :style (rec.xf/add-styles
+                  (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  container-style)))
      [(if glass? :effect/view :rn/view)
-      (cond-> {:style (rec.xf/add-styles
+      (cond-> {:style (rn.utils/add-styles
                        [style/root-base
                         (style/root-color-style theme)]
                        caller-style)}

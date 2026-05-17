@@ -1,12 +1,12 @@
 (ns xquo.components.list-items.result-list.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.core :as rn]
+            [react-native.reanimated.core :as rnr]
+            [react-native.utils :as rn.utils]
             [xquo.components.icon.view :as icon]
             [xquo.components.list-items.result-list.style :as style]
             [xquo.components.settings.item.style :as settings-item.style]
             [xquo.components.text.view :as text]
-            [xquo.context :as context]
-            [xquo.react-native-reanimated :as rnr]
-            [react-native.core :as rn]))
+            [xquo.context :as context]))
 
 (defn- title-view [{:keys [theme title]}]
   [text/text {:font            :font/medium-15
@@ -69,7 +69,7 @@
                                           :image-tint :on-press-in :on-press-out :right
                                           :style :title :unpressable?)
                                   :always
-                                  (assoc :style (rec.xf/add-styles
+                                  (assoc :style (rn.utils/add-styles
                                                  style/container-base
                                                  (:style props)))
                                   (not unpressable?)
@@ -100,11 +100,11 @@
           [:rn/view {:style style/image-background-slot}
            image-background])
         (if image-source
-          [:rn/image {:style  (rec.xf/add-styles style/image
+          [:rn/image {:style  (rn.utils/add-styles style/image
                                                  (style/image-tint-style image-tint)
                                                  image-style)
                       :source image-source}]
-          [icon/view (merge {:style (rec.xf/add-styles style/image image-style)
+          [icon/view (merge {:style (rn.utils/add-styles style/image image-style)
                              :size  20
                              :color image-tint}
                             icon)])])

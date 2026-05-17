@@ -1,5 +1,5 @@
 (ns xquo.components.page-nav.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle style]]
+  (:require [react-native.utils :refer [defstyle style]]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
@@ -103,7 +103,7 @@
    :padding-right   8
    :padding-top     5
    :padding-bottom  5
-   :border-radius   (:border/size-32 borders/border-radius-values)
+   :border-radius   (borders/radius 32)
    :justify-content :center
    :align-items     :center
    :flex-direction  :row})
@@ -118,26 +118,26 @@
 (defstyle leading-media
   {:width         24
    :height        24
-   :border-radius (:border/size-24 borders/border-radius-values)
+   :border-radius (borders/radius 24)
    :margin-right  8})
 
 (defstyle token-logo
   {:width         20
    :height        20
-   :border-radius (:border/max borders/border-radius-values)
+   :border-radius (borders/radius :max)
    :margin-right  6})
 
 (defstyle network-logo
   {:width         18
    :height        18
-   :border-radius (:border/max borders/border-radius-values)
+   :border-radius (borders/radius :max)
    :margin-right  4})
 
 (defstyle wallet-networks-container
   {:height          30
    :padding-left    8
    :padding-right   6
-   :border-radius   (:border/size-32 borders/border-radius-values)
+   :border-radius   (borders/radius 32)
    :flex-direction  :row
    :align-items     :center
    :justify-content :center})
@@ -150,7 +150,7 @@
 (defstyle placeholder-account-switcher
   {:width            32
    :height           32
-   :border-radius    (:border/size-32 borders/border-radius-values)
+   :border-radius    (borders/radius 32)
    :background-color (colors/get-color :color/danger-50)})
 
 (defstyle placeholder-channel-avatar

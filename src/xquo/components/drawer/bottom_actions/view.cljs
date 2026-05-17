@@ -1,5 +1,5 @@
 (ns xquo.components.drawer.bottom-actions.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.button.view :as button]
             [xquo.components.drawer.bottom-actions.style :as style]
             [xquo.components.icon.view :as icon]
@@ -64,7 +64,7 @@
     [button/button (cond-> (-> button-props
                                (dissoc :label)
                                (assoc :size            40
-                                      :container-style (rec.xf/add-styles
+                                      :container-style (rn.utils/add-styles
                                                         style/action-slot
                                                         (:container-style button-props))))
                      button-type (assoc :type button-type)
@@ -105,7 +105,7 @@
   (let [{:keys [theme]} (context/use-theme-color)]
     [:rn/view (-> props
                   (dissoc :blur? :buttons :description :context-tag? :scroll?)
-                  (assoc :style (rec.xf/add-styles style/container-base (:style props))))
+                  (assoc :style (rn.utils/add-styles style/container-base (:style props))))
      (when (= (:position description) :top)
        [description-view {:theme        theme
                           :blur?        blur?

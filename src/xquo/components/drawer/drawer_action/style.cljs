@@ -1,11 +1,11 @@
 (ns xquo.components.drawer.drawer-action.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle]]
             [xquo.foundations.animations :as animations]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
 (defstyle container-base
-  {:border-radius (:border/sizes-40-56 borders/border-radius-values)})
+  {:border-radius (borders/radius 40)})
 
 (defstyle row-base
   {:flex-direction :row

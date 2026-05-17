@@ -1,5 +1,5 @@
 (ns xquo.components.tags.context-tag.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.button.style :as button.style]
             [xquo.components.icon.view :as icon]
             [xquo.components.tags.context-tag.style :as style]
@@ -338,7 +338,7 @@
                         :pressed?              pressed?
                         :pressable?            pressable?
                         :root-props            root-props
-                        :root-style            (rec.xf/add-styles
+                        :root-style            (rn.utils/add-styles
                                                 style/root-base
                                                 (style/container size type shape border dark-theme? blur? embedded? (:name icon))
                                                 (when pressable?

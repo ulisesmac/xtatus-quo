@@ -1,5 +1,5 @@
 (ns xquo.components.button.view
-  (:require [reagent-extended-compiler.utils.transforms :as rec.xf]
+  (:require [react-native.utils :as rn.utils]
             [xquo.components.button.style :as style]
             [xquo.components.icon.view :as icon]
             [xquo.components.text.view :as text]
@@ -95,7 +95,7 @@
                  (dissoc :type :size :background :icon :state :disabled?
                          :glass? :on-press-in :on-press-out :container-style :color)
                  (assoc :disabled (boolean disabled?)
-                        :style (rec.xf/add-styles
+                        :style (rn.utils/add-styles
                                 (if pressed?
                                   style/pressable-pressed-state-style
                                   style/pressable-default-state-style)

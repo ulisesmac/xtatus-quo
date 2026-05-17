@@ -1,0 +1,19 @@
+{
+  "iconSets": [
+    {
+      "inputDir": "./xtatus-quo/resources/icons/12",
+      "fontFamily": "icons12",
+      "outputDir": "./xtatus-quo/resources/icons"
+    },
+    {
+      "inputDir": "./xtatus-quo/resources/icons/16",
+      "fontFamily": "icons16",
+      "outputDir": "./xtatus-quo/resources/icons"
+    },
+    {
+      "inputDir": "./xtatus-quo/resources/icons/20",
+      "fontFamily": "icons20",
+      "outputDir": "./xtatus-quo/resources/icons"
+    }
+  ]
+}

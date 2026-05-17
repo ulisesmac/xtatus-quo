@@ -1,13 +1,13 @@
 (ns xquo.components.unified-tab.view
   (:require [applied-science.js-interop :as j]
-            [react-native.gesture-handler :as gh]
-            [react-native.safe-area-context :as safe-area]
+            [react-native.core :as rn]
+            [react-native.gesture-handler.core :as gh]
+            [react-native.reanimated.core :as rnr]
+            [react-native.safe-area-context.core :as safe-area]
             [xquo.components.icon.view :as icon]
             [xquo.components.unified-tab.style :as style]
             [xquo.context :as context]
             [xquo.foundations.typography :as typography]
-            [react-native.core :as rn]
-            [xquo.react-native-reanimated :as rnr]
             [xquo.worklets.unified-tab :as unified-tab-worklets]))
 
 (defn- create-pan-gesture

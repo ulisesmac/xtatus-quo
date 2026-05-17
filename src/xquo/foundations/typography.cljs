@@ -1,8 +1,5 @@
 (ns xquo.foundations.typography
-  (:require [reagent-extended-compiler.utils.transforms :as transforms]))
-
-;; Source: Figma Foundations/Typography node 617:208.
-;; Explicit metrics from tokens (no dynamic tracking function).
+  (:require [react-native.utils :as rn.utils]))
 
 (def font-families
   {:regular   "Inter-Regular"
@@ -107,4 +104,4 @@
    (fn [font]
      (let [[size variant] (parse-font-keyword font)]
        (some-> (get-in font-styles [size variant])
-               (transforms/->js-prop-obj))))))
+               (rn.utils/->js-prop-obj))))))

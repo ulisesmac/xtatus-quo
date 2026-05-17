@@ -1,5 +1,5 @@
 (ns xquo.components.settings.sort-item.style
-  (:require [reagent-extended-compiler.utils.transforms :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle]]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
@@ -10,7 +10,7 @@
    :padding-right  12
    :padding-top    12
    :padding-bottom 12
-   :border-radius  (:border/sizes-40-56 borders/border-radius-values)})
+   :border-radius  (borders/radius 40)})
 
 (defstyle label-wrapper
   {:flex 1})
