@@ -1,7 +1,7 @@
 {
   "name": "xquo",
   "version": "0.1.0",
-  "description": "Xquo React Native design system",
+  "description": "Xquo Effect native component",
   "main": "index.js",
   "react-native": "index.js",
   "files": [

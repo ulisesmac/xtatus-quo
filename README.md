@@ -2,20 +2,28 @@
 
 ## Install
 
-Add xquo to both runtimes.
+Add xquo to the CLJS runtime:
 
 ```clojure
 xtatus-quo/xtatus-quo {:local/root "xtatus-quo"}
 ```
 
+This provides `xquo.*`, `xquo.$init`, and xquo resources through `deps.edn`.
+
+Add the native Effect component to React Native:
+
 ```json
 "xquo": "file:./xtatus-quo"
 ```
 
-The app must also provide the React Native JS libraries used by xquo:
+The npm package is only for React Native autolinking/codegen of the Effect
+component. It is not the xquo CLJS API surface.
+
+The app must provide the React Native JS libraries used by xquo CLJS:
 
 ```json
 "react-native-gesture-handler": "...",
+"react-native-nano-icons": "...",
 "react-native-reanimated": "...",
 "react-native-safe-area-context": "...",
 "react-native-svg": "..."

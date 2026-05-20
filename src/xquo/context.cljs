@@ -14,10 +14,8 @@
         value          (or new-color (j/get prev-context :color))
         provider-value (react/use-memo (fn [] #js{:theme theme :color value})
                                        [theme value])]
-    [:gh/gesture-handler-root-view {:style #js{:flex 1}}
-     [:safe-area/safe-area-provider
-      (into [:> (j/get app-context :Provider) {:value provider-value}]
-            children)]]))
+    (into [:> (j/get app-context :Provider) {:value provider-value}]
+          children)))
 
 (defn use-theme-color []
   (let [context     (react/use-context app-context)

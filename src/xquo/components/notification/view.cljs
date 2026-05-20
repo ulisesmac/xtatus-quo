@@ -31,20 +31,21 @@
     - `:type` one of `:notification/positive`, `:notification/negative`,
       `:notification/neutral` (default `:notification/neutral`)
     - `:icon` optional leading icon props map
+    - `:theme` optional theme override
     - `:container-style` optional outer container style
     - `:glass?` optional boolean, renders the notification surface as glass
     - `:style` optional notification row style
     - Any additional keys are forwarded to the outer `:rn/view`.
   - `content` notification text."
-  [{:keys [container-style glass? icon type]
+  [{:keys [container-style glass? icon theme type]
     caller-style :style
     :or   {type :notification/neutral}
     :as   props}
    content]
-  (let [theme (context/use-theme)
+  (let [theme (or theme (context/use-theme))
         type  (notification-type type)]
     [:rn/view (-> props
-                  (dissoc :container-style :glass? :icon :type)
+                  (dissoc :container-style :glass? :icon :theme :type)
                   (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  container-style)))
