@@ -1,5 +1,6 @@
 (ns xquo.components.settings.category.view
-  (:require [react-native.utils :as rn.utils]
+  (:require [react-native.core :as rn]
+            [react-native.utils :as rn.utils]
             [xquo.components.settings.category.style :as style]
             [xquo.components.settings.item.view :as settings-item]
             [xquo.components.settings.section-label.view :as section-label]
@@ -35,7 +36,8 @@
        (into [(if glass? :effect/view :rn/view)
               (cond-> {:style [style/surface-base
                                (style/surface-color-style theme blur?)
-                               (when-not glass? {:overflow :hidden})]}
+                               (when-not (and glass? rn/ios?)
+                                 {:overflow :hidden})]}
                 glass? (assoc :effect       :glass
                               :intensity    (or intensity :regular)
                               :theme        theme

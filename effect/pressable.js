@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Platform, Pressable, StyleSheet } from 'react-native';
 
 import EffectView, { withoutEffectHostStyle } from './view';
 
@@ -36,26 +36,41 @@ const EffectPressable = React.forwardRef(function EffectPressable(props, ref) {
     ...pressableProps
   } = props;
 
+  if (Platform.OS === 'android') {
+    return React.createElement(
+      Pressable,
+      {
+        ...pressableProps,
+        ref,
+        onPressIn,
+        onPressOut,
+        style,
+      },
+      children,
+    );
+  }
+
   const [pressed, setPressed] = React.useState(false);
   const resolvedInteractive = interactive ?? interactiveQuestion ?? false;
   const normalizedEffect = valueName(effect) || 'blur';
   const removeBorders = normalizedEffect === 'glass';
   const pressableState = { pressed };
-  const resolvedStyle = withoutEffectHostStyle(resolveStyle(style, pressableState), { removeBorders });
-  const onPressInHandler = React.useCallback((event) => {
+  const onPressInHandler = (event) => {
     setPressed(true);
 
     if (onPressIn) {
       onPressIn(event);
     }
-  }, [onPressIn]);
-  const onPressOutHandler = React.useCallback((event) => {
+  };
+  const onPressOutHandler = (event) => {
     setPressed(false);
 
     if (onPressOut) {
       onPressOut(event);
     }
-  }, [onPressOut]);
+  };
+
+  const resolvedStyle = withoutEffectHostStyle(resolveStyle(style, pressableState), { removeBorders });
 
   const effectNode = React.createElement(
     EffectView,
