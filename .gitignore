@@ -34,8 +34,13 @@ yarn-error.log*
 /dist/
 /android/.gradle/
 /android/build/
+/android/**/build/
 /android/app/build/
 /android/app/.cxx/
+/android/**/*.apk
+/android/**/*.aab
+/android/**/*.aar
+/android/**/*.dex
 /ios/Pods/
 /ios/build/
 /ios/**/xcuserdata/
