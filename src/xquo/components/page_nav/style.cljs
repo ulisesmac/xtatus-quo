@@ -66,6 +66,11 @@
    :height          40
    :justify-content :center})
 
+(defstyle left-content-slot
+  {:min-width       40
+   :height          40
+   :justify-content :center})
+
 (defstyle center-slot
   {:flex            1
    :justify-content :center

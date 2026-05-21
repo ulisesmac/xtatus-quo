@@ -220,6 +220,7 @@
   - `:background` one of `:white`, `:neutral-5`, `:neutral-90`, `:neutral-95`,
     `:neutral-100`, `:photo`, `:blur`
   - `:left` map: `{:icon {:name :icon/arrow-left} :on-press fn}`
+  - `:left-content` optional hiccup node that replaces the left icon action
   - `:right` nil or vector (up to 3 items)
     - action item: `{:icon {:name :icon/placeholder} :on-press fn}`
     - account switcher placeholder: `{:type :account-switcher :on-press fn}`
@@ -247,21 +248,23 @@
   - `:title-icon-description` -> up to 2 actions
   - `:wallet-networks` -> up to 2 items
   - `:no-title`, `:token`, `:channel`, `:community`, `:network`, `:custom` -> up to 3 items"
-  [{:keys [background left right center center-opacity]
+  [{:keys [background left left-content right center center-opacity]
     :as   props}]
   (let [theme     (context/use-theme)
         centered? (centered-layout? center)]
     [:rn/view (-> props
-                  (dissoc :background :left :right :center :center-opacity :style)
+                  (dissoc :background :left :left-content :right :center :center-opacity :style)
                   (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  (style/nav-surface-style theme background)
                                  (:style props))))
-     [:rn/view {:style style/side-slot}
-      [icon-button {:icon       (:icon left)
-                    :on-press   (:on-press left)
-                    :theme      theme
-                    :background background}]]
+     [:rn/view {:style (if left-content style/left-content-slot style/side-slot)}
+      (if left-content
+        left-content
+        [icon-button {:icon       (:icon left)
+                      :on-press   (:on-press left)
+                      :theme      theme
+                      :background background}])]
      [:rn/view {:style [style/center-slot
                         (if centered?
                           style/center-slot-centered
