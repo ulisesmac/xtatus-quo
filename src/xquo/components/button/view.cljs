@@ -11,7 +11,7 @@
     [text/text {:font            (get style/font-type size)
                 :style           (style/text-style theme type background size)
                 :number-of-lines 1
-                :ellipsize-mode  :tail}
+                :ellipsize-mode  :middle}
      content]))
 
 (defn- button-content [{:keys [background size type]} content]
