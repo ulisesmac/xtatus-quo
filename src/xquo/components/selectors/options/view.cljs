@@ -10,6 +10,7 @@
   [{:keys [component on-select option option-id option-layout option-style selected-id]}]
   (let [{:keys [color dark-theme?]} (context/use-theme-color)
         option-id-value (option-id option)
+        disabled?       (:disabled? option)
         selected?       (= option-id-value selected-id)
         [pressed? set-pressed!] (rn/use-state false)
         on-press!       (rn/use-callback (fn []
@@ -18,24 +19,31 @@
                                          [on-select option-id-value])
         on-press-in!    (rn/use-callback #(set-pressed! true) [])
         on-press-out!   (rn/use-callback #(set-pressed! false) [])]
-    [:animated/pressable (cond-> {:style        (rn.utils/add-styles
-                                                 (if pressed?
-                                                   button.style/pressable-pressed-state-style
-                                                   button.style/pressable-default-state-style)
-                                                 style/option-base
-                                                 (style/option-border-style dark-theme? selected? color)
-                                                 option-style)
-                                  :on-press     on-press!
-                                  :on-press-in  on-press-in!
-                                  :on-press-out on-press-out!}
-                           option-layout
-                           (assoc :layout option-layout))
+    [(if disabled? :rn/view :animated/pressable)
+     (cond-> {:style (rn.utils/add-styles
+                      (when-not disabled?
+                        (if pressed?
+                          button.style/pressable-pressed-state-style
+                          button.style/pressable-default-state-style))
+                      style/option-base
+                      (style/option-border-style dark-theme? selected? color)
+                      option-style)}
+       (not disabled?)
+       (assoc :on-press on-press!
+              :on-press-in on-press-in!
+              :on-press-out on-press-out!)
+
+       (and (not disabled?) option-layout)
+       (assoc :layout option-layout))
      [:rn/view {:style          style/selector-slot
                 :pointer-events :none}
       [selector/selector {:type      :radio
-                          :selected? selected?}]]
+                          :selected? selected?
+                          :disabled? disabled?}]]
      (when component
-       [component option])]))
+       [component option])
+     (when disabled?
+       [:rn/view {:style style/option-disabled-overlay}])]))
 
 (defn view
   "Options selector container.
@@ -44,6 +52,7 @@
   - `props` map
     - `:data` sequence of option maps
       - each option map is forwarded to `:component`
+      - `:disabled?` optional boolean; disables selection and overlays the option
     - `:container-component` component used to wrap the rendered options
       - defaults to `:rn/scroll-view`
     - `:component` Reagent component used to render each option content

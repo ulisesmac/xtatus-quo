@@ -11,6 +11,15 @@
    :overflow       :hidden
    :flex-direction :column})
 
+(defstyle option-disabled-overlay
+  {:position         :absolute
+   :top              0
+   :right            0
+   :bottom           0
+   :left             0
+   :z-index          2
+   :background-color (colors/get-color :color/white-70)})
+
 (defstyle root-base
   {:align-self :stretch})
 
