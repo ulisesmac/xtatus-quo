@@ -48,15 +48,3 @@
 
 (defn set-color! [color]
   (reset! color-atom color))
-
-(defn cross-runtime-forwarder [js-props js-component]
-  (let [{:keys [theme color]} (use-theme-color)
-        new-props (j/assoc-in! js-props [:initialProps :xquoContext] #js{:theme (name theme)
-                                                                         :color (name color)})]
-    (r/create-element js-component new-props)))
-
-(defn cross-runtime-provider [raw-props component]
-  (let [{:keys [theme color]} (:xquoContext raw-props)]
-    [provider {:theme (keyword "theme" theme)
-               :color (keyword "color" color)}
-     component]))
