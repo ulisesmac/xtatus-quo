@@ -1,8 +1,8 @@
 (ns xquo.cross-runtime-context
   (:require [applied-science.js-interop :as j]
+            [react-native.runtimes.fn :as xfn]
             [reagent.core :as r]
-            [xquo.context :as context]
-            [react-native.runtimes.core :as runtimes]))
+            [xquo.context :as context]))
 
 (defonce runtime-context (r/atom {}))
 
@@ -12,10 +12,10 @@
                              :color (keyword "color" color)})
     nil))
 
-(runtimes/register-fn! :threaded.fn/set-xquo-context! -set-runtime-context!)
+(xfn/register-executor! :threaded.fn/set-xquo-context! -set-runtime-context!)
 
 (def set-context!
-  (runtimes/get-caller-fn! :threaded.fn/set-xquo-context! :runtime/map))
+  (xfn/get-caller! :threaded.fn/set-xquo-context! :runtime/map))
 
 (defn provider [child]
   [context/provider @runtime-context
