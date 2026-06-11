@@ -48,3 +48,14 @@
 
 (defn set-color! [color]
   (reset! color-atom color))
+
+;; Atom to arbitrarily set the app context. Use it to set app context in a runtime
+(defonce ^:private runtime-context (r/atom nil))
+
+(defn set-runtime-context! [{:keys [context]}]
+  (reset! runtime-context context)
+  nil)
+
+(defn runtime-provider [child]
+  [provider @runtime-context
+   child])
