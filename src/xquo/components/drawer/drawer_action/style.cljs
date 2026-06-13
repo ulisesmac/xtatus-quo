@@ -7,12 +7,19 @@
 (defstyle container-base
   {:border-radius (borders/radius 40)})
 
+(defstyle disabled
+  {:opacity 0.3})
+
 (defstyle row-base
   {:flex-direction :row
    :align-items    :center})
 
 (defstyle gap-12
   {:gap 12})
+
+(defn leading-image [size]
+  {:width  size
+   :height size})
 
 (defstyle padding-default
   {:padding-horizontal 12
@@ -75,21 +82,20 @@
     (or selected? pressed?)
     {:background-color (colors/get-color :color/primary 50 5)}))
 
-(defn title-text-style [theme background danger? color]
-  (let [action-color (if danger? :color/danger color)]
-    {:color
-     (cond
-       (and action-color (= theme :theme/dark) (not= background :blur))
-       (colors/get-color action-color 60)
+(defn title-text-style [theme background danger? _color]
+  {:color
+   (cond
+     (and danger? (= theme :theme/dark) (not= background :blur))
+     (colors/get-color :color/danger 60)
 
-       action-color
-       (colors/get-color action-color 50)
+     danger?
+     (colors/get-color :color/danger 50)
 
-       (= theme :theme/light)
-       (colors/get-color :color/neutral 100)
+     (= theme :theme/light)
+     (colors/get-color :color/neutral 100)
 
-       :else
-       (colors/get-color :color/white 100))}))
+     :else
+     (colors/get-color :color/white 100))})
 
 (defn description-text-style [theme background]
   {:color
@@ -102,7 +108,9 @@
   (let [action-color (if danger? :color/danger color)]
     (cond
       action-color
-      (:color (title-text-style theme background danger? color))
+      (if (and (= theme :theme/dark) (not= background :blur))
+        (colors/get-color action-color 60)
+        (colors/get-color action-color 50))
 
       (= theme :theme/light)
       (colors/get-color :color/neutral 50)
@@ -113,13 +121,16 @@
       :else
       (colors/get-color :color/neutral 40))))
 
-(defn trailing-icon-color [theme background danger?]
+(defn trailing-icon-color [theme background danger? color]
   (cond
     (and danger? (= theme :theme/dark) (not= background :blur))
     (colors/get-color :color/danger 60)
 
     danger?
     (colors/get-color :color/danger 50)
+
+    color
+    (colors/get-color color 50)
 
     (= theme :theme/light)
     (colors/get-color :color/neutral 50)

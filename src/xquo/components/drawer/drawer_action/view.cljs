@@ -12,9 +12,21 @@
               :style (style/description-text-style theme background)}
    description])
 
+(defn- leading-view [{:keys [theme background danger? color icon image]}]
+  (cond
+    (:name icon)
+    [icon/view (assoc icon
+                 :size  (:size icon 20)
+                 :color (:color icon (style/icon-color theme background danger? color)))]
+
+    (:source image)
+    [:rn/image {:style       (style/leading-image (:size image 20))
+                :source      (:source image)
+                :resize-mode :contain}]))
+
 (defn- trailing-view
   [{:keys [theme background selected? selected-provided? arrow? toggle? on-select danger?
-           arrow-icon pressed?]}]
+           arrow-icon color pressed?]}]
   (cond
     toggle?
     [:rn/view {:pointer-events :none}
@@ -26,7 +38,7 @@
     selected?
     [icon/view {:name  :icon/check
                 :size  20
-                :color (style/trailing-icon-color theme background danger?)}]
+                :color (style/trailing-icon-color theme background danger? color)}]
 
     arrow?
     [:animated/view {:style (if pressed?
@@ -34,7 +46,7 @@
                               style/arrow-slot-default-state-style)}
      [icon/view {:name  (or arrow-icon :icon/chevron-right)
                  :size  20
-                 :color (style/trailing-icon-color theme background danger?)}]]))
+                 :color (style/trailing-icon-color theme background danger? color)}]]))
 
 (defn drawer-action
   "Drawer action component.
@@ -44,8 +56,10 @@
     - `:title` action title (default `\"Action\"`)
     - `:description` optional secondary text
     - `:icon` optional leading icon props map
+    - `:image` optional leading image props map with `:source` and optional `:size`
     - `:color` optional color family keyword
     - `:danger?` optional boolean
+    - `:disabled?` optional boolean
     - `:selected?` optional boolean
     - `:arrow?` optional boolean
     - `:arrow-icon` optional trailing icon for the arrow slot
@@ -55,7 +69,7 @@
     - `:style` optional caller style
     - Any additional keys are forwarded to `:rn/pressable`."
   [{:keys [title description color danger? selected? arrow? toggle? background on-select on-press
-           on-press-in on-press-out icon arrow-icon]
+           on-press-in on-press-out icon image arrow-icon disabled?]
     :or   {title "Action"}
     :as   props}]
   (let [theme                   (context/use-theme)
@@ -91,14 +105,16 @@
                                      (on-press-out event)))
                                  [on-press-out])]
     [:rn/pressable (-> props
-                       (dissoc :title :description :icon :color :danger? :selected? :arrow? :arrow-icon
+                       (dissoc :title :description :icon :image :color :danger? :selected? :arrow? :arrow-icon
                                :toggle? :background :on-select :style :on-press
-                               :on-press-in :on-press-out)
-                       (assoc :on-press on-press!
+                               :on-press-in :on-press-out :disabled?)
+                       (assoc :disabled (boolean disabled?)
+                              :on-press on-press!
                               :on-press-in on-press-in!
                               :on-press-out on-press-out!
                               :style (rn.utils/add-styles
                                       style/container-base
+                                      (when disabled? style/disabled)
                                       (if description
                                         style/padding-description
                                         style/padding-default)
@@ -112,11 +128,14 @@
                                 style/row-pressed-state-style
                                 style/row-default-state-style)
                               style/row-base
-                              (when (:name icon) style/gap-12)]}
-      (when (:name icon)
-        [icon/view (merge {:size  20
-                           :color (style/icon-color theme background danger? color)}
-                          icon)])
+                              (when (or (:name icon) (:source image)) style/gap-12)]}
+      (when (or (:name icon) (:source image))
+        [leading-view {:theme      theme
+                       :background background
+                       :danger?    danger?
+                       :color      color
+                       :icon       icon
+                       :image      image}])
       [:rn/view {:style (if description
                           [style/content-base style/content-gap-2]
                           style/content-base)}
@@ -138,4 +157,5 @@
                       :on-select          on-select
                       :danger?            danger?
                       :arrow-icon         arrow-icon
+                      :color              color
                       :pressed?           pressed?}]]]))
