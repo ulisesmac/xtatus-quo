@@ -38,10 +38,17 @@
      (when-not skip-handle?
        [:rn/view {:style (style/handle-bar-style theme)}])]))
 
-(defn- leading-placeholder-view [_]
-  ;; TODO: replace this red placeholder with the real drawer leading media components.
-  [:rn/view {:style [style/leading-placeholder-base
-                     (style/leading-placeholder-style)]}])
+(defn- leading-view [{:keys [theme blur? leading-icon leading-image]}]
+  (cond
+    (:name leading-icon)
+    [icon/view (assoc leading-icon
+                 :size  (:size leading-icon 20)
+                 :color (:color leading-icon (style/icon-color theme blur?)))]
+
+    (:source leading-image)
+    [:rn/image {:style       (style/leading-image (:size leading-image 32))
+                :source      (:source leading-image)
+                :resize-mode :contain}]))
 
 (defn- context-item-view [{:keys [theme item]}]
   (cond
@@ -66,9 +73,11 @@
   [:rn/view {:style style/subcontent-slot}
    subcontent])
 
-(defn- description-view [{:keys [theme blur? description leading description-icon]}]
+(defn- description-view [{:keys [theme blur? description leading-icon leading-image description-icon]}]
   [:rn/view {:style style/description-row}
-   (into [text/text {:font            (if leading :font/monospace-13 :font/regular-15)
+   (into [text/text {:font            (if (or (:name leading-icon) (:source leading-image))
+                                        :font/monospace-13
+                                        :font/regular-15)
                      :number-of-lines 1
                      :style           (style/secondary-text-style theme blur?)}]
          (map (fn [segment]
@@ -160,14 +169,17 @@
                    :button        button}]])
 
 (defn- leading-content-view
-  [{:keys [theme blur? title description description-icon title-icon leading subcontent
-           compact?]}]
+  [{:keys [theme blur? title description description-icon title-icon leading-icon leading-image
+           subcontent compact?]}]
   [:rn/view {:style [style/content-base
                      (if compact?
                        style/content-bottom-8
                        style/content-bottom-12)]}
    [:rn/view {:style style/leading-row}
-    [leading-placeholder-view {:leading leading}]
+    [leading-view {:theme         theme
+                   :blur?         blur?
+                   :leading-icon  leading-icon
+                   :leading-image leading-image}]
     [:rn/view {:style style/leading-column}
      [title-inline-view {:theme      theme
                          :blur?      blur?
@@ -177,7 +189,8 @@
        [description-view {:theme            theme
                           :blur?            blur?
                           :description      description
-                          :leading          leading
+                          :leading-icon     leading-icon
+                          :leading-image    leading-image
                           :description-icon description-icon}])
      (when subcontent
        [subcontent-view {:subcontent subcontent}])]]])
@@ -241,8 +254,8 @@
       and forced to `:size 24`
     - `:title-icon` optional icon props map shown inline after the title
     - `:description-icon` optional icon props map shown inline after the description
-    - `:leading` optional leading placeholder map
-      - `:type` one of `:account-avatar`, `:icon-avatar`, `:user-avatar`, `:token-avatar`
+    - `:leading-icon` optional leading icon props map with `:name`, optional `:size` and `:color`
+    - `:leading-image` optional leading image props map with `:source` and optional `:size`
     - `:context-tags` optional vector
       - `{:type :placeholder :width n}`
       - `{:type :text :text \"...\"}`
@@ -250,7 +263,8 @@
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`."
   [{:keys [skip-handle? label compact? title description subcontent counter info? button
-           counter-font counter-style title-icon description-icon leading context-tags blur? handle-style]
+           counter-font counter-style title-icon description-icon leading-icon leading-image
+           context-tags blur? handle-style]
     :or   {skip-handle? true
            title        "Title"}
     :as   props}]
@@ -258,7 +272,8 @@
     [:rn/view (-> props
                   (dissoc :skip-handle? :label :compact? :title :description :subcontent :counter
                           :counter-font :counter-style :info? :button :title-icon
-                          :description-icon :leading :context-tags :blur? :style :handle-style)
+                          :description-icon :leading-icon :leading-image :context-tags :blur?
+                          :style :handle-style)
                   (assoc :style (rn.utils/add-styles style/container-base (:style props))))
      [drawer-handle {:skip-handle? skip-handle?
                      :handle-style handle-style}]
@@ -267,7 +282,7 @@
         [section-label/section-label {:label label :blur? blur?}]
         (when subcontent
           [subcontent-view {:subcontent subcontent}])]
-       (if leading
+       (if (or (:name leading-icon) (:source leading-image))
          [leading-content-view {:theme            theme
                                 :blur?            blur?
                                 :title            title
@@ -275,7 +290,8 @@
                                 :subcontent       subcontent
                                 :description-icon description-icon
                                 :title-icon       title-icon
-                                :leading          leading
+                                :leading-icon     leading-icon
+                                :leading-image    leading-image
                                 :compact?         compact?}]
          [standard-content-view {:theme         theme
                                  :blur?         blur?

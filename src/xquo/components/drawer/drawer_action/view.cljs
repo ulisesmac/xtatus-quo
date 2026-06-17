@@ -55,6 +55,7 @@
   - `props` map
     - `:title` action title (default `\"Action\"`)
     - `:description` optional secondary text
+    - `:content` optional custom hiccup rendered in the text area instead of title and description
     - `:icon` optional leading icon props map
     - `:image` optional leading image props map with `:source` and optional `:size`
     - `:color` optional color family keyword
@@ -68,7 +69,7 @@
     - `:background` optional `:blur`
     - `:style` optional caller style
     - Any additional keys are forwarded to `:rn/pressable`."
-  [{:keys [title description color danger? selected? arrow? toggle? background on-select on-press
+  [{:keys [title description content color danger? selected? arrow? toggle? background on-select on-press
            on-press-in on-press-out icon image arrow-icon disabled?]
     :or   {title "Action"}
     :as   props}]
@@ -105,8 +106,8 @@
                                      (on-press-out event)))
                                  [on-press-out])]
     [:rn/pressable (-> props
-                       (dissoc :title :description :icon :image :color :danger? :selected? :arrow? :arrow-icon
-                               :toggle? :background :on-select :style :on-press
+                       (dissoc :title :description :content :icon :image :color :danger? :selected? :arrow?
+                               :arrow-icon :toggle? :background :on-select :style :on-press
                                :on-press-in :on-press-out :disabled?)
                        (assoc :disabled (boolean disabled?)
                               :on-press on-press!
@@ -139,15 +140,18 @@
       [:rn/view {:style (if description
                           [style/content-base style/content-gap-2]
                           style/content-base)}
-       [:rn/view {:style style/title-row}
-        [text/text {:font            :font/medium-15
-                    :number-of-lines 1
-                    :style           (style/title-text-style theme background danger? color)}
-         title]]
-       (when description
-         [description-view {:theme       theme
-                            :background  background
-                            :description description}])]
+       (if content
+         content
+         [:<>
+          [:rn/view {:style style/title-row}
+           [text/text {:font            :font/medium-15
+                       :number-of-lines 1
+                       :style           (style/title-text-style theme background danger? color)}
+            title]]
+          (when description
+            [description-view {:theme       theme
+                               :background  background
+                               :description description}])])]
       [trailing-view {:theme              theme
                       :background         background
                       :selected?          selected-now?

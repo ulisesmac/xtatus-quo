@@ -78,9 +78,9 @@
    :align-items     :flex-start
    :justify-content :center})
 
-(defstyle leading-placeholder-base
-  {:width  32
-   :height 32})
+(defn leading-image [size]
+  {:width  size
+   :height size})
 
 (defstyle context-row
   {:flex-direction :row
@@ -143,10 +143,6 @@
     (and (= theme :theme/dark) blur?) (colors/get-color :color/white-40)
     (= theme :theme/dark)             (colors/get-color :color/neutral-40)
     :else                             (colors/get-color :color/neutral-50)))
-
-(defn leading-placeholder-style []
-  {:background-color (colors/get-color :color/danger-50)
-   :border-radius    (borders/radius :bounding-area)})
 
 (defn context-placeholder-style [width]
   {:width            width

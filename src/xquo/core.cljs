@@ -9,6 +9,7 @@
             [xquo.components.divider.divider-line.view]
             [xquo.components.drawer.bottom-actions.view]
             [xquo.components.drawer.drawer-action.view]
+            [xquo.components.drawer.drawer-label.view]
             [xquo.components.drawer.drawer.view]
             [xquo.components.drawer.top.view]
             [xquo.components.emoji-picker.view]
@@ -47,6 +48,7 @@
 (def bottom-actions xquo.components.drawer.bottom-actions.view/bottom-actions)
 (def drawer xquo.components.drawer.drawer.view/drawer)
 (def drawer-action xquo.components.drawer.drawer-action.view/drawer-action)
+(def drawer-label xquo.components.drawer.drawer-label.view/drawer-label)
 (def drawer-handle xquo.components.drawer.top.view/drawer-handle)
 (def drawer-top xquo.components.drawer.top.view/drawer-top)
 (def emoji-picker xquo.components.emoji-picker.view/emoji-picker)
