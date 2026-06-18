@@ -18,29 +18,29 @@
 
 (defn loading-12 [{:keys [color size style]}]
   (let [color (icon-color color)]
-    [:animated/svg {:width   size
-                    :height  size
-                    :viewBox "0 0 12 12"
-                    :fill    "none"
-                    :style   [style loading-spin]}
-     [:svg/path {:d            "M11 6C11 6.98891 10.7068 7.95561 10.1573 8.77785C9.60794 9.6001 8.82705 10.241 7.91342 10.6194C6.99979 10.9978 5.99445 11.0969 5.02455 10.9039C4.05464 10.711 3.16373 10.2348 2.46447 9.53553C1.7652 8.83627 1.289 7.94536 1.09607 6.97545C0.903147 6.00555 1.00216 5.00021 1.3806 4.08658C1.75904 3.17295 2.3999 2.39206 3.22215 1.84265C4.04439 1.29324 5.01109 1 6 1"
-                 :stroke       color
-                 :stroke-width 1.1}]
-     [:svg/path {:opacity      0.2
-                 :d            "M6 1A5 5 0 0 1 7.91342 1.3806"
-                 :stroke       color
-                 :stroke-width 1.1}]
-     [:svg/path {:opacity      0.45
-                 :d            "M7.91342 1.3806A5 5 0 0 1 9.53553 2.46447"
-                 :stroke       color
-                 :stroke-width 1.1}]
-     [:svg/path {:opacity      0.7
-                 :d            "M9.53553 2.46447A5 5 0 0 1 10.6194 4.08658"
-                 :stroke       color
-                 :stroke-width 1.1}]
-     [:svg/path {:d            "M10.6194 4.08658A5 5 0 0 1 11 6"
-                 :stroke       color
-                 :stroke-width 1.1}]]))
+    [:animated/view {:style [style loading-spin]}
+     [:svg/svg {:width   size
+                :height  size
+                :viewBox "0 0 12 12"
+                :fill    "none"}
+      [:svg/path {:d            "M11 6C11 6.98891 10.7068 7.95561 10.1573 8.77785C9.60794 9.6001 8.82705 10.241 7.91342 10.6194C6.99979 10.9978 5.99445 11.0969 5.02455 10.9039C4.05464 10.711 3.16373 10.2348 2.46447 9.53553C1.7652 8.83627 1.289 7.94536 1.09607 6.97545C0.903147 6.00555 1.00216 5.00021 1.3806 4.08658C1.75904 3.17295 2.3999 2.39206 3.22215 1.84265C4.04439 1.29324 5.01109 1 6 1"
+                   :stroke       color
+                   :stroke-width 1.1}]
+      [:svg/path {:opacity      0.2
+                  :d            "M6 1A5 5 0 0 1 7.91342 1.3806"
+                  :stroke       color
+                  :stroke-width 1.1}]
+      [:svg/path {:opacity      0.45
+                  :d            "M7.91342 1.3806A5 5 0 0 1 9.53553 2.46447"
+                  :stroke       color
+                  :stroke-width 1.1}]
+      [:svg/path {:opacity      0.7
+                  :d            "M9.53553 2.46447A5 5 0 0 1 10.6194 4.08658"
+                  :stroke       color
+                  :stroke-width 1.1}]
+      [:svg/path {:d            "M10.6194 4.08658A5 5 0 0 1 11 6"
+                  :stroke       color
+                  :stroke-width 1.1}]]]))
 
 (defn bridge-12 [{:keys [color size style]}]
   (let [color (icon-color color)]
@@ -144,92 +144,92 @@
 
 (defn loading-16 [{:keys [color size style]}]
   (let [color (icon-color color)]
-    [:animated/svg {:width   size
-                    :height  size
-                    :viewBox "0 0 16 16"
-                    :fill    "none"
-                    :style   [style loading-spin]}
-     [:svg/path {:d            "M14.5332 7.99989C14.5332 9.29206 14.15 10.5552 13.4322 11.6296C12.7143 12.704 11.6939 13.5414 10.5001 14.0359C9.30627 14.5304 7.99264 14.6598 6.7253 14.4077C5.45795 14.1556 4.29382 13.5334 3.38012 12.6197C2.46642 11.7059 1.84418 10.5418 1.59209 9.27448C1.34 8.00713 1.46938 6.6935 1.96387 5.49969C2.45837 4.30588 3.29576 3.28551 4.37016 2.56762C5.44456 1.84973 6.70771 1.46655 7.99989 1.46655"
-                 :stroke       color
-                 :stroke-width 1.2}]
-     [:svg/path {:opacity      0.2
-                 :d            "M8 1.46655C8.85797 1.46655 9.70754 1.63554 10.5002 1.96387"
-                 :stroke       color
-                 :stroke-width 1.2}]
-     [:svg/path {:opacity      0.45
-                 :d            "M10.5002 1.96387C11.2929 2.2922 12.0131 2.77345 12.6198 3.38012"
-                 :stroke       color
-                 :stroke-width 1.2}]
-     [:svg/path {:opacity      0.7
-                 :d            "M12.6198 3.38012C13.2264 3.9868 13.7077 4.70703 14.036 5.49969"
-                 :stroke       color
-                 :stroke-width 1.2}]
-     [:svg/path {:d            "M14.036 5.49969C14.3643 6.29235 14.5333 7.14192 14.5333 7.99989"
-                 :stroke       color
-                 :stroke-width 1.2}]]))
-
-(defn loading-20 [{:keys [color size style]}]
-  (let [color (icon-color color)]
-    [:animated/svg {:width   size
-                    :height  size
-                    :viewBox "0 0 20 20"
-                    :fill    "none"
-                    :style   [style loading-spin]}
-     [:svg/defs
-      [:svg/linear-gradient {:id             "xquo-loading-20-gradient"
-                             :x1             "11"
-                             :y1             "3"
-                             :x2             "15.3957"
-                             :y2             "5.9094"
-                             :gradient-units "userSpaceOnUse"}
-       [:svg/stop {:stop-color   color
-                   :stop-opacity 0}]
-       [:svg/stop {:offset     "1"
-                   :stop-color color}]]
-      [:svg/mask {:id         "xquo-loading-20-mask"
-                  :mask-type  "alpha"
-                  :mask-units "userSpaceOnUse"
-                  :x          9
-                  :y          1
-                  :width      10
-                  :height     10}
-       [:svg/rect {:x      9
-                   :y      1
-                   :width  10
-                   :height 10
-                   :fill   "url(#xquo-loading-20-gradient)"}]]]
-     [:svg/path {:d            "M17 10C17 11.3845 16.5895 12.7378 15.8203 13.889C15.0511 15.0401 13.9579 15.9373 12.6788 16.4672C11.3997 16.997 9.99223 17.1356 8.63437 16.8655C7.2765 16.5954 6.02922 15.9287 5.05025 14.9497C4.07128 13.9708 3.4046 12.7235 3.1345 11.3656C2.86441 10.0078 3.00303 8.6003 3.53284 7.32122C4.06266 6.04213 4.95986 4.94888 6.11101 4.17971C7.26215 3.41054 8.61553 3 10 3"
-                 :stroke       color
-                 :stroke-width 1.2}]
-     [:svg/g {:mask "url(#xquo-loading-20-mask)"}
-      [:svg/path {:d            "M10 3C10.9193 3 11.8295 3.18106 12.6788 3.53284C13.5281 3.88463 14.2997 4.40024 14.9497 5.05025C15.5998 5.70026 16.1154 6.47194 16.4672 7.32122C16.8189 8.1705 17 9.08075 17 10"
+    [:animated/view {:style [style loading-spin]}
+     [:svg/svg {:width   size
+                :height  size
+                :viewBox "0 0 16 16"
+                :fill    "none"}
+      [:svg/path {:d            "M14.5332 7.99989C14.5332 9.29206 14.15 10.5552 13.4322 11.6296C12.7143 12.704 11.6939 13.5414 10.5001 14.0359C9.30627 14.5304 7.99264 14.6598 6.7253 14.4077C5.45795 14.1556 4.29382 13.5334 3.38012 12.6197C2.46642 11.7059 1.84418 10.5418 1.59209 9.27448C1.34 8.00713 1.46938 6.6935 1.96387 5.49969C2.45837 4.30588 3.29576 3.28551 4.37016 2.56762C5.44456 1.84973 6.70771 1.46655 7.99989 1.46655"
+                   :stroke       color
+                   :stroke-width 1.2}]
+      [:svg/path {:opacity      0.2
+                  :d            "M8 1.46655C8.85797 1.46655 9.70754 1.63554 10.5002 1.96387"
+                  :stroke       color
+                  :stroke-width 1.2}]
+      [:svg/path {:opacity      0.45
+                  :d            "M10.5002 1.96387C11.2929 2.2922 12.0131 2.77345 12.6198 3.38012"
+                  :stroke       color
+                  :stroke-width 1.2}]
+      [:svg/path {:opacity      0.7
+                  :d            "M12.6198 3.38012C13.2264 3.9868 13.7077 4.70703 14.036 5.49969"
+                  :stroke       color
+                  :stroke-width 1.2}]
+      [:svg/path {:d            "M14.036 5.49969C14.3643 6.29235 14.5333 7.14192 14.5333 7.99989"
                   :stroke       color
                   :stroke-width 1.2}]]]))
 
+(defn loading-20 [{:keys [color size style]}]
+  (let [color (icon-color color)]
+    [:animated/view {:style [style loading-spin]}
+     [:svg/svg {:width   size
+                :height  size
+                :viewBox "0 0 20 20"
+                :fill    "none"}
+      [:svg/defs
+       [:svg/linear-gradient {:id             "xquo-loading-20-gradient"
+                              :x1             "11"
+                              :y1             "3"
+                              :x2             "15.3957"
+                              :y2             "5.9094"
+                              :gradient-units "userSpaceOnUse"}
+        [:svg/stop {:stop-color   color
+                    :stop-opacity 0}]
+        [:svg/stop {:offset     "1"
+                    :stop-color color}]]
+       [:svg/mask {:id         "xquo-loading-20-mask"
+                   :mask-type  "alpha"
+                   :mask-units "userSpaceOnUse"
+                   :x          9
+                   :y          1
+                   :width      10
+                   :height     10}
+        [:svg/rect {:x      9
+                    :y      1
+                    :width  10
+                    :height 10
+                    :fill   "url(#xquo-loading-20-gradient)"}]]]
+      [:svg/path {:d            "M17 10C17 11.3845 16.5895 12.7378 15.8203 13.889C15.0511 15.0401 13.9579 15.9373 12.6788 16.4672C11.3997 16.997 9.99223 17.1356 8.63437 16.8655C7.2765 16.5954 6.02922 15.9287 5.05025 14.9497C4.07128 13.9708 3.4046 12.7235 3.1345 11.3656C2.86441 10.0078 3.00303 8.6003 3.53284 7.32122C4.06266 6.04213 4.95986 4.94888 6.11101 4.17971C7.26215 3.41054 8.61553 3 10 3"
+                   :stroke       color
+                   :stroke-width 1.2}]
+      [:svg/g {:mask "url(#xquo-loading-20-mask)"}
+       [:svg/path {:d            "M10 3C10.9193 3 11.8295 3.18106 12.6788 3.53284C13.5281 3.88463 14.2997 4.40024 14.9497 5.05025C15.5998 5.70026 16.1154 6.47194 16.4672 7.32122C16.8189 8.1705 17 9.08075 17 10"
+                   :stroke       color
+                   :stroke-width 1.2}]]]]))
+
 (defn loading-circle-20 [{:keys [size style]}]
-  [:animated/svg {:width   size
-                  :height  size
-                  :viewBox "0 0 20 20"
-                  :fill    "none"
-                  :style   [style loading-spin]}
-   [:svg/path {:fill-rule "evenodd"
-               :clip-rule "evenodd"
-               :d         "M3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10Z"
-               :fill      loading-circle-background-color}]
-   [:svg/path {:d            "M14 10C14 10.7911 13.7654 11.5645 13.3259 12.2223C12.8864 12.8801 12.2616 13.3928 11.5307 13.6955C10.7998 13.9983 9.99556 14.0775 9.21964 13.9231C8.44371 13.7688 7.73098 13.3878 7.17157 12.8284C6.61216 12.269 6.2312 11.5563 6.07686 10.7804C5.92252 10.0044 6.00173 9.20017 6.30448 8.46927C6.60723 7.73836 7.11992 7.11365 7.77772 6.67412C8.43552 6.2346 9.20887 6 10 6"
-               :stroke       white-color
-               :stroke-width 1.2}]
-   [:svg/path {:opacity      0.2
-               :d            "M10 6C10.5253 6 11.0454 6.10346 11.5307 6.30448"
-               :stroke       white-color
-               :stroke-width 1.2}]
-   [:svg/path {:opacity      0.55
-               :d            "M11.5307 6.30448C12.016 6.5055 12.457 6.80014 12.8284 7.17157"
-               :stroke       white-color
-               :stroke-width 1.2}]
-   [:svg/path {:d            "M12.8284 7.17157C13.5714 7.91444 14 8.92893 14 10"
-               :stroke       white-color
-               :stroke-width 1.2}]])
+  [:animated/view {:style [style loading-spin]}
+   [:svg/svg {:width   size
+              :height  size
+              :viewBox "0 0 20 20"
+              :fill    "none"}
+    [:svg/path {:fill-rule "evenodd"
+                :clip-rule "evenodd"
+                :d         "M3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10Z"
+                :fill      loading-circle-background-color}]
+    [:svg/path {:d            "M14 10C14 10.7911 13.7654 11.5645 13.3259 12.2223C12.8864 12.8801 12.2616 13.3928 11.5307 13.6955C10.7998 13.9983 9.99556 14.0775 9.21964 13.9231C8.44371 13.7688 7.73098 13.3878 7.17157 12.8284C6.61216 12.269 6.2312 11.5563 6.07686 10.7804C5.92252 10.0044 6.00173 9.20017 6.30448 8.46927C6.60723 7.73836 7.11992 7.11365 7.77772 6.67412C8.43552 6.2346 9.20887 6 10 6"
+                :stroke       white-color
+                :stroke-width 1.2}]
+    [:svg/path {:opacity      0.2
+                :d            "M10 6C10.5253 6 11.0454 6.10346 11.5307 6.30448"
+                :stroke       white-color
+                :stroke-width 1.2}]
+    [:svg/path {:opacity      0.55
+                :d            "M11.5307 6.30448C12.016 6.5055 12.457 6.80014 12.8284 7.17157"
+                :stroke       white-color
+                :stroke-width 1.2}]
+    [:svg/path {:d            "M12.8284 7.17157C13.5714 7.91444 14 8.92893 14 10"
+                :stroke       white-color
+                :stroke-width 1.2}]]])
 
 (defn bridge-blur-20 [{:keys [color size style]}]
   (let [color (icon-color color)]
