@@ -8,9 +8,14 @@
             [react-native.core :as rn]))
 
 (defn- description-view [{:keys [theme background description]}]
-  [text/text {:font  :font/regular-13
-              :style (style/description-text-style theme background)}
-   description])
+  [:rn/view {:style style/description-row}
+   (if (vector? description)
+     description
+     [text/text {:ellipsize-mode  :tail
+                 :font            :font/regular-13
+                 :number-of-lines 1
+                 :style           (style/description-text-style theme background)}
+      description])])
 
 (defn- leading-view [{:keys [theme background danger? color icon image]}]
   (cond
@@ -20,7 +25,7 @@
                  :color (:color icon (style/icon-color theme background danger? color)))]
 
     (:source image)
-    [:rn/image {:style       (style/leading-image (:size image 20))
+    [:rn/image {:style       (style/leading-image (:size image 32))
                 :source      (:source image)
                 :resize-mode :contain}]))
 
@@ -29,21 +34,24 @@
            arrow-icon color pressed?]}]
   (cond
     toggle?
-    [:rn/view {:pointer-events :none}
+    [:rn/view {:pointer-events :none
+               :style          style/trailing-slot}
      [selector/selector (cond-> {:type       :toggle
                                  :background background}
                           selected-provided? (assoc :selected? selected?)
                           on-select (assoc :on-select on-select))]]
 
     selected?
-    [icon/view {:name  :icon/check
-                :size  20
-                :color (style/trailing-icon-color theme background danger? color)}]
+    [:rn/view {:style style/trailing-slot}
+     [icon/view {:name  :icon/check
+                 :size  20
+                 :color (style/trailing-icon-color theme background danger? color)}]]
 
     arrow?
-    [:animated/view {:style (if pressed?
-                              style/arrow-slot-pressed-state-style
-                              style/arrow-slot-default-state-style)}
+    [:animated/view {:style [style/trailing-slot
+                             (if pressed?
+                               style/arrow-slot-pressed-state-style
+                               style/arrow-slot-default-state-style)]}
      [icon/view {:name  (or arrow-icon :icon/chevron-right)
                  :size  20
                  :color (style/trailing-icon-color theme background danger? color)}]]))
@@ -54,10 +62,10 @@
   API:
   - `props` map
     - `:title` action title (default `\"Action\"`)
-    - `:description` optional secondary text
+    - `:description` optional secondary text or hiccup rendered in the 18px description slot
     - `:content` optional custom hiccup rendered in the text area instead of title and description
     - `:icon` optional leading icon props map
-    - `:image` optional leading image props map with `:source` and optional `:size`
+    - `:image` optional leading image props map with `:source` and optional `:size` (default `32`)
     - `:color` optional color family keyword
     - `:danger?` optional boolean
     - `:disabled?` optional boolean
@@ -129,7 +137,12 @@
                                 style/row-pressed-state-style
                                 style/row-default-state-style)
                               style/row-base
-                              (when (or (:name icon) (:source image)) style/gap-12)]}
+                              (cond
+                                (:name icon)
+                                style/gap-12
+
+                                (:source image)
+                                style/gap-8)]}
       (when (or (:name icon) (:source image))
         [leading-view {:theme      theme
                        :background background
@@ -138,13 +151,14 @@
                        :icon       icon
                        :image      image}])
       [:rn/view {:style (if description
-                          [style/content-base style/content-gap-2]
+                          [style/content-base style/content-gap-0]
                           style/content-base)}
        (if content
          content
          [:<>
           [:rn/view {:style style/title-row}
-           [text/text {:font            :font/medium-15
+           [text/text {:ellipsize-mode  :tail
+                       :font            :font/medium-15
                        :number-of-lines 1
                        :style           (style/title-text-style theme background danger? color)}
             title]]

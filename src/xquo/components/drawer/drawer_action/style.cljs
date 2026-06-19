@@ -12,10 +12,15 @@
 
 (defstyle row-base
   {:flex-direction :row
-   :align-items    :center})
+   :align-items    :center
+   :align-self     :stretch
+   :min-width      0})
 
 (defstyle gap-12
   {:gap 12})
+
+(defstyle gap-8
+  {:gap 8})
 
 (defn leading-image [size]
   {:width  size
@@ -32,12 +37,13 @@
 
 (defstyle content-base
   {:flex           1
-   :min-width      1
+   :min-width      0
+   :overflow       :hidden
    :flex-direction :column
    :align-items    :flex-start})
 
-(defstyle content-gap-2
-  {:gap 2})
+(defstyle content-gap-0
+  {:gap 0})
 
 (defstyle row-default-state-style
   {:transform                  [{:scale       (:default-scale animations/press-feedback)}
@@ -54,7 +60,19 @@
    :transition-timing-function (:pressed-timing-function animations/press-feedback)})
 
 (defstyle title-row
-  {:align-self :stretch})
+  {:height          22
+   :align-self      :stretch
+   :overflow        :hidden
+   :justify-content :center})
+
+(defstyle description-row
+  {:height          18
+   :align-self      :stretch
+   :overflow        :hidden
+   :justify-content :center})
+
+(defstyle trailing-slot
+  {:flex-shrink 0})
 
 (defstyle arrow-slot-default-state-style
   {:transform                  [{:translate-x 0}]
@@ -83,7 +101,9 @@
     {:background-color (colors/get-color :color/primary 50 5)}))
 
 (defn title-text-style [theme background danger? _color]
-  {:color
+  {:height      22
+   :line-height 22
+   :color
    (cond
      (and danger? (= theme :theme/dark) (not= background :blur))
      (colors/get-color :color/danger 60)
@@ -98,7 +118,9 @@
      (colors/get-color :color/white 100))})
 
 (defn description-text-style [theme background]
-  {:color
+  {:height      18
+   :line-height 18
+   :color
    (cond
      (= theme :theme/light) (colors/get-color :color/neutral 50)
      (= background :blur)   (colors/get-color :color/white 40)
