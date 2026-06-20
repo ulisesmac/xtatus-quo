@@ -78,9 +78,10 @@
    :align-items     :flex-start
    :justify-content :center})
 
-(defn leading-image [size]
-  {:width  size
-   :height size})
+(defn leading-image [size border-radius]
+  (cond-> {:width  size
+           :height size}
+    border-radius (assoc :border-radius border-radius)))
 
 (defstyle context-row
   {:flex-direction :row

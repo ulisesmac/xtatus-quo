@@ -46,7 +46,8 @@
                  :color (:color leading-icon (style/icon-color theme blur?)))]
 
     (:source leading-image)
-    [:rn/image {:style       (style/leading-image (:size leading-image 32))
+    [:rn/image {:style       (style/leading-image (:size leading-image 32)
+                                                  (:border-radius leading-image))
                 :source      (:source leading-image)
                 :resize-mode :contain}]))
 
@@ -255,7 +256,8 @@
     - `:title-icon` optional icon props map shown inline after the title
     - `:description-icon` optional icon props map shown inline after the description
     - `:leading-icon` optional leading icon props map with `:name`, optional `:size` and `:color`
-    - `:leading-image` optional leading image props map with `:source` and optional `:size`
+    - `:leading-image` optional leading image props map with `:source`, optional `:size`
+      and optional `:border-radius`
     - `:context-tags` optional vector
       - `{:type :placeholder :width n}`
       - `{:type :text :text \"...\"}`
