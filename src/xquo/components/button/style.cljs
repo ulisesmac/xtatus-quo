@@ -235,7 +235,7 @@
                            :height           32})
        :icon-only  (style {:width         32
                            :height        32
-                           :border-radius (borders/radius 32)})}
+                           :border-radius (borders/radius :max)})}
    24 {nil         (style {:padding-horizontal 8
                            :padding-vertical   3
                            :border-radius      (borders/radius 24)
@@ -250,7 +250,7 @@
                            :height             24})
        :icon-only  (style {:width         24
                            :height        24
-                           :border-radius (borders/radius 24)})}})
+                           :border-radius (borders/radius :max)})}})
 
 (defstyle size-24-outline-content-style
   {:padding-horizontal 7
@@ -319,7 +319,7 @@
   #{:grey :dark-grey :outline :ghost})
 
 (defstyle icon-only-rounded-square-shape
-  {:border-radius (borders/radius 32)})
+  {:border-radius (borders/radius :max)})
 
 (defn icon-only-shape-style [layout type]
   (when (and (= layout :icon-only) (neutral-icon-only-types type))

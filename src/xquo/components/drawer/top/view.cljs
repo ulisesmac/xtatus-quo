@@ -5,8 +5,7 @@
             [xquo.components.icon.view :as icon]
             [xquo.components.settings.section-label.view :as section-label]
             [xquo.components.text.view :as text]
-            [xquo.context :as context]
-            [xquo.foundations.colors :as colors]))
+            [xquo.context :as context]))
 
 (defn- description-segments [description]
   (if (string? description)
@@ -41,9 +40,10 @@
 (defn- leading-view [{:keys [theme blur? leading-icon leading-image]}]
   (cond
     (:name leading-icon)
-    [icon/view (assoc leading-icon
-                 :size  (:size leading-icon 20)
-                 :color (:color leading-icon (style/icon-color theme blur?)))]
+    [:rn/view {:style (style/leading-icon-slot theme blur?)}
+     [icon/view (assoc leading-icon
+                  :size  (:size leading-icon 20)
+                  :color (:color leading-icon (style/icon-color theme blur?)))]]
 
     (:source leading-image)
     [:rn/image {:style       (style/leading-image (:size leading-image 32)
@@ -70,8 +70,8 @@
                                    :item  item}]))
         context-tags))
 
-(defn- subcontent-view [{:keys [subcontent]}]
-  [:rn/view {:style style/subcontent-slot}
+(defn- subcontent-view [{:keys [subcontent leading? rich-subcontent?]}]
+  [:rn/view {:style (style/subcontent-slot leading? rich-subcontent?)}
    subcontent])
 
 (defn- description-view [{:keys [theme blur? description leading-icon leading-image description-icon]}]
@@ -113,17 +113,7 @@
 (defn- trailing-view [{:keys [theme blur? info? counter counter-font counter-style button]}]
   (cond
     button
-    (let [button-type  (or (:type button) :primary)
-          color        (context/use-color)]
-      [button/button
-       (cond-> (assoc button :size 24)
-         (= button-type :primary)
-         (assoc :icon  (assoc (:icon button)
-                         :color (:color (:icon button)
-                                 (colors/get-color :color/white-100)))
-                :style (rn.utils/add-styles
-                        (style/primary-button-style theme color)
-                        (:style button))))])
+    [button/button button]
 
     info?
     [icon/view {:name  :icon/info
@@ -152,6 +142,7 @@
 
 (defn- plain-row-view [{:keys [theme blur? title title-icon info? counter counter-font counter-style button]}]
   [:rn/view {:style [style/title-row
+                     (when button style/title-row-stretch)
                      style/title-row-center
                      (cond
                        button style/title-row-gap-20
@@ -171,7 +162,7 @@
 
 (defn- leading-content-view
   [{:keys [theme blur? title description description-icon title-icon leading-icon leading-image
-           subcontent compact?]}]
+           subcontent rich-subcontent? compact? button]}]
   [:rn/view {:style [style/content-base
                      (if compact?
                        style/content-bottom-8
@@ -182,10 +173,11 @@
                    :leading-icon  leading-icon
                    :leading-image leading-image}]
     [:rn/view {:style style/leading-column}
-     [title-inline-view {:theme      theme
-                         :blur?      blur?
-                         :title      title
-                         :title-icon title-icon}]
+     [plain-row-view {:theme      theme
+                      :blur?      blur?
+                      :title      title
+                      :title-icon title-icon
+                      :button     button}]
      (when description
        [description-view {:theme            theme
                           :blur?            blur?
@@ -194,11 +186,13 @@
                           :leading-image    leading-image
                           :description-icon description-icon}])
      (when subcontent
-       [subcontent-view {:subcontent subcontent}])]]])
+       [subcontent-view {:subcontent        subcontent
+                         :rich-subcontent? rich-subcontent?
+                         :leading?          true}])]]])
 
 (defn- standard-content-view
   [{:keys [theme blur? title description context-tags info? counter button
-           counter-font counter-style title-icon subcontent compact?]}]
+           counter-font counter-style title-icon subcontent rich-subcontent? compact?]}]
   [:rn/view {:style [style/content-base
                      (if compact?
                        style/content-bottom-8
@@ -232,7 +226,8 @@
                          :blur?       blur?
                          :description description}]])
    (when subcontent
-     [subcontent-view {:subcontent subcontent}])])
+     [subcontent-view {:subcontent        subcontent
+                       :rich-subcontent? rich-subcontent?}])])
 
 (defn drawer-top
   "Drawer top component.
@@ -245,37 +240,39 @@
     - `:compact?` optional boolean for the tighter documentation top spacing
     - `:title` title string or hiccup vector (default `\"Title\"`)
     - `:description` optional string or vector of segment maps `{:text ... :color :color/...}`
-    - `:subcontent` optional custom hiccup rendered in a fixed 24px slot beneath
-      the main text content; overflow outside that height remains visible
+    - `:subcontent` optional custom hiccup rendered beneath the main text content;
+      overflow outside its slot remains visible
+    - `:rich-subcontent?` optional boolean for taller subcontent:
+      24px slot with 4px title gap. Defaults to a 22px slot with 2px title gap.
+      Leading variants use an 18px slot with no title gap unless rich subcontent is requested.
     - `:counter` optional right-side counter text or hiccup (for example `\"00/00\"`)
     - `:counter-font` optional counter text font
     - `:counter-style` optional caller style for counter text
     - `:info?` optional right-side info icon
     - `:button` optional trailing button props forwarded to `xquo/button`
-      and forced to `:size 24`
     - `:title-icon` optional icon props map shown inline after the title
     - `:description-icon` optional icon props map shown inline after the description
     - `:leading-icon` optional leading icon props map with `:name`, optional `:size` and `:color`
     - `:leading-image` optional leading image props map with `:source`, optional `:size`
-      and optional `:border-radius`
+      defaulting to 32, and optional `:border-radius`
     - `:context-tags` optional vector
       - `{:type :placeholder :width n}`
       - `{:type :text :text \"...\"}`
     - `:blur?` optional boolean for blur styling
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`."
-  [{:keys [skip-handle? label compact? title description subcontent counter info? button
-           counter-font counter-style title-icon description-icon leading-icon leading-image
-           context-tags blur? handle-style]
+  [{:keys [skip-handle? label compact? title description subcontent rich-subcontent?
+           counter info? button counter-font counter-style title-icon description-icon
+           leading-icon leading-image context-tags blur? handle-style]
     :or   {skip-handle? true
            title        "Title"}
     :as   props}]
   (let [theme (context/use-theme)]
     [:rn/view (-> props
-                  (dissoc :skip-handle? :label :compact? :title :description :subcontent :counter
-                          :counter-font :counter-style :info? :button :title-icon
-                          :description-icon :leading-icon :leading-image :context-tags :blur?
-                          :style :handle-style)
+                  (dissoc :skip-handle? :label :compact? :title :description :subcontent
+                          :rich-subcontent? :counter :counter-font :counter-style :info? :button
+                          :title-icon :description-icon :leading-icon :leading-image :context-tags
+                          :blur? :style :handle-style)
                   (assoc :style (rn.utils/add-styles style/container-base (:style props))))
      [drawer-handle {:skip-handle? skip-handle?
                      :handle-style handle-style}]
@@ -283,28 +280,32 @@
        [:rn/view {:style [style/content-base style/content-bottom-12 style/content-column]}
         [section-label/section-label {:label label :blur? blur?}]
         (when subcontent
-          [subcontent-view {:subcontent subcontent}])]
+          [subcontent-view {:subcontent        subcontent
+                            :rich-subcontent? rich-subcontent?}])]
        (if (or (:name leading-icon) (:source leading-image))
-         [leading-content-view {:theme            theme
-                                :blur?            blur?
-                                :title            title
-                                :description      description
-                                :subcontent       subcontent
-                                :description-icon description-icon
-                                :title-icon       title-icon
-                                :leading-icon     leading-icon
-                                :leading-image    leading-image
-                                :compact?         compact?}]
-         [standard-content-view {:theme         theme
-                                 :blur?         blur?
-                                 :title         title
-                                 :description   description
-                                 :subcontent    subcontent
-                                 :context-tags  context-tags
-                                 :info?         info?
-                                 :counter       counter
-                                 :counter-font  counter-font
-                                 :counter-style counter-style
-                                 :button        button
-                                 :title-icon    title-icon
-                                 :compact?      compact?}]))]))
+         [leading-content-view {:theme             theme
+                                :blur?             blur?
+                                :title             title
+                                :description       description
+                                :subcontent        subcontent
+                                :description-icon  description-icon
+                                :title-icon        title-icon
+                                 :leading-icon      leading-icon
+                                 :leading-image     leading-image
+                                 :rich-subcontent?  rich-subcontent?
+                                 :button            button
+                                 :compact?          compact?}]
+         [standard-content-view {:theme             theme
+                                 :blur?             blur?
+                                 :title             title
+                                 :description       description
+                                 :subcontent        subcontent
+                                 :rich-subcontent?  rich-subcontent?
+                                 :context-tags      context-tags
+                                 :info?             info?
+                                 :counter           counter
+                                 :counter-font      counter-font
+                                 :counter-style     counter-style
+                                 :button            button
+                                 :title-icon        title-icon
+                                 :compact?          compact?}]))]))

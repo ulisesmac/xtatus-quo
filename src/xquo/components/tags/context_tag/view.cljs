@@ -65,9 +65,9 @@
                     icon)])
 
 (defn- multi-image-view
-  [{:keys [blur? dark-theme? image-source shape size slot-index]}]
+  [{:keys [blur? border dark-theme? image-source shape size slot-index]}]
   [:rn/view {:style (style/multi-item-slot size slot-index)}
-   [:rn/view {:style (style/multi-stack-item-surface size shape dark-theme? blur?)}
+   [:rn/view {:style (style/multi-stack-item-surface size shape border dark-theme? blur?)}
     [:rn/view {:style (style/media-frame size shape false)}
      [:rn/image {:style  (style/media-image size false)
                  :source image-source}]]]])
@@ -77,9 +77,9 @@
 
 
 (defn- multi-number-view
-  [{:keys [blur? dark-theme? number shape size slot-index]}]
+  [{:keys [blur? border dark-theme? number shape size slot-index]}]
   [:rn/view {:style (style/multi-item-slot size slot-index)}
-   [:rn/view {:style (style/multi-stack-item-surface size shape dark-theme? blur?)}
+   [:rn/view {:style (style/multi-stack-item-surface size shape border dark-theme? blur?)}
     [:rn/view {:style [(style/media-frame size shape false)
                        (style/multi-count-surface size shape dark-theme? blur?)]}
      [text/text {:style           (style/multi-content-style dark-theme? blur?)
@@ -101,7 +101,7 @@
            [{:kind :number}]))))
 
 (defn- multi-leading-view
-  [{:keys [blur? dark-theme? icon image-sources number number-position shape size]}]
+  [{:keys [blur? border dark-theme? icon image-sources number number-position shape size]}]
   (let [content-style (style/multi-content-style dark-theme? blur?)
         stack-items   (multi-stack-items image-sources number number-position)]
     [:<>
@@ -115,6 +115,7 @@
                           (if (= kind :number)
                             ^{:key (str "number-" slot-index)}
                             [multi-number-view {:blur?           blur?
+                                                :border          border
                                                 :dark-theme?     dark-theme?
                                                 :number          number
                                                 :number-position number-position
@@ -123,6 +124,7 @@
                                                 :slot-index      slot-index}]
                             ^{:key (str "image-" slot-index)}
                             [multi-image-view {:blur?        blur?
+                                               :border       border
                                                :dark-theme?  dark-theme?
                                                :image-source image-source
                                                :shape        shape
@@ -131,12 +133,13 @@
            stack-items)]))
 
 (defn- leading-view
-  [{:keys [blur? color dark-theme? emoji image-source image-sources number number-position
+  [{:keys [blur? border color dark-theme? emoji image-source image-sources number number-position
            selected? shape size type icon]}]
   (let [secondary-text-style (style/secondary-text-style dark-theme? blur?)]
     (cond
       (= type :multi)
       [multi-leading-view {:blur?           blur?
+                           :border          border
                            :dark-theme?     dark-theme?
                            :icon            icon
                            :image-sources   image-sources
@@ -183,7 +186,7 @@
                   :scale 1
                   :size  (get inline-icon-size size)}])))
 
-(defn- label-view [{:keys [blur? chevron-icon dark-theme? label size suffix]}]
+(defn- label-view [{:keys [blur? chevron-icon chevron-style dark-theme? label size suffix]}]
   (let [title-text-style     (style/title-text-style dark-theme?)
         secondary-text-style (style/secondary-text-style dark-theme? blur?)]
     [:rn/view {:style style/label-row}
@@ -197,7 +200,8 @@
        label)
      (when suffix
        [:rn/view {:style style/suffix-chevron-slot}
-        [icon/view {:name  chevron-icon
+        [icon/view {:style chevron-style
+                    :name  chevron-icon
                     :size  (get chevron-icon-size size)
                     :color (:color secondary-text-style)}]])
      (when suffix
@@ -211,9 +215,9 @@
           suffix)])]))
 
 (defn- context-tag-body
-  [{:keys [blur? color dark-theme? emoji image-source image-sources number number-position
+  [{:keys [blur? border color dark-theme? emoji image-source image-sources number number-position
            on-press-in! on-press-out! pressed? pressable? root-props root-style selected-border-style
-           selected? shape size suffix chevron-icon type icon]}
+           selected? shape size suffix chevron-icon chevron-style type icon]}
    label]
   (let [root-component (if pressable? :rn/pressable :rn/view)
         root-props     (cond-> (assoc root-props :style root-style)
@@ -230,6 +234,7 @@
         [:rn/view {:style          selected-border-style
                    :pointer-events :none}])
       [leading-view {:blur?           blur?
+                     :border          border
                      :color           color
                      :dark-theme?     dark-theme?
                      :emoji           emoji
@@ -242,9 +247,10 @@
                      :shape           shape
                      :size            size
                      :type            type}]
-      (when (and (not= type :multi) (some? label))
+      (when (some? label)
         [label-view {:blur?               blur?
                      :chevron-icon        chevron-icon
+                     :chevron-style       chevron-style
                      :dark-theme?         dark-theme?
                      :label               label
                      :size                size
@@ -279,13 +285,14 @@
                    background and right padding.
     - `:chevron-icon` optional icon used between label and suffix
                       (default `:icon/chevron-right`)
+    - `:chevron-style` optional style passed to the chevron icon
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to the root `:rn/view`.
-  - `label` optional child content for non-`multi` variants; strings use the
-    built-in text styling and non-strings are rendered directly."
+  - `label` optional child content; strings use the built-in text styling and
+    non-strings are rendered directly."
   ([props]
    (context-tag props nil))
-  ([{:keys [blur? border chevron-icon color embedded? emoji image-source image-sources number number-position on-press
+  ([{:keys [blur? border chevron-icon chevron-style color embedded? emoji image-source image-sources number number-position on-press
             on-press-in on-press-out shape size state style suffix type icon]
      :or   {blur?               false
             chevron-icon        :icon/chevron-right
@@ -318,7 +325,7 @@
                                    :squircle)
                                  :circle)
          root-props          (cond-> (dissoc props :blur? :border :embedded? :emoji :icon :image-source :image-sources
-                                             :chevron-icon :color
+                                             :chevron-icon :chevron-style :color
                                              :number :number-position :on-press-in :on-press-out :shape
                                              :size :state :style :suffix :type)
                                (not pressable?)
@@ -340,7 +347,8 @@
                         :root-props            root-props
                         :root-style            (rn.utils/add-styles
                                                 style/root-base
-                                                (style/container size type shape border dark-theme? blur? embedded? (:name icon))
+                                                (style/container size type shape border dark-theme? blur? embedded?
+                                                                 (:name icon) label)
                                                 (when pressable?
                                                   (button.style/pressable-type-style theme :grey nil resolved-color false pressed?))
                                                 (when (and (= border :outline)
@@ -354,5 +362,6 @@
                         :size                  size
                         :suffix                suffix
                         :chevron-icon          chevron-icon
+                        :chevron-style         chevron-style
                         :type                  type}
       label])))

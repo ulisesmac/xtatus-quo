@@ -27,10 +27,16 @@
   {:flex-direction :column
    :align-items    :flex-start})
 
-(defstyle subcontent-slot
+(defn subcontent-slot [leading? rich-subcontent?]
   {:align-self :stretch
-   :height     (spacing 9)
-   :margin-top (spacing 2)
+   :height     (cond
+                 rich-subcontent?  24
+                 leading?          18
+                 :else             22)
+   :margin-top (cond
+                 rich-subcontent?  (spacing 2)
+                 leading?          0
+                 :else             (spacing 1))
    :overflow   :visible})
 
 (defstyle context-row-slot
@@ -43,7 +49,11 @@
   {:margin-top (spacing 2)})
 
 (defstyle title-row
-  {:flex-direction :row})
+  {:flex-direction :row
+   :height         26})
+
+(defstyle title-row-stretch
+  {:align-self :stretch})
 
 (defstyle title-row-center
   {:align-items :center})
@@ -64,12 +74,24 @@
 (defstyle title-inline-row
   {:flex-direction :row
    :align-items    :center
-   :gap            4})
+   :gap            4
+   :height         26})
 
 (defstyle leading-row
   {:flex-direction :row
    :align-items    :center
    :gap            8})
+
+(defn leading-icon-slot [theme blur?]
+  {:width            32
+   :height           32
+   :align-items      :center
+   :justify-content  :center
+   :border-width     1
+   :border-color     (if blur?
+                       (colors/get-color :color/white-5)
+                       (colors/themed theme :color/neutral-20 :color/neutral-80))
+   :border-radius    16})
 
 (defstyle leading-column
   {:flex            1
@@ -135,15 +157,10 @@
 
             :else (colors/get-color :color/neutral-40))})
 
-(defn primary-button-style [theme color]
-  (when (= theme :theme/dark)
-    {:background-color (colors/get-color color 60)}))
-
-(defn icon-color [theme blur?]
-  (cond
-    (and (= theme :theme/dark) blur?) (colors/get-color :color/white-40)
-    (= theme :theme/dark)             (colors/get-color :color/neutral-40)
-    :else                             (colors/get-color :color/neutral-50)))
+(defn icon-color [theme _]
+  (colors/get-color (if (= theme :theme/light)
+                      :color/neutral-100
+                      :color/white-100)))
 
 (defn context-placeholder-style [width]
   {:width            width

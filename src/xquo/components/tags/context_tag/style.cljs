@@ -145,7 +145,7 @@
     :else
     (/ size 2)))
 
-(defn container [size type shape border dark-theme? blur? embedded? icon]
+(defn container [size type shape border dark-theme? blur? embedded? icon label]
   (let [layout        (cond
                         (= type :icon)  (get icon-layout size)
                         (= type :multi) (get-in multi-layout [size (some? icon)])
@@ -153,9 +153,10 @@
         padding-left  (if (= border :outline)
                         (dec (:padding-left layout))
                         (:padding-left layout))
-        padding-right (if embedded?
-                        0
-                        (:padding-right layout))
+        padding-right (cond
+                        embedded?                  0
+                        (and (= type :multi) label) (:padding-right (get leading-layout size))
+                        :else                      (:padding-right layout))
         border-radius (container-border-radius size type shape)]
     (style {:padding-left     padding-left
             :padding-right    padding-right
@@ -208,12 +209,14 @@
 (defn- multi-stack-item-size [size]
   (+ (get media-size size) 2))
 
-(defn multi-stack-item-surface [size shape dark-theme? blur?]
+(defn multi-stack-item-surface [size shape border dark-theme? blur?]
   (style {:width         (multi-stack-item-size size)
           :height        (multi-stack-item-size size)
           :overflow      :hidden
           :border-width  1
-          :border-color  (container-background-color nil dark-theme? blur? false)
+          :border-color  (if (= border :outline)
+                           "transparent"
+                           (container-background-color nil dark-theme? blur? false))
           :border-radius (container-border-radius size :multi shape)}))
 
 (defn squircle-surface [size color]
