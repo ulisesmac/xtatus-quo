@@ -19,6 +19,8 @@
   {24 (borders/radius 24)
    32 (borders/radius 32)})
 
+(def ^:private squircle-icon-edge-padding 4)
+
 (def ^:private leading-layout
   {24 {:padding-left   2
        :padding-right  8
@@ -86,6 +88,19 @@
   {:min-width   1
    :flex-shrink 1})
 
+(defstyle prefix-text
+  {:min-width   1
+   :flex-shrink 0})
+
+(defstyle prefix-slot
+  {:min-width   1
+   :flex-shrink 0})
+
+(defn prefix-separator [dark-theme? size]
+  (style {:background-color (colors/get-color (if dark-theme? :color/neutral-60 :color/neutral-30))
+          :height           size
+          :width            1}))
+
 (defstyle suffix-chevron-slot
   {:flex-shrink 0})
 
@@ -101,6 +116,12 @@
   {:color (if dark-theme?
             (colors/get-color :color/white-100)
             (colors/get-color :color/neutral-100))})
+
+(defn prefix-text-style [dark-theme? blur?]
+  {:color (cond
+            blur?        (colors/get-color :color/white-70)
+            dark-theme?  (colors/get-color :color/neutral-40)
+            :else        (colors/get-color :color/neutral-50))})
 
 (defn- container-background-color [border dark-theme? blur? embedded?]
   (cond
@@ -145,33 +166,62 @@
     :else
     (/ size 2)))
 
-(defn container [size type shape border dark-theme? blur? embedded? icon label]
-  (let [layout        (cond
-                        (= type :icon)  (get icon-layout size)
-                        (= type :multi) (get-in multi-layout [size (some? icon)])
-                        :else           (get leading-layout size))
-        padding-left  (if (= border :outline)
-                        (dec (:padding-left layout))
-                        (:padding-left layout))
-        padding-right (cond
-                        embedded?                  0
-                        (and (= type :multi) label) (:padding-right (get leading-layout size))
-                        :else                      (:padding-right layout))
-        border-radius (container-border-radius size type shape)]
-    (style {:padding-left     padding-left
-            :padding-right    padding-right
-            :padding-top      (:padding-top layout)
-            :padding-bottom   (:padding-bottom layout)
-            :gap              (:gap layout)
-            :height           size
-            :flex-direction   :row
-            :align-items      :center
-            :background-color (container-background-color border dark-theme? blur? embedded?)
-            :border-radius    border-radius})))
+(defn container [size type shape border dark-theme? blur? embedded? icon label prefix prefix-icon suffix]
+  (let [prefix-content? (or prefix prefix-icon)
+        icon-only?      (and (= type :icon) (nil? label) (nil? prefix-content?))
+        layout          (cond
+                          (= type :icon)  (get icon-layout size)
+                          (= type :multi) (get-in multi-layout [size (some? icon)])
+                          :else           (get leading-layout size))
+        padding-right   (cond
+                          embedded?                  0
+                          (and (= shape :squircle) suffix) squircle-icon-edge-padding
+                          (and (= type :multi) label) (:padding-right (get leading-layout size))
+                          :else                      (:padding-right layout))
+        padding-left    (cond
+                          (and (= shape :squircle) prefix-icon) squircle-icon-edge-padding
+                          prefix-content?     padding-right
+                          (= border :outline) (dec (:padding-left layout))
+                          :else               (:padding-left layout))
+        gap             (cond
+                          (and (= shape :squircle) prefix-icon) squircle-icon-edge-padding
+                          :else                                 (:gap layout))
+        padding-top     (if (and (= border :outline) (= type :icon))
+                          (dec (:padding-top layout))
+                          (:padding-top layout))
+        padding-bottom  (if (and (= border :outline) (= type :icon))
+                          (dec (:padding-bottom layout))
+                          (:padding-bottom layout))
+        border-radius   (container-border-radius size type shape)]
+    (if icon-only?
+      (style {:width            size
+              :height           size
+              :padding-left     0
+              :padding-right    0
+              :padding-top      0
+              :padding-bottom   0
+              :gap              0
+              :flex-direction   :row
+              :align-items      :center
+              :justify-content  :center
+              :background-color (container-background-color border dark-theme? blur? embedded?)
+              :border-radius    border-radius})
+      (style {:padding-left     padding-left
+              :padding-right    padding-right
+              :padding-top      padding-top
+              :padding-bottom   padding-bottom
+              :gap              gap
+              :height           size
+              :flex-direction   :row
+              :align-items      :center
+              :background-color (container-background-color border dark-theme? blur? embedded?)
+              :border-radius    border-radius}))))
 
-(defn outline-border [size type shape theme]
+(defn outline-border [size type shape theme pressed?]
   (style {:border-width  1
-          :border-color  (colors/themed theme :color/neutral-30 :color/neutral-60)
+          :border-color  (colors/themed theme
+                                         (if pressed? :color/neutral-30 :color/neutral-20)
+                                         (if pressed? :color/neutral-60 :color/neutral-80))
           :border-radius (container-border-radius size type shape)}))
 
 (defn selected-border [size type shape color]

@@ -31,7 +31,7 @@
 
 (defn- trailing-view
   [{:keys [theme background selected? selected-provided? arrow? toggle? on-select danger?
-           arrow-icon color pressed?]}]
+           arrow-icon check-color color pressed?]}]
   (cond
     toggle?
     [:rn/view {:pointer-events :none
@@ -45,7 +45,7 @@
     [:rn/view {:style style/trailing-slot}
      [icon/view {:name  :icon/check
                  :size  20
-                 :color (style/trailing-icon-color theme background danger? color)}]]
+                 :color (style/trailing-icon-color theme background danger? check-color)}]]
 
     arrow?
     [:animated/view {:style [style/trailing-slot
@@ -175,5 +175,6 @@
                       :on-select          on-select
                       :danger?            danger?
                       :arrow-icon         arrow-icon
+                      :check-color        (or color accent-color)
                       :color              color
                       :pressed?           pressed?}]]]))

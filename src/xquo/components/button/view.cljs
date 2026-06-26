@@ -32,12 +32,14 @@
                                 nil)}
                       icon)]))
 
-(defn- layout-type [icon-only? icon-side]
+(defn- layout-type [icon-only? left-icon right-icon]
   (cond
-    icon-only? :icon-only
-    (= icon-side :left)  :left
-    (= icon-side :right) :right
-    :else                      nil))
+    icon-only?                         :icon-only
+    (and (:name left-icon)
+         (:name right-icon))           :both
+    (:name left-icon)                  :left
+    (:name right-icon)                 :right
+    :else                              nil))
 
 (defn button
   "Button component.
@@ -53,6 +55,9 @@
     - `:icon` optional icon props map passed to `xquo/icon`
       - `:name` icon keyword
       - `:side` one of `:left` or `:right` when content is present
+    - `:icons` optional map of icon props passed to `xquo/icon`
+      - `:left` optional left icon map
+      - `:right` optional right icon map
     - `:container-style` optional animated pressable layout style
     - `:disabled?` optional boolean
     - `:on-press-in` optional callback `(fn [event] ...)`
@@ -65,8 +70,9 @@
   Layout behavior:
   - If `content` is nil and `:icon` has `:name`, it renders icon-only.
   - With `content`, `:icon :side` controls whether the icon is rendered left
-    or right of the content."
-  [{:keys               [color type size background disabled? glass? on-press-in on-press-out icon container-style] ;; TODO: horrendous API: container-style shouldn't be used
+    or right of the content.
+  - With `content`, `:icons` can render left and right icons at the same time."
+  [{:keys               [color type size background disabled? glass? on-press-in on-press-out icon icons container-style] ;; TODO: horrendous API: container-style shouldn't be used
     :or                 {type       :primary
                          background :none
                          size       40}
@@ -76,8 +82,12 @@
         resolved-color (or color (context/use-color))
         icon-name      (:name icon)
         icon-side      (:side icon :right)
+        left-icon      (or (:left icons)
+                           (when (= icon-side :left) icon))
+        right-icon     (or (:right icons)
+                           (when (= icon-side :right) icon))
         icon-only?     (and (nil? content) icon-name)
-        layout         (layout-type icon-only? (when icon-name icon-side))
+        layout         (layout-type icon-only? left-icon right-icon)
         [pressed?
          set-pressed!] (rn/use-state false)
         on-press-in!   (rn/use-callback (fn [event]
@@ -92,7 +102,7 @@
                                         [on-press-out])]
     [(if glass? :effect/pressable :animated/pressable)
      (cond-> (-> props
-                 (dissoc :type :size :background :icon :state :disabled?
+                 (dissoc :type :size :background :icon :icons :state :disabled?
                          :glass? :on-press-in :on-press-out :container-style :color)
                  (assoc :disabled (boolean disabled?)
                         :style (rn.utils/add-styles
@@ -121,13 +131,34 @@
                      :disabled?  disabled?
                      :pressed?   pressed?}]
 
+       (= layout :both)
+       [:<>
+        [button-icon {:icon       (dissoc left-icon :side)
+                      :side       :left
+                      :type       type
+                      :size       size
+                      :background background
+                      :disabled?  disabled?
+                      :pressed?   pressed?}]
+        [button-content {:type       type
+                         :size       size
+                         :background background}
+         content]
+        [button-icon {:icon       (dissoc right-icon :side)
+                      :side       :right
+                      :type       type
+                      :size       size
+                      :background background
+                      :disabled?  disabled?
+                      :pressed?   pressed?}]]
+
        (= layout :right)
        [:<>
         [button-content {:type       type
                          :size       size
                          :background background}
          content]
-        [button-icon {:icon       (dissoc icon :side)
+        [button-icon {:icon       (dissoc right-icon :side)
                       :side       :right
                       :type       type
                       :size       size
@@ -137,7 +168,7 @@
 
        (= layout :left)
        [:<>
-        [button-icon {:icon       (dissoc icon :side)
+        [button-icon {:icon       (dissoc left-icon :side)
                       :side       :left
                       :type       type
                       :size       size

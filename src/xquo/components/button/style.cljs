@@ -216,6 +216,11 @@
                            :padding-vertical 9
                            :border-radius    (borders/radius 40)
                            :height           40})
+       :both       (style {:padding-left     12
+                           :padding-right    12
+                           :padding-vertical 9
+                           :border-radius    (borders/radius 40)
+                           :height           40})
        :icon-only  (style {:width         40
                            :height        40
                            :border-radius (borders/radius :max)})}
@@ -233,6 +238,11 @@
                            :padding-vertical 5
                            :border-radius    (borders/radius 32)
                            :height           32})
+       :both       (style {:padding-left     8
+                           :padding-right    8
+                           :padding-vertical 5
+                           :border-radius    (borders/radius 32)
+                           :height           32})
        :icon-only  (style {:width         32
                            :height        32
                            :border-radius (borders/radius :max)})}
@@ -245,6 +255,10 @@
                            :border-radius      (borders/radius 24)
                            :height             24})
        :left       (style {:padding-horizontal 8
+                           :padding-vertical   3
+                           :border-radius      (borders/radius 24)
+                           :height             24})
+       :both       (style {:padding-horizontal 8
                            :padding-vertical   3
                            :border-radius      (borders/radius 24)
                            :height             24})

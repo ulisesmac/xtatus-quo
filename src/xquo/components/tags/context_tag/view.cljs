@@ -16,6 +16,10 @@
   {24 12
    32 20})
 
+(def ^:private prefix-icon-size
+  {24 16
+   32 20})
+
 (def ^:private filled-icon-size
   {24 12
    32 20})
@@ -132,59 +136,74 @@
                                                :slot-index   slot-index}])))
            stack-items)]))
 
+(defn- inline-icon-view [{:keys [blur? dark-theme? icon size]}]
+  (let [secondary-text-style (style/secondary-text-style dark-theme? blur?)]
+    [icon-node {:color (:color secondary-text-style)
+                :icon  icon
+                :scale 1
+                :size  size}]))
+
 (defn- leading-view
   [{:keys [blur? border color dark-theme? emoji image-source image-sources number number-position
            selected? shape size type icon]}]
-  (let [secondary-text-style (style/secondary-text-style dark-theme? blur?)]
-    (cond
-      (= type :multi)
-      [multi-leading-view {:blur?           blur?
-                           :border          border
-                           :dark-theme?     dark-theme?
-                           :icon            icon
-                           :image-sources   image-sources
-                           :number          number
-                           :number-position number-position
-                           :shape           shape
-                           :size            size}]
+  (cond
+    (= type :multi)
+    [multi-leading-view {:blur?           blur?
+                         :border          border
+                         :dark-theme?     dark-theme?
+                         :icon            icon
+                         :image-sources   image-sources
+                         :number          number
+                         :number-position number-position
+                         :shape           shape
+                         :size            size}]
 
-      (and (= type :image) (= shape :squircle))
-      [squircle-image-view {:blur?        blur?
-                            :color        color
-                            :emoji        emoji
-                            :image-source image-source
-                            :selected?    selected?
-                            :size         size}]
+    (and (= type :image) (= shape :squircle))
+    [squircle-image-view {:blur?        blur?
+                          :color        color
+                          :emoji        emoji
+                          :image-source image-source
+                          :selected?    selected?
+                          :size         size}]
 
-      (and (or (= type :default) (= type :image)) image-source)
-      [image-view {:blur?        blur?
-                   :image-source image-source
-                   :selected?    selected?
-                   :shape        shape
-                   :size         size
-                   :type         type}]
+    (and (or (= type :default) (= type :image)) image-source)
+    [image-view {:blur?        blur?
+                 :image-source image-source
+                 :selected?    selected?
+                 :shape        shape
+                 :size         size
+                 :type         type}]
 
-      (and (= type :group) (:name icon))
-      [:rn/view {:style (style/filled-icon-surface size color)}
-       [icon-node {:color (if (= size 24)
-                            (colors/get-color :color/white-70)
-                            (colors/get-color :color/white-100))
-                   :icon  icon
-                   :scale (get filled-icon-scale size)
-                   :size  (get filled-icon-size size)}]]
+    (and (= type :group) (:name icon))
+    [:rn/view {:style (style/filled-icon-surface size color)}
+     [icon-node {:color (if (= size 24)
+                          (colors/get-color :color/white-70)
+                          (colors/get-color :color/white-100))
+                 :icon  icon
+                 :scale (get filled-icon-scale size)
+                 :size  (get filled-icon-size size)}]]
 
-      (and (= type :audio) (:name icon))
-      [:rn/view {:style (style/filled-icon-surface size color)}
-       [icon-node {:color (colors/get-color :color/white-100)
-                   :icon  icon
-                   :scale (get filled-icon-scale size)
-                   :size  (get filled-icon-size size)}]]
+    (and (= type :audio) (:name icon))
+    [:rn/view {:style (style/filled-icon-surface size color)}
+     [icon-node {:color (colors/get-color :color/white-100)
+                 :icon  icon
+                 :scale (get filled-icon-scale size)
+                 :size  (get filled-icon-size size)}]]
 
-      (and (= type :icon) (:name icon))
-      [icon-node {:color (:color secondary-text-style)
-                  :icon  icon
-                  :scale 1
-                  :size  (get inline-icon-size size)}])))
+    (and (= type :icon) (:name icon))
+    [inline-icon-view {:blur?       blur?
+                       :dark-theme? dark-theme?
+                       :icon        icon
+                       :size        (get inline-icon-size size)}]))
+
+(defn- prefix-view [{:keys [blur? dark-theme? prefix size]}]
+  (let [prefix-text-style (style/prefix-text-style dark-theme? blur?)]
+    [:rn/view {:style style/prefix-slot}
+     (if (string? prefix)
+       [text/text {:style           [style/prefix-text prefix-text-style]
+                   :font            (get text-font size)}
+        prefix]
+       prefix)]))
 
 (defn- label-view [{:keys [blur? chevron-icon chevron-style dark-theme? label size suffix]}]
   (let [title-text-style     (style/title-text-style dark-theme?)
@@ -217,13 +236,15 @@
 (defn- context-tag-body
   [{:keys [blur? border color dark-theme? emoji image-source image-sources number number-position
            on-press-in! on-press-out! pressed? pressable? root-props root-style selected-border-style
-           selected? shape size suffix chevron-icon chevron-style type icon]}
+           selected? shape size suffix prefix prefix-divider? prefix-icon chevron-icon chevron-style type icon]}
    label]
-  (let [root-component (if pressable? :rn/pressable :rn/view)
-        root-props     (cond-> (assoc root-props :style root-style)
-                         pressable?
-                         (assoc :on-press-in  on-press-in!
-                                :on-press-out on-press-out!))]
+  (let [prefix-icon?      (:name prefix-icon)
+        prefix-separator? (and prefix-divider? (or prefix prefix-icon?))
+        root-component    (if pressable? :rn/pressable :rn/view)
+        root-props        (cond-> (assoc root-props :style root-style)
+                            pressable?
+                            (assoc :on-press-in  on-press-in!
+                                   :on-press-out on-press-out!))]
     [(if pressable? :animated/view :rn/view)
      (when pressable?
        {:style (if pressed?
@@ -233,6 +254,18 @@
       (when selected-border-style
         [:rn/view {:style          selected-border-style
                    :pointer-events :none}])
+      (when prefix-icon?
+        [inline-icon-view {:blur?       blur?
+                           :dark-theme? dark-theme?
+                           :icon        prefix-icon
+                           :size        (get prefix-icon-size size)}])
+      (when prefix
+        [prefix-view {:blur?       blur?
+                      :dark-theme? dark-theme?
+                      :prefix      prefix
+                      :size        size}])
+      (when prefix-separator?
+        [:rn/view {:style (style/prefix-separator dark-theme? size)}])
       [leading-view {:blur?           blur?
                      :border          border
                      :color           color
@@ -280,6 +313,12 @@
                 provided it is rendered with the built-in text styling, and
                 when present a chevron is inserted automatically between label
                 and suffix
+    - `:prefix` optional leading string or renderable node before the leading media and label;
+                strings use the secondary text styling
+    - `:prefix-divider?` optional boolean for showing the divider after `:prefix` or
+                         `:prefix-icon` (default `true`)
+    - `:prefix-icon` optional icon props map rendered before `:prefix` or leading media using the
+                     same inline icon style as `:type :icon`
     - `:embedded?` optional boolean for tags rendered inside another context tag.
                    Embedded tags keep their content styling but remove their own
                    background and right padding.
@@ -293,19 +332,20 @@
   ([props]
    (context-tag props nil))
   ([{:keys [blur? border chevron-icon chevron-style color embedded? emoji image-source image-sources number number-position on-press
-            on-press-in on-press-out shape size state style suffix type icon]
+            on-press-in on-press-out prefix prefix-divider? prefix-icon shape size state style suffix type icon]
      :or   {blur?               false
             chevron-icon        :icon/chevron-right
             number-position     :end
+            prefix-divider?     true
             size                24
             state               :default
             type                :default}
      :as   props}
     label]
    (let [{context-color :color
-          :keys         [dark-theme? theme]} (context/use-theme-color)
+         :keys         [dark-theme? theme]} (context/use-theme-color)
          resolved-color      (or color context-color)
-         pressable?          (and on-press (not= border :outline))
+         pressable?          on-press
          [pressed?
           set-pressed!]      (rn/use-state false)
          on-press-in!        (rn/use-callback
@@ -327,7 +367,7 @@
          root-props          (cond-> (dissoc props :blur? :border :embedded? :emoji :icon :image-source :image-sources
                                              :chevron-icon :chevron-style :color
                                              :number :number-position :on-press-in :on-press-out :shape
-                                             :size :state :style :suffix :type)
+                                             :prefix :prefix-divider? :prefix-icon :size :state :style :suffix :type)
                                (not pressable?)
                                (dissoc :on-press))]
      [context-tag-body {:blur?                 blur?
@@ -348,12 +388,12 @@
                         :root-style            (rn.utils/add-styles
                                                 style/root-base
                                                 (style/container size type shape border dark-theme? blur? embedded?
-                                                                 (:name icon) label)
-                                                (when pressable?
+                                                                 (:name icon) label prefix (:name prefix-icon) suffix)
+                                                (when (and pressable? (not= border :outline))
                                                   (button.style/pressable-type-style theme :grey nil resolved-color false pressed?))
                                                 (when (and (= border :outline)
                                                            (not= state :selected))
-                                                  (style/outline-border size type shape theme))
+                                                  (style/outline-border size type shape theme pressed?))
                                                 style)
                         :selected-border-style (when (= state :selected)
                                                  (style/selected-border size type shape resolved-color))
@@ -361,6 +401,9 @@
                         :shape                 shape
                         :size                  size
                         :suffix                suffix
+                        :prefix                prefix
+                        :prefix-divider?       prefix-divider?
+                        :prefix-icon           prefix-icon
                         :chevron-icon          chevron-icon
                         :chevron-style         chevron-style
                         :type                  type}
