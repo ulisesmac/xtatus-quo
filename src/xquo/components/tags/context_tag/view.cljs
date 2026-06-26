@@ -43,8 +43,9 @@
 (defn- image-view [{:keys [blur? image-source selected? shape size type]}]
   (let [border-style (style/media-border size shape type blur? selected?)]
     [:rn/view {:style (style/media-frame size shape selected?)}
-     [:rn/image {:style  (style/media-image size selected?)
-                 :source image-source}]
+     [:rn/image {:style       (style/media-image size selected?)
+                 :resize-mode :contain
+                 :source      image-source}]
      (when border-style
        [:rn/view {:style          border-style
                   :pointer-events :none}])]))
@@ -73,8 +74,9 @@
   [:rn/view {:style (style/multi-item-slot size slot-index)}
    [:rn/view {:style (style/multi-stack-item-surface size shape border dark-theme? blur?)}
     [:rn/view {:style (style/media-frame size shape false)}
-     [:rn/image {:style  (style/media-image size false)
-                 :source image-source}]]]])
+     [:rn/image {:style       (style/media-image size false)
+                 :resize-mode :contain
+                 :source      image-source}]]]])
 
 (defn- multi-number-text [number]
   (str number "+"))
