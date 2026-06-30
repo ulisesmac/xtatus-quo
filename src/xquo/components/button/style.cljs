@@ -223,7 +223,7 @@
                            :height           40})
        :icon-only  (style {:width         40
                            :height        40
-                           :border-radius (borders/radius :max)})}
+                           :border-radius (borders/radius 40)})}
    32 {nil         (style {:padding-horizontal 12
                            :padding-vertical   5
                            :border-radius      (borders/radius 32)
@@ -245,7 +245,7 @@
                            :height           32})
        :icon-only  (style {:width         32
                            :height        32
-                           :border-radius (borders/radius :max)})}
+                           :border-radius (borders/radius 32)})}
    24 {nil         (style {:padding-horizontal 8
                            :padding-vertical   3
                            :border-radius      (borders/radius 24)
@@ -264,7 +264,7 @@
                            :height             24})
        :icon-only  (style {:width         24
                            :height        24
-                           :border-radius (borders/radius :max)})}})
+                           :border-radius (borders/radius 24)})}})
 
 (defstyle size-24-outline-content-style
   {:padding-horizontal 7
@@ -332,12 +332,15 @@
 (def neutral-icon-only-types
   #{:grey :dark-grey :outline :ghost})
 
-(defstyle icon-only-rounded-square-shape
+(def circular-icon-only-types
+  #{:primary :positive :danger})
+
+(defstyle circular-icon-only-shape
   {:border-radius (borders/radius :max)})
 
 (defn icon-only-shape-style [layout type]
-  (when (and (= layout :icon-only) (neutral-icon-only-types type))
-    icon-only-rounded-square-shape))
+  (when (and (= layout :icon-only) (circular-icon-only-types type))
+    circular-icon-only-shape))
 
 (defstyle pressable-base-style
   {:align-items     :center
