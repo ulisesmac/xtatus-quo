@@ -217,11 +217,13 @@
               :background-color (container-background-color border dark-theme? blur? embedded?)
               :border-radius    border-radius}))))
 
-(defn outline-border [size type shape theme pressed?]
+(defn outline-border [size type shape theme color selected? pressed?]
   (style {:border-width  1
-          :border-color  (colors/themed theme
-                                         (if pressed? :color/neutral-30 :color/neutral-20)
-                                         (if pressed? :color/neutral-60 :color/neutral-80))
+          :border-color  (if selected?
+                           (colors/get-color color 50)
+                           (colors/themed theme
+                                          (if pressed? :color/neutral-30 :color/neutral-20)
+                                          (if pressed? :color/neutral-60 :color/neutral-80)))
           :border-radius (container-border-radius size type shape)}))
 
 (defn selected-border [size type shape color]

@@ -393,11 +393,12 @@
                                                                  (:name icon) label prefix (:name prefix-icon) suffix)
                                                 (when (and pressable? (not= border :outline))
                                                   (button.style/pressable-type-style theme :grey nil resolved-color false pressed?))
-                                                (when (and (= border :outline)
-                                                           (not= state :selected))
-                                                  (style/outline-border size type shape theme pressed?))
+                                                (when (= border :outline)
+                                                  (style/outline-border size type shape theme resolved-color
+                                                                        (= state :selected) pressed?))
                                                 style)
-                        :selected-border-style (when (= state :selected)
+                        :selected-border-style (when (and (= state :selected)
+                                                         (not= border :outline))
                                                  (style/selected-border size type shape resolved-color))
                         :selected?             (= state :selected)
                         :shape                 shape
