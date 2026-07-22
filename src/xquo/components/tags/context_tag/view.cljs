@@ -303,7 +303,8 @@
     - `:state` one of `:default` or `:selected` (default `:default`)
     - `:border` optional `:outline`
     - `:blur?` optional boolean that uses the blur background treatment (default `false`)
-    - `:shape` one of `:circle` or `:squircle` for `:image` and `:multi` (default `:circle`)
+    - `:shape` one of `:circle` or `:squircle` for `:icon`, `:image`, and `:multi`
+               (default `:circle`)
     - `:image-source` image source for `:default` and `:image`
     - `:image-sources` vector of 1 to 3 image sources for `:multi`
     - `:number` optional number rendered as `+number` for `:multi`;
@@ -395,7 +396,7 @@
                                                   (button.style/pressable-type-style theme :grey nil resolved-color false pressed?))
                                                 (when (= border :outline)
                                                   (style/outline-border size type shape theme resolved-color
-                                                                        (= state :selected) pressed?))
+                                                                        blur? (= state :selected) pressed?))
                                                 style)
                         :selected-border-style (when (and (= state :selected)
                                                          (not= border :outline))

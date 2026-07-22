@@ -133,9 +133,9 @@
 
 (defn secondary-text-style [dark-theme? blur?]
   {:color (cond
-            (and dark-theme? blur?) (colors/get-color :color/white-40)
+            (and dark-theme? blur?) (colors/get-color :color/white-70)
             dark-theme?             (colors/get-color :color/neutral-40)
-            blur?                   (colors/get-color :color/neutral-80-40)
+            blur?                   (colors/get-color :color/neutral-80-70)
             :else                   (colors/get-color :color/neutral-50))})
 
 (defn multi-content-style [dark-theme? blur?]
@@ -163,6 +163,9 @@
     (and (= type :image) (= shape :squircle))
     (get squircle-container-radius size)
 
+    (and (= type :icon) (= shape :squircle))
+    (get squircle-container-radius size)
+
     :else
     (/ size 2)))
 
@@ -175,6 +178,8 @@
                           :else           (get leading-layout size))
         padding-right   (cond
                           embedded?                  0
+                          (and (= type :icon) (= shape :squircle) label (nil? suffix))
+                          squircle-icon-edge-padding
                           (and (= shape :squircle) suffix) squircle-icon-edge-padding
                           (and (= type :multi) label) (:padding-right (get leading-layout size))
                           :else                      (:padding-right layout))
@@ -217,13 +222,14 @@
               :background-color (container-background-color border dark-theme? blur? embedded?)
               :border-radius    border-radius}))))
 
-(defn outline-border [size type shape theme color selected? pressed?]
+(defn outline-border [size type shape theme color blur? selected? pressed?]
   (style {:border-width  1
-          :border-color  (if selected?
-                           (colors/get-color color 50)
-                           (colors/themed theme
-                                          (if pressed? :color/neutral-30 :color/neutral-20)
-                                          (if pressed? :color/neutral-60 :color/neutral-80)))
+          :border-color  (cond
+                           selected? (colors/get-color color 50)
+                           blur?     (colors/themed theme :color/neutral-80-5 :color/white-10)
+                           :else     (colors/themed theme
+                                                    (if pressed? :color/neutral-30 :color/neutral-20)
+                                                    (if pressed? :color/neutral-60 :color/neutral-80)))
           :border-radius (container-border-radius size type shape)}))
 
 (defn selected-border [size type shape color]
