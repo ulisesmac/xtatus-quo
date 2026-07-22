@@ -2,10 +2,16 @@
   (:require [xquo.components.page-top.style :as style]
             [xquo.components.text.view :as text]))
 
-(defn page-top [{:keys [description title]}]
+(defn page-top [{:keys [description leading-image title]}]
   [:rn/view {:style style/container}
-   [text/text {:font :font/semibold-27}
-    title]
+   [:rn/view {:style style/title-row}
+    (when leading-image
+      [:rn/image {:source      leading-image
+                  :resize-mode :contain
+                  :style       style/leading-image}])
+    [text/text {:font  :font/semibold-27
+                :style style/title}
+     title]]
    (when description
      [:rn/view {:style style/description}
       (if (string? description)
