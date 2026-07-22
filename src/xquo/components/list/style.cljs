@@ -14,39 +14,15 @@
    :border-radius 12})
 
 (defstyle section-shell
-  {:align-self :stretch})
+  {:align-self :stretch
+   :overflow   :hidden})
 
-(def section-content-bottom-padding 8)
 (def section-content-transition-duration-ms 200)
 (def section-content-transition-duration (str section-content-transition-duration-ms "ms"))
-(def section-content-transition-timing-function "linear")
-
-(defn section-content-container [visible? height]
-  (cond-> {:align-self "stretch"
-           :overflow   "hidden"}
-    height
-    (assoc :transition-property        "height"
-           :transition-duration        section-content-transition-duration
-           :transition-timing-function section-content-transition-timing-function)
-
-    (or height (not visible?))
-    (assoc :height (if visible? height 0))))
+(def section-content-transition-timing-function "ease-in-out")
 
 (defstyle section-content
-  {:padding-bottom section-content-bottom-padding})
-
-(defstyle section-content-measuring
-  {:position :absolute
-   :top      0
-   :right    0
-   :left     0
-   :opacity  0})
-
-(defn section-content-opacity [visible?]
-  {:opacity                    (if visible? 1 0)
-   :transition-property        "opacity"
-   :transition-duration        section-content-transition-duration
-   :transition-timing-function section-content-transition-timing-function})
+  {:padding-bottom 8})
 
 (defstyle element-padding
   {:padding-horizontal (spacing 8)

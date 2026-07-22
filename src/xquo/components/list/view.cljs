@@ -1,5 +1,7 @@
 (ns xquo.components.list.view
   (:require [applied-science.js-interop :as j]
+            [react-native.core :as rn]
+            [react-native.reanimated.core :as rnr]
             [react-native.utils :as rn.utils]
             [xquo.components.button.view :as button]
             [xquo.components.counter.step.view :as counter-step]
@@ -8,10 +10,18 @@
             [xquo.components.icon.view :as icon]
             [xquo.components.list.style :as style]
             [xquo.components.text.view :as text]
-            [xquo.context :as context]
-            [react-native.core :as rn]))
+            [xquo.context :as context]))
 
 (declare list-item)
+
+(def section-layout-transition
+  (j/call rnr/linear-transition :duration style/section-content-transition-duration-ms))
+
+(def section-content-entering
+  (j/call rnr/fade-in :duration style/section-content-transition-duration-ms))
+
+(def section-content-exiting
+  (j/call rnr/fade-out :duration style/section-content-transition-duration-ms))
 
 (defn- description-view [{:keys [description]}]
   (if (string? description)
@@ -93,43 +103,13 @@
   (into-section-items [:rn/view {:style style/section-content}]
                       props))
 
-(defn- collapsible-section-content [{:keys [content-key visible?] :as props}]
-  (let [[measurement set-measurement!]             (rn/use-state {:content-key content-key})
-        content-height                             (:height measurement)
-        content-key-changed?                       (not= (:content-key measurement) content-key)
-        measured-height                            (when-not content-key-changed? content-height)
-        needs-measure?                             (or content-key-changed? (nil? content-height))
-        measure-visible?                           (and needs-measure? visible?)
-        render-content?                            (or visible? measured-height)
-        render-measuring?                          (and needs-measure? (not visible?))
-        measure-content!                           (rn/use-callback
-                                                    (fn [event]
-                                                      (let [height (j/get-in event [:nativeEvent :layout :height])]
-                                                        (when (pos? height)
-                                                          (set-measurement!
-                                                           (fn [current-measurement]
-                                                             (if (and (= (:content-key current-measurement) content-key)
-                                                                      (= (:height current-measurement) height))
-                                                               current-measurement
-                                                               {:content-key content-key
-                                                                :height      height}))))))
-                                                    [content-key])
-        content-props                              (cond-> {:style [style/section-content
-                                                                    (style/section-content-opacity visible?)]}
-                                                     measure-visible?
-                                                     (assoc :on-layout measure-content!))]
-    [:animated/view {:collapsable false
-                     :style       (style/section-content-container visible? measured-height)}
-     (when render-content?
-       (into-section-items [:animated/view content-props]
-                           props))
-     (when render-measuring?
-       (into-section-items [:rn/view {:collapsable    false
-                                      :on-layout      measure-content!
-                                      :pointer-events :none
-                                      :style          [style/section-content
-                                                       style/section-content-measuring]}]
-                           props))]))
+(defn- collapsible-section-content [{:keys [visible?] :as props}]
+  (when visible?
+    (into-section-items [:animated/view {:collapsable false
+                                         :entering    section-content-entering
+                                         :exiting     section-content-exiting
+                                         :style       style/section-content}]
+                        props)))
 
 (defn- section-content [{:keys [collapsible?] :as props}]
   (if collapsible?
@@ -139,7 +119,7 @@
 (defn- section-view
   [{section-style :style
     label-props   :divider-label
-    :keys         [color content-key items theme]}]
+    :keys         [color items theme]}]
   (let [collapsible?      (:collapsible? label-props true)
         initial-open?     (:initial-open? label-props)
         [open? set-open!] (rn/use-state initial-open?)
@@ -152,8 +132,9 @@
                               (when on-press
                                 (on-press event)))
                             [on-press])]
-    [:rn/view
-     {:style (rn.utils/add-styles style/section-shell section-style)}
+    [:animated/view {:collapsable false
+                     :layout      section-layout-transition
+                     :style       (rn.utils/add-styles style/section-shell section-style)}
      [divider-label/divider-label (cond-> label-props
                                     toggleable?
                                     (assoc :on-press        on-press!
@@ -162,7 +143,6 @@
                                            :toggle-timing-function style/section-content-transition-timing-function))]
      [section-content {:collapsible? collapsible?
                        :color        color
-                       :content-key  content-key
                        :items        items
                        :theme        theme
                        :visible?     (or (not collapsible?) open?)}]]))
@@ -198,12 +178,10 @@
       - `{:type :section
           :divider-label {...}
           :items [...]}` renders a divider label plus child items. Collapsible
-        sections use a clipped content container, own their open state, and keep
-        child items mounted while hiding/showing them.
+        sections own their open state, animate layout changes, and unmount child
+        items while collapsed.
         Set `:collapsible? false` inside `:divider-label` to render the section
         open and keep `:chevron` visual only.
-        Set `:content-key` when a collapsible section's child content changes
-        and the cached height must be measured again.
       - `:button` optional `xquo/button` props plus `:label`, rendered on the right
       - `:right` optional custom trailing node, rendered on the right
       - `:icon` optional icon props map for `:bullet` items
