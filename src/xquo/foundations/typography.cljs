@@ -2,11 +2,12 @@
   (:require [react-native.utils :as rn.utils]))
 
 (def font-families
-  {:regular   "Inter-Regular"
-   :medium    "Inter-Medium"
-   :semibold  "Inter-SemiBold"
-   :monospace "InterStatus-Regular"
-   :code      "UbuntuMono-Regular"})
+  {:regular        "Inter-Regular"
+   :regular-italic "Inter-Italic"
+   :medium         "Inter-Medium"
+   :semibold       "Inter-SemiBold"
+   :monospace      "InterStatus-Regular"
+   :code           "UbuntuMono-Regular"})
 
 (def label-11
   {:font-size      11
@@ -73,11 +74,12 @@
        :medium-uppercase   (assoc label-11-uppercase :font-family (:medium font-families))
        :semibold-uppercase (assoc label-11-uppercase :font-family (:semibold font-families))
        :monospace          (assoc monospace-11 :font-family (:monospace font-families))}
-   13 {:regular   (assoc paragraph-2-13 :font-family (:regular font-families))
-       :medium    (assoc paragraph-2-13 :font-family (:medium font-families))
-       :semibold  (assoc paragraph-2-13 :font-family (:semibold font-families))
-       :monospace (assoc monospace-13 :font-family (:monospace font-families))
-       :code      (assoc code-13 :font-family (:code font-families))}
+   13 {:regular        (assoc paragraph-2-13 :font-family (:regular font-families))
+       :regular-italic (assoc paragraph-2-13 :font-family (:regular-italic font-families))
+       :medium         (assoc paragraph-2-13 :font-family (:medium font-families))
+       :semibold       (assoc paragraph-2-13 :font-family (:semibold font-families))
+       :monospace      (assoc monospace-13 :font-family (:monospace font-families))
+       :code           (assoc code-13 :font-family (:code font-families))}
    15 {:regular   (assoc paragraph-1-15 :font-family (:regular font-families))
        :medium    (assoc paragraph-1-15 :font-family (:medium font-families))
        :semibold  (assoc paragraph-1-15 :font-family (:semibold font-families))
