@@ -22,6 +22,10 @@
 (defstyle gap-8
   {:gap 8})
 
+(defstyle leading-icon-slot
+  {:align-self  :flex-start
+   :padding-top 1})
+
 (defn leading-image [size]
   {:width  size
    :height size})

@@ -20,9 +20,10 @@
 (defn- leading-view [{:keys [theme background danger? color icon image]}]
   (cond
     (:name icon)
-    [icon/view (assoc icon
-                 :size  (:size icon 20)
-                 :color (:color icon (style/icon-color theme background danger? color)))]
+    [:rn/view {:style style/leading-icon-slot}
+     [icon/view (assoc icon
+                  :size  (:size icon 20)
+                  :color (:color icon (style/icon-color theme background danger? color)))]]
 
     (:source image)
     [:rn/image {:style       (style/leading-image (:size image 32))
