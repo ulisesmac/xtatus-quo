@@ -9,14 +9,16 @@
             [xquo.context :as context]
             [react-native.core :as rn]))
 
-(defn- title-view [{:keys [theme title]}]
-  [text/text {:font            :font/medium-15
-              :number-of-lines 1
-              :style           {:color (style/title-color theme)}}
+(defn- title-view [{:keys [theme title title-props]}]
+  [text/text (merge {:font            :font/medium-15
+                     :number-of-lines 1
+                     :style           {:color (style/title-color theme)}}
+                    title-props)
    title])
 
 (defn- description-view [{:keys [theme blur? pressed? description]}]
   (let [{description-text :text
+         text-props       :text-props
          description-name :name
          description-icon :icon
          status-color     :status-color
@@ -25,8 +27,9 @@
         text-color       (style/secondary-text-color theme blur? pressed?)]
     (cond
       (= description-type :text)
-      [text/text {:font  :font/regular-13
-                  :style {:color text-color}}
+      [text/text (merge {:font  :font/regular-13
+                         :style {:color text-color}}
+                        text-props)
        (or description-text "This is a description")]
 
       (= description-type :text-icon)
@@ -55,16 +58,21 @@
       (= tag-type :positive) [:rn/view {:style style/tag-placeholder}]
       (= tag-type :context) [:rn/view {:style style/tag-placeholder}])))
 
-(defn- leading-view [{:keys [theme blur? pressed? image]}]
+(defn- leading-view [{:keys [theme blur? pressed? image description-visible?]}]
   (let [image-type (or (:type image) :icon)
         image-name (:name image)
-        image-icon (:icon image)]
+        image-icon (:icon image)
+        icon-node  [icon/view (merge {:name  (or image-name :icon/browser)
+                                      :size  20
+                                      :color (style/leading-icon-color theme blur? pressed?)}
+                                     image-icon)]]
     (cond
+      (and (= image-type :icon) description-visible?)
+      [:rn/view {:style style/leading-icon-with-description}
+       icon-node]
+
       (= image-type :icon)
-      [icon/view (merge {:name  (or image-name :icon/browser)
-                         :size  20
-                         :color (style/leading-icon-color theme blur? pressed?)}
-                        image-icon)]
+      icon-node
 
       (= image-type :image)
       [:rn/view {:style style/image-placeholder}]
@@ -140,9 +148,12 @@
                                    :selector-selected? selector-selected?})
         cluster-node (when (or label-node action-node)
                        [:rn/view {:style [style/right-content-base
-                                          (if (= label-type :text)
-                                            style/right-gap-6
-                                            style/right-gap-4)]}
+                                          (when (= label-type :counter)
+                                            style/right-margin-12)
+                                          (cond
+                                            (= label-type :text)    style/right-gap-6
+                                            (= label-type :counter) style/right-gap-2
+                                            :else                   style/right-gap-4)]}
                         label-node
                         action-node])]
     (cond
@@ -159,7 +170,7 @@
       cluster-node
       cluster-node)))
 
-(defn- content-view [{:keys [theme blur? pressed? title description tag]}]
+(defn- content-view [{:keys [theme blur? pressed? title title-props description tag]}]
   (let [description-type     (:type description)
         tag-type             (:type tag)
         description-visible? (or (= description-type :text)
@@ -172,13 +183,15 @@
     (if simple?
       [:rn/view {:style style/title-slot}
        [title-view {:theme theme
-                    :title title}]]
+                    :title title
+                    :title-props title-props}]]
       [:rn/view {:style [style/content-column-base
                          (when tag-visible?
                            style/content-column-gap-8)]}
        [:rn/view {:style style/info-column}
-        [title-view {:theme theme
-                     :title title}]
+       [title-view {:theme theme
+                     :title title
+                     :title-props title-props}]
         [description-view {:theme       theme
                            :blur?       blur?
                            :pressed?    pressed?
@@ -191,6 +204,7 @@
   API:
   - `props` map
     - `:title` item title (default `\"Account\"`)
+    - `:title-props` optional Text props for the title
     - `:blur?` optional boolean for blur styling
     - `:glass?` optional boolean; renders the item through a glass effect
       pressable
@@ -201,6 +215,7 @@
     - `:description` map
       - `:type` one of `:none`, `:text`, `:text-icon`, `:status`
       - `:text` description text for `:text` / `:text-icon`
+      - `:text-props` optional Text props for `:text`
       - `:name` icon keyword for `:text-icon`
       - `:icon` optional icon props override map for `:text-icon`
       - `:status-color` color family keyword for `:status`
@@ -221,7 +236,8 @@
         - `:button-text` button label
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/pressable`."
-  [{:keys [title blur? glass? image description tag right on-press on-press-in on-press-out]
+  [{:keys [title title-props blur? glass? image description tag right on-press on-press-in
+           on-press-out]
     :or   {title "Account"}
     :as   props}]
   (let [theme                (context/use-theme)
@@ -282,8 +298,8 @@
                               [on-press-out])]
     [(if glass? :effect/pressable :rn/pressable)
      (cond-> (-> props
-                 (dissoc :title :blur? :glass? :image :description :tag :right :style :on-press
-                         :on-press-in :on-press-out)
+                 (dissoc :title :title-props :blur? :glass? :image :description :tag :right :style
+                         :on-press :on-press-in :on-press-out)
                  (assoc :disabled     item-disabled?
                         :on-press     on-press!
                         :on-press-in  (when-not item-disabled? on-press-in!)
@@ -313,11 +329,13 @@
        [leading-view {:theme theme
                       :blur? blur?
                       :pressed? pressed-now?
-                      :image image}]
+                      :image image
+                      :description-visible? description-visible?}]
        [content-view {:theme       theme
                       :blur?       blur?
                       :pressed?    pressed-now?
                       :title       title
+                      :title-props title-props
                       :description description
                       :tag         tag}]]
       [right-view {:theme              theme

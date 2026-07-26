@@ -1,27 +1,19 @@
 (ns xquo.components.list.view
   (:require [applied-science.js-interop :as j]
             [react-native.core :as rn]
-            [react-native.reanimated.core :as rnr]
             [react-native.utils :as rn.utils]
             [xquo.components.button.view :as button]
             [xquo.components.counter.step.view :as counter-step]
             [xquo.components.divider.divider-label.view :as divider-label]
             [xquo.components.divider.divider-line.view :as divider-line]
             [xquo.components.icon.view :as icon]
+            [xquo.components.list-items.simple-item.view :as simple-item]
             [xquo.components.list.style :as style]
             [xquo.components.text.view :as text]
-            [xquo.context :as context]))
+            [xquo.context :as context]
+            [xquo.worklets.list :as list-worklets]))
 
 (declare list-item)
-
-(def section-layout-transition
-  (j/call rnr/linear-transition :duration style/section-content-transition-duration-ms))
-
-(def section-content-entering
-  (j/call rnr/fade-in :duration style/section-content-transition-duration-ms))
-
-(def section-content-exiting
-  (j/call rnr/fade-out :duration style/section-content-transition-duration-ms))
 
 (defn- description-view [{:keys [description]}]
   (if (string? description)
@@ -104,12 +96,28 @@
                       props))
 
 (defn- collapsible-section-content [{:keys [visible?] :as props}]
-  (when visible?
-    (into-section-items [:animated/view {:collapsable false
-                                         :entering    section-content-entering
-                                         :exiting     section-content-exiting
-                                         :style       style/section-content}]
-                        props)))
+  (let [[height set-height!] (rn/use-state nil)
+        animated-style       (list-worklets/use-collapsible-style
+                              visible?
+                              height
+                              (style/section-content-transition-duration-ms visible?))
+        measure-content!     (rn/use-callback
+                              (fn [event]
+                                (let [next-height (j/get-in event [:nativeEvent :layout :height])]
+                                  (when (pos? next-height)
+                                    (set-height! (fn [height]
+                                                   (if (= height next-height)
+                                                     height
+                                                     next-height))))))
+                              [])]
+    [:animated/view {:collapsable    false
+                     :pointer-events (if visible? :auto :none)
+                     :style          [style/section-content-container animated-style]}
+     (into-section-items [:rn/view {:collapsable false
+                                    :on-layout   measure-content!
+                                    :style       [style/section-content
+                                                  style/section-content-absolute]}]
+                         props)]))
 
 (defn- section-content [{:keys [collapsible?] :as props}]
   (if collapsible?
@@ -132,14 +140,13 @@
                               (when on-press
                                 (on-press event)))
                             [on-press])]
-    [:animated/view {:collapsable false
-                     :layout      section-layout-transition
-                     :style       (rn.utils/add-styles style/section-shell section-style)}
+    [:rn/view {:collapsable false
+               :style       (rn.utils/add-styles style/section-shell section-style)}
      [divider-label/divider-label (cond-> label-props
                                     toggleable?
                                     (assoc :on-press        on-press!
                                            :open?           open?
-                                           :toggle-duration style/section-content-transition-duration
+                                           :toggle-duration (style/section-content-transition-duration open?)
                                            :toggle-timing-function style/section-content-transition-timing-function))]
      [section-content {:collapsible? collapsible?
                        :color        color
@@ -157,6 +164,9 @@
       :divider-label
       [divider-label/divider-label (dissoc item :type)]
 
+      :simple
+      [simple-item/simple-item (dissoc item :type)]
+
       :section
       [section-view (assoc item
                            :color color
@@ -173,13 +183,13 @@
   - `props` map
     - `:items` collection of list item prop maps
       - `:type` one of `:bullet`, `:step` (default `:bullet`)
+      - `{:type :simple ...}` renders an `xquo/simple-item`
       - `{:type :divider}` renders an `xquo/divider-line` between rows
       - `{:type :divider-label}` renders an `xquo/divider-label` between rows
       - `{:type :section
           :divider-label {...}
           :items [...]}` renders a divider label plus child items. Collapsible
-        sections own their open state, animate layout changes, and unmount child
-        items while collapsed.
+        sections own their open state and animate their clipped content height.
         Set `:collapsible? false` inside `:divider-label` to render the section
         open and keep `:chevron` visual only.
       - `:button` optional `xquo/button` props plus `:label`, rendered on the right

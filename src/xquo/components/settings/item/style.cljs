@@ -14,6 +14,10 @@
 (defstyle gap-0
   {:gap 0})
 
+(defstyle leading-icon-with-description
+  {:align-self  :flex-start
+   :padding-top 1})
+
 (defstyle padding-short-default
   {:padding-horizontal 12
    :padding-vertical   13})
@@ -111,8 +115,14 @@
 (defstyle right-gap-4
   {:gap 4})
 
+(defstyle right-gap-2
+  {:gap 2})
+
 (defstyle right-gap-6
   {:gap 6})
+
+(defstyle right-margin-12
+  {:margin-left 12})
 
 (defstyle button-right-slot
   {:margin-left 12})

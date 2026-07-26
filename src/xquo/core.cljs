@@ -19,6 +19,7 @@
             [xquo.components.info.information-box.view]
             [xquo.components.input.view]
             [xquo.components.list-items.result-list.view]
+            [xquo.components.list-items.simple-item.view]
             [xquo.components.list.view]
             [xquo.components.notification.view]
             [xquo.components.page-nav.view]
@@ -60,6 +61,7 @@
 (def input xquo.components.input.view/input)
 (def list xquo.components.list.view/view)
 (def result-list xquo.components.list-items.result-list.view/result-list)
+(def simple-item xquo.components.list-items.simple-item.view/simple-item)
 (def notification xquo.components.notification.view/notification)
 (def page-nav xquo.components.page-nav.view/page-nav)
 (def page-nav-left-action xquo.components.page-nav.view/nav-left-action)

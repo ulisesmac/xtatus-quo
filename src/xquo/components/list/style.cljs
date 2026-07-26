@@ -17,9 +17,23 @@
   {:align-self :stretch
    :overflow   :hidden})
 
-(def section-content-transition-duration-ms 200)
-(def section-content-transition-duration (str section-content-transition-duration-ms "ms"))
+(defn section-content-transition-duration-ms [visible?]
+  (if visible? 300 200))
+
+(defn section-content-transition-duration [visible?]
+  (str (section-content-transition-duration-ms visible?) "ms"))
+
 (def section-content-transition-timing-function "ease-in-out")
+
+(defstyle section-content-container
+  {:align-self :stretch
+   :overflow   :hidden})
+
+(defstyle section-content-absolute
+  {:left     0
+   :position :absolute
+   :right    0
+   :top      0})
 
 (defstyle section-content
   {:padding-bottom 8})
