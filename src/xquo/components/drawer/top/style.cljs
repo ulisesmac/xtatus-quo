@@ -50,7 +50,7 @@
 
 (defstyle title-row
   {:flex-direction :row
-   :height         26})
+   :min-height     26})
 
 (defstyle title-row-stretch
   {:align-self :stretch})
@@ -75,7 +75,7 @@
   {:flex-direction :row
    :align-items    :center
    :gap            4
-   :height         26})
+   :min-height     26})
 
 (defstyle leading-row
   {:flex-direction :row
