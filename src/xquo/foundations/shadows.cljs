@@ -48,7 +48,7 @@
   ([{:keys [x y blur spread color opacity]} inset?]
    (rn.utils/->js-prop-obj
     {:offset-x        x
-     :offset-y        (- y)
+     :offset-y        y
      :blur-radius     blur
      :spread-distance spread
      :color           (hex->rgba color opacity)
