@@ -55,12 +55,10 @@
                                               index))
                                           (map-indexed vector colors))
                                     0)
-                 max-offset     (max 0 (- content-width viewport-width))
-                 scroll-x       (-> (+ (* selected-index (+ item-size item-gap))
-                                       (/ item-size 2)
-                                       (- (/ viewport-width 2)))
-                                    (max 0)
-                                    (min max-offset))]
+                 scroll-x       (+ 16
+                                   (* selected-index (+ item-size item-gap))
+                                   (/ item-size 2)
+                                   (- (/ viewport-width 2)))]
              (j/call scroll-view :scrollTo #js{:x scroll-x
                                                :animated true})))))
      [selected-color viewport-width colors])

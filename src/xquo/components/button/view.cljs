@@ -79,7 +79,8 @@
     :as                 props}
   content]
   (let [theme          (context/use-theme)
-        resolved-color (or color (context/use-color))
+        context-color  (context/use-color)
+        resolved-color (or color context-color)
         icon-name      (:name icon)
         icon-side      (:side icon :right)
         left-icon      (or (:left icons)

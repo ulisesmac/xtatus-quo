@@ -20,7 +20,7 @@
           :black   {50 "#000000"}
           :primary {50 "#3A7690"}
           :success {50 "#2AA56B"}
-          :warning {50 "#B37F2F"}
+          :warning {50 "#F59E0B"}
           :danger  {50 "#D64249"}})
 
 (defonce colors (atom inner-colors))
