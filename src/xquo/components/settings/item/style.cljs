@@ -90,6 +90,11 @@
 (defstyle info-column
   {:align-self :stretch})
 
+(defstyle tags-row
+  {:column-gap     6
+   :flex-direction :row
+   :margin-top     8})
+
 (defstyle description-row
   {:flex-direction :row
    :align-items    :center

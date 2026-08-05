@@ -58,6 +58,11 @@
       (= tag-type :positive) [:rn/view {:style style/tag-placeholder}]
       (= tag-type :context) [:rn/view {:style style/tag-placeholder}])))
 
+(defn- tags-view [{:keys [tags]}]
+  (when (seq tags)
+    (into [:rn/view {:style style/tags-row}]
+          tags)))
+
 (defn- leading-view [{:keys [theme blur? pressed? image description-visible?]}]
   (let [image-type (or (:type image) :icon)
         image-name (:name image)
@@ -170,7 +175,7 @@
       cluster-node
       cluster-node)))
 
-(defn- content-view [{:keys [theme blur? pressed? title title-props description tag]}]
+(defn- content-view [{:keys [theme blur? pressed? title title-props description tag tags]}]
   (let [description-type     (:type description)
         tag-type             (:type tag)
         description-visible? (or (= description-type :text)
@@ -178,8 +183,10 @@
                                  (= description-type :status))
         tag-visible?         (or (= tag-type :positive)
                                  (= tag-type :context))
+        tags-visible?        (seq tags)
         simple?              (and (not description-visible?)
-                                  (not tag-visible?))]
+                                  (not tag-visible?)
+                                  (not tags-visible?))]
     (if simple?
       [:rn/view {:style style/title-slot}
        [title-view {:theme theme
@@ -196,6 +203,7 @@
                            :blur?       blur?
                            :pressed?    pressed?
                            :description description}]]
+       [tags-view {:tags tags}]
        [tag-view {:tag tag}]])))
 
 (defn settings-item
@@ -222,6 +230,8 @@
       - `:status-text` status text for `:status`
     - `:tag` map
       - `:type` one of `:none`, `:positive`, `:context`
+    - `:tags` optional vector of context-tag Hiccup nodes rendered below the
+      title and description
     - `:right` map
       - `:label` map
         - `:type` one of `:none`, `:text`, `:color`, `:counter`, `:icon`
@@ -236,7 +246,7 @@
         - `:button-text` button label
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/pressable`."
-  [{:keys [title title-props blur? glass? image description tag right on-press on-press-in
+  [{:keys [title title-props blur? glass? image description tag tags right on-press on-press-in
            on-press-out]
     :or   {title "Account"}
     :as   props}]
@@ -298,7 +308,8 @@
                               [on-press-out])]
     [(if glass? :effect/pressable :rn/pressable)
      (cond-> (-> props
-                 (dissoc :title :title-props :blur? :glass? :image :description :tag :right :style
+                 (dissoc :title :title-props :blur? :glass? :image :description :tag :tags :right
+                         :style
                          :on-press :on-press-in :on-press-out)
                  (assoc :disabled     item-disabled?
                         :on-press     on-press!
@@ -337,7 +348,8 @@
                       :title       title
                       :title-props title-props
                       :description description
-                      :tag         tag}]]
+                      :tag         tag
+                      :tags        tags}]]
       [right-view {:theme              theme
                    :blur?              blur?
                    :right              right
