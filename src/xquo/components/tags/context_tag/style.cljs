@@ -226,7 +226,9 @@
   (style {:border-width  1
           :border-color  (cond
                            selected? (colors/get-color color 50)
-                           blur?     (colors/themed theme :color/neutral-80-5 :color/white-10)
+                           blur?     (colors/themed theme
+                                                    (if pressed? :color/neutral-80-10 :color/neutral-80-5)
+                                                    (if pressed? :color/white-20 :color/white-10))
                            :else     (colors/themed theme
                                                     (if pressed? :color/neutral-30 :color/neutral-20)
                                                     (if pressed? :color/neutral-60 :color/neutral-80)))

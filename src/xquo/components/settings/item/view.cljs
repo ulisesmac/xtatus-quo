@@ -10,10 +10,10 @@
             [react-native.core :as rn]))
 
 (defn- title-view [{:keys [theme title title-props]}]
-  [text/text (merge {:font            :font/medium-15
-                     :number-of-lines 1
-                     :style           {:color (style/title-color theme)}}
-                    title-props)
+  [text/text (into {:font            :font/medium-15
+                    :number-of-lines 1
+                    :style           {:color (style/title-color theme)}}
+                   title-props)
    title])
 
 (defn- description-view [{:keys [theme blur? pressed? description]}]
@@ -27,9 +27,9 @@
         text-color       (style/secondary-text-color theme blur? pressed?)]
     (cond
       (= description-type :text)
-      [text/text (merge {:font  :font/regular-13
-                         :style {:color text-color}}
-                        text-props)
+      [text/text (into {:font  :font/regular-13
+                        :style {:color text-color}}
+                       text-props)
        (or description-text "This is a description")]
 
       (= description-type :text-icon)
@@ -119,12 +119,14 @@
          action-on-press    :on-press
          action-button-text :button-text
          action-disabled?   :disabled?
+         action-icon        :icon
          selector-type      :selector-type} action]
     (cond
       (= action-type :arrow)
-      [icon/view {:name  :icon/chevron-right
-                  :size  20
-                  :color (style/trailing-icon-color theme blur? pressed?)}]
+      [icon/view (into {:name  :icon/chevron-right
+                        :size  20
+                        :color (style/trailing-icon-color theme blur? pressed?)}
+                       action-icon)]
 
       (= action-type :selector)
       [:rn/view {:pointer-events :none}
@@ -238,6 +240,7 @@
         - `:text`, `:color`, `:counter`, `:name`, `:icon`
       - `:action` map
         - `:type` one of `:none`, `:arrow`, `:selector`, `:button`
+        - `:icon` optional icon props override map for `:arrow`
         - `:selector-type` one of `:toggle`, `:radio`, `:checkbox`,
           `:filled-checkbox` for selector action
         - `:on-press` callback

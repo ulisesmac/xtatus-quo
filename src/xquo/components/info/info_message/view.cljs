@@ -15,10 +15,11 @@
     - `:size` one of `:default`, `:tiny` (default `:default`)
     - `:background` one of `:none`, `:blur` (default `:none`)
     - `:color` optional message text and icon color override
+    - `:icon` optional leading icon props map passed to `xquo/icon`
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/view`.
   - `content` message text."
-  [{:keys [status size background color]
+  [{:keys [status size background color icon]
     :or   {status     :default
            size       :default
            background :none}
@@ -28,22 +29,18 @@
         content-color (or color (:color (style/message-color theme background status)))
         tiny?         (= size :tiny)]
     [:rn/view (-> props
-                  (dissoc :status :size :background :color :style)
+                  (dissoc :status :size :background :color :icon :style)
                   (assoc :style (rn.utils/add-styles
                                  style/container-base
                                  (if tiny?
                                    style/tiny-size-base
                                    style/default-size-base)
                                  (:style props))))
-     (if tiny?
-       [icon/view {:name  :icon/info-outline
-                   :size  12
-                   :color content-color
-                   :style style/icon-tiny}]
-       [icon/view {:name  :icon/info-outline
-                   :size  16
-                   :color content-color
-                   :style style/icon-default}])
+     [icon/view (merge {:name  :icon/info-outline
+                        :size  (if tiny? 12 16)
+                        :color content-color
+                        :style (if tiny? style/icon-tiny style/icon-default)}
+                       icon)]
      [text/text {:font  (if tiny? :font/regular-11 :font/regular-13)
                  :style [style/text-slot {:color content-color}]}
       content]]))
