@@ -8,17 +8,21 @@
 
 (defstyle title-row
   {:flex-direction :row
-   :align-items    :center
-   :gap            8})
+   :align-items    :center})
 
 (defstyle leading-image
-  {:width       32
-   :height      32
-   :flex-shrink 0})
+  {:flex-shrink  0
+   :height       32
+   :margin-right 8
+   :width        32})
 
 (defstyle title
   {:flex      1
    :min-width 1})
+
+(defstyle button
+  {:flex-shrink 0
+   :margin-left 20})
 
 (defstyle description
   {:margin-top 8})

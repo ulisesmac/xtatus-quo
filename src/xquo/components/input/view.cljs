@@ -196,8 +196,8 @@
                                                  [on-blur])]
     (into [:rn/text-input (cond-> props
                             :always (dissoc :auto-focus? :blur? :button :current-value :default-value
-                                            :disabled? :error? :icon :clearable? :input-container-style
-                                            :input-ref :font
+                                            :disabled? :error? :icon :clearable? :container-style
+                                            :input-container-style :input-ref :font
                                             :label :max-height :max-length :min-height :multiline
                                             :multiline? :on-blur :on-change-text :on-clear
                                             :on-content-size-change :on-focus :size :style :value)
@@ -250,12 +250,13 @@
     - `:disabled?` optional boolean
     - `:font` optional typography token for the internal text input
     - `:input-ref` optional ref to the internal text input
-    - `:style` optional caller style for the outer component wrapper
+    - `:style` optional caller style for the input surface
+    - `:container-style` optional caller style for the outer component wrapper
     - Any additional keys are forwarded to `:rn/text-input`."
   [{external-input-ref :input-ref
     :keys              [auto-focus? blur? clearable? default-value disabled? error?
-                        label max-height max-length min-height multiline? on-blur
-                        on-change-text on-clear on-content-size-change on-focus
+                        container-style label max-height max-length min-height multiline?
+                        on-blur on-change-text on-clear on-content-size-change on-focus
                         size value icon]
     trailing-button     :button
     component-style     :style
@@ -293,7 +294,8 @@
      [])
     [:rn/view {:style [style/root-base
                        (when (or label max-length) style/root-gap-8)
-                       (when disabled? style/root-disabled)]}
+                       (when disabled? style/root-disabled)
+                       container-style]}
      (when (or label max-length)
        [labels-view {:blur?         blur?
                      :current-value current-value
