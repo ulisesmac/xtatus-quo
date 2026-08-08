@@ -270,14 +270,22 @@
   (+ (get media-size size) 2))
 
 (defn multi-stack-item-surface [size shape border dark-theme? blur?]
-  (style {:width         (multi-stack-item-size size)
-          :height        (multi-stack-item-size size)
-          :overflow      :hidden
-          :border-width  1
-          :border-color  (if (= border :outline)
-                           "transparent"
-                           (container-background-color nil dark-theme? blur? false))
-          :border-radius (container-border-radius size :multi shape)}))
+  (let [separator-color (if (= border :outline)
+                          "transparent"
+                          (container-background-color nil dark-theme? blur? false))]
+    (style {:background-color separator-color
+            :border-color     separator-color
+            :border-radius    (container-border-radius size :multi shape)
+            :border-width     1
+            :height           (multi-stack-item-size size)
+            :overflow         :hidden
+            :width            (multi-stack-item-size size)})))
+
+(defn multi-icon-surface [background-color]
+  (style {:align-items      :center
+          :justify-content  :center
+          :padding-right    1
+          :background-color (colors/get-color background-color)}))
 
 (defn squircle-surface [size color]
   (style {:width            (get media-size size)

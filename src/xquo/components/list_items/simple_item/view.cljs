@@ -8,7 +8,8 @@
             [xquo.context :as context]))
 
 (defn- leading-view [{:keys [background-color emoji icon]}]
-  [:rn/view {:style [style/leading (style/leading-background background-color)]}
+  [:rn/view {:style [style/leading
+                     (style/leading-background background-color)]}
    (if emoji
      [:rn/text {:style style/emoji}
       emoji]

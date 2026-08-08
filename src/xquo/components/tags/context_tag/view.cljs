@@ -78,8 +78,22 @@
                  :resize-mode :contain
                  :source      image-source}]]]])
 
+(defn- multi-icon-view
+  [{:keys [blur? border dark-theme? shape size slot-index]
+    {background-color :background-color :as icon} :icon}]
+  [:rn/view {:style (style/multi-item-slot size slot-index)}
+   [:rn/view {:style (style/multi-stack-item-surface size shape border dark-theme? blur?)}
+    [:rn/view {:style [(style/media-frame size shape false)
+                       (style/multi-icon-surface background-color)]}
+     [icon-node {:color (if (= size 24)
+                          (colors/get-color :color/white-70)
+                          (colors/get-color :color/white-100))
+                 :icon  (dissoc icon :background-color)
+                 :scale 1
+                 :size  (get filled-icon-size size)}]]]])
+
 (defn- multi-number-text [number]
-  (str number "+"))
+  (str "+" number))
 
 
 (defn- multi-number-view
@@ -94,7 +108,7 @@
                  :ellipsize-mode  :clip}
       (multi-number-text number)]]]])
 
-(defn- multi-stack-items [image-sources number number-position]
+(defn- multi-stack-items [icons image-sources number number-position]
   (into []
         (concat
          (when (and (some? number) (= number-position :start))
@@ -103,13 +117,17 @@
                 {:kind         :image
                  :image-source image-source})
               image-sources)
+         (map (fn [icon]
+                {:kind :icon
+                 :icon icon})
+              icons)
          (when (and (some? number) (= number-position :end))
            [{:kind :number}]))))
 
 (defn- multi-leading-view
-  [{:keys [blur? border dark-theme? icon image-sources number number-position shape size]}]
+  [{:keys [blur? border dark-theme? icon icons image-sources number number-position shape size]}]
   (let [content-style (style/multi-content-style dark-theme? blur?)
-        stack-items   (multi-stack-items image-sources number number-position)]
+        stack-items   (multi-stack-items icons image-sources number number-position)]
     [:<>
      (when (:name icon)
        [icon-node {:color (:color content-style)
@@ -117,8 +135,9 @@
                    :scale 1
                    :size  (get multi-icon-size size)}])
      (into [:rn/view {:style style/multi-stack-row}]
-           (map-indexed (fn [slot-index {:keys [image-source kind]}]
-                          (if (= kind :number)
+           (map-indexed (fn [slot-index {:keys [icon image-source kind]}]
+                          (case kind
+                            :number
                             ^{:key (str "number-" slot-index)}
                             [multi-number-view {:blur?           blur?
                                                 :border          border
@@ -128,6 +147,8 @@
                                                 :shape           shape
                                                 :size            size
                                                 :slot-index      slot-index}]
+
+                            :image
                             ^{:key (str "image-" slot-index)}
                             [multi-image-view {:blur?        blur?
                                                :border       border
@@ -135,8 +156,20 @@
                                                :image-source image-source
                                                :shape        shape
                                                :size         size
-                                               :slot-index   slot-index}])))
-           stack-items)]))
+                                               :slot-index   slot-index}]
+
+                            :icon
+                            ^{:key (str "icon-" slot-index)}
+                            [multi-icon-view {:blur?       blur?
+                                              :border      border
+                                              :dark-theme? dark-theme?
+                                              :icon        icon
+                                              :shape       shape
+                                              :size        size
+                                              :slot-index  slot-index}]
+
+                            nil))
+           stack-items))]))
 
 (defn- inline-icon-view [{:keys [blur? dark-theme? icon size]}]
   (let [secondary-text-style (style/secondary-text-style dark-theme? blur?)]
@@ -146,14 +179,15 @@
                 :size  size}]))
 
 (defn- leading-view
-  [{:keys [blur? border color dark-theme? emoji image-source image-sources number number-position
-           selected? shape size type icon]}]
+  [{:keys [blur? border color dark-theme? emoji icon icons image-source image-sources number number-position
+           selected? shape size type]}]
   (cond
     (= type :multi)
     [multi-leading-view {:blur?           blur?
                          :border          border
                          :dark-theme?     dark-theme?
                          :icon            icon
+                         :icons           icons
                          :image-sources   image-sources
                          :number          number
                          :number-position number-position
@@ -236,9 +270,9 @@
           suffix)])]))
 
 (defn- context-tag-body
-  [{:keys [blur? border color dark-theme? emoji image-source image-sources number number-position
-           on-press-in! on-press-out! pressed? pressable? root-props root-style selected-border-style
-           selected? shape size suffix prefix prefix-divider? prefix-icon chevron-icon chevron-style type icon]}
+  [{:keys [blur? border chevron-icon chevron-style color dark-theme? emoji icon icons image-source image-sources number
+           number-position on-press-in! on-press-out! prefix prefix-divider? prefix-icon pressed? pressable? root-props
+           root-style selected-border-style selected? shape size suffix type]}
    label]
   (let [prefix-icon?      (:name prefix-icon)
         prefix-separator? (and prefix-divider? (or prefix prefix-icon?))
@@ -274,6 +308,7 @@
                      :dark-theme?     dark-theme?
                      :emoji           emoji
                      :icon            icon
+                     :icons           icons
                      :image-source    image-source
                      :image-sources   image-sources
                      :number          number
@@ -283,13 +318,13 @@
                      :size            size
                      :type            type}]
       (when (some? label)
-        [label-view {:blur?               blur?
-                     :chevron-icon        chevron-icon
-                     :chevron-style       chevron-style
-                     :dark-theme?         dark-theme?
-                     :label               label
-                     :size                size
-                     :suffix              suffix}])]]))
+        [label-view {:blur?         blur?
+                     :chevron-icon  chevron-icon
+                     :chevron-style chevron-style
+                     :dark-theme?   dark-theme?
+                     :label         label
+                     :size          size
+                     :suffix        suffix}])]]))
 
 (defn context-tag
   "Context tag component.
@@ -307,6 +342,8 @@
                (default `:circle`)
     - `:image-source` image source for `:default` and `:image`
     - `:image-sources` vector of 1 to 3 image sources for `:multi`
+    - `:icons` vector of icon props maps for `:multi`; each map also accepts `:background-color`.
+               Icon sizes default to `12` in a 24px tag and `20` in a 32px tag, and can be overridden.
     - `:number` optional number rendered as `+number` for `:multi`;
                 when present, `:number-position` places the count slot at the start or end
     - `:number-position` one of `:start` or `:end` for the `:multi` count slot (default `:end`)
@@ -334,8 +371,9 @@
     non-strings are rendered directly."
   ([props]
    (context-tag props nil))
-  ([{:keys [blur? border chevron-icon chevron-style color embedded? emoji image-source image-sources number number-position on-press
-            on-press-in on-press-out prefix prefix-divider? prefix-icon shape size state style suffix type icon]
+  ([{:keys [blur? border chevron-icon chevron-style color embedded? emoji icon icons image-source image-sources number
+            number-position on-press on-press-in on-press-out prefix prefix-divider? prefix-icon shape size state style
+            suffix type]
      :or   {blur?               false
             chevron-icon        :icon/chevron-right
             number-position     :end
@@ -367,7 +405,8 @@
                                  (when (and emoji (= type :image))
                                    :squircle)
                                  :circle)
-         root-props          (cond-> (dissoc props :blur? :border :embedded? :emoji :icon :image-source :image-sources
+         root-props          (cond-> (dissoc props :blur? :border :embedded? :emoji :icon :icons
+                                             :image-source :image-sources
                                              :chevron-icon :chevron-style :color
                                              :number :number-position :on-press-in :on-press-out :shape
                                              :prefix :prefix-divider? :prefix-icon :size :state :style :suffix :type)
@@ -379,6 +418,7 @@
                         :dark-theme?           dark-theme?
                         :emoji                 emoji
                         :icon                  icon
+                        :icons                 icons
                         :image-source          image-source
                         :image-sources         image-sources
                         :number                number
