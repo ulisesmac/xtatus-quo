@@ -1,5 +1,6 @@
 (ns xquo.components.list.style
   (:require [react-native.utils :refer [defstyle]]
+            [xquo.foundations.animations :as animations]
             [xquo.foundations.colors :as colors]
             [xquo.foundations.spacing :refer [spacing]]))
 
@@ -54,6 +55,20 @@
    :align-items        :flex-start
    :gap                (spacing 4)
    :z-index            1})
+
+(defstyle row-default-state-style
+  {:transform                  [{:scale       (:default-scale animations/press-feedback)}
+                                {:translate-y (:default-translate-y animations/press-feedback)}]
+   :transition-property        (:transition-property animations/press-feedback)
+   :transition-duration        (:default-duration animations/press-feedback)
+   :transition-timing-function (:default-timing-function animations/press-feedback)})
+
+(defstyle row-pressed-state-style
+  {:transform                  [{:scale       (:pressed-scale animations/press-feedback)}
+                                {:translate-y (:pressed-translate-y animations/press-feedback)}]
+   :transition-property        (:transition-property animations/press-feedback)
+   :transition-duration        (:pressed-duration animations/press-feedback)
+   :transition-timing-function (:pressed-timing-function animations/press-feedback)})
 
 (defstyle overlay-base
   {:position      :absolute

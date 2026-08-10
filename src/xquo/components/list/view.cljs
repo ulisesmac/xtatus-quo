@@ -27,60 +27,78 @@
      title]
     title))
 
+(defn- element-content
+  [{:keys [type button description icon pressable? pressed? right selected?
+           step-number theme title]
+    :or   {type :bullet}}]
+  [(if pressable? :animated/view :rn/view)
+   {:style (if pressable?
+             [(if pressed?
+                style/row-pressed-state-style
+                style/row-default-state-style)
+              style/element-container]
+             style/element-container)}
+   (if (= type :step)
+     [counter-step/step (if selected? {:type :active} {}) step-number]
+     [icon/view (assoc icon
+                       :name  (:name icon :icon/bullet)
+                       :size  (:size icon 20)
+                       :color (:color icon (style/bullet-color theme)))])
+   [:rn/view {:style style/content-container}
+    (if description
+      [:<>
+       (when title
+         [title-view {:title title}])
+       [description-view {:description description}]]
+      [description-view {:description title}])]
+   (cond
+     right
+     [:rn/view {:style style/button-container}
+      right]
+
+     button
+     [:rn/view {:style style/button-container}
+      [button/button (-> button
+                         (dissoc :label)
+                         (assoc :size 24))
+       (:label button)]])])
+
 (defn- list-element
   [{row-style :style
-    :keys     [type button collapsable color description icon on-press
-               right selected? step-number theme title]
-    :or       {type :bullet}}]
+    :keys     [collapsable]
+    :as       props}]
+  [:rn/view (cond-> {:style (rn.utils/add-styles
+                             style/element-shell
+                             style/element-padding
+                             row-style)}
+              (some? collapsable)
+              (assoc :collapsable collapsable))
+   (element-content props)])
+
+(defn- pressable-list-element
+  [{row-style :style
+    :keys     [collapsable color on-press]
+    :as       props}]
   (let [[pressed? set-pressed!] (rn/use-state false)
         on-press-in!           (rn/use-callback #(set-pressed! true) [])
-        on-press-out!          (rn/use-callback #(set-pressed! false) [])
-        root-component         (if on-press :rn/pressable :rn/view)
-        root-props             (cond-> {:style (rn.utils/add-styles
-                                                style/element-shell
-                                                (when on-press style/pressable-element-spacing)
-                                                (if on-press
-                                                  style/pressable-element-padding
-                                                  style/element-padding)
-                                                row-style)}
-                                 (some? collapsable)
-                                 (assoc :collapsable collapsable)
-
-                                 on-press
-                                 (assoc :on-press     on-press
-                                        :on-press-in  on-press-in!
-                                        :on-press-out on-press-out!))]
-    [root-component root-props
-     (when on-press
-       [:animated/view {:pointer-events :none
-                        :style          [style/overlay-base
-                                         (style/pressed-color-style color)
-                                         (style/pressed-color-state-style pressed?)]}])
-     [:rn/view {:style style/element-container}
-      (if (= type :step)
-        [counter-step/step (if selected? {:type :active} {}) step-number]
-        [icon/view (assoc icon
-                          :name  (:name icon :icon/bullet)
-                          :size  (:size icon 20)
-                          :color (:color icon (style/bullet-color theme)))])
-      [:rn/view {:style style/content-container}
-       (if description
-         [:<>
-          (when title
-            [title-view {:title title}])
-          [description-view {:description description}]]
-         [description-view {:description title}])]
-      (cond
-        right
-        [:rn/view {:style style/button-container}
-         right]
-
-        button
-        [:rn/view {:style style/button-container}
-         [button/button (-> button
-                            (dissoc :label)
-                            (assoc :size 24))
-          (:label button)]])]]))
+        on-press-out!          (rn/use-callback #(set-pressed! false) [])]
+    [:rn/pressable (cond-> {:on-press     on-press
+                            :on-press-in  on-press-in!
+                            :on-press-out on-press-out!
+                            :style        (rn.utils/add-styles
+                                           style/element-shell
+                                           style/pressable-element-spacing
+                                           style/pressable-element-padding
+                                           row-style)}
+                     (some? collapsable)
+                     (assoc :collapsable collapsable))
+     [:animated/view {:pointer-events :none
+                      :style          [style/overlay-base
+                                       (style/pressed-color-style color)
+                                       (style/pressed-color-state-style pressed?)]}]
+     (element-content (assoc props
+                        :pressable? true
+                        :pressed?   pressed?))]))
 
 (defn- into-section-items [root {:keys [color items theme]}]
   (into root
@@ -172,10 +190,13 @@
                            :color color
                            :theme theme)]
 
-      [list-element (assoc item
-                           :color       color
-                           :step-number (inc index)
-                           :theme       theme)])))
+      [(if (:on-press item)
+         pressable-list-element
+         list-element)
+       (assoc item
+              :color       color
+              :step-number (inc index)
+              :theme       theme)])))
 
 (defn view
   "List component.

@@ -50,7 +50,10 @@
                       :style          [list.style/overlay-base
                                        (list.style/pressed-color-style color)
                                        (list.style/pressed-color-state-style pressed?)]}]
-     [:rn/view {:style style/row}
+     [:animated/view {:style [(if pressed?
+                                list.style/row-pressed-state-style
+                                list.style/row-default-state-style)
+                              style/row]}
       (when (or (:name icon) emoji)
         [leading-view {:background-color (or leading-background-color
                                              (if emoji
