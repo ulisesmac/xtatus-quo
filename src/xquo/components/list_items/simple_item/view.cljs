@@ -17,14 +17,24 @@
                   :size  20
                   :color (:color icon style/leading-icon-color))])])
 
+(defn- description-view [{:keys [description]}]
+  (if (string? description)
+    [text/text {:font :font/regular-13}
+     description]
+    description))
+
 (defn simple-item
   "Simple list item with optional circular leading content and a trailing slot.
 
   Pass either `:icon` or `:emoji`. Use `:leading-background-color` to override
-  the content-based default with a resolved color value."
-  [{:keys [emoji icon leading-background-color on-press-in on-press-out right title]
+  the content-based default with a resolved color value. Items without
+  `:on-press` are static and do not show press feedback. `:description` accepts
+  text or a renderable node, and `:title-props` are forwarded to the title text."
+  [{:keys [description emoji icon leading-background-color on-press on-press-in on-press-out
+           right title title-props]
     :as   props}]
   (let [color                   (context/use-color)
+        pressable?              on-press
         [pressed? set-pressed!] (rn/use-state false)
         on-press-in!            (rn/use-callback
                                  (fn [event]
@@ -38,19 +48,24 @@
                                    (when on-press-out
                                      (on-press-out event)))
                                  [on-press-out])]
-    [:rn/pressable (-> props
-                       (dissoc :emoji :icon :leading-background-color :on-press-in :on-press-out :right :style :title)
-                       (assoc :on-press-in  on-press-in!
-                              :on-press-out on-press-out!
-                              :style        (rn.utils/add-styles
-                                             style/container-base
-                                             list.style/pressable-element-spacing
-                                             (:style props))))
+    [(if pressable? :rn/pressable :rn/view)
+     (cond-> (-> props
+                 (dissoc :description :emoji :icon :leading-background-color :on-press :on-press-in
+                         :on-press-out :right :style :title :title-props)
+                 (assoc :style (rn.utils/add-styles
+                                style/container-base
+                                list.style/pressable-element-spacing
+                                (:style props))))
+       pressable?
+       (assoc :on-press     on-press
+              :on-press-in  on-press-in!
+              :on-press-out on-press-out!))
      [:animated/view {:pointer-events :none
                       :style          [list.style/overlay-base
                                        (list.style/pressed-color-style color)
-                                       (list.style/pressed-color-state-style pressed?)]}]
-     [:animated/view {:style [(if pressed?
+                                       (list.style/pressed-color-state-style
+                                        (and pressable? pressed?))]}]
+     [:animated/view {:style [(if (and pressable? pressed?)
                                 list.style/row-pressed-state-style
                                 list.style/row-default-state-style)
                               style/row]}
@@ -61,9 +76,12 @@
                                                style/icon-background-color))
                        :emoji            emoji
                        :icon             icon}])
-      [:rn/view {:style style/title}
-       [text/text {:font :font/medium-15}
-        title]]
+      [:rn/view {:style style/content}
+       [:rn/view {:style style/title}
+        [text/text (assoc title-props :font (:font title-props :font/medium-15))
+         title]]
+       (when description
+         [description-view {:description description}])]
       (when right
         [:rn/view {:style style/right}
          right])]]))

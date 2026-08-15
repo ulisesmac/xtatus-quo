@@ -26,17 +26,20 @@
    :border-radius   (borders/radius :max)})
 
 (defstyle emoji
-  {:width                20
-   :height               20
-   :font-size            20
-   :line-height          20
+  {:width                15
+   :height               15
+   :font-size            15
+   :line-height          15
    :text-align           :center
    :text-align-vertical  :center
    :include-font-padding false})
 
-(defstyle title
+(defstyle content
   {:flex      1
    :min-width 0})
+
+(defstyle title
+  {:min-width 0})
 
 (defstyle right
   {:width           20
