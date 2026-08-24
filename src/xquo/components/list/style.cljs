@@ -78,9 +78,10 @@
    :left          0
    :border-radius 12})
 
-(defn pressed-color-style [color]
-  (when color
-    {:background-color (colors/get-color color 50 5)}))
+(defn pressed-color-style [color blur?]
+  (cond
+    blur? {:background-color (colors/get-color :color/white-5)}
+    color {:background-color (colors/get-color color 50 5)}))
 
 (defn pressed-color-state-style [pressed?]
   {:opacity                    (if pressed? 1 0)
@@ -97,7 +98,8 @@
   {:align-self  :center
    :flex-shrink 0})
 
-(defn bullet-color [theme]
-  (if (= theme :theme/dark)
-    (colors/get-color :color/neutral-50)
-    (colors/get-color :color/neutral-40)))
+(defn bullet-color [theme blur?]
+  (cond
+    blur?                 (colors/get-color :color/white-40)
+    (= theme :theme/dark) (colors/get-color :color/neutral-50)
+    :else                 (colors/get-color :color/neutral-40)))

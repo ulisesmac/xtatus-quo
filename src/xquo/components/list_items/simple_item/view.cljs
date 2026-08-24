@@ -29,8 +29,9 @@
   Pass either `:icon` or `:emoji`. Use `:leading-background-color` to override
   the content-based default with a resolved color value. Items without
   `:on-press` are static and do not show press feedback. `:description` accepts
-  text or a renderable node, and `:title-props` are forwarded to the title text."
-  [{:keys [description emoji icon leading-background-color on-press on-press-in on-press-out
+  text or a renderable node, `:title-props` are forwarded to the title text,
+  and `:blur?` enables blur press feedback."
+  [{:keys [blur? description emoji icon leading-background-color on-press on-press-in on-press-out
            right title title-props]
     :as   props}]
   (let [color                   (context/use-color)
@@ -50,8 +51,8 @@
                                  [on-press-out])]
     [(if pressable? :rn/pressable :rn/view)
      (cond-> (-> props
-                 (dissoc :description :emoji :icon :leading-background-color :on-press :on-press-in
-                         :on-press-out :right :style :title :title-props)
+                 (dissoc :blur? :description :emoji :icon :leading-background-color :on-press
+                         :on-press-in :on-press-out :right :style :title :title-props)
                  (assoc :style (rn.utils/add-styles
                                 style/container-base
                                 list.style/pressable-element-spacing
@@ -62,7 +63,7 @@
               :on-press-out on-press-out!))
      [:animated/view {:pointer-events :none
                       :style          [list.style/overlay-base
-                                       (list.style/pressed-color-style color)
+                                       (list.style/pressed-color-style color blur?)
                                        (list.style/pressed-color-state-style
                                         (and pressable? pressed?))]}]
      [:animated/view {:style [(if (and pressable? pressed?)

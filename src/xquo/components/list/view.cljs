@@ -27,8 +27,16 @@
      title]
     title))
 
+(defn- right-view [{:keys [blur? right theme]}]
+  [:rn/view {:style style/button-container}
+   (if (and blur?
+            (vector? right)
+            (identical? (first right) icon/view))
+     (assoc-in right [1 :color] (style/bullet-color theme blur?))
+     right)])
+
 (defn- element-content
-  [{:keys [type button description icon pressable? pressed? right selected?
+  [{:keys [type blur? button description icon pressable? pressed? right selected?
            step-number theme title]
     :or   {type :bullet}}]
   [(if pressable? :animated/view :rn/view)
@@ -43,7 +51,7 @@
      [icon/view (assoc icon
                        :name  (:name icon :icon/bullet)
                        :size  (:size icon 20)
-                       :color (:color icon (style/bullet-color theme)))])
+                       :color (:color icon (style/bullet-color theme blur?)))])
    [:rn/view {:style style/content-container}
     (if description
       [:<>
@@ -53,8 +61,9 @@
       [description-view {:description title}])]
    (cond
      right
-     [:rn/view {:style style/button-container}
-      right]
+     [right-view {:blur? blur?
+                  :right right
+                  :theme theme}]
 
      button
      [:rn/view {:style style/button-container}
@@ -77,7 +86,7 @@
 
 (defn- pressable-list-element
   [{row-style :style
-    :keys     [collapsable color on-press]
+    :keys     [blur? collapsable color on-press]
     :as       props}]
   (let [[pressed? set-pressed!] (rn/use-state false)
         on-press-in!           (rn/use-callback #(set-pressed! true) [])
@@ -94,16 +103,17 @@
                      (assoc :collapsable collapsable))
      [:animated/view {:pointer-events :none
                       :style          [style/overlay-base
-                                       (style/pressed-color-style color)
+                                       (style/pressed-color-style color blur?)
                                        (style/pressed-color-state-style pressed?)]}]
      (element-content (assoc props
                         :pressable? true
                         :pressed?   pressed?))]))
 
-(defn- into-section-items [root {:keys [color items theme]}]
+(defn- into-section-items [root {:keys [blur? color items theme]}]
   (into root
         (map-indexed (fn [index item]
-                       [list-item {:color color
+                       [list-item {:blur? blur?
+                                   :color color
                                    :index index
                                    :item  item
                                    :theme theme}]))
@@ -145,7 +155,7 @@
 (defn- section-view
   [{section-style :style
     label-props   :divider-label
-    :keys         [color items theme]}]
+    :keys         [blur? color items theme]}]
   (let [collapsible?      (:collapsible? label-props true)
         initial-open?     (:initial-open? label-props)
         [open? set-open!] (rn/use-state initial-open?)
@@ -167,13 +177,14 @@
                                            :toggle-duration (style/section-content-transition-duration open?)
                                            :toggle-timing-function style/section-content-transition-timing-function))]
      [section-content {:collapsible? collapsible?
+                       :blur?        blur?
                        :color        color
                        :items        items
                        :theme        theme
                        :visible?     (or (not collapsible?) open?)}]]))
 
 (defn- list-item
-  [{:keys [color index item theme]}]
+  [{:keys [blur? color index item theme]}]
   (let [item (assoc item :collapsable false)]
     (case (:type item)
       :divider
@@ -183,10 +194,11 @@
       [divider-label/divider-label (dissoc item :type)]
 
       :simple
-      [simple-item/simple-item (dissoc item :type)]
+      [simple-item/simple-item (assoc (dissoc item :type) :blur? blur?)]
 
       :section
       [section-view (assoc item
+                           :blur? blur?
                            :color color
                            :theme theme)]
 
@@ -194,6 +206,7 @@
          pressable-list-element
          list-element)
        (assoc item
+              :blur?       blur?
               :color       color
               :step-number (inc index)
               :theme       theme)])))
@@ -214,7 +227,8 @@
         Set `:collapsible? false` inside `:divider-label` to render the section
         open and keep `:chevron` visual only.
       - `:button` optional `xquo/button` props plus `:label`, rendered on the right
-      - `:right` optional custom trailing node, rendered on the right
+      - `:right` optional custom trailing node, rendered on the right; a direct
+        `xquo/icon` receives the blur icon color when `:blur?` is enabled
       - `:icon` optional icon props map for `:bullet` items
       - `:on-press` optional row press callback
       - `:selected?` marks `:step` items as active
@@ -222,18 +236,20 @@
       - `:description` required description text
       - `:style` optional item style owned by that row/item
     - `:style` optional caller style (map/vector/js style)
+    - `:blur?` optional boolean for blur icon styling
     - The list only owns its own full-width container style. Item padding and
       margin belong to each item/component.
     - Any additional keys are forwarded to the root container."
-  [{:keys [items] :as props}]
+  [{:keys [blur? items] :as props}]
   (let [{:keys [color theme]} (context/use-theme-color)]
     (into [:rn/view
            (-> props
-               (dissoc :items :item-layout :layout :entering :exiting :collapsable :style)
+               (dissoc :blur? :items :item-layout :layout :entering :exiting :collapsable :style)
                (assoc :collapsable false
                       :style       (rn.utils/add-styles style/container-base (:style props))))]
           (map-indexed (fn [index item]
-                         [list-item {:color       color
+                         [list-item {:blur?       blur?
+                                     :color       color
                                      :index       index
                                      :item        item
                                      :theme       theme}]))
