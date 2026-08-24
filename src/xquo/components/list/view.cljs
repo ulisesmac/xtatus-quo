@@ -171,6 +171,9 @@
     [:rn/view {:collapsable false
                :style       (rn.utils/add-styles style/section-shell section-style)}
      [divider-label/divider-label (cond-> label-props
+                                    :always
+                                    (assoc :blur? blur?)
+
                                     toggleable?
                                     (assoc :on-press        on-press!
                                            :open?           open?
@@ -191,7 +194,7 @@
       [divider-line/divider-line (dissoc item :type)]
 
       :divider-label
-      [divider-label/divider-label (dissoc item :type)]
+      [divider-label/divider-label (assoc (dissoc item :type) :blur? blur?)]
 
       :simple
       [simple-item/simple-item (assoc (dissoc item :type) :blur? blur?)]
