@@ -29,6 +29,5 @@ export function useCollapsibleStyle(visible, height, duration) {
         opacity: value,
       };
     },
-    [height, visible],
   );
 }
