@@ -1,7 +1,7 @@
 {:paths ["src" "resources"]
  :deps  {applied-science/js-interop {:mvn/version "0.4.2"}
          cljs-bean/cljs-bean        {:mvn/version "1.9.0"}
-         org.clojure/clojure        {:mvn/version "1.12.4"}
+         org.clojure/clojure        {:mvn/version "1.12.5"}
          org.clojure/clojurescript  {:mvn/version "1.12.145"}
          react-native/react-native  {:local/root "../react-native"}
          reagent/reagent            {:mvn/version "2.0.1"}}}
