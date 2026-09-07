@@ -8,6 +8,7 @@
             [xquo.components.divider.divider-line.view :as divider-line]
             [xquo.components.icon.view :as icon]
             [xquo.components.list-items.simple-item.view :as simple-item]
+            [xquo.components.list-items.user-item.view :as user-item]
             [xquo.components.list.style :as style]
             [xquo.components.text.view :as text]
             [xquo.context :as context]
@@ -199,6 +200,9 @@
       :simple
       [simple-item/simple-item (assoc (dissoc item :type) :blur? blur?)]
 
+      :user
+      [user-item/user-item (assoc (dissoc item :type) :blur? blur?)]
+
       :section
       [section-view (assoc item
                            :blur? blur?
@@ -221,6 +225,7 @@
     - `:items` collection of list item prop maps
       - `:type` one of `:bullet`, `:step` (default `:bullet`)
       - `{:type :simple ...}` renders an `xquo/simple-item`
+      - `{:type :user ...}` renders a user item container with optional press feedback
       - `{:type :divider}` renders an `xquo/divider-line` between rows
       - `{:type :divider-label}` renders an `xquo/divider-label` between rows
       - `{:type :section
