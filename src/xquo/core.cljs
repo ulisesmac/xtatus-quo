@@ -18,6 +18,7 @@
             [xquo.components.info.info-message.view]
             [xquo.components.info.information-box.view]
             [xquo.components.input.view]
+            [xquo.components.link-card.view]
             [xquo.components.list-items.result-list.view]
             [xquo.components.list-items.simple-item.view]
             [xquo.components.list.view]
@@ -59,6 +60,7 @@
 (def info-message xquo.components.info.info-message.view/info-message)
 (def information-box xquo.components.info.information-box.view/information-box)
 (def input xquo.components.input.view/input)
+(def link-card xquo.components.link-card.view/link-card)
 (def list xquo.components.list.view/view)
 (def result-list xquo.components.list-items.result-list.view/result-list)
 (def simple-item xquo.components.list-items.simple-item.view/simple-item)

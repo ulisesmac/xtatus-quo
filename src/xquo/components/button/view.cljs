@@ -101,7 +101,7 @@
                                           (when on-press-out
                                             (on-press-out event)))
                                         [on-press-out])]
-    [(if glass? :effect/pressable :animated/pressable)
+    [(if glass? :animated/effect-pressable :animated/pressable)
      (cond-> (-> props
                  (dissoc :type :size :background :icon :icons :state :disabled?
                          :glass? :on-press-in :on-press-out :container-style :color)
