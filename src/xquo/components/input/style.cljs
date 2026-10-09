@@ -177,11 +177,18 @@
    :line-height         22
    :text-align-vertical :top})
 
+(defstyle text-input-centered
+  {:text-align-vertical :center})
+
 (defstyle icon-slot-base
   {:width            20
    :height           20
    :justify-content  :center
    :align-items      :center})
+
+(defstyle leading-image
+  {:width 20
+   :height 20})
 
 (defstyle clear-icon-slot
   {:width            20

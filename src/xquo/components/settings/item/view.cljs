@@ -80,7 +80,12 @@
       icon-node
 
       (= image-type :image)
-      [:rn/view {:style style/image-placeholder}]
+      (if-let [source (or (:source image)
+                          (when-let [url (:url image)] {:uri url}))]
+        [:rn/image {:source source
+                     :resize-mode :contain
+                     :style (rn.utils/add-styles style/image (:style image))}]
+        [:rn/view {:style style/image-placeholder}])
 
       (= image-type :avatar)
       [:rn/view {:style style/avatar-placeholder}])))
@@ -101,12 +106,14 @@
        (or label-text "Label")]
 
       (= label-type :color)
-      [:rn/view {:style style/color-placeholder}]
+      [:rn/view {:style style/color-container}
+       [:rn/view {:style [style/color-circle
+                         (style/color-circle-background label-color)]}]]
 
       (= label-type :counter)
-      [step/step {:type  :complete
-                  :color (or label-color :color/primary)}
-       (or label-value 1)]
+      [context/provider {:color label-color}
+       [step/step {:type :complete :blur? blur?}
+        (or label-value 1)]]
 
       (= label-type :icon)
       [icon/view (merge {:name  (or label-name :icon/placeholder)
@@ -222,6 +229,8 @@
       - `:type` one of `:icon`, `:image`, `:avatar`, `:none`
       - `:name` icon keyword for `:icon` type
       - `:icon` optional icon props override map for `:icon` type
+      - `:source` or `:url` for `:image` type; renders at 20×20 with contain sizing
+      - `:style` optional image style override for `:image` type
     - `:description` map
       - `:type` one of `:none`, `:text`, `:text-icon`, `:status`
       - `:text` description text for `:text` / `:text-icon`
@@ -238,6 +247,7 @@
       - `:label` map
         - `:type` one of `:none`, `:text`, `:color`, `:counter`, `:icon`
         - `:text`, `:color`, `:counter`, `:name`, `:icon`
+        - For `:type :color`, `:color` sets the 15px circle inside a transparent 20px slot.
       - `:action` map
         - `:type` one of `:none`, `:arrow`, `:selector`, `:button`
         - `:icon` optional icon props override map for `:arrow`

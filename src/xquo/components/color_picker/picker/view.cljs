@@ -21,7 +21,7 @@
   - `props` map
     - `:default-selected` optional initial selected color keyword
     - `:colors` vector of color keywords
-    - `:blur?` optional boolean
+    - `:blur?` makes every swatch use the dark + blur variant, regardless of parent theme
     - `:on-select` optional callback `(fn [color-kw] ...)`
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/scroll-view`."

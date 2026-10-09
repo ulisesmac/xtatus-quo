@@ -10,10 +10,9 @@
   (when (:name icon)
     [button/button (cond-> {:type       (style/action-button-type theme background)
                             :size       32
-                            :background background
-                            :glass?     true
-                            :icon       (merge {:color (style/icon-color theme background)}
-                                               icon)}
+                            :photo?     (= background :photo)
+                            :blur?      (= background :blur)
+                            :icon       (assoc icon :color (:color icon (style/icon-color theme background)))}
                      on-press (assoc :on-press on-press))]))
 
 ;; TODO: Replace this placeholder with the real avatar component.

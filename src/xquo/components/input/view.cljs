@@ -50,12 +50,17 @@
                    :number-of-lines 1}
         (str (count current-value) "/" max-length)])]))
 
-(defn- leading-icon-view [{:keys [blur? icon]}]
+(defn- leading-view [{:keys [blur? icon image-source image-style]}]
   (let [{:keys [dark-theme?]} (context/use-theme-color)]
-    [icon/view (merge {:size  20
-                       :color (:color (style/leading-icon-color dark-theme? blur?))
-                       :style style/icon-slot-base}
-                      icon)]))
+    (if image-source
+      [:rn/view {:style style/icon-slot-base}
+       [:rn/image {:source image-source
+                    :resize-mode :contain
+                    :style (rn.utils/add-styles style/leading-image image-style)}]]
+      [icon/view (merge {:size  20
+                         :color (:color (style/leading-icon-color dark-theme? blur?))
+                         :style style/icon-slot-base}
+                        icon)])))
 
 (defn- clear-button-view [_]
   (let [clear-timeout (atom nil)]
@@ -166,6 +171,10 @@
                                    text/dark-text-style
                                    text/light-text-style)
                                  text-input-layout-style
+                                 (when (and rn/android? multiline?
+                                            (<= (or content-height text-input-content-height)
+                                                text-input-content-height))
+                                   style/text-input-centered)
                                  (when multiline?
                                    {:min-height min-content-height})
                                  (when input-height
@@ -196,7 +205,7 @@
                                                  [on-blur])]
     (into [:rn/text-input (cond-> props
                             :always (dissoc :auto-focus? :blur? :button :current-value :default-value
-                                            :disabled? :error? :icon :clearable? :container-style
+                                            :disabled? :error? :icon :image-source :image-style :clearable? :container-style
                                             :input-container-style :input-ref :font
                                             :label :max-height :max-length :min-height :multiline
                                             :multiline? :on-blur :on-change-text :on-clear
@@ -241,6 +250,9 @@
                     multiline starts at the single-line height and grows from content
     - `:max-height` optional maximum surface height for multiline inputs
     - `:icon` optional leading icon props map
+    - `:image-source` optional React Native image source in the same 20×20 leading slot;
+                      takes precedence over `:icon`
+    - `:image-style` optional style override for the leading image
     - `:clearable?` optional boolean that renders the clear button when the input has content
     - `:on-clear` optional callback fired when the clear button is pressed
     - `:button` optional trailing button map. `:label` is rendered as the button
@@ -257,7 +269,7 @@
     :keys              [auto-focus? blur? clearable? default-value disabled? error?
                         container-style label max-height max-length min-height multiline?
                         on-blur on-change-text on-clear on-content-size-change on-focus
-                        size value icon]
+                        size value icon image-source image-style]
     trailing-button     :button
     component-style     :style
     :or                 {size 40}
@@ -271,7 +283,7 @@
          set-internal-value!] (rn/use-state (or default-value ""))
         current-value           (if controlled? value internal-value)
         show-clear-button?      (and clearable? (seq current-value))
-        layout                  (layout-type (:name icon) show-clear-button? trailing-button)
+        layout                  (layout-type (or image-source (:name icon)) show-clear-button? trailing-button)
         slot-gap-style          (get container-slot-gap-styles size)
         focus-input!            (rn/use-callback (fn []
                                                    (when-not disabled?
@@ -319,9 +331,11 @@
       [:rn/view {:style [style/content-base
                          (if multiline? style/content-multiline style/content-single-line)
                          slot-gap-style]}
-       (when (:name icon)
-         [leading-icon-view {:blur? blur?
-                             :icon  icon}])
+       (when (or image-source (:name icon))
+         [leading-view {:blur? blur?
+                         :icon icon
+                         :image-source image-source
+                         :image-style image-style}])
        [text-input-view (assoc props
                           :blur? blur?
                           :controlled? controlled?
@@ -337,7 +351,7 @@
       (when-let [{:keys [label type]
                   :or   {label "Button" type :outline}} trailing-button]
         [button/button (assoc trailing-button
-                         :background (when blur? :blur)
+                         :blur? blur?
                          :disabled? (or disabled? (:disabled? trailing-button))
                          :hit-slop (get trailing-button-hit-slops size)
                          :size 24

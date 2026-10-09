@@ -1,5 +1,5 @@
 (ns xquo.components.color-picker.color.style
-  (:require [react-native.utils :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle style]]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
@@ -42,14 +42,14 @@
    :border-radius   (borders/radius :max)})
 
 (defn selection-ring-left-style [color]
-  {:background-color (colors/get-color color 50 20)})
+  (style {:background-color (colors/get-color color 50 20)}))
 
 (defn selection-ring-right-style [color]
-  {:background-color (colors/get-color color 50 40)})
+  (style {:background-color (colors/get-color color 50 40)}))
 
 (defn swatch-color-style [theme blur? color]
-  {:background-color (colors/get-color color
-                                       (if (and (= theme :theme/dark)
-                                                (not blur?))
-                                         60
-                                         50))})
+  (style {:background-color (colors/get-color color
+                                              (if (and (= theme :theme/dark)
+                                                       (not blur?))
+                                                60
+                                                50))}))

@@ -12,27 +12,28 @@
   - `props` map
     - `:color` color family keyword (default `:color/primary`)
     - `:selected?` optional boolean
-    - `:blur?` optional boolean
+    - `:blur?` always selects the dark + blur variant, regardless of parent theme
     - `:style` optional caller style (map/vector/js style)
     - Any additional keys are forwarded to `:rn/pressable`."
   [{:keys [color selected? blur?]
     :or   {color :color/primary}
     :as   props}]
-  (let [theme (context/use-theme)]
-    [:rn/pressable (-> props
-                       (dissoc :color :selected? :blur? :style)
-                       (assoc :style (rn.utils/add-styles
-                                      style/container-base
-                                      (:style props))))
-     (when selected?
-       [:rn/view {:style style/selection-ring-base}
-        [:rn/view {:style [style/selection-ring-left
-                           (style/selection-ring-left-style color)]}]
-        [:rn/view {:style [style/selection-ring-right
-                           (style/selection-ring-right-style color)]}]])
-     [:rn/view {:style [style/swatch-base
-                        (style/swatch-color-style theme blur? color)]}
+  (let [parent-theme (context/use-theme)
+        theme        (if blur? :theme/dark parent-theme)]
+    [context/provider {:theme theme}
+     [:rn/pressable (-> props
+                        (dissoc :color :selected? :blur? :style)
+                        (assoc :style (rn.utils/add-styles style/container-base
+                                                          (:style props))))
       (when selected?
-        [icon/view {:name  :icon/check
-                    :size  20
-                    :color (colors/get-color :color/white-100)}])]]))
+        [:rn/view {:style style/selection-ring-base}
+         [:rn/view {:style [style/selection-ring-left
+                            (style/selection-ring-left-style color)]}]
+         [:rn/view {:style [style/selection-ring-right
+                            (style/selection-ring-right-style color)]}]])
+      [:rn/view {:style [style/swatch-base
+                         (style/swatch-color-style theme blur? color)]}
+       (when selected?
+         [icon/view {:name  :icon/check
+                     :size  20
+                     :color (colors/get-color :color/white-100)}])]]]))

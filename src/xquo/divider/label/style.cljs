@@ -1,4 +1,4 @@
-(ns xquo.components.divider.divider-label.style
+(ns xquo.divider.label.style
   (:require [react-native.utils :refer [defstyle style]]
             [xquo.components.button.style :as button-style]
             [xquo.components.settings.item.style :as settings-item-style]
@@ -7,22 +7,23 @@
             [react-native.core :as rn]))
 
 (defstyle container-base
-  {:width            "100%"
-   :flex-direction   :row
-   :align-items      :center
-   :overflow         :hidden
-   :position         :relative
-   :padding-top      16
-   :padding-bottom   8
-   :padding-left     20
-   :padding-right    20})
+  {:width          "100%"
+   :flex-direction :row
+   :align-items    :center
+   :overflow       :hidden
+   :position       :relative
+   :height         42
+   :padding-top    16
+   :padding-bottom 8
+   :padding-left   20
+   :padding-right  20})
 
 (defstyle compact-container
-  {:padding-top 8})
+  {:height 34 :padding-top 8})
 
 (defn divider-line-style [compact?]
-  {:border-top-width 1
-   :padding-top      (if compact? 7 15)})
+  (style {:border-top-width 1
+          :padding-top      (if compact? 7 15)}))
 
 (defstyle left-chevron-container
   {:padding-left 16})
@@ -44,7 +45,7 @@
    :height          20
    :align-items     :center
    :justify-content :center
-   :margin-left     2})
+   :margin-left     12})
 
 (defn chevron-state [open? toggle-duration toggle-timing-function]
   (style {:transform                  [{:rotate (if open? "0deg" "-90deg")}]
@@ -53,7 +54,7 @@
           :transition-timing-function toggle-timing-function}))
 
 (defstyle counter-slot
-  {:width           20
+  {:min-width       20
    :height          20
    :align-items     :center
    :justify-content :center
@@ -77,25 +78,38 @@
   (style {:opacity                    (if pressed? 1 0)
           :transition-property        "opacity"
           :transition-duration        (if pressed?
-                                       (:pressed-duration animations/press-feedback)
-                                       (:default-duration animations/press-feedback))
+                                        (:pressed-duration animations/press-feedback)
+                                        (:default-duration animations/press-feedback))
           :transition-timing-function (if pressed?
-                                       (:pressed-timing-function animations/press-feedback)
-                                       (:default-timing-function animations/press-feedback))}))
-
-(defn title-color [theme blur?]
-  {:color (cond
-            (and (= theme :theme/dark) blur?)  (colors/get-color :color/white-70)
-            (and (= theme :theme/light) blur?) (colors/get-color :color/neutral-80-70)
-            (= theme :theme/dark)              (colors/get-color :color/neutral-40)
-            :else                              (colors/get-color :color/neutral-50))})
-
-(defn border-color [theme blur?]
-  {:border-top-color (cond
-                       (and (= theme :theme/dark) blur?)  (colors/get-color :color/white-5)
-                       (and (= theme :theme/light) blur?) (colors/get-color :color/neutral-80-5)
-                       (= theme :theme/dark)              (colors/get-color :color/neutral-90)
-                       :else                              (colors/get-color :color/neutral-10))})
+                                        (:pressed-timing-function animations/press-feedback)
+                                        (:default-timing-function animations/press-feedback))}))
 
 (defn icon-color [theme blur?]
-  (:color (title-color theme blur?)))
+  (cond
+    (and (= theme :theme/dark) blur?)  (colors/get-color :color/white-70)
+    (and (= theme :theme/light) blur?) (colors/get-color :color/neutral-80-70)
+    (= theme :theme/dark)              (colors/get-color :color/neutral-40)
+    :else                             (colors/get-color :color/neutral-50)))
+
+(defstyle title-text
+  {:height 18})
+
+(defn title-color [theme blur?]
+  (style {:include-font-padding false
+          :text-align-vertical  :center
+          :color                (icon-color theme blur?)}))
+
+(defstyle top-line
+  {:position         :absolute
+   :top              0
+   :left             0
+   :right            0
+   :border-top-width 1})
+
+(defn border-color [theme blur?]
+  (style {:border-top-color (cond
+                              (and (= theme :theme/dark) blur?)  (colors/get-color :color/white-5)
+                              (and (= theme :theme/light) blur?) (colors/get-color :color/neutral-80-5)
+                              (= theme :theme/dark)              (colors/get-color :color/neutral-90)
+                              :else                              (colors/get-color :color/neutral-10))}))
+

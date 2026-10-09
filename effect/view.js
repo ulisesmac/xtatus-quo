@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import NativeEffectView from '../specs/EffectViewNativeComponent';
 
@@ -102,9 +102,15 @@ export function withoutEffectHostStyle(style, options = {}) {
   return styleWithoutHostStyle;
 }
 
+/**
+ * blurAmount is the Figma uniform-blur value, defaulting to 40; zero disables blur.
+ * Android maps 40 to Gaussian sigma 20dp. iOS retains its native-material fallback
+ * for positive values until that platform has a calibrated radius implementation.
+ * Material intensity remains an internal/legacy glass setting, not a blur control.
+ */
 const EffectView = React.forwardRef(function EffectView(props, ref) {
   const {
-    blurIntensity,
+    blurAmount,
     effect,
     intensity,
     theme,
@@ -115,23 +121,19 @@ const EffectView = React.forwardRef(function EffectView(props, ref) {
 
   const normalizedEffect = valueName(effect) || 'blur';
   const removeBorders = normalizedEffect === 'glass';
-  const numericIntensity = isNumber(intensity) ? Math.round(intensity) : undefined;
-  const resolvedBlurIntensity = blurIntensity ?? numericIntensity ?? 100;
-
-  if (Platform.OS === 'android') {
-    return React.createElement(View, {
-      ...viewProps,
-      ref,
-    });
-  }
+  const resolvedBlurAmount = isNumber(blurAmount) && blurAmount >= 0 ? blurAmount : 40;
+  delete viewProps.blurIntensity;
 
   return React.createElement(NativeEffectView, {
     ...viewProps,
     ref,
+    ...(Platform.OS === 'android' ? {
+      blurAmount: removeBorders && blurAmount == null ? -1 : resolvedBlurAmount,
+    } : {}),
     style: withoutEffectHostStyle(viewProps.style, { removeBorders }),
-    blurIntensity: Math.max(0, Math.min(100, Math.round(resolvedBlurIntensity))),
+    blurIntensity: resolvedBlurAmount === 0 ? 0 : 100,
     effect: normalizedEffect,
-    intensity: numericIntensity == null ? valueName(intensity) || 'regular' : 'regular',
+    intensity: removeBorders && !isNumber(intensity) ? valueName(intensity) || 'regular' : 'regular',
     theme: effectTheme(theme),
     interactive: interactive ?? interactiveQuestion ?? false,
   });

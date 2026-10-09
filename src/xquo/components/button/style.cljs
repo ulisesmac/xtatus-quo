@@ -1,11 +1,10 @@
 (ns xquo.components.button.style
   (:require [react-native.utils :refer [defstyle style]]
-            [react-native.core :as rn]
             [xquo.foundations.animations :as animations]
             [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
-(def type-styles
+(def ^:private type-styles
   {:theme/light {:primary   {:text-color (colors/get-color :color/white-100)
                              :icon-color (colors/get-color :color/white-70)
                              :default    {:background-color (colors/get-color :color/primary-50)}
@@ -48,6 +47,12 @@
                              :pressed    {:background-color (colors/get-color :color/neutral-10)}
                              :disabled   {:background-color :transparent
                                           :opacity          0.3}}
+                 :black     {:text-color (colors/get-color :color/white-100)
+                             :icon-color (colors/get-color :color/white-70)
+                             :default    {:background-color (colors/get-color :color/neutral-100)}
+                             :pressed    {:background-color (colors/get-color :color/neutral-80)}
+                             :disabled   {:background-color (colors/get-color :color/neutral-100)
+                                          :opacity          0.3}}
                  :danger    {:text-color (colors/get-color :color/white-100)
                              :icon-color (colors/get-color :color/white-70)
                              :default    {:background-color (colors/get-color :color/danger-50)}
@@ -83,7 +88,7 @@
                              :default    {:background-color :transparent
                                           :border-color     (colors/get-color :color/neutral-70)
                                           :border-width     1}
-                             :pressed    {:background-color (colors/get-color :color/neutral-60)
+                             :pressed    {:background-color :transparent
                                           :border-color     (colors/get-color :color/neutral-60)
                                           :border-width     1}
                              :disabled   {:background-color :transparent
@@ -96,6 +101,12 @@
                              :pressed    {:background-color (colors/get-color :color/neutral-80)}
                              :disabled   {:background-color :transparent
                                           :opacity          0.3}}
+                 :black     {:text-color (colors/get-color :color/white-100)
+                             :icon-color (colors/get-color :color/neutral-40)
+                             :default    {:background-color (colors/get-color :color/neutral-90)}
+                             :pressed    {:background-color (colors/get-color :color/neutral-80)}
+                             :disabled   {:background-color (colors/get-color :color/neutral-90)
+                                          :opacity          0.3}}
                  :danger    {:text-color (colors/get-color :color/white-100)
                              :icon-color (colors/get-color :color/white-70)
                              :default    {:background-color (colors/get-color :color/danger-60)}
@@ -103,19 +114,13 @@
                              :disabled   {:background-color (colors/get-color :color/danger-60)
                                           :opacity          0.3}}}})
 
-(def background-type-styles
-  {:photo {:theme/light {:grey    {:icon-color (colors/get-color :color/neutral-100)
-                                   :default    {:background-color (colors/get-color :color/white-40)
-                                                :border-color     (colors/get-color :color/neutral-80-10)
-                                                :border-width     rn/hairline-width}
-                                   :pressed    {:background-color (colors/get-color :color/white-50)
-                                                :border-color     (colors/get-color :color/neutral-80-20)
-                                                :border-width     rn/hairline-width}
+(def ^:private background-type-styles
+  {:photo {:theme/light {:grey    {:icon-color (colors/get-color :color/neutral-80-40)
+                                   :default    {:background-color (colors/get-color :color/white-40)}
+                                   :pressed    {:background-color (colors/get-color :color/white-50)}
                                    :disabled   {:background-color (colors/get-color :color/white-40)
-                                                :border-color     (colors/get-color :color/neutral-80-10)
-                                                :border-width     rn/hairline-width
                                                 :opacity          0.3}}
-                         :outline {:icon-color (colors/get-color :color/neutral-100)
+                         :outline {:icon-color (colors/get-color :color/neutral-80-40)
                                    :default    {:background-color :transparent
                                                 :border-color     (colors/get-color :color/white-40)
                                                 :border-width     1}
@@ -127,15 +132,9 @@
                                                 :border-width     1
                                                 :opacity          0.3}}}
            :theme/dark  {:grey    {:icon-color (colors/get-color :color/white-40)
-                                   :default    {:background-color (colors/get-color :color/neutral-80-40)
-                                                :border-color     (colors/get-color :color/white-10)
-                                                :border-width     rn/hairline-width}
-                                   :pressed    {:background-color (colors/get-color :color/neutral-80-50)
-                                                :border-color     (colors/get-color :color/white-20)
-                                                :border-width     rn/hairline-width}
+                                   :default    {:background-color (colors/get-color :color/neutral-80-40)}
+                                   :pressed    {:background-color (colors/get-color :color/neutral-80-50)}
                                    :disabled   {:background-color (colors/get-color :color/neutral-80-40)
-                                                :border-color     (colors/get-color :color/white-10)
-                                                :border-width     rn/hairline-width
                                                 :opacity          0.3}}
                          :outline {:icon-color (colors/get-color :color/white-100)
                                    :default    {:background-color :transparent
@@ -148,18 +147,12 @@
                                                 :border-color     (colors/get-color :color/white-20)
                                                 :border-width     1
                                                 :opacity          0.3}}}}
-   :blur  {:theme/light {:grey    {:icon-color (colors/get-color :color/neutral-100)
-                                   :default    {:background-color (colors/get-color :color/neutral-80-5)
-                                                :border-color     (colors/get-color :color/neutral-80-10)
-                                                :border-width     rn/hairline-width}
-                                   :pressed    {:background-color (colors/get-color :color/neutral-80-10)
-                                                :border-color     (colors/get-color :color/neutral-80-20)
-                                                :border-width     rn/hairline-width}
+   :blur  {:theme/light {:grey    {:icon-color (colors/get-color :color/neutral-80-40)
+                                   :default    {:background-color (colors/get-color :color/neutral-80-5)}
+                                   :pressed    {:background-color (colors/get-color :color/neutral-80-10)}
                                    :disabled   {:background-color (colors/get-color :color/neutral-80-5)
-                                                :border-color     (colors/get-color :color/neutral-80-10)
-                                                :border-width     rn/hairline-width
                                                 :opacity          0.3}}
-                         :outline {:icon-color (colors/get-color :color/neutral-100)
+                         :outline {:icon-color (colors/get-color :color/neutral-80-40)
                                    :default    {:background-color :transparent
                                                 :border-color     (colors/get-color :color/neutral-80-10)
                                                 :border-width     1}
@@ -171,15 +164,9 @@
                                                 :border-width     1
                                                 :opacity          0.3}}}
            :theme/dark  {:grey    {:icon-color (colors/get-color :color/white-70)
-                                   :default    {:background-color (colors/get-color :color/white-5)
-                                                :border-color     (colors/get-color :color/white-10)
-                                                :border-width     rn/hairline-width}
-                                   :pressed    {:background-color (colors/get-color :color/white-10)
-                                                :border-color     (colors/get-color :color/white-20)
-                                                :border-width     rn/hairline-width}
+                                   :default    {:background-color (colors/get-color :color/white-5)}
+                                   :pressed    {:background-color (colors/get-color :color/white-10)}
                                    :disabled   {:background-color (colors/get-color :color/white-5)
-                                                :border-color     (colors/get-color :color/white-10)
-                                                :border-width     rn/hairline-width
                                                 :opacity          0.3}}
                          :outline {:icon-color (colors/get-color :color/white-70)
                                    :default    {:background-color :transparent
@@ -189,11 +176,11 @@
                                                 :border-color     (colors/get-color :color/white-20)
                                                 :border-width     1}
                                    :disabled   {:background-color :transparent
-                                                :border-color     (colors/get-color :color/white-10)
+                                                :border-color     (colors/get-color :color/white-5)
                                                 :border-width     1
                                                 :opacity          0.3}}}}})
 
-(def background-type-state-icon-colors
+(def ^:private background-type-state-icon-colors
   {:blur {:theme/dark {:grey    {:default  (colors/get-color :color/white-70)
                                  :pressed  (colors/get-color :color/white-40)
                                  :disabled (colors/get-color :color/white-40)}
@@ -201,98 +188,34 @@
                                  :pressed  (colors/get-color :color/white-40)
                                  :disabled (colors/get-color :color/white-40)}}}})
 
-(def container-layout-styles
-  {40 {nil         (style {:padding-horizontal 16
-                           :padding-vertical   9
-                           :border-radius      (borders/radius 40)
-                           :height             40})
-       :right      (style {:padding-left     16
-                           :padding-right    12
-                           :padding-vertical 9
-                           :border-radius    (borders/radius 40)
-                           :height           40})
-       :left       (style {:padding-left     12
-                           :padding-right    16
-                           :padding-vertical 9
-                           :border-radius    (borders/radius 40)
-                           :height           40})
-       :both       (style {:padding-left     12
-                           :padding-right    12
-                           :padding-vertical 9
-                           :border-radius    (borders/radius 40)
-                           :height           40})
-       :icon-only  (style {:width         40
-                           :height        40
-                           :border-radius (borders/radius 40)})}
-   32 {nil         (style {:padding-horizontal 12
-                           :padding-vertical   5
-                           :border-radius      (borders/radius 32)
-                           :height             32})
-       :right      (style {:padding-left     12
-                           :padding-right    8
-                           :padding-vertical 5
-                           :border-radius    (borders/radius 32)
-                           :height           32})
-       :left       (style {:padding-left     8
-                           :padding-right    12
-                           :padding-vertical 5
-                           :border-radius    (borders/radius 32)
-                           :height           32})
-       :both       (style {:padding-left     8
-                           :padding-right    8
-                           :padding-vertical 5
-                           :border-radius    (borders/radius 32)
-                           :height           32})
-       :icon-only  (style {:width         32
-                           :height        32
-                           :border-radius (borders/radius 32)})}
-   24 {nil         (style {:padding-horizontal 8
-                           :padding-vertical   3
-                           :border-radius      (borders/radius 24)
-                           :height             24})
-       :right      (style {:padding-horizontal 8
-                           :padding-vertical   3
-                           :border-radius      (borders/radius 24)
-                           :height             24})
-       :left       (style {:padding-horizontal 8
-                           :padding-vertical   3
-                           :border-radius      (borders/radius 24)
-                           :height             24})
-       :both       (style {:padding-horizontal 8
-                           :padding-vertical   3
-                           :border-radius      (borders/radius 24)
-                           :height             24})
-       :icon-only  (style {:width         24
-                           :height        24
-                           :border-radius (borders/radius 24)})}})
+(def ^:private horizontal-padding
+  {40 {:text 16 :icon 12}
+   32 {:text 12 :icon 8}
+   24 {:text 8 :icon 8}})
 
-(defstyle size-24-outline-content-style
-  {:padding-horizontal 7
-   :padding-vertical   2
-   :border-radius      (borders/radius 24)
-   :height             24})
+(def ^:private vertical-padding
+  {40 9, 32 5, 24 3})
 
-(defn container-layout-style [size icon type]
-  (cond
-    (and (= size 24) (= type :outline) (= icon :icon-only))
-    (get-in container-layout-styles [24 icon])
-
-    (and (= size 24) (= type :outline))
-    size-24-outline-content-style
-
-    :else
-    (get-in container-layout-styles [size icon])))
+(defn container-layout-style [size layout type]
+  (let [icon-only? (= layout :icon-only)
+        border     (if (and (= type :outline) (not icon-only?)) 1 0)
+        left-key   (if (#{:left :both} layout) :icon :text)
+        right-key  (if (#{:right :both} layout) :icon :text)
+        top        (if (and (= size 24) (nil? layout)) 2.5 (vertical-padding size))
+        bottom     (if (and (= size 24) (nil? layout)) 3.5 (vertical-padding size))]
+    (style {:width          (when icon-only? size)
+            :height         size
+            :border-radius  (borders/radius size)
+            :padding-left   (if icon-only? 0 (- (get-in horizontal-padding [size left-key]) border))
+            :padding-right  (if icon-only? 0 (- (get-in horizontal-padding [size right-key]) border))
+            :padding-top    (if icon-only? 0 (- top border))
+            :padding-bottom (if icon-only? 0 (- bottom border))})))
 
 (defn- component-state [disabled? pressed?]
   (cond
     disabled? :disabled
     pressed? :pressed
     :else :default))
-
-(defn- normalized-background [background]
-  (case background
-    (:photo :blur) background
-    :none))
 
 (defn- primary-style [theme color state]
   (cond
@@ -309,19 +232,15 @@
   (let [state (component-state disabled? pressed?)]
     (if (= type :primary)
       (primary-style theme color state)
-      (or (get-in background-type-styles [(normalized-background background) theme type state])
+      (or (get-in background-type-styles [background theme type state])
           (get-in type-styles [theme type state])))))
 
 (defn text-color [theme type background]
-  (or (get-in background-type-styles [(normalized-background background) theme type :text-color])
+  (or (get-in background-type-styles [background theme type :text-color])
       (get-in type-styles [theme type :text-color])))
 
-(defn icon-size [size]
-  (case size
-    24 12
-    40 20
-    32 20
-    20))
+(def icon-size
+  {24 12, 32 20, 40 20})
 
 (defstyle icon-left-gap
   {:margin-right 4})
@@ -329,13 +248,13 @@
 (defstyle icon-right-gap
   {:margin-left 4})
 
-(def neutral-icon-only-types
+(def ^:private neutral-icon-only-types
   #{:grey :dark-grey :outline :ghost})
 
-(def circular-icon-only-types
+(def ^:private circular-icon-only-types
   #{:primary :positive :danger})
 
-(defstyle circular-icon-only-shape
+(defstyle ^:private circular-icon-only-shape
   {:border-radius (borders/radius :max)})
 
 (defn icon-only-shape-style [layout type]
@@ -366,24 +285,24 @@
    32 :font/medium-15
    24 :font/medium-13})
 
-(defn- icon-only-color [theme type background]
+(defn- icon-only-color [theme type background disabled?]
   (cond
     (= theme :theme/dark)                         (colors/get-color :color/white-100)
-    (= (normalized-background background) :blur) (colors/get-color :color/neutral-100)
+    (and disabled? (= background :photo) (= type :grey)) (colors/get-color :color/neutral-50)
     (neutral-icon-only-types type)               (colors/get-color :color/neutral-100)
     :else                                        (colors/get-color :color/white-100)))
 
 (defn icon-color [theme type background icon-only? disabled? pressed?]
   (if icon-only?
-    (icon-only-color theme type background)
+    (icon-only-color theme type background disabled?)
     (let [state (component-state disabled? pressed?)]
-      (or (get-in background-type-state-icon-colors [(normalized-background background) theme type state])
-          (get-in background-type-styles [(normalized-background background) theme type :icon-color])
+      (or (get-in background-type-state-icon-colors [background theme type state])
+          (get-in background-type-styles [background theme type :icon-color])
           (get-in type-styles [theme type :icon-color])))))
 
 (defn text-style [theme type background size]
-  (cond-> {:color                (text-color theme type background)
-           :include-font-padding false
-           :flex-shrink          1}
-    (= size 24) (assoc :height      18
-                       :line-height 18)))
+  (style {:color                (text-color theme type background)
+          :include-font-padding false
+          :flex-shrink          1
+          :height               (if (= size 24) 18 22)
+          :line-height          (if (= size 24) 18 21.75)}))

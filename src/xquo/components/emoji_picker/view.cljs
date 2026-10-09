@@ -7,7 +7,7 @@
             [react-native.react.core :as react]
             [reagent.core :as reagent]
             [xquo.components.button.view :as button]
-            [xquo.components.divider.divider-label.view :as divider-label]
+            [xquo.divider.label.view :as divider-label]
             [xquo.components.emoji-picker.data :as emoji-picker.data]
             [xquo.components.emoji-picker.style :as style]
             [xquo.components.input.view :as input]

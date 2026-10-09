@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 
 import EffectView, { withoutEffectHostStyle } from './view';
 
@@ -23,7 +23,7 @@ function renderChildren(children, state) {
 
 const EffectPressable = React.forwardRef(function EffectPressable(props, ref) {
   const {
-    blurIntensity,
+    blurAmount,
     children,
     effect,
     intensity,
@@ -35,20 +35,7 @@ const EffectPressable = React.forwardRef(function EffectPressable(props, ref) {
     style,
     ...pressableProps
   } = props;
-
-  if (Platform.OS === 'android') {
-    return React.createElement(
-      Pressable,
-      {
-        ...pressableProps,
-        ref,
-        onPressIn,
-        onPressOut,
-        style,
-      },
-      children,
-    );
-  }
+  delete pressableProps.blurIntensity;
 
   const [pressed, setPressed] = React.useState(false);
   const resolvedInteractive = interactive ?? interactiveQuestion ?? false;
@@ -76,7 +63,7 @@ const EffectPressable = React.forwardRef(function EffectPressable(props, ref) {
     EffectView,
     {
       ref,
-      blurIntensity,
+      blurAmount,
       effect: normalizedEffect,
       intensity: intensity ?? 'regular',
       theme,

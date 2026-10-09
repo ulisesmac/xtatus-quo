@@ -4,6 +4,7 @@
 
 import type {HostComponent, ViewProps} from 'react-native';
 import type {
+  Float,
   Int32,
   WithDefault,
 } from 'react-native/Libraries/Types/CodegenTypes';
@@ -26,6 +27,7 @@ type EffectTheme =
 type NativeProps = $ReadOnly<{|
   ...ViewProps,
   blurIntensity?: WithDefault<Int32, 100>,
+  blurAmount?: WithDefault<Float, -1>,
   effect?: WithDefault<EffectKind, 'blur'>,
   intensity?: WithDefault<EffectIntensity, 'regular'>,
   theme?: WithDefault<EffectTheme, 'system'>,

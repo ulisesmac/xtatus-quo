@@ -138,3 +138,19 @@ React Native module build in the app build config:
 This prevents Metro from loading the package's Node/CommonJS entry. That entry
 references `./createNanoIconsSet`, which is not shipped in the package's
 CommonJS build.
+
+## Background blur
+
+Use the Figma blur value directly:
+
+```clojure
+[:effect/view {:effect :blur :blur-amount 40 :style {:flex 1}}]
+```
+
+`:blur-amount` is the only blur-strength control: default 40, zero disables blur.
+Set the view's background color when a tint is needed. Do not combine it with material
+`:intensity` presets or percentage `:blur-intensity`. Android has the calibrated Figma
+mapping; iOS currently retains its native-material fallback for positive values.
+
+Photo buttons (`:photo? true`) supply their own Figma amount-40 backdrop blur. Buttons
+with `:blur? true` only adapt styling to an already blurred background.

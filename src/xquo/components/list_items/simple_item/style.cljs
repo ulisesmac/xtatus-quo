@@ -9,6 +9,15 @@
    :overflow      :hidden
    :border-radius (borders/radius 40)})
 
+(defn reorder-container [theme blur?]
+  (style {:border-radius (borders/radius :card-section)
+          :background-color (if blur?
+                              (colors/get-color :color/white-5)
+                              (colors/themed theme :color/neutral-2.5 :color/neutral-90))}))
+
+(defn muted-color [theme]
+  (colors/themed theme :color/neutral-50 :color/neutral-40))
+
 (defstyle row
   {:flex-direction     :row
    :align-items        :center
@@ -24,6 +33,24 @@
    :align-items     :center
    :justify-content :center
    :border-radius   (borders/radius :max)})
+
+(defstyle drag-handle
+  {:align-items :center
+   :justify-content :center
+   :flex-shrink 0})
+
+(defstyle body
+  {:flex 1
+   :min-width 0
+   :flex-direction :row
+   :align-items :center})
+
+(defn leading-gap [gap]
+  (style {:column-gap gap}))
+
+(defstyle leading-image
+  {:width 20
+   :height 20})
 
 (defstyle emoji
   {:font-size   16

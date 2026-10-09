@@ -80,11 +80,12 @@
        :semibold       (assoc paragraph-2-13 :font-family (:semibold font-families))
        :monospace      (assoc monospace-13 :font-family (:monospace font-families))
        :code           (assoc code-13 :font-family (:code font-families))}
-   15 {:regular   (assoc paragraph-1-15 :font-family (:regular font-families))
-       :medium    (assoc paragraph-1-15 :font-family (:medium font-families))
-       :semibold  (assoc paragraph-1-15 :font-family (:semibold font-families))
-       :monospace (assoc monospace-15 :font-family (:monospace font-families))
-       :code      (assoc code-15 :font-family (:code font-families))}
+   15 {:regular        (assoc paragraph-1-15 :font-family (:regular font-families))
+       :regular-italic (assoc paragraph-1-15 :font-family (:regular-italic font-families))
+       :medium         (assoc paragraph-1-15 :font-family (:medium font-families))
+       :semibold       (assoc paragraph-1-15 :font-family (:semibold font-families))
+       :monospace      (assoc monospace-15 :font-family (:monospace font-families))
+       :code           (assoc code-15 :font-family (:code font-families))}
    19 {:regular       (assoc heading-2-19 :font-family (:regular font-families))
        :medium        (assoc heading-2-19 :font-family (:medium font-families))
        :semibold      (assoc heading-2-19 :font-family (:semibold font-families))

@@ -23,6 +23,12 @@ android {
   }
 }
 
+react {
+  libraryName = 'XquoSpec'
+  codegenJavaPackageName = 'com.xquo'
+}
+
 dependencies {
   implementation 'com.facebook.react:react-android'
+  testImplementation 'junit:junit:4.13.2'
 }

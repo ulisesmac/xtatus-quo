@@ -4,8 +4,8 @@
             [react-native.utils :as rn.utils]
             [xquo.components.button.view :as button]
             [xquo.components.counter.step.view :as counter-step]
-            [xquo.components.divider.divider-label.view :as divider-label]
-            [xquo.components.divider.divider-line.view :as divider-line]
+            [xquo.divider.label.view :as divider-label]
+            [xquo.divider.line.view :as divider-line]
             [xquo.components.icon.view :as icon]
             [xquo.components.list-items.simple-item.view :as simple-item]
             [xquo.components.list-items.user-item.view :as user-item]
@@ -48,7 +48,9 @@
               style/element-container]
              style/element-container)}
    (if (= type :step)
-     [counter-step/step (if selected? {:type :active} {}) step-number]
+     [counter-step/step {:type  (if selected? :active :neutral)
+                         :blur? blur?}
+      step-number]
      [icon/view (assoc icon
                        :name  (:name icon :icon/bullet)
                        :size  (:size icon 20)
@@ -192,13 +194,16 @@
   (let [item (assoc item :collapsable false)]
     (case (:type item)
       :divider
-      [divider-line/divider-line (dissoc item :type)]
+      [divider-line/divider-line (assoc (dissoc item :type) :blur? blur?)]
 
       :divider-label
       [divider-label/divider-label (assoc (dissoc item :type) :blur? blur?)]
 
       :simple
       [simple-item/simple-item (assoc (dissoc item :type) :blur? blur?)]
+
+      :reorder
+      [simple-item/simple-item (assoc (dissoc item :type) :blur? blur? :variant :reorder)]
 
       :user
       [user-item/user-item (assoc (dissoc item :type) :blur? blur?)]
@@ -225,9 +230,10 @@
     - `:items` collection of list item prop maps
       - `:type` one of `:bullet`, `:step` (default `:bullet`)
       - `{:type :simple ...}` renders an `xquo/simple-item`
+      - `{:type :reorder ...}` renders its reorder variant; drag behavior is caller-owned
       - `{:type :user ...}` renders a user item container with optional press feedback
-      - `{:type :divider}` renders an `xquo/divider-line` between rows
-      - `{:type :divider-label}` renders an `xquo/divider-label` between rows
+      - `{:type :divider}` renders an `xquo/divider.line` between rows
+      - `{:type :divider-label}` renders an `xquo/divider.label` between rows
       - `{:type :section
           :divider-label {...}
           :items [...]}` renders a divider label plus child items. Collapsible

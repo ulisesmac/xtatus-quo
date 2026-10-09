@@ -1,6 +1,6 @@
 (ns xquo.components.counter.view
   (:require [react-native.utils :as rn.utils]
-            [xquo.components.counter.style :as counter-style]
+            [xquo.components.counter.style :as style]
             [xquo.components.text.view :as text]
             [xquo.context :as context]))
 
@@ -15,84 +15,29 @@
     (<= (count label) 1) :one
     (= (count label) 2)  :two
     (= (count label) 3)  :three
-    :else                :four))
+    :else               :four))
 
-(defn- value-view [{:keys [blur? color dark-theme? size text-style type]} label]
-  [text/text {:font            (get value-font size)
-              :ellipsize-mode  :clip
-              :number-of-lines 1
-              :style           [text-style
-                                (counter-style/value-text-style color size type dark-theme? blur?)]}
-   label])
-
-(defn- default-counter-view [{:keys [blur? color dark-theme? root-props style type value]}]
-  (let [label      (str value)
-        layout-key (value-layout-key label)]
-    [:rn/view (assoc root-props :style (rn.utils/add-styles
-                                        counter-style/default-root-base
-                                        (counter-style/default-root-style color layout-key type dark-theme? blur?)
-                                        style))
-     [:rn/view {:style [counter-style/default-surface-base
-                        (counter-style/default-surface-style color layout-key type dark-theme? blur?)]}]
-     [:rn/view {:style [counter-style/default-value-slot-base
-                        (counter-style/default-value-slot-style layout-key)]}
-      [value-view {:blur?       blur?
-                   :color       color
-                   :dark-theme? dark-theme?
-                   :size        :default
-                   :type        type}
-       label]]]))
-
-(defn- large-counter-view [{:keys [blur? color dark-theme? root-props style type value]}]
-  (let [label      (str value)
-        layout-key (value-layout-key label)]
-    [:rn/view (assoc root-props :style (rn.utils/add-styles
-                                        counter-style/large-root-base
-                                        (counter-style/large-root-style color layout-key type dark-theme? blur?)
-                                        style))
-     [:rn/view {:style [counter-style/large-surface-base
-                        (counter-style/large-surface-style color layout-key type dark-theme? blur?)]}]
-     [:rn/view {:style counter-style/large-value-slot-base}
-      [value-view {:blur?       blur?
-                   :color       color
-                   :dark-theme? dark-theme?
-                   :size        :large
-                   :type        type}
-       label]]]))
-
-(defn counter
-  "Counter component.
-
-  API:
-  - `props` map
-    - `:type` one of `:default`, `:secondary`, `:grey`, `:outline`,
-      `:outline-color`, `:warning`, `:error` (default `:default`)
-    - `:size` one of `:default` or `:large` (default `:default`)
-    - `:blur?` optional boolean that uses the blur treatment (default `false`)
-    - `:style` optional caller style (map/vector/js style)
-    - Any additional keys are forwarded to the root `:rn/view`
-      (for example `:accessibility-label`, `:testID`)
-  - `value` label rendered inside the counter."
-  [{:keys [blur? size style type]
-    :or   {blur? false
-           size  :default
-           type  :default}
-    :as   props}
-   value]
+(defn counter [{:keys [blur? size type]
+                :or   {size :default
+                       type :default}
+                :as   props}
+               value]
   (let [{:keys [color dark-theme?]} (context/use-theme-color)
-        root-props            (dissoc props :blur? :size :style :type)]
-    (if (= size :large)
-      [large-counter-view {:blur?       blur?
-                           :color       color
-                           :dark-theme? dark-theme?
-                           :root-props  root-props
-                           :style       style
-                           :type        type
-                           :value       value}]
-      [default-counter-view {:blur?       blur?
-                             :color       color
-                             :dark-theme? dark-theme?
-                             :root-props  root-props
-                             :style       style
-                             :type        type
-                             :value       value}])))
+        label                       (str value)
+        layout-key                  (value-layout-key label)
+        ;; Figma's negative Grey/Outline variants retain normal dark colors on blur.
+        blur?                       (and blur?
+                                         (not (and dark-theme?
+                                                   (= layout-key :negative)
+                                                   (#{:grey :outline :outline-color} type))))]
+    [:rn/view (-> props
+                  (dissoc :blur? :size :type :style)
+                  (assoc :style (rn.utils/add-styles style/container
+                                                     (style/container-style color size layout-key type dark-theme? blur? (count label))
+                                                     (:style props))))
+     [:rn/view {:style [style/surface
+                        (style/surface-style color size layout-key type dark-theme? blur?)]}]
+     [text/text {:font            (value-font size)
+                 :number-of-lines 1
+                 :style           (style/value-style color size layout-key type dark-theme? blur?)}
+      label]]))

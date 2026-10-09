@@ -44,31 +44,25 @@
     :dark-grey
     :grey))
 
-(defn- secondary-button-background [theme blur? scroll?]
-  (cond
-    (and (= theme :theme/light) scroll?)
-    :blur
-
-    (and (= theme :theme/dark)
-         (or scroll? blur?))
-    :blur))
+(defn- secondary-button-blur? [theme blur? scroll?]
+  (or (and (= theme :theme/light) scroll?)
+      (and (= theme :theme/dark) (or scroll? blur?))))
 
 (defn- action-button-view [{:keys [theme blur? scroll? description-position primary? button-props]}]
-  (let [button-type       (or (:type button-props)
-                              (if primary?
-                                :primary
-                                (secondary-button-type theme blur? scroll? description-position)))
-        button-background (or (:background button-props)
-                              (when-not primary?
-                                (secondary-button-background theme blur? scroll?)))]
-    [button/button (cond-> (-> button-props
-                               (dissoc :label)
-                               (assoc :size            40
-                                      :container-style (rn.utils/add-styles
-                                                        style/action-slot
-                                                        (:container-style button-props))))
-                     button-type (assoc :type button-type)
-                     button-background (assoc :background button-background))
+  (let [button-type (or (:type button-props)
+                        (if primary?
+                          :primary
+                          (secondary-button-type theme blur? scroll? description-position)))
+        button-blur? (get button-props :blur?
+                          (and (not (:photo? button-props))
+                               (not primary?)
+                               (secondary-button-blur? theme blur? scroll?)))]
+    [button/button (-> button-props
+                       (dissoc :label)
+                       (assoc :size  40
+                              :type  button-type
+                              :blur? button-blur?
+                              :style (rn.utils/add-styles style/action-slot (:style button-props))))
      (:label button-props)]))
 
 (defn- actions-view [{:keys [theme blur? scroll? description-position buttons]}]

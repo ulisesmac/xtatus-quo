@@ -53,7 +53,8 @@
                             :icon  {:name :icon/info
                                     :side :right}))
            background
-           (assoc :background background)
+           (assoc :photo? (= background :photo)
+                  :blur?  (= background :blur))
 
            dark-solid?
            (assoc :style      (rn.utils/add-styles

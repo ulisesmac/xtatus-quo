@@ -173,6 +173,10 @@
 (defstyle label-text
   {:text-align :right})
 
+(defstyle image
+  {:width 20
+   :height 20})
+
 (defstyle image-placeholder
   {:width            20
    :height           20
@@ -183,10 +187,19 @@
    :height           32
    :background-color (colors/get-color :color/danger 50)})
 
-(defstyle color-placeholder
-  {:width            20
-   :height           20
-   :background-color (colors/get-color :color/danger 50)})
+(defstyle color-container
+  {:width 20
+   :height 20
+   :align-items :center
+   :justify-content :center})
+
+(defstyle color-circle
+  {:width 15
+   :height 15
+   :border-radius 7.5})
+
+(defn color-circle-background [color]
+  (style {:background-color (colors/get-color color)}))
 
 (defstyle tag-placeholder
   {:width            88
