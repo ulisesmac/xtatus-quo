@@ -32,8 +32,11 @@
   (style {:text-align  :center
           :flex-shrink 1
           :color       (cond
+                         (and error? dark-theme?)
+                         (colors/get-color :color/danger 60)
+
                          error?
-                         (colors/get-color :color/danger (if dark-theme? 60 50))
+                         (colors/get-color :color/danger 50)
 
                          (and light-theme? scroll? (= position :bottom))
                          (colors/get-color :color/neutral-80-70)

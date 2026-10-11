@@ -38,8 +38,11 @@
             :border-radius              12
             :padding-left               8
             :padding-right              (cond
+                                          (and light-theme? (not= variant :account) pressed?)
+                                          8
+
                                           (and light-theme? (not= variant :account))
-                                          (if pressed? 8 12)
+                                          12
 
                                           action
                                           12
@@ -51,16 +54,23 @@
             :align-items                :center
             :gap                        16
             :background-color           (cond
+                                          (and blur? pressed?)
+                                          (colors/themed theme :color/neutral-80-10 :color/white-10)
+
                                           blur?
-                                          (if pressed?
-                                            (colors/themed theme :color/neutral-80-10 :color/white-10)
-                                            (colors/themed theme :color/neutral-80-5 :color/white-5))
+                                          (colors/themed theme :color/neutral-80-5 :color/white-5)
+
+                                          (and light-theme? pressed?)
+                                          (colors/get-color :color/neutral-5)
 
                                           light-theme?
-                                          (colors/get-color (if pressed? :color/neutral-5 :color/neutral-2.5))
+                                          (colors/get-color :color/neutral-2.5)
+
+                                          pressed?
+                                          (colors/get-color :color/neutral 80 60)
 
                                           :else
-                                          (colors/get-color :color/neutral 80 (if pressed? 60 40)))
+                                          (colors/get-color :color/neutral 80 40))
             :transition-property        :backgroundColor
             :transition-duration        (get animations/press-feedback duration-key)
             :transition-timing-function (get animations/press-feedback easing-key)})))

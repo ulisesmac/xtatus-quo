@@ -61,10 +61,11 @@
         line-height                          (js/Math.round (j/get font-style :lineHeight))
         minimum                              (max line-height (- (or min-height 0) vertical-padding))
         maximum                              (when max-height (max minimum (- max-height vertical-padding)))
-        height                               (if multiline?
-                                               (cond-> (max minimum (if filled? (or content-height line-height) line-height))
-                                                 maximum (min maximum))
-                                               line-height)
+        height                               (cond
+                                               (not multiline?) line-height
+                                               (not filled?)    minimum
+                                               maximum          (min maximum (max minimum (or content-height line-height)))
+                                               :else            (max minimum (or content-height line-height)))
         overflow?                            (and filled? maximum content-height (> content-height maximum))
         caller-size-change                   (:on-content-size-change native-props)
         size-change!                         (react/use-callback (fn [event]
@@ -112,7 +113,10 @@
             change!                 (react/use-callback (fn [next-value]
                                                           (reset! last-value next-value)
                                                           (when-not controlled?
-                                                            (set-value-metric! (if max-length (count next-value) (if (seq next-value) 1 0))))
+                                                            (set-value-metric! (cond
+                                                                                 max-length       (count next-value)
+                                                                                 (seq next-value) 1
+                                                                                 :else            0)))
                                                           (when on-change-text (on-change-text next-value)))
                                                         [controlled? max-length on-change-text])
             clear!                  (react/use-callback (fn []

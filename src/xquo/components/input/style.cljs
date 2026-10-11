@@ -40,8 +40,11 @@
                     {:keys [size leading? clearable? button? blur? error? focused? filled? disabled? multiline?]}]
   (let [large? (= size 40)
         left   (cond
+                 (and leading? large?)
+                 12
+
                  leading?
-                 (if large? 12 8)
+                 8
 
                  (and large? dark-theme? blur? button? (not error?) (not focused?) (not filled?) (not disabled?))
                  12
@@ -52,8 +55,11 @@
                  :else
                  12)
         right  (cond
+                 (and button? large?)
+                 8
+
                  button?
-                 (if large? 8 4)
+                 4
 
                  (not large?)
                  8

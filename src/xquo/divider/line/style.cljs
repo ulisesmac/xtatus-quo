@@ -14,7 +14,11 @@
 
 (defn line-color [theme blur? dashed?]
   (cond
-    (and (= theme :theme/dark) blur?) (colors/get-color (if dashed? :color/white-10 :color/white-5))
-    blur?                            (colors/get-color (if dashed? :color/neutral-80-10 :color/neutral-80-5))
-    (= theme :theme/dark)            (colors/get-color (if dashed? :color/neutral-80 :color/neutral-90))
-    :else                            (colors/get-color (if dashed? :color/neutral-20 :color/neutral-10))))
+    (and (= theme :theme/dark) blur? dashed?) (colors/get-color :color/white-10)
+    (and (= theme :theme/dark) blur?)         (colors/get-color :color/white-5)
+    (and blur? dashed?)                      (colors/get-color :color/neutral-80-10)
+    blur?                                   (colors/get-color :color/neutral-80-5)
+    (and (= theme :theme/dark) dashed?)       (colors/get-color :color/neutral-80)
+    (= theme :theme/dark)                    (colors/get-color :color/neutral-90)
+    dashed?                                 (colors/get-color :color/neutral-20)
+    :else                                   (colors/get-color :color/neutral-10)))

@@ -17,6 +17,9 @@
   (let [theme-color             (context/use-theme-color)
         icon-color              (if danger? :color/danger color)
         color                   (or icon-color (:color theme-color))
+        selected-color          (if blur?
+                                  (colors/get-color :color/white-100)
+                                  (colors/get-color color 50))
         [pressed? set-pressed!] (react/use-state false)
         press!                  (react/use-callback (fn [event]
                                                       (when on-select (on-select (not selected?)))
@@ -97,9 +100,7 @@
          selected?
          [icon/view {:name  :icon/check
                      :size  20
-                     :color (if blur?
-                              (colors/get-color :color/white-100)
-                              (colors/get-color color 50))}]
+                     :color selected-color}]
 
          (= action :arrow)
          [icon/view {:name  :icon/chevron-right

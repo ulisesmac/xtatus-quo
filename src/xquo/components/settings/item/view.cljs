@@ -67,6 +67,8 @@
   (let [image-type (or (:type image) :icon)
         image-name (:name image)
         image-icon (:icon image)
+        source     (or (:source image)
+                       (when-let [url (:url image)] {:uri url}))
         icon-node  [icon/view (merge {:name  (or image-name :icon/browser)
                                       :size  20
                                       :color (style/leading-icon-color theme blur? pressed?)}
@@ -79,13 +81,13 @@
       (= image-type :icon)
       icon-node
 
+      (and (= image-type :image) source)
+      [:rn/image {:source      source
+                  :resize-mode :contain
+                  :style       (rn.utils/add-styles style/image (:style image))}]
+
       (= image-type :image)
-      (if-let [source (or (:source image)
-                          (when-let [url (:url image)] {:uri url}))]
-        [:rn/image {:source source
-                     :resize-mode :contain
-                     :style (rn.utils/add-styles style/image (:style image))}]
-        [:rn/view {:style style/image-placeholder}])
+      [:rn/view {:style style/image-placeholder}]
 
       (= image-type :avatar)
       [:rn/view {:style style/avatar-placeholder}])))

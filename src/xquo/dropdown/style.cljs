@@ -16,15 +16,16 @@
                       :color/white
                       :color/neutral-100)))
 
-(defn leading-color [{:keys [theme dark-theme?]} type blur? photo? input?]
+(defn leading-color [{:keys [theme]} type blur? photo? input?]
   (cond
     (= type :customisation)
     (colors/get-color :color/white-70)
 
+    (and (or blur? photo?) input?)
+    (colors/themed theme :color/neutral-80-70 :color/white-70)
+
     (or blur? photo?)
-    (colors/get-color (if dark-theme? :color/white :color/neutral)
-                      (if dark-theme? 50 80)
-                      (if input? 70 40))
+    (colors/themed theme :color/neutral-80-40 :color/white-40)
 
     :else
     (colors/themed theme :color/neutral-50 :color/neutral-40)))
@@ -45,60 +46,72 @@
    (foreground context type)])
 
 (defn- fill [{:keys [theme dark-theme?]} color type size content-only? active? blur? photo?]
+  (let [customisation? (= type :customisation)
+        grey?          (= type :grey)
+        ghost?         (= type :ghost)
+        backdrop?      (or blur? photo?)]
+    (cond
+      (and customisation? dark-theme? active?)
+      (colors/get-color color 50)
+
+      (and customisation? dark-theme?)
+      (colors/get-color color 60)
+
+      (and customisation? active?)
+      (colors/get-color color 60)
+
+      customisation?
+      (colors/get-color color 50)
+
+      (and grey? photo? active?)
+      (colors/themed theme :color/white-50 :color/neutral-80-50)
+
+      (and grey? photo?)
+      (colors/themed theme :color/white-40 :color/neutral-80-40)
+
+      (and backdrop? active? (or grey? ghost?))
+      (colors/themed theme :color/neutral-80-10 :color/white-10)
+
+      (and backdrop? grey?)
+      (colors/themed theme :color/neutral-80-5 :color/white-5)
+
+      (and grey? dark-theme? active? content-only?)
+      (colors/get-color :color/neutral-70)
+
+      (and grey? dark-theme? active?)
+      (colors/get-color :color/neutral-80)
+
+      (and grey? dark-theme?)
+      (colors/get-color :color/neutral-90)
+
+      (and grey? active? content-only? (< size 40))
+      (colors/get-color :color/neutral-30)
+
+      (and grey? active?)
+      (colors/get-color :color/neutral-20)
+
+      (and grey? (= size 40))
+      (colors/get-color :color/neutral-5)
+
+      grey?
+      (colors/get-color :color/neutral-10)
+
+      (and ghost? active?)
+      (colors/themed theme :color/neutral-10 :color/neutral-80))))
+
+(defn- border [{:keys [theme]} active? blur? photo?]
   (cond
-    (= type :customisation)
-    (colors/get-color color (cond
-                              (and dark-theme? active?) 50
-                              dark-theme?               60
-                              active?                   60
-                              :else                     50))
+    (and (or blur? photo?) active?)
+    (colors/themed theme :color/neutral-80-10 :color/white-10)
 
-    (and (= type :grey) photo?)
-    (colors/get-color (if dark-theme? :color/neutral :color/white)
-                      (if dark-theme? 80 50)
-                      (if active? 50 40))
+    (or blur? photo?)
+    (colors/themed theme :color/neutral-80-5 :color/white-5)
 
-    (and (or blur? photo?)
-         (or (= type :grey) (and (= type :ghost) active?)))
-    (colors/get-color (if dark-theme? :color/white :color/neutral)
-                      (if dark-theme? 50 80)
-                      (if active? 10 5))
+    active?
+    (colors/themed theme :color/neutral-40 :color/neutral-60)
 
-    (= type :grey)
-    (colors/get-color :color/neutral
-                      (cond
-                        (and dark-theme? active? content-only?)
-                        70
-
-                        (and dark-theme? active?)
-                        80
-
-                        dark-theme?
-                        90
-
-                        (and active? content-only? (< size 40))
-                        30
-
-                        active?
-                        20
-
-                        (= size 40)
-                        5
-
-                        :else
-                        10))
-
-    (and (= type :ghost) active?)
-    (colors/themed theme :color/neutral-10 :color/neutral-80)))
-
-(defn- border [{:keys [theme dark-theme?]} active? blur? photo?]
-  (if (or blur? photo?)
-    (colors/get-color (if dark-theme? :color/white :color/neutral)
-                      (if dark-theme? 50 80)
-                      (if active? 10 5))
-    (colors/themed theme
-                   (if active? :color/neutral-40 :color/neutral-30)
-                   (if active? :color/neutral-60 :color/neutral-70))))
+    :else
+    (colors/themed theme :color/neutral-30 :color/neutral-70)))
 
 (defn button [context color type size content content-only? active? blur? photo?]
   (let [border-width (if (= type :outline) 1 0)
@@ -165,21 +178,23 @@
   {:flex      1
    :min-width 0})
 
-(defn input [{:keys [theme dark-theme? light-theme?]} content active? disabled? blur?]
+(defn input [{:keys [theme light-theme?]} content active? disabled? blur?]
   (style {:height           40
           :width            "100%"
           :border-radius    12
           :border-width     1
-          :border-color     (if blur?
-                              (colors/get-color (if dark-theme? :color/white :color/neutral)
-                                                (if dark-theme? 50 80)
-                                                (cond
-                                                  (and active? dark-theme?) 40
-                                                  active?                   20
-                                                  :else                     10))
-                              (colors/themed theme
-                                             (if active? :color/neutral-40 :color/neutral-20)
-                                             (if active? :color/neutral-60 :color/neutral-70)))
+          :border-color     (cond
+                              (and blur? active?)
+                              (colors/themed theme :color/neutral-80-20 :color/white-40)
+
+                              blur?
+                              (colors/themed theme :color/neutral-80-10 :color/white-10)
+
+                              active?
+                              (colors/themed theme :color/neutral-40 :color/neutral-60)
+
+                              :else
+                              (colors/themed theme :color/neutral-20 :color/neutral-70))
           :background-color (if blur? "transparent" (colors/themed theme :color/white :color/neutral-95))
           :padding-left     (dec (if (or content (and light-theme? blur? (not disabled?))) 12 16))
           :padding-right    11

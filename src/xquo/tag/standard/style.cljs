@@ -38,11 +38,17 @@
                        selected?
                        (colors/themed theme color)
 
+                       (and blur? dark-theme? pressed?)
+                       (colors/get-color :color/white-20)
+
                        (and blur? dark-theme?)
-                       (colors/get-color :color/white (if pressed? 20 10))
+                       (colors/get-color :color/white-10)
+
+                       (and blur? pressed?)
+                       (colors/get-color :color/neutral-80-10)
 
                        blur?
-                       (colors/get-color :color/neutral 80 (if pressed? 10 5))
+                       (colors/get-color :color/neutral-80-5)
 
                        (and dark-theme? pressed?)
                        (colors/get-color :color/neutral-60)
