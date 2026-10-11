@@ -17,14 +17,16 @@
     (into [:> (j/get app-context :Provider) {:value provider-value}]
           children)))
 
-(defn use-theme-color []
-  (let [context     (react/use-context app-context)
-        theme-value (j/get context :theme)
-        color-value (j/get context :color)]
-    {:theme        theme-value
-     :color        color-value
-     :dark-theme?  (= theme-value :theme/dark)
-     :light-theme? (= theme-value :theme/light)}))
+(defn use-theme-color
+  ([] (use-theme-color nil))
+  ([theme]
+   (let [context     (react/use-context app-context)
+         theme-value (or theme (j/get context :theme))
+         color-value (j/get context :color)]
+     {:theme        theme-value
+      :color        color-value
+      :dark-theme?  (= theme-value :theme/dark)
+      :light-theme? (= theme-value :theme/light)})))
 
 (defn current-color [] @color-atom)
 

@@ -5,12 +5,13 @@ import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.model.ReactModuleInfoProvider
 import com.facebook.react.uimanager.ViewManager
+import com.xquo.overlay.OverlayViewManager
 
 class EffectViewPackage : BaseReactPackage() {
 
   override fun createViewManagers(
     reactContext: ReactApplicationContext
-  ): List<ViewManager<*, *>> = listOf(EffectViewManager())
+  ): List<ViewManager<*, *>> = listOf(EffectViewManager(), OverlayViewManager())
 
   override fun getModule(
     name: String,

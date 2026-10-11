@@ -1,6 +1,51 @@
 (ns xquo.core
   (:refer-clojure :exclude [filter list])
-  (:require [xquo.components.avatar.view]
+  (:require [xquo.dropdown.view]
+            [xquo.drawer.action.view]
+            [xquo.drawer.actions.view]
+            [xquo.drawer.body.view]
+            [xquo.drawer.bottom-actions.view]
+            [xquo.drawer.bottom-context.view]
+            [xquo.drawer.content.view]
+            [xquo.drawer.divider.view]
+            [xquo.drawer.label.view]
+            [xquo.drawer.permissions-context.view]
+            [xquo.drawer.sheet]
+            [xquo.drawer.top.view]
+            [xquo.dapp.activity.view]
+            [xquo.dapp.group.view]
+            [xquo.dapp.list-card.view]
+            [xquo.community.token-gating.view]
+            [xquo.community.main-card.view]
+            [xquo.community.channel-actions.view]
+            [xquo.community.channel-action.view]
+            [xquo.community.role.view]
+            [xquo.community.stat.view]
+            [xquo.tag.asset.view]
+            [xquo.tag.permissions.view]
+            [xquo.tag.standard.view]
+            [xquo.card.wallet.view]
+            [xquo.card.banner.view]
+            [xquo.calendar.picker.view]
+            [xquo.calendar.year.view]
+            [xquo.calendar.day.view]
+            [xquo.camera.crop.view]
+            [xquo.camera.controls.view]
+            [xquo.camera.shutter.view]
+            [xquo.components.segmented-tab.view]
+            [xquo.banner.global.view]
+            [xquo.banner.alert.view]
+            [xquo.banner.standard.view]
+            [xquo.browser.navigation.view]
+            [xquo.browser.input.view]
+            [xquo.browser.new-tab.view]
+            [xquo.browser.favorites.view]
+            [xquo.browser.dapp-item.view]
+            [xquo.components.favicon.view]
+            [xquo.audio.recorder.view]
+            [xquo.audio.player.view]
+            [xquo.audio.soundtrack.view]
+            [xquo.components.avatar.view]
             [xquo.components.button.view]
             [xquo.components.color-picker.color.view]
             [xquo.components.color-picker.picker.view]
@@ -13,7 +58,6 @@
             [xquo.components.drawer.bottom-actions.view]
             [xquo.components.drawer.drawer-action.view]
             [xquo.components.drawer.drawer-label.view]
-            [xquo.components.drawer.drawer.view]
             [xquo.components.drawer.top.view]
             [xquo.components.emoji-picker.view]
             [xquo.components.empty-state.view]
@@ -25,7 +69,9 @@
             [xquo.components.list-items.result-list.view]
             [xquo.components.list-items.simple-item.view]
             [xquo.components.list.view]
-            [xquo.components.notification.view]
+            [xquo.notification.host.view]
+            [xquo.notification.toast.view]
+            [xquo.notification.in-app.view]
             [xquo.components.page-nav.view]
             [xquo.components.page-top.view]
             [xquo.components.selectors.disclaimer.view]
@@ -43,13 +89,151 @@
             [xquo.components.unified-tab.view]
             [xquo.shell.option-card.view]))
 
+(def audio
+  "Audio UI; host owns media operations. Components inherit theme and context color.
+  audio.soundtrack: :progress (0–1, default 0), optional :time, :state
+  (:default/:deleting/:listening), :warning?, :on-seek (progress), :style.
+  audio.player: :progress, :time, :state (:default/:playing/:loading),
+  :on-press, :on-seek (progress), :style. Reuses Soundtrack and Xquo Button.
+  audio.recorder: :state, :time, :progress, :warning?, :style; callbacks :on-record,
+  :on-stop, :on-lock, :on-delete, :on-send, :on-play, :on-pause, :on-seek.
+  Owns transient drag feedback; :on-state-change optionally reports drag states."
+  #js {:soundtrack xquo.audio.soundtrack.view/soundtrack
+       :player     xquo.audio.player.view/player
+       :recorder   xquo.audio.recorder.view/recorder})
+
+(def favicon
+  "16 px site mark. :content is {:type :image :image {...}} or
+  {:type :initials :text ...}; supports :blur? and :style, inherits theme."
+  xquo.components.favicon.view/favicon)
+
+(def browser
+  "Browser UI; host owns navigation/web content and native safe-area insets.
+  browser.dapp-item: :title, :image, :on-press, :style.
+  browser.favorites: :items of dapp-item props, :style.
+  browser.new-tab: :title, :on-press, full :button props, :style.
+  browser.input: :value, :on-change-text, :on-submit-editing, :placeholder,
+  :image, :secure?, :blur?, :style; native focus and text selection.
+  browser.navigation: :input, :avatar, :back, :forward, :reload props maps,
+  :blur? and :style. Composes Avatar and Button; drawer chrome belongs to the host."
+  #js {:dapp_item  xquo.browser.dapp-item.view/dapp-item
+       :favorites  xquo.browser.favorites.view/favorites
+       :new_tab    xquo.browser.new-tab.view/new-tab
+       :input      xquo.browser.input.view/input
+       :navigation xquo.browser.navigation.view/navigation})
+
+(def dropdown
+  "dropdown.button [props text]: :type :outline/:grey/:customisation/:ghost,
+  numeric :size 24/32/40, :content {:type :icon :icon {...}} or
+  {:type :image :image {...}}, :active?, :disabled?, :blur?, :photo?, :color,
+  :on-press, :style and Button press props. Omit text for a square content-only
+  trigger. Customisation inherits context color. :photo? owns blur 40;
+  :blur? adapts to parent blur. These two flags are alternatives.
+  dropdown.input [props value]: optional :label/:content, :active?, :disabled?,
+  :blur?, :on-press and Button press props. Fixed 40 px field; :style applies
+  to its outer container. Both are triggers; the host owns menu/selection."
+  #js {:button xquo.dropdown.view/dropdown-button
+       :input  xquo.dropdown.view/dropdown-input})
+
+(def banner
+  "banner.standard: :title, optional :icon map/:counter, :blur?, :on-press,
+  :style and pressable props. Inherits context color and theme; parent owns blur.
+  banner.alert: :title, optional full :button props plus :label, :style.
+  Uses danger tokens and actual Button24; text wraps naturally.
+  banner.global: :items of {:type :error|:alert :title ...}, :style.
+  Semantic danger/warning rows; parent owns system insets."
+  #js {:standard xquo.banner.standard.view/banner-standard
+       :alert    xquo.banner.alert.view/banner-alert
+       :global   xquo.banner.global.view/banner-global})
+
+(def calendar
+  "calendar.day [props label]: :selected?, :today?, :disabled?, :on-press, :style.
+  calendar.year [props year]: :selected?, :on-press, :style.
+  calendar.picker: controlled :month (YYYY-MM), :mode :single/:range, :value
+  (ISO date or {:start ISO :end ISO}), :on-change, :on-month-change, :today,
+  :min-date/:max-date, optional :years/:locale, :first-day-of-week (0), :style.
+  Device Spanish/English locale by default; other locales fall back to English.
+  Sunday first matches Figma. Actual Gregorian dates, inherited theme/color."
+  #js {:day    xquo.calendar.day.view/calendar-day
+       :year   xquo.calendar.year.view/calendar-year
+       :picker xquo.calendar.picker.view/calendar-picker})
+
+(def segmented-tab
+  "Segmented tab [props label] with numeric :size 28/20, :type :grey/:dark-grey,
+  :selected?, :disabled?, :blur?, :on-press, :style and :label-style.
+  Optional :symbol is tagged :icon/:image/:emoji using standard content maps."
+  xquo.components.segmented-tab.view/segmented-tab)
+
+(def camera
+  "Camera UI; host owns capture/crop and system insets.
+  camera.shutter: :action :shutter/:confirm, :on-press, :disabled?, :style.
+  camera.controls: :zoom, :zoom-options, :on-zoom-change, :flash?, full maps
+  :flash/:flip/:shutter, :orientation :vertical/:horizontal, :style.
+  camera.crop: :confirm shutter props, :rotate Button props, :orientation, :style.
+  Composes existing Button and Segmented tab on the camera's dark photo surface."
+  #js {:shutter  xquo.camera.shutter.view/shutter
+       :controls xquo.camera.controls.view/controls
+       :crop     xquo.camera.crop.view/crop})
+
+(def card
+  "card.banner and card.wallet take :title, :description, standard :image,
+  :on-press and :style. Wallet additionally accepts :on-dismiss.
+  Actual image content is supplied by callers; theme styling is internal."
+  #js {:banner xquo.card.banner.view/banner
+       :wallet xquo.card.wallet.view/wallet})
+
+(def tag
+  "tag.standard [props label]: :content image/icon/emoji, :size 24/32, :selected?,
+  :disabled?, :blur?, :on-press, :style. Inherits theme/context.
+  tag.permissions: :groups of {:tokens [image-maps] :total optional-count},
+  :size 24/32, :locked?, :blur?, :more-groups?, :separator-label, optional semantic
+  :background-color and :style. Pure display; host owns permission decisions.
+  tag.asset: :variant :token/:collectible, :image, :label, :size 24/32,
+  :option nil/:hold/:add/:loading, :blur?, :on-press, :style."
+  #js {:standard    xquo.tag.standard.view/tag
+       :permissions xquo.tag.permissions.view/permissions-tag
+       :asset       xquo.tag.asset.view/asset-tag})
+
+(def community
+  "Community presentation components; domain/eligibility decisions stay in the host.
+  community.stat [props value]: :icon map, :style.
+  community.role: :label, :tag (ContextTag props plus :label), :style.
+  community.channel-action: :title, :icon, :counter, :disabled?, :on-press, :style.
+  community.channel-actions: :items of action props, :columns (3), :style.
+  community.main-card: :title, :description, :avatar, :cover, :permissions,
+  :stats, :tags, :loading?, :on-press, :style.
+  community.token-gating: :variant :community/:channel-list/:channel-detail/
+  :community-detail; :sections containing :groups containing :rows of :items
+  (Tag Asset props), optional row :prefix. Accepts full :header, :info, :button,
+  :information maps, :footer-text, :separator-label and :style.
+  Channel/detail variants are content only; the host Xquo drawer owns its chrome."
+  #js {:stat            xquo.community.stat.view/stat
+       :role            xquo.community.role.view/role
+       :channel_action  xquo.community.channel-action.view/channel-action
+       :channel_actions xquo.community.channel-actions.view/channel-actions
+       :main_card       xquo.community.main-card.view/main-card
+       :token_gating    xquo.community.token-gating.view/token-gating})
+
+(def dapp
+  "dApp presentation; host owns navigation, transactions and approval decisions.
+  dapp.list-card: :variant :account/:dapp/:smart-contract/:approval, full :avatar,
+  :title, :description, :description-icon, :action, :blur?, :on-press, :style.
+  dapp.group: full :header and list-card :items, :blur?, :style.
+  dapp.activity [props & description]: :title, :timestamp, :icon, optional :status
+  (:pending/:confirmed/:finalized/:error), :counter, :unread?, :blur?, :on-press,
+  :style. Description children can compose existing ContextTags."
+  #js {:list_card xquo.dapp.list-card.view/list-card
+       :group     xquo.dapp.group.view/group
+       :activity  xquo.dapp.activity.view/activity})
+
 (def avatar
   "Avatar with one tagged content slot. Theme/color inherit from Xquo context.
 
   :size        16, 20, 24, 28, 32, 36, 48, 56, 64, or 80; default 32.
   :shape       :circle (default), :rounded-square, or :hexagon.
   :content     {:type :image :image {:source ...}} (or :url, optional :style),
-               {:type :icon :icon {...}}, {:type :emoji :text ...}, or
+               {:type :icon :icon {...}}, {:type :emoji :text ...},
+               {:type :emoji-image :image {...}}, or
                {:type :initials :text ...}. :type selects the renderer.
                Omit content for an empty frame. Images fill the whole shape;
                transparent pixels reveal the resolved context/color prop color.
@@ -57,7 +241,8 @@
   :variant     :solid, :soft (default), or nil for no fill.
   :border      Optional :solid or :dashed edge.
   :blur?       When truthy, adapts styling to a blurred backdrop; never creates a blur view.
-  :badge       Optional {:status :online/:offline}, {:icon {...}}, or
+  :badge       Optional {:status :online/:offline/:pending/:confirmed/:finalized/:error},
+               {:icon {...}}, or
                {:image {:source ...}} (or :url, optional :style).
                All badge types work at every supported size with every content type.
                Uses exact Figma metrics where specified and scaled metrics elsewhere.
@@ -140,7 +325,33 @@
        :new      xquo.divider.new.view/divider-new
        :strength xquo.divider.strength.view/divider-strength})
 (def bottom-actions xquo.components.drawer.bottom-actions.view/bottom-actions)
-(def drawer xquo.components.drawer.drawer.view/drawer)
+(def drawer
+  "Composable TrueSheet drawer pieces. screen-options accepts :theme, :blur?,
+  :handle? and TrueSheet options. content takes matching props and children;
+  it owns one backdrop and native handle spacing, never an OS navigation bar.
+
+  top: :title, :description, tagged :content (icon/image/avatar), :context-tags,
+  :button, :counter, :title-icon, :description-icon, :trailing-icon, :compact?.
+  action: :title, :description, tagged :content (icon/image), :action
+  (nil/:arrow/:toggle/:input), :input, :selected?, :on-select, press callbacks.
+  actions: :items of action maps, with group spacing. label: :label/:counter.
+  body: string or Hiccup children. bottom-actions: full :buttons maps with
+  :label, :description {:position :status :text}, real :context-tag, :scroll?.
+  bottom-context: :left/:right button maps. permissions-context: children or
+  :button.
+  Pieces accept :blur?/:style. Button maps preserve caller overrides.
+  Compose these pieces inside content in an existing TrueSheet navigator."
+  #js {:screen_options      xquo.drawer.sheet/screen-options
+       :content             xquo.drawer.content.view/content
+       :top                 xquo.drawer.top.view/top
+       :action              xquo.drawer.action.view/action
+       :actions             xquo.drawer.actions.view/actions
+       :divider             xquo.drawer.divider.view/divider
+       :label               xquo.drawer.label.view/label
+       :body                xquo.drawer.body.view/body
+       :bottom_actions      xquo.drawer.bottom-actions.view/bottom-actions
+       :bottom_context      xquo.drawer.bottom-context.view/bottom-context
+       :permissions_context xquo.drawer.permissions-context.view/permissions-context})
 (def drawer-action xquo.components.drawer.drawer-action.view/drawer-action)
 (def drawer-label xquo.components.drawer.drawer-label.view/drawer-label)
 (def drawer-handle xquo.components.drawer.top.view/drawer-handle)
@@ -156,7 +367,14 @@
 (def list xquo.components.list.view/view)
 (def result-list xquo.components.list-items.result-list.view/result-list)
 (def simple-item xquo.components.list-items.simple-item.view/simple-item)
-(def notification xquo.components.notification.view/notification)
+(def notification
+  "Blurred toast and in-app notification components. Wrap navigation in provider;
+  use-notifications supplies show! (Hiccup + optional duration/on-dismiss) and dismiss!.
+  Timers pause during touch; upward swipe dismisses, downward drag springs back."
+  #js {:toast             xquo.notification.toast.view/toast
+       :in_app            xquo.notification.in-app.view/in-app
+       :provider          xquo.notification.host.view/provider
+       :use_notifications xquo.notification.host.view/use-notifications})
 (def page-nav xquo.components.page-nav.view/page-nav)
 (def page-nav-left-action xquo.components.page-nav.view/nav-left-action)
 (def page-nav-title xquo.components.page-nav.view/nav-title)

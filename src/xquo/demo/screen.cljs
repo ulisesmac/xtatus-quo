@@ -10,14 +10,14 @@
 
 (def ^:private mountains (asset-require "xquo-demo/mountains.png"))
 
-(defn screen [{:keys [title preview shell? blur? photo?]} & children]
+(defn screen [{:keys [title preview preview-theme shell? blur? photo?]} & children]
   (let [top                         (safe-area/use-top)
         bottom                      (safe-area/use-bottom)
         device-theme                (rn/use-color-scheme)
         [selected-theme set-theme!] (react/use-state nil)
-        theme                       (or selected-theme device-theme)
-        next-theme                  (if (= theme :theme/dark) :theme/light :theme/dark)
-        preview-theme               (if shell? :theme/dark theme)
+        {:keys [theme dark-theme?]} (context/use-theme-color (or selected-theme device-theme))
+        next-theme                  (if dark-theme? :theme/light :theme/dark)
+        preview-theme               (or preview-theme (if shell? :theme/dark theme))
         switch-theme!               (react/use-callback #(set-theme! next-theme) [next-theme])
         {:keys [go-back]}           (navigation/use-navigation)]
     [context/provider {:theme theme}
@@ -25,7 +25,7 @@
                                   :style    (style/root theme top bottom)}
       [xquo/page-nav {:background :none
                       :left       {:icon {:name :icon/arrow-left} :on-press go-back}
-                      :right      [{:icon     {:name (if (= next-theme :theme/light) :icon/light :icon/dark)}
+                      :right      [{:icon     {:name (if dark-theme? :icon/light :icon/dark)}
                                     :on-press switch-theme!}]
                       :center     {:type :title :title title :text-align :center}}]
       (if preview

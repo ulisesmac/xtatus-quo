@@ -4,7 +4,9 @@
             [xquo.foundations.colors :as colors]))
 
 (defn frame [size]
-  (style {:width size :height size :flex-shrink 0}))
+  (style {:width       size
+          :height      size
+          :flex-shrink 0}))
 
 (defstyle content
   {:position        :absolute
@@ -37,26 +39,58 @@
 
 (defn fill-color [theme blur? color variant shape content-type]
   (cond
-    (nil? variant)                       "transparent"
-    (= variant :solid)                   (colors/themed theme color)
-    (and blur? (= color :color/neutral))  "transparent"
-    (= color :color/neutral)              (colors/themed theme :color/white-100 :color/neutral-90)
+    (nil? variant)
+    "transparent"
+
+    (= variant :solid)
+    (colors/themed theme color)
+
+    (and blur? (= color :color/neutral))
+    "transparent"
+
+    (and (= color :color/neutral)
+         (= content-type :icon))
+    (colors/themed theme :color/white-100 :color/neutral-95)
+
+    (= color :color/neutral)
+    (colors/themed theme :color/white-100 :color/neutral-90)
+
     (and (= shape :circle)
-         (= content-type :emoji))        (colors/get-color color 50 10)
-    :else                                (colors/get-color color 50 (soft-fill-opacity shape))))
+         (#{:emoji :emoji-image} content-type))
+    (colors/get-color color 50 10)
+
+    :else
+    (colors/get-color color 50 (soft-fill-opacity shape))))
 
 (defn foreground-color [theme color variant]
   (cond
-    (= variant :solid)       (colors/get-color :color/white-70)
-    (= color :color/neutral) (colors/themed theme :color/neutral-100 :color/white-100)
-    :else                   (colors/themed theme color)))
+    (= variant :solid)
+    (colors/get-color :color/white-70)
 
-(defn border-color [theme blur? border content]
+    (= color :color/neutral)
+    (colors/themed theme :color/neutral-100 :color/white-100)
+
+    :else
+    (colors/themed theme color)))
+
+(defn border-color [theme blur? border content color]
   (cond
-    blur?              (colors/themed theme :color/neutral-80-5 :color/white-5)
-    (nil? content)     (colors/themed theme :color/neutral-10 :color/neutral-80)
-    (= border :dashed) (colors/themed theme :color/neutral-30 :color/neutral-80)
-    :else              (colors/themed theme :color/neutral-80-5 :color/white-5)))
+    blur?
+    (colors/themed theme :color/neutral-80-5 :color/white-5)
+
+    (nil? content)
+    (colors/themed theme :color/neutral-10 :color/neutral-80)
+
+    (= border :dashed)
+    (colors/themed theme :color/neutral-30 :color/neutral-80)
+
+    (and (= border :solid)
+         (= color :color/neutral)
+         (= (:type content) :icon))
+    (colors/themed theme :color/neutral-20 :color/neutral-80)
+
+    :else
+    (colors/themed theme :color/neutral-80-5 :color/white-5)))
 
 (def corner-radius
   {16 4, 20 6, 24 8, 28 8, 32 10, 36 10, 48 12, 56 14, 64 16, 80 16})
@@ -105,6 +139,12 @@
             :include-font-padding false
             :text-align           :center})))
 
+(defn emoji-image [size shape]
+  (let [sizes      (if (= shape :circle) channel-emoji-size emoji-size)
+        image-size (sizes size)]
+    (style {:width  image-size
+            :height image-size})))
+
 (def status-badge
   {16 {:size 4 :offset 0 :gap 1}
    20 {:size 4 :offset 1 :gap 1}
@@ -116,6 +156,27 @@
    56 {:size 8 :offset 4 :gap 2}
    64 {:size 10 :offset 4 :gap 3}
    80 {:size 12 :offset 6 :gap 4}})
+
+(def activity-status-badge
+  {16 {:size 6 :offset 0 :gap 0}
+   20 {:size 8 :offset 0 :gap 0}
+   24 {:size 9 :offset 0 :gap 0}
+   28 {:size 10 :offset 0 :gap 0}
+   32 {:size 12 :offset 0 :gap 0}
+   36 {:size 14 :offset 0 :gap 0}
+   48 {:size 18 :offset 0 :gap 0}
+   56 {:size 21 :offset 0 :gap 0}
+   64 {:size 24 :offset 0 :gap 0}
+   80 {:size 30 :offset 0 :gap 0}})
+
+(defn activity-status-color [theme blur? color status]
+  (case status
+    :pending (if blur?
+               (colors/themed theme :color/neutral-80-40 :color/white-40)
+               (colors/get-color :color/neutral-50))
+    :confirmed (colors/themed theme :color/success)
+    :error (colors/themed theme :color/danger)
+    :finalized [(colors/themed theme color) (colors/get-color :color/white-100)]))
 
 (def image-badge
   {16 {:size 8 :offset -2 :gap 1}

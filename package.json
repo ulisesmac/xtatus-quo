@@ -10,6 +10,7 @@
     "effect",
     "effect.js",
     "index.js",
+    "notification",
     "ios/MTREffectView.h",
     "ios/MTREffectView.mm",
     "react-native.config.js",

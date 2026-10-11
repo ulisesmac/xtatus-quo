@@ -72,6 +72,12 @@
     [:rn/text {:style (style/emoji size shape)}
      (:text content)]
 
+    :emoji-image
+    (let [image (:image content)]
+      [:rn/image {:source      (or (:source image) {:uri (:url image)})
+                  :resize-mode :contain
+                  :style       (rn.utils/add-styles (style/emoji-image size shape) (:style image))}])
+
     :initials
     (let [fonts (if (= variant :solid) style/initials-font style/soft-initials-font)]
       [text/text {:font  (fonts size)
@@ -81,17 +87,31 @@
 
     nil))
 
-(defn- badge-view [{:keys [badge metrics theme]}]
-  (let [size   (:size metrics)
-        status (:status badge)
-        fill   (cond
-                 (= :online status) (colors/get-color :color/success-50)
-                 status             (colors/get-color :color/neutral-40)
-                 :else              "transparent")]
+(def ^:private activity-status-icons
+  {:pending   :icon/pending-alt
+   :confirmed :icon/check-circle-outline-alt
+   :finalized :icon/diamond
+   :error     :icon/alert-outline-alt})
+
+(defn- badge-view [{:keys [badge metrics theme blur? color]}]
+  (let [size        (:size metrics)
+        status      (:status badge)
+        status-icon (activity-status-icons status)
+        fill        (cond
+                      status-icon        "transparent"
+                      (= :online status) (colors/get-color :color/success-50)
+                      status             (colors/get-color :color/neutral-40)
+                      :else              "transparent")]
     [:rn/view {:pointer-events :none
                :style          [(style/badge-position (:offset metrics)) (style/badge size fill)]}
      (cond
-       status nil
+       status-icon
+       [icon/view {:name  status-icon
+                   :size  size
+                   :color (style/activity-status-color theme blur? color status)}]
+
+       status
+       nil
 
        (:image badge)
        [:rn/image {:source      (or (get-in badge [:image :source]) {:uri (get-in badge [:image :url])})
@@ -117,9 +137,17 @@
                                                nil 6
                                                (style/corner-radius size))
         badge-metrics                        (cond
-                                               (:status badge) (style/status-badge size)
-                                               (:image badge)  (style/image-badge size)
-                                               (:icon badge)   (style/icon-badge size))]
+                                               (activity-status-icons (:status badge))
+                                               (style/activity-status-badge size)
+
+                                               (:status badge)
+                                               (style/status-badge size)
+
+                                               (:image badge)
+                                               (style/image-badge size)
+
+                                               (:icon badge)
+                                               (style/icon-badge size))]
     [(if on-press :animated/pressable :rn/view)
      (cond-> {:style (rn.utils/add-styles (style/frame size)
                                           caller-style
@@ -135,7 +163,7 @@
                 :fill          (if (= :image (:type content))
                                  (colors/get-color color)
                                  (style/fill-color theme blur? color variant shape (:type content)))
-                :border-color  (style/border-color theme blur? border content)
+                :border-color  (style/border-color theme blur? border content color)
                 :image         (when (= :image (:type content)) (:image content))
                 :badge-metrics badge-metrics}]
       [:rn/view {:style style/content}
@@ -152,4 +180,4 @@
                    :fill          (colors/get-color :color/neutral-80-20)
                    :badge-metrics badge-metrics}]])]
      (when badge-metrics
-       [badge-view {:badge badge :metrics badge-metrics :theme theme}])]))
+       [badge-view {:badge badge :metrics badge-metrics :theme theme :blur? blur? :color context-color}])]))

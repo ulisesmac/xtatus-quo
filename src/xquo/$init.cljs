@@ -7,6 +7,7 @@
             ["react-native-svg" :as svg]))
 
 (def effect (js/require "xquo/effect"))
+(def notification (js/require "xquo/notification/overlay"))
 
 (def animated-svg (.createAnimatedComponent Animated (.-Svg svg)))
 (def animated-pressable (.createAnimatedComponent Animated (.-Pressable react-native)))
@@ -14,17 +15,18 @@
 (def animated-effect-pressable (.createAnimatedComponent Animated (.-Pressable effect)))
 
 (def js-component-libs
-  {:root      react-native
-   :rn        react-native
-   :gh        gesture-handler
-   :safe-area safe-area-context
-   :animated  (j/assoc! Animated
+  {:root         react-native
+   :rn           react-native
+   :gh           gesture-handler
+   :safe-area    safe-area-context
+   :animated     (j/assoc! Animated
                           :Svg animated-svg
                           :Pressable animated-pressable
                           :EffectView animated-effect-view
                           :EffectPressable animated-effect-pressable)
-   :svg       svg
-   :effect    effect})
+   :svg          svg
+   :effect       effect
+   :notification notification})
 
 (def compiler-props
   {:function-components         true

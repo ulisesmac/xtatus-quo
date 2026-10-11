@@ -31,7 +31,7 @@
                                            :blur?    blur?
                                            :style    {:align-self :center}
                                            :content  (case content-type
-                                                       :image {:type :image :image {:source assets/illustration}}
+                                                       :image {:type :image :image {:source assets/profile}}
                                                        :icon {:type :icon :icon {:name icon}}
                                                        :initials {:type :initials :text initials}
                                                        :emoji {:type :emoji :text emoji}
