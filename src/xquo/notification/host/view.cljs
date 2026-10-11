@@ -1,12 +1,15 @@
 (ns xquo.notification.host.view
-  (:require [applied-science.js-interop :as j]
-            [react-native.react.core :as react]
+  (:require [react-native.react.core :as react]
             [react-native.safe-area-context.core :as safe-area]
             [xquo.context :as context]
-            [xquo.notification.host.style :as style]))
+            [xquo.notification.host.style :as style]
+            [xquo.worklets.notification :as worklets]))
 
-(defonce ^:private notifications-context (react/create-context nil))
-(def ^:private motion (js/require "xquo/notification/motion"))
+(defonce ^:private controller (atom nil))
+
+(defn- dismiss! [id]
+  (let [{:keys [dismiss!]} @controller]
+    (dismiss! id)))
 
 (defn- item [{:keys [id content duration dismissing? on-dismiss top offset measure! remove!]}]
   (let [removed!                           (react/use-callback (fn [reason]
@@ -14,14 +17,12 @@
                                                                  (when on-dismiss (on-dismiss (keyword reason))))
                                                                [id remove! on-dismiss])
         measured!                          (react/use-callback #(measure! id %) [id measure!])
-        [gesture animated-style on-layout] (j/call motion
-                                                   :useNotificationMotion
-                                                   duration
-                                                   (+ top 8)
-                                                   offset
-                                                   dismissing?
-                                                   removed!
-                                                   measured!)]
+        [gesture animated-style on-layout] (worklets/use-notification-motion duration
+                                                                             (+ top 8)
+                                                                             offset
+                                                                             dismissing?
+                                                                             removed!
+                                                                             measured!)]
     [:animated/view {:collapsable false
                      :on-layout   on-layout
                      :style       [style/item animated-style]}
@@ -64,8 +65,12 @@
                                          (if height (+ offset height 8) offset))
                                        0
                                        items)
-        value              (react/use-memo (fn [] #js{:show show! :dismiss dismiss!}) [show! dismiss!])]
-    [:> (j/get notifications-context :Provider) {:value value}
+        value              (react/use-memo (fn [] {:show! show! :dismiss! dismiss!}) [show! dismiss!])]
+    (react/use-layout-effect (fn []
+                               (reset! controller value)
+                               #(compare-and-set! controller value nil))
+                             [value])
+    [:<>
      (into [:<>] children)
      (when (seq items)
        [:notification/overlay
@@ -81,14 +86,12 @@
                          :remove!  remove!)])]]])]))
 
 (defn use-notifications []
-  (let [controller            (react/use-context notifications-context)
-        enqueue!              (j/get controller :show)
-        dismiss!              (j/get controller :dismiss)
-        {:keys [theme color]} (context/use-theme-color)
+  (let [{:keys [theme color]} (context/use-theme-color)
         show!                 (react/use-callback (fn show!
                                                     ([content]
                                                      (show! content nil))
                                                     ([content options]
-                                                     (enqueue! [context/provider {:theme theme :color color} content] options)))
-                                                  [enqueue! theme color])]
+                                                     (let [{:keys [show!]} @controller]
+                                                       (show! [context/provider {:theme theme :color color} content] options))))
+                                                  [theme color])]
     {:show! show! :dismiss! dismiss!}))

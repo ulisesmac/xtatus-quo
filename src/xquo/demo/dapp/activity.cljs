@@ -26,7 +26,7 @@
 
 (def ^:private examples
   {:connection       {:title "Connected"
-                      :icon  :icon/connect
+                      :icon  :icon/link
                       :parts [uniswap "connected to " account "via"
                               {:props {:type :default :image-source assets/illustration} :label "WalletConnect"}]}
    :sign             {:title "Sign in"

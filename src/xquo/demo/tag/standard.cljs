@@ -1,7 +1,7 @@
 (ns xquo.demo.tag.standard
   (:require [react-native.react.core :as react]
             [xquo.core :as xquo]
-            [xquo.demo.community.assets :as assets]
+            [xquo.demo.assets :as assets]
             [xquo.demo.controls :as controls]
             [xquo.demo.screen :as screen]))
 
@@ -11,7 +11,7 @@
 (defn screen [_]
   (let [[label set-label!]        (react/use-state "Crypto")
         [size set-size!]          (react/use-state 24)
-        [content set-content!]    (react/use-state :image)
+        [content set-content!]    (react/use-state :emoji)
         [selected? set-selected!] (react/use-state false)
         [disabled? set-disabled!] (react/use-state false)
         [blur? set-blur!]         (react/use-state false)]
@@ -19,7 +19,7 @@
                     :blur?   blur?
                     :preview [xquo/tag.standard {:size      size
                                                  :content   (case content
-                                                              :image {:type :image :image {:source assets/money}}
+                                                              :image {:type :image :image {:source assets/illustration}}
                                                               :icon {:type :icon :icon {:name :icon/placeholder}}
                                                               :emoji {:type :emoji :text "💸"}
                                                               nil)

@@ -1,48 +1,34 @@
 (ns xquo.components.info.info-message.style
-  (:require [react-native.utils :refer [defstyle]]
+  (:require [react-native.utils :refer [style]]
             [xquo.foundations.colors :as colors]))
 
-(defstyle container-base
-  {:flex-direction :row
-   :gap            4})
+(def legacy-size {:default 13 :tiny 11})
+(def font {11 :font/regular-11 13 :font/regular-13})
+(def icon-size {11 12 13 16})
+(def ^:private line-height {11 16 13 18})
+(def ^:private icon-padding {11 2 13 1})
+(def ^:private status-color
+  {:success :color/success :error :color/danger :warning :color/orange})
 
-(defstyle default-size-base
-  {:align-items :flex-start})
+(defn container [size]
+  (style {:flex-direction :row
+          :align-items    (if (= size 11) "center" "flex-start")
+          :gap            4}))
 
-(defstyle tiny-size-base
-  {:align-items :center})
+(defn icon-slot [size]
+  (style {:align-self       :stretch
+          :padding-vertical (icon-padding size)}))
 
-(defstyle text-slot
-  {:flex      1
-   :min-width 1})
+(defn text-style [size color]
+  (style {:flex                 1
+          :min-width            0
+          :include-font-padding false
+          :line-height          (line-height size)
+          :color                color}))
 
-(defstyle icon-default
-  {:padding-top    1
-   :padding-bottom 1})
-
-(defstyle icon-tiny
-  {:padding-top    2
-   :padding-bottom 2})
-
-(defn message-color [theme background status]
-  {:color (cond
-            (= status :success)
-            (colors/get-color :color/success
-                              (if (= theme :theme/dark) 60 50))
-
-            (= status :error)
-            (colors/get-color :color/danger
-                              (if (= theme :theme/dark) 60 50))
-
-            (= status :warning)
-            (colors/get-color :color/orange
-                              (if (= theme :theme/dark) 60 50))
-
-            (and (= theme :theme/dark) (= background :blur))
-            (colors/get-color :color/white 40)
-
-            (= theme :theme/dark)
-            (colors/get-color :color/neutral 40)
-
-            :else
-            (colors/get-color :color/neutral 50))})
+(defn message-color [{:keys [theme dark-theme?]} blur? status]
+  (if-let [color (status-color status)]
+    (colors/get-color color (if dark-theme? 60 50))
+    (if blur?
+      (colors/themed theme :color/neutral-80-40 :color/white-40)
+      (colors/themed theme :color/neutral-50 :color/neutral-40))))

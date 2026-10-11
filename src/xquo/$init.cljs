@@ -4,10 +4,10 @@
             ["react-native-gesture-handler" :as gesture-handler]
             ["react-native-reanimated" :default Animated]
             ["react-native-safe-area-context" :as safe-area-context]
-            ["react-native-svg" :as svg]))
+            ["react-native-svg" :as svg]
+            [xquo.worklets.notification :as notification]))
 
 (def effect (js/require "xquo/effect"))
-(def notification (js/require "xquo/notification/overlay"))
 
 (def animated-svg (.createAnimatedComponent Animated (.-Svg svg)))
 (def animated-pressable (.createAnimatedComponent Animated (.-Pressable react-native)))
@@ -26,7 +26,7 @@
                           :EffectPressable animated-effect-pressable)
    :svg          svg
    :effect       effect
-   :notification notification})
+   :notification notification/overlay})
 
 (def compiler-props
   {:function-components         true

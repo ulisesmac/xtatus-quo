@@ -64,6 +64,7 @@
             [xquo.components.icon.view]
             [xquo.components.info.info-message.view]
             [xquo.components.info.information-box.view]
+            [xquo.components.info.list-info-box.view]
             [xquo.components.input.view]
             [xquo.components.link-card.view]
             [xquo.components.list-items.result-list.view]
@@ -138,7 +139,8 @@
 (def banner
   "banner.standard: :title, optional :icon map/:counter, :blur?, :on-press,
   :style and pressable props. Inherits context color and theme; parent owns blur.
-  banner.alert: :title, optional full :button props plus :label, :style.
+  banner.alert: :title, optional standard :icon map (defaults to alert),
+  full :button props plus :label, :style.
   Uses danger tokens and actual Button24; text wraps naturally.
   banner.global: :items of {:type :error|:alert :title ...}, :style.
   Semantic danger/warning rows; parent owns system insets."
@@ -282,7 +284,14 @@
   Theme and color come only from Xquo context; the parent owns the blur.
   :style and other view props apply to the root. Longer labels grow to fit."
   xquo.components.counter.view/counter)
-(def empty-state xquo.components.empty-state.view/empty-state)
+(def empty-state
+  "Centered :title and :description (text/Hiccup), optional :image native source,
+  :image-tint and :image-spacing (default 12). :buttons is [primary secondary],
+  each accepting the full Button props plus :label. Defaults: size 32, Primary
+  first, Grey second (Dark Grey in plain dark). Two actions share their natural
+  widest width. :blur? styles the secondary action; the parent owns blur.
+  :style and other native view props apply to the root. No placeholder image."
+  xquo.components.empty-state.view/empty-state)
 (def color
   "Color swatch with :color, :selected?, :blur?, :style and pressable props.
   :blur? selects dark + blur regardless of parent theme; otherwise inherits theme.
@@ -360,9 +369,35 @@
 (def emoji-picker-header xquo.components.emoji-picker.view/emoji-picker-header)
 (def emoji-picker-footer xquo.components.emoji-picker.view/emoji-picker-footer)
 (def icon xquo.components.icon.view/view)
-(def info-message xquo.components.info.info-message.view/info-message)
-(def information-box xquo.components.info.information-box.view/information-box)
-(def input xquo.components.input.view/input)
+(def info-message
+  "[info-message props content]: :status :default/:success/:warning/:error,
+  numeric :size 13 (default) or 11, :blur?, :color, full :icon map, :style/native
+  view props. Legacy :size :default/:tiny and :background :blur remain accepted;
+  explicit :blur? takes precedence. Parent owns blur. Text wraps naturally."
+  xquo.components.info.info-message.view/info-message)
+(def information-box
+  "[information-box props optional-content]: :status :default/:info/:error,
+  also :success/:warning; optional :title, :description (text/Hiccup), :icon map,
+  :button (full Button props plus :label; defaults to 24 and Primary/Danger),
+  :close-button (pressable props and optional :icon map), :blur?, :style/native
+  view props. :description takes precedence over content. Numeric :size 13/15
+  controls body text; legacy :use-15-font? remains accepted. Parent owns blur."
+  xquo.components.info.information-box.view/information-box)
+(def list-info-box
+  "List container with optional :title, :items (full existing List item maps),
+  :style and native view props. Compact rows reuse List and preserve supplied
+  content/icons/actions. Inherits light/dark theme; no fixed example content."
+  xquo.components.info.list-info-box.view/list-info-box)
+(def input
+  "Input with numeric :size 32/40, :value or :default-value, :on-change-text,
+  :label/:max-length, :placeholder, :blur?, :error?, :disabled?, and :clearable?.
+  :content is {:type :icon :icon {...}} or {:type :image :image {...}}.
+  :button accepts full Button props plus :label; defaults to Outline/24.
+  :style targets the root, :field-style the bordered field. Flex is caller-owned.
+  :multiline?, :min-height/:max-height, :font, :input-ref and :auto-focus? are
+  supported. Other native TextInput props/events pass through. Clear emits
+  on-change-text with an empty string, then optional :on-clear. Parent owns blur."
+  xquo.components.input.view/input)
 (def link-card xquo.components.link-card.view/link-card)
 (def list xquo.components.list.view/view)
 (def result-list xquo.components.list-items.result-list.view/result-list)

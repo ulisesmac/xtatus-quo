@@ -40,6 +40,9 @@
             [xquo.demo.dapp.activity :as dapp-activity]
             [xquo.demo.drawer.core :as drawer]
             [xquo.demo.dropdown :as dropdown]
+            [xquo.demo.empty-state :as empty-state]
+            [xquo.demo.info :as info]
+            [xquo.demo.input :as input]
             [xquo.demo.notification.core :as notification]
             [xquo.demo.avatar :as avatar]
             [xquo.demo.button :as button]
@@ -91,6 +94,11 @@
         open-drawer!                    (react/use-callback #(navigate "xquo-demo.drawer") [navigate])
         open-dropdown-button!           (react/use-callback #(navigate "xquo-demo.dropdown-button") [navigate])
         open-dropdown-input!            (react/use-callback #(navigate "xquo-demo.dropdown-input") [navigate])
+        open-empty-state!               (react/use-callback #(navigate "xquo-demo.empty-state") [navigate])
+        open-info-message!              (react/use-callback #(navigate "xquo-demo.info-message") [navigate])
+        open-information-box!           (react/use-callback #(navigate "xquo-demo.information-box") [navigate])
+        open-input!                     (react/use-callback #(navigate "xquo-demo.input") [navigate])
+        open-list-info-box!             (react/use-callback #(navigate "xquo-demo.list-info-box") [navigate])
         open-notification-toast!        (react/use-callback #(navigate "xquo-demo.notification-toast") [navigate])
         open-notification-in-app!       (react/use-callback #(navigate "xquo-demo.notification-in-app") [navigate])
         open-card!                      (react/use-callback #(navigate "xquo-demo.option-card") [navigate])
@@ -259,10 +267,30 @@
                           :image    {:type :none}
                           :right    {:action {:type :arrow}}
                           :on-press open-dropdown-input!}]
+     [xquo/settings-item {:title    "Empty state"
+                          :image    {:type :none}
+                          :right    {:action {:type :arrow}}
+                          :on-press open-empty-state!}]
      [xquo/settings-item {:title    "Favicon"
                           :image    {:type :none}
                           :right    {:action {:type :arrow}}
                           :on-press open-favicon!}]
+     [xquo/settings-item {:title    "Info message"
+                          :image    {:type :none}
+                          :right    {:action {:type :arrow}}
+                          :on-press open-info-message!}]
+     [xquo/settings-item {:title    "Information box"
+                          :image    {:type :none}
+                          :right    {:action {:type :arrow}}
+                          :on-press open-information-box!}]
+     [xquo/settings-item {:title    "Input"
+                          :image    {:type :none}
+                          :right    {:action {:type :arrow}}
+                          :on-press open-input!}]
+     [xquo/settings-item {:title    "List info box"
+                          :image    {:type :none}
+                          :right    {:action {:type :arrow}}
+                          :on-press open-list-info-box!}]
      [xquo/settings-item {:title    "Notification in-app"
                           :image    {:type :none}
                           :right    {:action {:type :arrow}}
@@ -337,6 +365,11 @@
                                                                             :screen/xquo-demo.drawer                    #'drawer/screen
                                                                             :screen/xquo-demo.dropdown-button           #'dropdown/button-screen
                                                                             :screen/xquo-demo.dropdown-input            #'dropdown/input-screen
+                                                                            :screen/xquo-demo.empty-state               #'empty-state/screen
+                                                                            :screen/xquo-demo.info-message              #'info/message-screen
+                                                                            :screen/xquo-demo.information-box           #'info/box-screen
+                                                                            :screen/xquo-demo.input                     #'input/screen
+                                                                            :screen/xquo-demo.list-info-box             #'info/list-screen
                                                                             :screen/xquo-demo.notification-toast        #'notification/toast-screen
                                                                             :screen/xquo-demo.notification-in-app       #'notification/in-app-screen
                                                                             :screen/xquo-demo.button                    #'button/screen

@@ -9,16 +9,24 @@
 
 (defn screen [_]
   (let [[title set-title!]               (react/use-state "Alert text")
+        [icon-name set-icon!]            (react/use-state :icon/alert)
         [button? set-button!]            (react/use-state true)
         [button-label set-button-label!] (react/use-state "Button")
         [disabled? set-disabled!]        (react/use-state false)]
     [screen/screen {:title   "Banner alert"
                     :preview [xquo/banner.alert {:title  title
+                                                 :icon   {:name icon-name}
                                                  :button (when button?
                                                            {:label     button-label
                                                             :disabled? disabled?
                                                             :on-press  on-press!})}]}
      [xquo/input {:label ":title" :value title :on-change-text set-title! :multiline? true}]
+     [controls/choice {:label     ":icon :name"
+                       :value     icon-name
+                       :on-change set-icon!
+                       :options   [{:value :icon/alert :label "Alert"}
+                                   {:value :icon/info-outline :label "Info"}
+                                   {:value :icon/bell :label "Bell"}]}]
      [controls/choice {:label     ":title examples"
                        :value     title
                        :on-change set-title!

@@ -310,7 +310,7 @@
                        (style/sheet-region-background theme-color)]}
      [input/input {:size           32
                    :placeholder    "Busca emojis"
-                   :icon           {:name :icon/search}
+                   :content        {:type :icon :icon {:name :icon/search}}
                    :on-change-text set-input!}]]))
 
 (defn- category-footer [{:keys [category layout-id layout-offsets scroll-ref state*]}]

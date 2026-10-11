@@ -7,8 +7,11 @@ Mount one provider inside the app's SafeAreaProvider, around its navigation tree
  [app-navigation]]
 ```
 
-The provider owns stacking and a native overlay above TrueSheet drawers. It does
-not add a navigation route or block touches outside the notifications.
+The provider owns the rendered stack and a native overlay above TrueSheet drawers.
+Mount it once. A regular Clojure atom holds its show/dismiss callbacks; notification
+state stays local to the host. The hook captures the caller's theme/color without
+a separate notification React context. It does not add a navigation route or block
+touches outside notifications.
 
 ```clojure
 (defn save-button []

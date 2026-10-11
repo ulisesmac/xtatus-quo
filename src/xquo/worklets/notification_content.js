@@ -15,7 +15,14 @@ const SPRING = {damping: 28, stiffness: 180, mass: 1};
 const ENTER = {duration: 440, easing: Easing.out(Easing.cubic)};
 const EXIT = {duration: 400, easing: Easing.inOut(Easing.cubic)};
 
-export function useNotificationMotion(duration, inset, offset, dismissing, onRemove, onHeight) {
+export function useNotificationMotion(
+  duration,
+  inset,
+  offset,
+  dismissing,
+  onRemove,
+  onHeight,
+) {
   const y = useSharedValue(0);
   const startY = useSharedValue(0);
   const targetY = useSharedValue(inset + offset);
@@ -44,11 +51,14 @@ export function useNotificationMotion(duration, inset, offset, dismissing, onRem
       cancelAnimation(timer);
       timer.value = 0;
       if (duration > 0 && !held.value && !closing.value) {
-        timer.value = withDelay(duration + delay, withTiming(1, {duration: 0}, finished => {
-          if (finished && !held.value && !closing.value) {
-            dismiss('timeout');
-          }
-        }));
+        timer.value = withDelay(
+          duration + delay,
+          withTiming(1, {duration: 0}, finished => {
+            if (finished && !held.value && !closing.value) {
+              dismiss('timeout');
+            }
+          }),
+        );
       }
     };
     const layout = layoutHeight => {
@@ -74,52 +84,72 @@ export function useNotificationMotion(duration, inset, offset, dismissing, onRem
       }
     };
     return {dismiss, restartTimer, layout, move};
-  }, [closing, duration, height, held, inset, onRemove, targetY, timer, visible, y]);
+  }, [
+    closing,
+    duration,
+    height,
+    held,
+    inset,
+    onRemove,
+    targetY,
+    timer,
+    visible,
+    y,
+  ]);
 
-  const gestureConfig = useMemo(() => ({
-    minDistance: 4,
-    maxPointers: 1,
-    onTouchesDown: () => {
-      'worklet';
-      if (closing.value) {
-        return;
-      }
-      held.value = true;
-      cancelAnimation(timer);
-      cancelAnimation(y);
-      startY.value = y.value;
-    },
-    onUpdate: event => {
-      'worklet';
-      if (!closing.value) {
-        y.value = startY.value + event.translationY;
-      }
-    },
-    onFinalize: event => {
-      'worklet';
-      held.value = false;
-      if (closing.value) {
-        return;
-      }
-      if (!event.canceled && (event.translationY < -40 || event.velocityY < -600)) {
-        controls.dismiss('swipe');
-      } else {
-        y.value = withSpring(targetY.value, SPRING);
-        controls.restartTimer();
-      }
-    },
-  }), [closing, controls, held, startY, targetY, timer, y]);
+  const gestureConfig = useMemo(
+    () => ({
+      minDistance: 4,
+      maxPointers: 1,
+      onTouchesDown: () => {
+        'worklet';
+        if (closing.value) {
+          return;
+        }
+        held.value = true;
+        cancelAnimation(timer);
+        cancelAnimation(y);
+        startY.value = y.value;
+      },
+      onUpdate: event => {
+        'worklet';
+        if (!closing.value) {
+          y.value = startY.value + event.translationY;
+        }
+      },
+      onFinalize: event => {
+        'worklet';
+        held.value = false;
+        if (closing.value) {
+          return;
+        }
+        if (
+          !event.canceled &&
+          (event.translationY < -40 || event.velocityY < -600)
+        ) {
+          controls.dismiss('swipe');
+        } else {
+          y.value = withSpring(targetY.value, SPRING);
+          controls.restartTimer();
+        }
+      },
+    }),
+    [closing, controls, held, startY, targetY, timer, y],
+  );
   const gesture = usePanGesture(gestureConfig);
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: visible.value,
     zIndex: held.value ? 2 : closing.value ? 1 : 0,
     transform: [{translateY: y.value}],
   }));
-  const onLayout = useCallback(event => {
-    const layoutHeight = event.nativeEvent.layout.height;
-    onHeight(layoutHeight);
-    scheduleOnUI(controls.layout, layoutHeight);
-  }, [controls, onHeight]);
+  const onLayout = useCallback(
+    event => {
+      const layoutHeight = event.nativeEvent.layout.height;
+      onHeight(layoutHeight);
+      scheduleOnUI(controls.layout, layoutHeight);
+    },
+    [controls, onHeight],
+  );
 
   useEffect(() => {
     scheduleOnUI(controls.move, offset);
@@ -129,10 +159,13 @@ export function useNotificationMotion(duration, inset, offset, dismissing, onRem
       scheduleOnUI(controls.dismiss, 'programmatic');
     }
   }, [controls, dismissing]);
-  useEffect(() => () => {
-    cancelAnimation(timer);
-    cancelAnimation(y);
-  }, [timer, y]);
+  useEffect(
+    () => () => {
+      cancelAnimation(timer);
+      cancelAnimation(y);
+    },
+    [timer, y],
+  );
 
   return [gesture, animatedStyle, onLayout];
 }

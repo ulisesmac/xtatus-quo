@@ -4,6 +4,13 @@ Track this integration's library changes here before migrating application calle
 **Proposed** entries describe the intended API, not behavior already available in code.
 Preserve unrelated work and migrate the app separately after the relevant library change lands.
 
+Design illustrations and content icons are examples, not fixed component content.
+Callers supply image sources and icon maps; components own their layout and defaults.
+Functional symbols (such as dropdown arrows, close, playback and selection/status
+indicators) retain their meaning. The content audit found no fixed design images
+outside showcases. Alert banners now accept an optional standard `:icon` map,
+defaulting to the existing alert symbol; existing calls need no migration.
+
 ## Index
 
 | Component | Library status | Application migration |
@@ -11,7 +18,7 @@ Preserve unrelated work and migrate the app separately after the relevant librar
 | [Button](#button) | Implemented; Photo now includes real backdrop blur | Active `src/fc` callers migrated |
 | [Effect view](#effect-view) | Blur uses only `:blur-amount` | Active blur callers migrated |
 | [Page navigation](#page-navigation) | Internal button calls migrated; public API unchanged | No page-nav API migration |
-| [Input](#input) | Trailing button migrated | Active caller button maps reviewed; no legacy props found |
+| [Input](#input) | Main Input reworked; showcase added | Content union, root/field styles, full button maps and native text ownership; active callers migrated |
 | [Drawer](#drawer) | Composable pieces and TrueSheet showcase implemented | Bare drawer caller migrated; old hyphenated exports retained |
 | [Avatar](#avatar) | New component implemented; visual parity work remains | No older exported avatar API to replace |
 | [Color picker](#color-picker) | `:blur?` explicitly forces dark + blur for its swatches | Existing prop retained; no call-site migration required |
@@ -32,23 +39,79 @@ Preserve unrelated work and migrate the app separately after the relevant librar
 | [dApps](#dapps-and-avatar-dependency-corrections) | Implemented; A14 captures shared | New grouped API; Avatar fixes and activity statuses |
 | [Code](#code--postponed) | Postponed by user | No implementation in this pass |
 | [Dropdowns](#dropdowns) | Button/input triggers and showcases | New exports; network dropdown skipped |
+| [Info components](#info-components) | Implemented; layout/color corrections and three showcases | Existing calls remain compatible; prefer numeric size and :blur? |
+| [Empty state](#empty-state) | Layout/button corrections and showcase implemented | Existing callers remain compatible |
+
+## Info components
+
+Implemented; API recorded before this pass's implementation:
+
+- `info-message [props content]`: existing status/icon/color/style props remain.
+  Numeric `:size` is 13 (default) or 11. Legacy `:default`/`:tiny` sizes remain
+  accepted. Use `:blur?`; legacy `:background :blur` remains compatible, with an
+  explicitly supplied `:blur?` taking precedence. Icons remain caller-supplied.
+- `information-box [props optional-content]`: retain status, title, description, icon,
+  button, close-button, blur and native view props. `:size` selects 13/15 px body
+  text; existing `:use-15-font?` remains supported. Description takes precedence
+  over the optional child. Full button props are preserved, defaulting to size 24
+  and Danger for error status / Primary otherwise. Close uses `:icon/cross`, with
+  optional icon overrides inside `:close-button`. Leading icons stay caller-owned.
+- New `list-info-box`: optional `:title`, `:items` containing existing List item
+  maps, and native view props/`:style`. Reuses List; applies this container's compact
+  row spacing without changing the shared List's defaults. Light/dark variants.
+
+Measured sources: Info Message `2950:43382` (24 variants), Information Box
+`2950:44187` (54 variants), List info box `39479:32479` (2 variants).
+Message line boxes are 18/16 px with 16/12 px icons and a 4 px gap. Information
+Box has a 12 px radius, inside border, 12 px horizontal content inset, 8 px gaps,
+11 px compact vertical inset or 10/12 px rich top/bottom insets. Its 24 px button
+sits 8 px below copy. List Info Box has radius 16, content insets 16/12 px,
+an 8 px title gap, and 2 px between existing 20 px bullet rows.
+Semantic/context colors are retained; sample text and icon choices are not fixed
+content. Existing success/warning and 15 px box modes remain supported extensions.
+
+## Empty state
+
+Implemented. Retains `xquo/empty-state` and
+its existing `:title`, `:description` (text/Hiccup), `:buttons`, `:blur?`,
+`:image-spacing`, `:image-tint`, `:style`, and native root props.
+
+- `:image` remains a caller-supplied React Native image source. The component
+  displays it in an 80 px box with contain resizing. No image means no illustration.
+- `:buttons` remains `[primary secondary]`. Each map accepts the full Button API
+  plus `:label`; defaults are size 32, Primary first, Grey second in light/blur,
+  and Dark Grey second in plain dark. Caller overrides are preserved. Blur styling
+  is inherited by the secondary button using `:blur?`; the parent owns the backdrop.
+- Two actions share their natural widest width, with a 12 px gap. One action keeps
+  its natural width. No fixed width tied to the example labels.
+- Reference geometry: 80 px illustration, 12 px top padding, 12 px illustration-to-copy
+  spacing, 20 px horizontal copy/action padding, 2 px title/description gap,
+  12 px copy bottom padding, 8 px before actions, 12 px action bottom padding.
+  Text uses Semibold 15 and Regular 13 with the existing theme foreground tokens.
+- The showcase covers 0/1/2 actions, editable copy/button labels, button overrides,
+  an existing generic image, and blur. It uses the existing Button press animation and alerts.
+
+Figma: Empty state `7874:239690`; all nine variants inspected (no actions, one
+or two vertical actions; light, dark, dark blur). Reference heights with the
+single-line example copy are 158/210/254 px. Light blur and omitted-image states
+are supported extensions, not additional Figma references.
 
 ## Dropdowns
 
 New exports; no existing dropdown API is replaced. The page-nav dropdown remains unchanged.
 
 ```clojure
-[xquo/dropdown.button {:type :outline
-                       :size 40
-                       :content {:type :icon :icon {:name :icon/calendar}}
-                       :active? open?
-                       :on-press open-menu!}
+[xquo/dropdown.button {:type     :outline
+                      :size     40
+                      :content  {:type :icon :icon {:name :icon/calendar}}
+                      :active?  open?
+                      :on-press open-menu!}
  "Dropdown"]
 
-[xquo/dropdown.input {:label "Account"
-                      :active? open?
-                      :blur? true
-                      :on-press open-menu!}
+[xquo/dropdown.input {:label    "Account"
+                     :active?  open?
+                     :blur?    true
+                     :on-press open-menu!}
  "Main account"]
 ```
 
@@ -251,8 +314,9 @@ User explicitly requested skipping Code in this pass (2026-10-09). No implementa
 
 - `banner.standard`: `:title`, optional `:icon` map / `:counter`, `:blur?`, `:on-press`,
   native pressable props and `:style`. Context color at 20%/40% idle/pressed; real Counter.
-- `banner.alert`: `:title`, optional full `:button` map with `:label`, and `:style`;
-  semantic danger treatment, actual Button defaults to danger/24.
+- `banner.alert`: `:title`, optional standard `:icon` map, full `:button` map with
+  `:label`, and `:style`; semantic danger treatment, actual Button defaults to
+  danger/24. The icon defaults to alert/16 and preserves caller overrides.
 - `banner.global`: `:items` of `{:type :error|:alert :title ...}` and `:style`.
   One row or stack, semantic danger/warning, host-owned system insets.
 
@@ -435,8 +499,8 @@ Pressed/disabled color tables come from Figma and are independent of these retai
   `src/fc/screens/my_schedule/schedule/view.cljs` now use `:blur? true`.
 - Removed `:glass?` from all six migrated buttons. Reviewed the active `src/fc` imports,
   direct button calls, and nested button maps; no remaining removed button props were found.
-  The remaining `:container-style` belongs to Input, and remaining `:background` props
-  belong to other APIs. Legacy `src/horarios_fc` was not changed. This records API migration,
+  Input's former `:container-style` was subsequently migrated to root `:style` below;
+  remaining `:background` props belong to other APIs. Legacy `src/horarios_fc` was not changed. This records API migration,
   not exhaustive visual verification. Photo-button backdrop blur is supplied by the corrected component.
 - Page-nav's own `:background` prop is a separate API. Do not mechanically replace it
   everywhere merely because the button changes.
@@ -481,16 +545,58 @@ mode to the button flags. Page-nav callers keep their current surface API.
 
 ## Input
 
-Status: **internal button migration implemented**. The input's own API is unchanged.
-Its trailing `:button` inherits `:blur?` instead of the removed button `:background` prop.
-Caller-provided button maps otherwise follow the new button contract.
+Implemented, based on all 896 variants of Figma Input `55:2720`.
+The other input families are outside this pass.
+
+- `:size` remains 32/40 (default 40). `:blur?` is styling only; the parent owns blur.
+- Leading content is now `:content {:type :icon :icon {...}}` or
+  `{:type :image :image {:source ...}}` (also `:url` and native image props).
+  Replace `:icon` and `:image-source`/`:image-style`; they are not concurrent inputs.
+- `:style` now applies to the root; migrate old field `:style` to `:field-style`,
+  and old `:container-style` to `:style`. Root flex growth is caller-owned.
+- `:button` accepts full Button props plus `:label`. Size 24, Outline, hit slop,
+  and inherited blur are defaults. A disabled input disables its button, with
+  field opacity applied once; labels/counter remain undimmed.
+- `:clearable?` reserves the 20 px clear slot, avoiding text-width changes while
+  typing. The icon hides and becomes non-interactive whenever the value is empty,
+  across all variants (an intentional UX enhancement over Figma). Clearing calls
+  `:on-change-text` with `""` in both value modes, then optional `:on-clear`, without a timer.
+- `:value`/`:default-value`, `:label`, `:max-length`, `:error?`, `:disabled?`,
+  `:input-ref`, `:auto-focus?`, `:font`, and native TextInput props/events remain.
+  `:multiline?` (or native `:multiline`) and surface `:min-height`/`:max-height`
+  are retained. Native `maxLength` performs limiting without JS truncation.
+- Native TextInput receives `value`/`defaultValue` on both platforms; Android no
+  longer embeds a Text child. Uncontrolled text is not written back on each key.
+  Only empty/nonempty transitions or an enabled counter update surrounding UI;
+  multiline height updates only when its measured line count changes.
+
+Migration in this checkout: social-link and emoji-picker leading content, directory
+field styling, Places search and room-search leading content/field styling, shared-profile root styling,
+and explicit root flex for row layouts in room selection and profile name/bio/links.
+The new Input showcase exercises
+both value modes, slots, errors, disabled state, blur, multiline bounds, and password
+input. Existing press feedback stays; the native field and clear slot stay mounted.
+
+Verification on the A14 development build: all 896 reference variants matched the
+computed field padding, gap, radius and minimum height. This is geometry verification,
+not 896 device screenshots. Controlled typing, cursor insertion, Samsung keyboard
+`ñ`, clearing and multiline growth/scrolling were checked without replacing the
+native input. A bounded field grows to 124 px and returns to 80 px after clearing;
+the empty-field measurement handles Android reporting its previous viewport height.
+
+The same recorded 36-character uncontrolled typing/clear flow passed before and
+after: captured React fiber renders fell from 449 to 118, and commits taking at
+least 16 ms fell from 28 to 4. Total commits were 35 and 43 respectively; native
+TextInput still performs its own lightweight updates. These are development-device
+measurements with profiling overhead, not a release smoothness guarantee. iOS was
+not device-validated.
 
 ## Drawer
 
 ### Composable pieces (2026-10-10)
 
 Implemented; the API was recorded before implementation. New grouped exports live
-under `xquo.drawer.*`. See [Drawer usage](../doc/drawer-usage.md) for registration,
+under `xquo.drawer.*`. See [Drawer usage](drawer-usage.md) for registration,
 opening, closing and composition.
 
 - `drawer.content`: children inside a TrueSheet; `:theme`, `:blur?`, `:handle?`, `:style`.
@@ -701,7 +807,10 @@ API recorded before component implementation:
 - Both inherit the surrounding Xquo theme: dark/shell uses white-70; light uses
   neutral-80-70. Each has one actual blur-40 backdrop, not a glass effect.
 - `notification.provider` wraps the navigation tree once and presents a native
-  overlay above TrueSheet drawers, including their exit animations.
+  overlay above TrueSheet drawers, including their exit animations. A regular
+  Clojure atom holds the host's callbacks; rendered state stays local to the host.
+  There is no separate notification React context.
+  See [Notification usage](notification-usage.md).
 - `notification.use-notifications` returns `{:show! ... :dismiss! ...}`. `show!`
   takes component Hiccup and optional `{:duration 5000 :on-dismiss callback}`,
   preserves the caller's theme/color and returns an id. Explicit `:duration nil`

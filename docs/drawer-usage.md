@@ -107,4 +107,4 @@ That is a showcase requirement, not the normal app usage pattern. Its local
 `use-navigation` hook exposes raw JS methods, unlike the app's `nav/navigate!`;
 the showcase keeps the conversion internal and does not depend on the host's global ref.
 See [the demo](../src/xquo/demo/drawer/core.cljs) and
-[API changes](../docs/component-api-changes.md#drawer).
+[API changes](component-api-changes.md#drawer).

@@ -1,5 +1,5 @@
 (ns xquo.components.empty-state.style
-  (:require [react-native.utils :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle style]]
             [xquo.foundations.colors :as colors]))
 
 (defstyle root-base
@@ -23,12 +23,7 @@
 
 (defn illustration-tint-style [image-tint]
   (when image-tint
-    {:tint-color (colors/get-color image-tint)}))
-
-(defstyle illustration-placeholder
-  {:width            80
-   :height           80
-   :background-color (colors/get-color :color/danger-50)})
+    (style {:tint-color (colors/get-color image-tint)})))
 
 (defstyle text-combination
   {:width              "100%"
@@ -38,17 +33,17 @@
    :gap                2})
 
 (defn text-combination-top-spacing [image-spacing]
-  {:padding-top (or image-spacing 12)})
-
-(defstyle title-slot
-  {:width "100%"})
+  (style {:padding-top image-spacing}))
 
 (defstyle title-text
-  {:text-align :center})
+  {:width                "100%"
+   :text-align           :center
+   :include-font-padding false})
 
 (defstyle description-text
-  {:width      "100%"
-   :text-align :center})
+  {:width                "100%"
+   :text-align           :center
+   :include-font-padding false})
 
 (defstyle actions-base
   {:width              "100%"
@@ -57,5 +52,6 @@
    :padding-horizontal 20
    :padding-bottom     12})
 
-(defstyle secondary-action-spacing
-  {:margin-top 12})
+(defstyle actions-stack
+  {:max-width "100%"
+   :gap       12})

@@ -1,180 +1,74 @@
 (ns xquo.components.info.information-box.style
-  (:require [react-native.utils :refer [defstyle]]
-            [xquo.foundations.borders :as borders]
+  (:require [react-native.utils :refer [defstyle style]]
             [xquo.foundations.colors :as colors]))
 
-(defstyle container-base
-  {:border-width  1
-   :border-radius (borders/radius 40)})
+(def font {13 :font/regular-13 15 :font/regular-15})
+(def ^:private line-height {13 18 15 22})
+(def ^:private status-color
+  {:success :color/success :warning :color/warning :error :color/danger})
 
-(defstyle rich-layout-base
-  {:padding-left   12
-   :padding-right  12
-   :padding-top    10
-   :padding-bottom 12})
+(defn container [{:keys [theme color dark-theme?]} blur? status rich? close-button]
+  (let [color (if (= status :info) color (status-color status))]
+    (style {:flex-direction     :row
+            :align-items        (if (and (not rich?) dark-theme? close-button) "center" "flex-start")
+            :gap                8
+            :border-width       1
+            :border-radius      12
+            :padding-horizontal 11
+            :padding-top        (if rich? 9 10)
+            :padding-bottom     (if rich? 11 10)
+            :background-color   (cond
+                                  color (colors/get-color color 50 5)
+                                  blur? (colors/themed theme :color/neutral-80-5 :color/white-5)
+                                  :else (colors/themed theme :color/neutral-5 :color/neutral-80-40))
+            :border-color       (cond
+                                  color (colors/get-color color 50 10)
+                                  blur? (colors/themed theme :color/neutral-80-10 :color/white-10)
+                                  :else (colors/themed theme :color/neutral-20 :color/neutral-80))})))
 
-(defstyle rich-row-base
-  {:flex-direction :row
-   :align-items    :flex-start
-   :align-self     :stretch
-   :gap            8})
+(defstyle content
+  {:flex        1
+   :min-width   0
+   :align-items :flex-start
+   :gap         8})
 
-(defstyle rich-content-base
-  {:flex-direction :column
-   :align-items    :flex-start
-   :flex           1
-   :min-width      1
-   :gap            8})
-
-(defstyle compact-body-base
-  {:flex      1
-   :min-width 1})
-
-(defstyle text-column-base
+(defstyle copy
   {:align-self :stretch})
 
-(defstyle body-slot-base
-  {:align-self :stretch})
+(defn leading-icon-slot [title size icon-size]
+  (style {:align-self  :stretch
+          :padding-top (max 0 (/ (- (if title 22 (line-height size)) icon-size) 2))}))
 
-(defn compact-layout-style [theme close-button]
-  {:flex-direction     :row
-   :align-items        (if (and (= theme :theme/dark) close-button)
-                         :center
-                         :flex-start)
-   :gap                8
-   :padding-horizontal 12
-   :padding-vertical   11})
+(defn close-slot [rich?]
+  (style {:padding-top    (if rich? 4 3)
+          :padding-bottom 3}))
 
-(defn container-color-style [theme blur? status color]
-  (cond
-    (= status :info)
-    {:background-color (colors/get-color color 50 5)
-     :border-color     (colors/get-color color 50 10)}
+(defn foreground [{:keys [theme]}]
+  (colors/themed theme :color/neutral-100 :color/white-100))
 
-    (= status :success)
-    {:background-color (colors/get-color :color/success 50 5)
-     :border-color     (colors/get-color :color/success 50 10)}
+(defn secondary [{:keys [theme]} blur?]
+  (if blur?
+    (colors/themed theme :color/neutral-80-40 :color/white-40)
+    (colors/themed theme :color/neutral-50 :color/neutral-40)))
 
-    (= status :warning)
-    {:background-color (colors/get-color :color/warning 50 5)
-     :border-color     (colors/get-color :color/warning 50 10)}
+(defn icon-color [{:keys [theme color dark-theme?]} blur? status]
+  (if-let [color (if (= status :info) color (status-color status))]
+    (colors/get-color color (if dark-theme? 60 50))
+    (if blur?
+      (colors/themed theme :color/neutral-80-70 :color/white-70)
+      (colors/themed theme :color/neutral-50 :color/neutral-40))))
 
-    (= status :error)
-    {:background-color (colors/get-color :color/danger 50 5)
-     :border-color     (colors/get-color :color/danger 50 10)}
+(defn title-style [theme status]
+  (style {:include-font-padding false
+          :line-height          22
+          :color                (if (#{:error :warning} status)
+                                  (icon-color theme nil status)
+                                  (foreground theme))}))
 
-    (and (= theme :theme/dark) blur?)
-    {:background-color (colors/get-color :color/white 5)
-     :border-color     (colors/get-color :color/white 10)}
-
-    (= theme :theme/dark)
-    {:background-color (colors/get-color :color/neutral 80 40)
-     :border-color     (colors/get-color :color/neutral 80)}
-
-    :else
-    {:background-color (colors/get-color :color/neutral 5)
-     :border-color     (colors/get-color :color/neutral 20)}))
-
-(defn leading-icon-style [close-button title button use-15-font?]
-  (cond
-    (and close-button title)
-    {:padding-top 5}
-
-    (and title use-15-font?)
-    {:padding-top 1}
-
-    close-button
-    (if button
-      {:padding-top 3}
-      {:padding-top    3
-       :padding-bottom 3})
-
-    title
-    {:padding-top 3}
-
-    :else
-    {:padding-top    1
-     :padding-bottom 1}))
-
-(defn close-button-style [title button]
-  (if (or title button)
-    {:padding-top    4
-     :padding-bottom 3}
-    {:padding-top    3
-     :padding-bottom 3}))
-
-(defn leading-icon-color [theme blur? status color]
-  (cond
-    (= status :info)
-    (colors/get-color color
-                      (if (= theme :theme/dark) 60 50))
-
-    (= status :success)
-    (colors/get-color :color/success
-                      (if (= theme :theme/dark) 60 50))
-
-    (= status :warning)
-    (colors/get-color :color/warning
-                      (if (= theme :theme/dark) 60 50))
-
-    (= status :error)
-    (colors/get-color :color/danger
-                      (if (= theme :theme/dark) 60 50))
-
-    (and (= theme :theme/dark) blur?)
-    (colors/get-color :color/white 70)
-
-    (= theme :theme/dark)
-    (colors/get-color :color/neutral 40)
-
-    :else
-    (colors/get-color :color/neutral 50)))
-
-(defn close-button-color [theme status]
-  (cond
-    (= status :error)
-    (colors/get-color :color/danger
-                      (if (= theme :theme/dark) 60 50))
-
-    (= theme :theme/dark)
-    (colors/get-color :color/white 100)
-
-    :else
-    (colors/get-color :color/neutral 100)))
-
-(defn title-text-style [theme status]
-  {:color (cond
-            (= status :error)
-            (colors/themed theme :color/danger)
-
-            (= status :warning)
-            (colors/themed theme :color/warning)
-
-            (= theme :theme/dark)
-            (colors/get-color :color/white 100)
-
-            :else
-            (colors/get-color :color/neutral 100))})
-
-(defn body-text-style [theme blur? status title]
-  {:color (cond
-            (= status :error)
-            (colors/get-color :color/danger
-                              (if (= theme :theme/dark) 60 50))
-
-            title
-            (cond
-              (and (= theme :theme/dark) blur?)
-              (colors/get-color :color/white 40)
-
-              (= theme :theme/dark)
-              (colors/get-color :color/neutral 40)
-
-              :else
-              (colors/get-color :color/neutral 50))
-
-            (= theme :theme/dark)
-            (colors/get-color :color/white 100)
-
-            :else
-            (colors/get-color :color/neutral 100))})
+(defn body-style [theme blur? status title size]
+  (style {:include-font-padding false
+          :line-height          (line-height size)
+          :color                (cond
+                                  (= status :error) (icon-color theme blur? status)
+                                  title             (secondary theme blur?)
+                                  :else             (foreground theme))}))

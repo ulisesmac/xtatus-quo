@@ -10,9 +10,9 @@
   (js/alert "Community card pressed"))
 
 (def ^:private tags
-  [{:label "Crypto" :content {:type :image :image {:source assets/money}}}
-   {:label "DeFi" :content {:type :image :image {:source assets/growth}}}
-   {:label "Markets" :content {:type :image :image {:source assets/diamond}}}])
+  [{:label "Crypto" :content {:type :emoji :text "💸"}}
+   {:label "DeFi" :content {:type :emoji :text "📈"}}
+   {:label "Markets" :content {:type :emoji :text "💎"}}])
 
 (def ^:private stats
   [{:icon {:name :icon/users} :value "629.2K"}
