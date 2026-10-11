@@ -485,11 +485,23 @@
                   :stroke       color
                   :stroke-width 1.2}]]]))
 
+(def ^:private direction-paths
+  {:positive "M8.38419 4.53909L8.00008 4.21899L7.61597 4.53909L4.61597 7.03909L5.38419 7.96095L7.40008 6.28104V11H8.60008V6.28104L10.616 7.96095L11.3842 7.03909L8.38419 4.53909Z"
+   :negative "M8.60004 9.71901L10.616 8.03907L11.3842 8.96093L8.38419 11.4609L8.00008 11.781L7.61597 11.4609L4.61597 8.96093L5.38419 8.03907L7.40003 9.71894V4.5H8.60004V9.71901Z"})
+
+(defn- direction-icon [direction {:keys [color size style]}]
+  (let [color (icon-color color)]
+    [:svg/svg {:width size :height size :view-box "0 0 16 16" :style style}
+     [:svg/circle {:cx 8 :cy 8 :r 6.5 :fill :none :stroke color :stroke-width 1.2 :opacity 0.4}]
+     [:svg/path {:d (direction-paths direction) :fill color}]]))
+
 (def icons
   {12 {:icon/bridge  bridge-12
        :icon/loading loading-12}
-   16 {:icon/bridge  bridge-16
-       :icon/loading loading-16}
+   16 {:icon/bridge   bridge-16
+       :icon/loading  loading-16
+       :icon/positive #(direction-icon :positive %)
+       :icon/negative #(direction-icon :negative %)}
    20 {:icon/arrow-down-fade        arrow-down-fade-20
        :icon/arrow-top-fade          arrow-up-fade-20
        :icon/arrows-left-right-fade arrows-left-right-fade-20

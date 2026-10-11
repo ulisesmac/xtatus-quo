@@ -1,4 +1,4 @@
-(ns xquo.components.input.style
+(ns xquo.input.text.style
   (:require [react-native.utils :refer [defstyle style]]
             [xquo.foundations.colors :as colors]))
 

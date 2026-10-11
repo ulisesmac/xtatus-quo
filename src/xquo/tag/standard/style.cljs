@@ -76,7 +76,10 @@
 
 (defn emoji [size]
   (let [edge (media-size size)]
-    (style {:font-size            edge
+    (style {:width                edge
+            :height               edge
+            :text-align           :center
+            :font-size            edge
             :line-height          edge
             :include-font-padding false})))
 

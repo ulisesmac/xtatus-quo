@@ -65,11 +65,13 @@
             [xquo.components.info.info-message.view]
             [xquo.components.info.information-box.view]
             [xquo.components.info.list-info-box.view]
-            [xquo.components.input.view]
+            [xquo.input.text.view]
+            [xquo.input.search.view]
             [xquo.components.link-card.view]
             [xquo.components.list-items.result-list.view]
             [xquo.components.list-items.simple-item.view]
             [xquo.components.list.view]
+            [xquo.list.item.view]
             [xquo.notification.host.view]
             [xquo.notification.toast.view]
             [xquo.notification.in-app.view]
@@ -397,9 +399,36 @@
   :multiline?, :min-height/:max-height, :font, :input-ref and :auto-focus? are
   supported. Other native TextInput props/events pass through. Clear emits
   on-change-text with an empty string, then optional :on-clear. Parent owns blur."
-  xquo.components.input.view/input)
+  xquo.input.text.view/input)
+(def search-input
+  "Search field, 32 px high. :value or :default-value, :on-change-text,
+  :placeholder, :clearable? (true), :disabled?, :blur?, :input-ref,
+  :auto-focus?, :on-clear and native TextInput props/events. :style is the root.
+  :tags contains {:tag {...}} or {:type :context :context-tag {...}}; :type defaults
+  to :standard. Cursor and selection highlight follow the customization color;
+  tag maps accept full props plus :label, default size 32. Tags may be mixed.
+  Clear emits on-change-text with an empty string, then on-clear; the host removes
+  controlled tags there. Clear is hidden when text and tags are empty.
+  Parent owns blur; focus and selection stay native."
+  xquo.input.search.view/search-input)
 (def link-card xquo.components.link-card.view/link-card)
-(def list xquo.components.list.view/view)
+(def list
+  "list.item: :title, optional :description, :title-props/:description-props,
+  :type (:default/:outline/:grey/:elevated), :compact? (48px; otherwise 56px),
+  tagged :content (avatar/image/icon/custom), ordered :left/:right slot entries,
+  :caption {:text :icon :text-props}, :active?, :selected?, :disabled?, :blur?,
+  :style and pressable callbacks. Heights are minima; richer content can grow.
+  Slots support icon/button/selector/counter/avatar/image/text/values/tag/custom.
+  Each receives its full props map; button adds :label, counter/text add :value.
+  Values: :primary, :secondary text or {:type :change :direction :positive/:negative
+  :percentage :value}, optional :layout :balanced and text-props overrides.
+  :custom renders :view Hiccup. Preview-list stays a separate pending component.
+  Theme/color inherit context; parent owns blur. Omitted disabled? stays nil.
+  Static without :on-press/:on-long-press. Child controls retain their own callbacks.
+  Selected rows show a check when no explicit right slot is supplied.
+  list.view retains the legacy :items/section container while callers migrate."
+  #js {:item xquo.list.item.view/item
+       :view xquo.components.list.view/view})
 (def result-list xquo.components.list-items.result-list.view/result-list)
 (def simple-item xquo.components.list-items.simple-item.view/simple-item)
 (def notification

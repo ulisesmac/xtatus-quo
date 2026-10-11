@@ -3,7 +3,7 @@
             [react-native.utils :as rn.utils :refer [style]]
             [xquo.components.button.style :as button-style]
             [xquo.components.icon.view :as icon]
-            [xquo.components.input.view :as input]
+            [xquo.input.text.view :as input]
             [xquo.components.selectors.selector.view :as selector]
             [xquo.components.text.view :as text]
             [xquo.context :as context]

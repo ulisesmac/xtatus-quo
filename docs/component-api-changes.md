@@ -19,6 +19,7 @@ defaulting to the existing alert symbol; existing calls need no migration.
 | [Effect view](#effect-view) | Blur uses only `:blur-amount` | Active blur callers migrated |
 | [Page navigation](#page-navigation) | Internal button calls migrated; public API unchanged | No page-nav API migration |
 | [Input](#input) | Main Input reworked; showcase added | Content union, root/field styles, full button maps and native text ownership; active callers migrated |
+| [Search input](#search-input) | Implemented with Input reuse and showcase | New `search-input`; existing public `input` remains unchanged |
 | [Drawer](#drawer) | Composable pieces and TrueSheet showcase implemented | Bare drawer caller migrated; old hyphenated exports retained |
 | [Avatar](#avatar) | New component implemented; visual parity work remains | No older exported avatar API to replace |
 | [Color picker](#color-picker) | `:blur?` explicitly forces dark + blur for its swatches | Existing prop retained; no call-site migration required |
@@ -41,6 +42,100 @@ defaulting to the existing alert symbol; existing calls need no migration.
 | [Dropdowns](#dropdowns) | Button/input triggers and showcases | New exports; network dropdown skipped |
 | [Info components](#info-components) | Implemented; layout/color corrections and three showcases | Existing calls remain compatible; prefer numeric size and :blur? |
 | [Empty state](#empty-state) | Layout/button corrections and showcase implemented | Existing callers remain compatible |
+| [List item](#list-item) | Unified row/card API and showcase implemented | Old `xquo/list` container moves to `xquo/list.view`; new rows use `xquo/list.item` |
+
+## Search input
+
+`search-input` reuses the existing Input's native editing, refs, controlled/uncontrolled
+value handling and clear behavior. Implementations are grouped under `xquo.input.text.*`
+and `xquo.input.search.*`; internal imports were updated. Public `xquo/input` remains valid.
+
+- `:value` / `:default-value`, `:on-change-text`, `:placeholder`, `:input-ref`,
+  `:auto-focus?`, `:disabled?`, `:blur?`, `:style`, and native TextInput props/events.
+- `:clearable?` defaults to true. Clear appears for nonempty text or tags, emits
+  `on-change-text ""`, then calls `on-clear`. The host removes its controlled tags there.
+- `:tags`: ordered entries `{:tag {...}}` (`:type` defaults to `:standard`) or
+  `{:type :context :context-tag {...}}`, with full existing tag props plus `:label`.
+  Size defaults to 32; tags can be mixed. Content remains caller-supplied.
+- Borderless, transparent 32 px row, regular 15 px text, 22 px line box and 5 px
+  vertical padding. Tags use 8 px gaps; overflowing tags expose their trailing end.
+  Clear has a 20 px slot, with 8 px separation normally and 32 px in multi-tag layouts.
+- Parent owns backdrop blur. Native focus/selection determine state; no public state enum.
+  Cursor uses the current customization color; selection uses that color at 20% opacity.
+  Clear is hidden when both tags and text are empty, preserving the requested UX enhancement.
+
+Figma source: Inputs / Search Input `8824:152912`, 120 variants. The native field stays
+mounted when tags, focus, or clear visibility change. The showcase includes plain,
+context, standard and mixed tags, text selection, disabled state, and theme-aware blur.
+
+The standard Tag's emoji now occupies its existing 12/20 px media slot instead of
+letting the native glyph's advance widen the tag. Empty tagged searches retain a
+focusable native field without reserving visible text space.
+
+Verified on the Fold development build: 32 px rows, clipped standard tags with
+omitted `:type`, native typing/selection, clearing query and tags, and light/dark
+blur with the customization color. Input lint and the running Shadow build pass.
+
+## List item
+
+The approved API combines ordinary list rows, values/metrics, media rows and
+embedded cards. Quiz, Status and Preview List remain separate components.
+
+- `:type`: `:default` (default), `:outline`, `:grey`, `:elevated`.
+- `:compact?`: true selects the 48 px presentation; omission selects 56 px.
+  These are minimum heights; multiline/custom content and a caption can grow.
+  List item does not expose `:size`; Avatar/Button/Preview sizes stay numeric.
+- `:title`, optional `:description`: strings or Hiccup. `:title-props` and
+  `:description-props` preserve Text overrides.
+- `:content`: tagged `:avatar`, `:image`, `:icon` or `:custom`, with the named
+  props map or `:view` Hiccup. Default leading Avatar size is 32; media is 40.
+- `:left` / `:right`: ordered slot entries. Supported types are `:icon`,
+  `:button`, `:selector`, `:counter`, `:avatar`, `:image`, `:text`, `:values`,
+  `:tag` (existing ContextTag), and `:custom` (`:view` Hiccup).
+  Named maps retain their props; button adds `:label`, counter/text add `:value`.
+- Values take `:primary` and one `:secondary`: a string or
+  `{:type :change :direction :positive/:negative :percentage ... :value ...}`.
+  Omit direction for neutral metrics. `:layout :balanced` uses equal columns.
+- `:caption`: `{:text ... :icon {...} :text-props {...}}` below the main content.
+- `:active?`, `:selected?`, `:disabled?`, `:blur?`, `:style` and pressable props.
+  Omitted `:disabled?` remains nil. A selected row shows a check when no explicit
+  right slot exists. Selection is caller-owned; pressed feedback is internal.
+  Nested controls retain their own callbacks and are disabled with their row.
+  `:blur?` adapts styling; the parent owns the backdrop blur.
+
+`list.view` retains the old `:items`/section renderer. The active application's
+13 old container calls were renamed to `list.view`; their behavior is preserved.
+Legacy `simple-item` / `result-list` exports are retained for later migration.
+
+Dependencies: neutral circular initials now use the Wallet Avatar's measured
+Neutral/80 5% fill and 70% text (white equivalents in dark/blur). Positive/negative
+metric glyphs use the exported Figma paths through the existing icon map, without
+new bitmap assets or font files.
+
+### Pending Preview List integration
+
+**PREVIEW_LIST_SLOT_PENDING:** At the user's request, Preview List is deferred to
+its own turn. When `preview-list` is implemented, return here: add the `:preview`
+slot adapter, wire approval/contact examples that need it, and verify its spacing
+inside `list.item`. Until then, previews can be supplied through `:custom` Hiccup.
+
+The showcase exposes one example for each of the ten agreed layout categories,
+plus content/slot controls, appearance, compact spacing, caption, active/selected,
+disabled and theme-aware blur. It reuses existing demonstration images.
+
+Press feedback runs on the entire animated row with the shared Button constants:
+scale 1 → 0.985, translate-Y 0 → 2, press 120 ms/ease-out, release 220 ms/ease.
+Background and outline colors transition with the same timing.
+
+Corrected against the cached Figma measurements: 12 px gaps for Channel and
+full Outline/Grey rows, 10 px for elevated rows, and 2 px between paired status
+icons. Full Outline on dark blur uses white at 5%. The showcase also applies
+Channel's muted title, the theme-aware information icon, and Edit's leading icon.
+
+Verified on the A14 development build: all ten showcase categories render,
+ordinary rows measure 56 px and compact rows 48 px, press opens the expected
+alert, and light / dark blur presentations render. Scoped lint and compilation
+passed. This does not constitute a pixel comparison of every Figma combination.
 
 ## Info components
 

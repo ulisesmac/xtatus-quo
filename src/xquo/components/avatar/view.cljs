@@ -82,6 +82,7 @@
     (let [fonts (if (= variant :solid) style/initials-font style/soft-initials-font)]
       [text/text {:font  (fonts size)
                   :style [(style/initials color)
+                          (when (= shape :circle) style/wallet-initials)
                           (when (= size 36) style/notification-initials)]}
        (:text content)])
 
@@ -171,7 +172,7 @@
                       :shape   shape
                       :size    size
                       :variant variant
-                      :color   (style/foreground-color theme color variant)}]]
+                      :color   (style/foreground-color theme color variant (:type content) shape)}]]
       (when on-press
         [:animated/view {:style [style/content (style/press-overlay pressed?)]}
          [surface {:size          size

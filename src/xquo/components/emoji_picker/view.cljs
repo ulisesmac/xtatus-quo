@@ -10,7 +10,7 @@
             [xquo.divider.label.view :as divider-label]
             [xquo.components.emoji-picker.data :as emoji-picker.data]
             [xquo.components.emoji-picker.style :as style]
-            [xquo.components.input.view :as input]
+            [xquo.input.text.view :as input]
             [xquo.context :as context]
             [xquo.extra.components.above-keyboad-view.view :as above-keyboad-view]))
 

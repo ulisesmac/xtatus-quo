@@ -43,6 +43,8 @@
             [xquo.demo.empty-state :as empty-state]
             [xquo.demo.info :as info]
             [xquo.demo.input :as input]
+            [xquo.demo.search-input :as search-input]
+            [xquo.demo.list-item :as list-item]
             [xquo.demo.notification.core :as notification]
             [xquo.demo.avatar :as avatar]
             [xquo.demo.button :as button]
@@ -98,7 +100,9 @@
         open-info-message!              (react/use-callback #(navigate "xquo-demo.info-message") [navigate])
         open-information-box!           (react/use-callback #(navigate "xquo-demo.information-box") [navigate])
         open-input!                     (react/use-callback #(navigate "xquo-demo.input") [navigate])
+        open-search-input!              (react/use-callback #(navigate "xquo-demo.search-input") [navigate])
         open-list-info-box!             (react/use-callback #(navigate "xquo-demo.list-info-box") [navigate])
+        open-list-item!                 (react/use-callback #(navigate "xquo-demo.list-item") [navigate])
         open-notification-toast!        (react/use-callback #(navigate "xquo-demo.notification-toast") [navigate])
         open-notification-in-app!       (react/use-callback #(navigate "xquo-demo.notification-in-app") [navigate])
         open-card!                      (react/use-callback #(navigate "xquo-demo.option-card") [navigate])
@@ -291,6 +295,10 @@
                           :image    {:type :none}
                           :right    {:action {:type :arrow}}
                           :on-press open-list-info-box!}]
+     [xquo/settings-item {:title    "List item"
+                          :image    {:type :none}
+                          :right    {:action {:type :arrow}}
+                          :on-press open-list-item!}]
      [xquo/settings-item {:title    "Notification in-app"
                           :image    {:type :none}
                           :right    {:action {:type :arrow}}
@@ -303,6 +311,10 @@
                           :image    {:type :none}
                           :right    {:action {:type :arrow}}
                           :on-press open-card!}]
+     [xquo/settings-item {:title    "Search input"
+                          :image    {:type :none}
+                          :right    {:action {:type :arrow}}
+                          :on-press open-search-input!}]
      [xquo/settings-item {:title    "Segmented tab"
                           :image    {:type :none}
                           :right    {:action {:type :arrow}}
@@ -369,7 +381,9 @@
                                                                             :screen/xquo-demo.info-message              #'info/message-screen
                                                                             :screen/xquo-demo.information-box           #'info/box-screen
                                                                             :screen/xquo-demo.input                     #'input/screen
+                                                                            :screen/xquo-demo.search-input              #'search-input/screen
                                                                             :screen/xquo-demo.list-info-box             #'info/list-screen
+                                                                            :screen/xquo-demo.list-item                 #'list-item/screen
                                                                             :screen/xquo-demo.notification-toast        #'notification/toast-screen
                                                                             :screen/xquo-demo.notification-in-app       #'notification/in-app-screen
                                                                             :screen/xquo-demo.button                    #'button/screen

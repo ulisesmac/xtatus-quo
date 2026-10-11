@@ -45,6 +45,9 @@
     (= variant :solid)
     (colors/themed theme color)
 
+    (and (= color :color/neutral) (= content-type :initials) (= shape :circle))
+    (colors/themed theme :color/neutral-80-5 :color/white-5)
+
     (and blur? (= color :color/neutral))
     "transparent"
 
@@ -62,10 +65,13 @@
     :else
     (colors/get-color color 50 (soft-fill-opacity shape))))
 
-(defn foreground-color [theme color variant]
+(defn foreground-color [theme color variant content-type shape]
   (cond
     (= variant :solid)
     (colors/get-color :color/white-70)
+
+    (and (= color :color/neutral) (= content-type :initials) (= shape :circle))
+    (colors/themed theme :color/neutral-80-70 :color/white-70)
 
     (= color :color/neutral)
     (colors/themed theme :color/neutral-100 :color/white-100)
@@ -125,6 +131,9 @@
   (style {:include-font-padding false
           :text-align           :center
           :color                color}))
+
+(defstyle wallet-initials
+  {:font-variant ["tabular-nums" "stylistic-two"]})
 
 (def ^:private emoji-size
   {16 12, 20 12, 24 12, 28 16, 32 20, 36 20, 48 32, 56 32, 64 40, 80 48})
