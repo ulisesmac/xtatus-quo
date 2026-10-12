@@ -15,11 +15,11 @@
 
 (def ^:private context-tags
   [{:type        :context
-    :context-tag {:label "Alex" :image-source assets/profile :on-press pressed!}}
+    :context-tag {:label "Alex" :image-source assets/profile-testing-1 :on-press pressed!}}
    {:type        :context
-    :context-tag {:label "Pedro" :image-source assets/profile :on-press pressed!}}
+    :context-tag {:label "Pedro" :image-source assets/profile-testing-2 :on-press pressed!}}
    {:type        :context
-    :context-tag {:label "Freya Odinson" :image-source assets/profile :on-press pressed!}}])
+    :context-tag {:label "Freya Odinson" :image-source assets/profile-testing-3 :on-press pressed!}}])
 
 (def ^:private standard-tags
   [{:tag {:label "Crypto" :content {:type :emoji :text "💰"} :on-press pressed!}}

@@ -1,52 +1,40 @@
 (ns xquo.components.selectors.disclaimer.style
-  (:require [react-native.utils :refer [defstyle]]
-            [xquo.foundations.borders :as borders]
+  (:require [react-native.utils :refer [defstyle style]]
             [xquo.foundations.colors :as colors]))
 
-(defstyle container-base
-  {:padding         12
-   :border-width    1
-   :border-radius   (borders/radius 40)
-   :flex-direction  :row
-   :align-items     :flex-start})
+(defstyle container
+  {:width "100%" :padding-top 12 :padding-horizontal 20 :padding-bottom 8})
 
-(defstyle selector-style
-  {:margin-right 8})
+(defn surface [{:keys [dark-theme?]} blur? disabled?]
+  (let [fill   (cond
+                 (and dark-theme? blur?) :color/white-5
+                 dark-theme?             :color/neutral-80-40
+                 :else                   :color/neutral-5)
+        border (cond
+                 (and dark-theme? blur?) :color/white-10
+                 dark-theme?             :color/neutral-80
+                 :else                   :color/neutral-20)]
+    (style {:padding          11
+            :border-width     1
+            :border-radius    12
+            :flex-direction   :row
+            :align-items      :flex-start
+            :gap              8
+            :background-color (colors/get-color fill)
+            :border-color     (colors/get-color border)
+            :opacity          (if disabled? 0.3 1)})))
+
+(defstyle selector
+  {:opacity 1})
 
 (defstyle text-wrapper
-  {:flex 1})
+  {:flex 1 :min-width 0})
 
-(defstyle icon-style
-  {:margin-left 8})
+(defstyle text
+  {:line-height 18 :include-font-padding false})
 
-(defn container-color-style [theme background]
-  (cond
-    (and (= theme :theme/dark)
-         (= background :blur))
-    {:background-color (colors/get-color :color/white-5)
-     :border-color     (colors/get-color :color/white-10)}
-
-    (= theme :theme/dark)
-    {:background-color (colors/get-color :color/neutral-80-40)
-     :border-color     (colors/get-color :color/neutral-80)}
-
-    :else
-    {:background-color (colors/get-color :color/neutral-5)
-     :border-color     (colors/get-color :color/neutral-20)}))
-
-(defn text-color [theme]
-  (if (= theme :theme/dark)
-    (colors/get-color :color/white-100)
-    (colors/get-color :color/neutral-100)))
-
-(defn icon-color [theme background]
-  (cond
-    (and (= theme :theme/dark)
-         (= background :blur))
-    (colors/get-color :color/white-70)
-
-    (= theme :theme/dark)
-    (colors/get-color :color/neutral-40)
-
-    :else
-    (colors/get-color :color/neutral-50)))
+(defn icon-color [{:keys [dark-theme?]} blur?]
+  (colors/get-color (cond
+                      (and dark-theme? blur?) :color/white-70
+                      dark-theme?             :color/neutral-40
+                      :else                   :color/neutral-50)))

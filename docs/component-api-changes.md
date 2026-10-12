@@ -17,9 +17,20 @@ defaulting to the existing alert symbol; existing calls need no migration.
 | --- | --- | --- |
 | [Button](#button) | Implemented; Photo now includes real backdrop blur | Active `src/fc` callers migrated |
 | [Effect view](#effect-view) | Blur uses only `:blur-amount` | Active blur callers migrated |
-| [Page navigation](#page-navigation) | Internal button calls migrated; public API unchanged | No page-nav API migration |
+| [Page navigation](#page-navigation) | New `navigation.page-nav` with composable slots and title press feedback | Active app and demo callers migrated; legacy exports retained |
+| [Bottom nav tab](#bottom-nav-tab) | Scroll variants implemented; Soon excluded | New `navigation.bottom-nav-tab`; app navigation unchanged |
+| [Bottom nav](#bottom-nav) | Blurred, symmetric bar with up to five tabs | New `navigation.bottom-nav`; host owns navigation and safe-area placement |
+| [Selectors](#selectors) | Base selector, Disclaimer and Filter corrected; showcases added | `:background` → `:blur?`; `:glass?` removed; library consumers migrated |
+| [Text combinations](#text-combinations) | Shared Title/Username/Channel composition and reworked Page Top | Existing `page-top` export points to the new implementation |
 | [Input](#input) | Main Input reworked; showcase added | Content union, root/field styles, full button maps and native text ownership; active callers migrated |
 | [Search input](#search-input) | Implemented with Input reuse and showcase | New `search-input`; existing public `input` remains unchanged |
+| [Link card](#link-card) | Corrected Profile Link card geometry, gradient and showcase | Active contact cards migrated to neutral content props |
+| [Link preview](#link-preview) | Implemented; Fold showcase checked | New `link-preview`; separate from Profile `link-card` |
+| [URL preview](#url-preview) | Implemented; Fold showcase checked | New `url-preview`; host owns metadata/loading/removal |
+| [Showcase card](#showcase-card) | Profile card with composable preview content | New `profile.showcase-card`; four showcase examples |
+| [Profile tile](#profile-tile) | Shared Community/Account card and loading states | New `profile.tile`; no separate entity variants |
+| [Profile card](#profile-card) | Single card without emoji hashes or identicon rings | New `profile.card`; showcase added |
+| [Profile input](#profile-input) | Implemented; Fold showcase verified | New `profile-input`; existing `title-input` remains unchanged |
 | [Drawer](#drawer) | Composable pieces and TrueSheet showcase implemented | Bare drawer caller migrated; old hyphenated exports retained |
 | [Avatar](#avatar) | New component implemented; visual parity work remains | No older exported avatar API to replace |
 | [Color picker](#color-picker) | `:blur?` explicitly forces dark + blur for its swatches | Existing prop retained; no call-site migration required |
@@ -43,6 +54,434 @@ defaulting to the existing alert symbol; existing calls need no migration.
 | [Info components](#info-components) | Implemented; layout/color corrections and three showcases | Existing calls remain compatible; prefer numeric size and :blur? |
 | [Empty state](#empty-state) | Layout/button corrections and showcase implemented | Existing callers remain compatible |
 | [List item](#list-item) | Unified row/card API and showcase implemented | Old `xquo/list` container moves to `xquo/list.view`; new rows use `xquo/list.item` |
+| [Markdown](#markdown) | Text/list-item and showcases implemented; Fold verified | New `markdown.text` and `markdown.list-item`; no parser or existing API migration |
+
+## Markdown
+
+`xquo/markdown.text` takes ordinary text/inline Text Hiccup children and `:type`
+(`:body` default, `:body-bold`, `:h1`, `:h2`, `:h3`, `:h3-regular`). It owns the
+measured paragraph/heading padding. `:style` targets its container, `:text-style`
+targets the native text, and native Text props such as `:selectable` pass through.
+
+`xquo/markdown.list-item` accepts `:title`, `:description`, optional `:step`
+(the complete Step props map plus `:value`), and `:blur?`. Omit `:step` for bullets.
+Use Step `:type :complete` for the highlighted Figma variant; customization color
+comes from context. `:title-props`/`:description-props` customize text; `:style`
+targets the row. Text fields accept strings or ordered vectors mixing strings
+with Hiccup controls. Inline rows supply 4 px gaps and wrap when needed; controls
+retain their own props, callbacks, and blur flags.
+
+```clojure
+[xquo/markdown.text {:type :h2} "Community guidelines"]
+
+[xquo/markdown.list-item
+ {:step        {:value 1 :type :complete}
+  :title       "Be respectful"
+  :description ["Ask"
+                [xquo/context-tag {:size 24 :image-source profile} "Alex"]
+                "for help."]}]
+```
+
+Sources: Markdown / List `2500:42470` (54 variants) and Text markdowns
+`2500:42648` (12 variants). Lists use 20 px horizontal padding, 20 px markers,
+8 px marker gap, 2 px title/description gap, and existing 13 px typography.
+Bullet dots are 7 px, neutral-40 light, neutral-50 dark, white-40 dark blur.
+Single-content rows are generally 32 px; two text lines are 50 px and a title
+with 24 px inline controls is 54 px. Source-specific 36 px Step variants retain
+their measured padding. Text blocks reuse the six measured typography tokens,
+the Figma text-box line heights (32/26/22/18 px), and per-type vertical padding.
+These are rendering pieces, not Markdown parsers.
+
+Fold development checks covered light/dark text, plain Step/bullet rows,
+highlighted customization color, parent-owned dark blur, inline Tag/Button,
+wrapping, and the tag's press callback. Native layout measurements were 56 dp
+for H1, 42.286 dp for H2, 50.286 dp for a plain two-line list row, and 54.095 dp
+for the inline-tag row; fractional differences reflect the Fold's pixel rounding.
+Scoped lint passed and the active watcher compiled these namespaces. Screenshots
+were captured for review; this does not claim a pixel comparison of every variant.
+
+## Selectors
+
+Existing public names stay: `xquo/selector`, `xquo/disclaimer`, `xquo/filter`.
+No duplicate implementation. Replace `:background :blur` with `:blur? true`;
+remove `:glass?`. These controls do not create blur views; the parent owns blur.
+The list, drawer and settings selector adapters now forward `:blur?`. Sort-item
+and Options keep using the same corrected Filter/Radio components.
+
+```clojure
+[xquo/selector {:type      :checkbox
+                :selected? selected?
+                :disabled? disabled?
+                :blur?     blur?
+                :on-select set-selected!}]
+
+[xquo/disclaimer {:selected? accepted?
+                  :on-select set-accepted!
+                  :icon      {:name :icon/lock}}
+ "I agree with the community rules"]
+
+[xquo/filter {:size      24
+              :selected? unread?
+              :icon      {:name :icon/unread}
+              :on-select set-unread!}
+ "Unread"]
+```
+
+Base Selector retains `:toggle` (default), `:radio`, `:checkbox`, and
+`:filled-checkbox`. Supplied `:selected?` is controlled, including nil as off;
+omission enables internal state. On select emits the next boolean. Existing
+press callbacks are preserved; caller `:hit-slop` overrides the default 6.
+Radio's existing toggle callback behavior is retained. Context owns accent color.
+
+Filter is controlled and gains the same `:on-select` boolean callback alongside
+`:on-press`. It supports `:disabled?`, sizes 24/32 (default 32), full Icon props and
+an optional label child. Icon-only now works with a single props argument. Default
+icon is the existing unread icon at both sizes instead of a placeholder at 24.
+
+Disclaimer forwards disabled state to its checkbox and applies opacity once.
+It includes the source's outer padding: top 12/horizontal 20/bottom 8. Root `:style`
+now targets that outer layout; the inner surface is radius 12 with a 1px border
+and effective 12px insets (native padding 11 plus border 1). Text is Regular13/18.
+Light+blur has no separate Disclaimer design; it retains the light surface while
+its Checkbox uses the supported light+blur tokens.
+
+Figma references: Selectors `370:18368`, Disclaimer `2638:40983`, Filter Selector
+`9961:166314`. Toggle 30×20, handle 16, travel 10; radio/checkbox 20×20, dot 14,
+checkbox radius 6, off outline 1.2, disabled opacity 30%. Dark and blurred off radios
+now have transparent interiors; only light non-blur off radio retains White40.
+Checkmark retains the existing 8×6 path/1.5 stroke, positioned at the measured
+6/7 inset. Filter's native border is compensated in its padding; labels use
+Medium 13/18 at 24 and Medium 15/22 at 32, preserving source widths/insets.
+
+Shared Button pressing and existing toggle/radio transition timings remain.
+Figma motion inventory is complete with no animated nodes. Indeterminate-labelled
+variants have opacity 0 and are excluded, pending clarification. Reaction,
+Formatting, Reactions Selector and Selector Button are separate future components.
+
+Showcases: **Selector**, **Disclaimer**, **Filter selector**, alphabetically listed.
+Controls cover type/size/content, selected, disabled, blur and customization color.
+Selector additionally shows off/on and both disabled states together.
+
+A14 verification after the concurrent blur benchmark released the device:
+Toggle light state gallery, Radio and Checkbox dark+blur galleries, Filter32 and
+Filter24 selected via its press callback, and Disclaimer light/disabled state.
+The native tree reports the Disclaimer checkbox disabled when requested; runtime
+logs remained empty. Scoped lint and the active Shadow build pass. Filled Checkbox
+and the remaining theme combinations are source-grounded, not an exhaustive device
+screenshot comparison of all Figma variants.
+
+## Text combinations
+
+All text renders through the existing `xquo.components.text.view/text`. Shared
+composition lives alongside it under `xquo.components.text.combination.*` and
+`xquo.components.text.page-top.*`. The old Page Top implementation is removed;
+`xquo/page-top` is a compatibility export of the new function. Existing app calls
+and the Community token-gating consumer use that one implementation.
+
+```clojure
+[xquo/text-combinations.title
+ {:title "Alex"
+  :type :username
+  :caption "Alex Morgan"
+  :icons [{:name :icon/check-verified
+           :color (colors/get-color :color/success)}]}]
+
+[xquo/text-combinations.page-top
+ {:title "Community"
+  :content {:type :avatar
+            :avatar {:content {:type :image :image {:source portrait}}}}
+  :description "Share updates and ideas with your community."
+  :right {:type :button
+          :button {:icon {:name :icon/add} :on-press add!}}
+  :search {:value query :on-change-text set-query!}}]
+```
+
+- Title accepts `:title` and full `:title-props`, optional `:caption` and
+  `:caption-props`, `:icons` (full Icon maps), `:tag` (full standard Tag props plus
+  `:label`), and `:right` (`:button`, `:tag`, `:text`, or `:custom`). Right text's
+  map accepts `:value` and native Text props; custom content uses `:view`.
+- Omit `:type` for standard/channel headings. `:type :username` selects the
+  measured status-icon spacing; nicknames are the title, full names the caption.
+  Plain names/ENS strings need no special enum. Caller-supplied status icons and
+  semantic colors keep combinations open; no verification/business logic lives here.
+- Page Top adds `:content` with standard `:avatar`/`:image`/`:icon` maps,
+  `:description` (string or Hiccup), `:description-props`, and
+  `:description-spacing` (8 default; use 6 for collection/community identity rows).
+  `:search` accepts the existing Search Input's full map. `:footer` accepts other
+  controls as Hiccup, with `:footer-style` for their spacing; choose either search
+  or footer. Custom descriptions can compose tags and summary rows without fixed
+  crypto/domain names. Address/recovery input components are not reimplemented here.
+- Both accept `:blur?` and native root props/`:style`. Blur changes text/child tokens;
+  the host owns the backdrop. `:button` and `:leading-image` remain supported for
+  existing Page Top callers, mapped to right Button and image content respectively.
+
+Figma roots: Username `8737:148440`, Channel Name `8737:151293`, Standard Title
+`8824:151325`, Page Top `8737:151877`. The small Avatar set reuses existing Avatar
+rather than introducing another avatar abstraction. Emoji hashes/dashes excluded.
+All four complete motion inventories contain no animations; composed Buttons keep
+shared pressing behavior.
+
+Measured geometry: 27px Semibold/32px line, caption Medium15/22 at y=10; status
+icons20 at y=8 (y=10 with caption); channel icon gap4 and title gap6; username
+status gap4 (dark caption gap6); adjacent tag24 at y=6; right action/tag32;
+right counter Regular13/18 at y=12 and 20px separation. Page Top uses horizontal
+padding20, vertical12, leading32/gap8, description Regular15/22 and gap8.
+Search adds 8/20/12 padding and a 1px bottom overlay divider without changing height.
+Plain Page Top is56 high; two-line description108; with Search160.
+
+The **Text combinations** demo offers Title, Username, Channel, Page Top,
+editable text, all right-slot examples, title tag, Avatar, Search, and theme-aware blur.
+A14 captures cover Username in light mode and Page Top with Avatar, two-line
+description and Search in light and dark+blur. Runtime logs remained empty;
+scoped lint and the active Shadow build passed. Other compositions are source-grounded,
+not claimed as an exhaustive device comparison of every Figma permutation.
+
+## Showcase card
+
+```clojure
+[xquo/profile.showcase-card {:title    "Communities"
+                             :on-press open-communities!}
+ [my-community-preview]]
+```
+
+One component for Assets, Collectibles, Communities, Accounts, and other content.
+No entity `:type`: the host supplies `:title` and Hiccup children. The content slot
+is 32px high. Optional `:disabled?`, native press callbacks, and root `:style`/props
+are passed through. An omitted press callback gives a display-only container.
+Shared Button press motion applies to the inner card. No emoji hashes.
+
+Figma `15671:193129`: 176×104 cell with 8px outer spacing, 160×88 surface,
+16 radius, top padding 10, horizontal/bottom padding 12, 22px Semibold 15 title,
+and 12px gap before preview. White/Neutral-90 surface, Neutral-100/White title,
+and the source's Normal/Light/02 shadow in both themes. Complete motion inventory
+has no animated nodes; press feedback follows the library convention.
+
+**PREVIEW_LIST_SLOT_PENDING:** Preview List remains deferred per the earlier
+instruction. This card deliberately accepts children; its demo composes existing
+Avatars and images with the inspected 32px size, 24px step and 2px clearance.
+When Preview List is implemented, replace this demo-only composition with it,
+as well as completing the pending `list.item` adapter. The card API stays unchanged.
+
+Demo: **Showcase card**, four content examples, editable title, disabled control,
+and shared light/dark switching. Existing generic images are reused.
+A14 captures verify Assets in light mode and Accounts in dark mode. Scoped lint
+and the running Shadow build passed. No component errors appeared after mounting;
+two navigation commands issued before the demo navigator was ready were corrected.
+
+## Link card
+
+`xquo/link-card` → `xquo/profile.link-card`. The existing implementation moved to
+`xquo.profile.link-card`; there is only one Link card implementation and export. Replace `:social-network` → `:title`,
+`:social-handle` → `:description`, `:gradient-color` → `:color`, and the ambiguous
+`:image` map with `:content {:type :icon :icon {...}}` or
+`:content {:type :image :image {...}}`. App domain fields are unchanged; the active
+profile contact-card composition now supplies these component props.
+
+```clojure
+[xquo/profile.link-card {:title       "Website"
+                 :description "wanderlight.example"
+                 :content     {:type :icon :icon {:name :icon/link}}
+                 :on-press    open-website!}]
+```
+
+Color inherits the customization context; explicit `:color` accepts an Xquo token
+or resolved color. It tints the fill at 6%, fading to white at 2%. Brand examples
+are caller-supplied images/colors, not a library enum. The generic Figma link uses
+neutral-50; callers can pass that token when desired. Light/dark border and text
+use the corresponding palette tokens. Native root props, `:style`, `:disabled?`,
+and press callbacks are supported. Image/icon maps preserve overrides. Icons accept any existing `:name`, default to
+size 20 and theme foreground, and retain explicit `:size`, `:color`, and `:style`.
+Images accept `:source` or `:url`, default to a 20×20 contained image, and retain
+native image props, `:resize-mode`, and `:style` overrides. These alternatives
+share the same slot; no separate icon/image props compete for it.
+
+Figma set `18670:237695`: 160×88 reference, 16 radius, 12 padding, 20 icon/image,
+4 gap, 22 title and 18 description. Width remains host-controlled. Border is an
+inside overlay so it no longer adds 1px to content insets/2px to total height.
+Title now truncates; description keeps the actual Inter Regular 13 typography
+(the Figma style name says Monospace, but its font is Inter Regular).
+Radial fill uses Figma's exported tilted transform instead of the previous
+axis-aligned CSS gradient. Existing shared button press motion and 20% pressed
+border are retained; Figma's complete motion inventory contains no animations.
+
+Showcase: **Link card**, with editable text, icon/image, context color, disabled
+state, and light/dark theme switching. No new bundled assets.
+A14 checked in both themes, icon and image content, and the press alert.
+Scoped lint and the running Shadow compiler passed without warnings; captured
+runtime logs contained no errors.
+
+## Profile tile
+
+`profile.tile` unifies Community (`1988:31312`) and Accounts (`2051:32616`).
+Both use a 176 px cell with 8 px padding around a 160 × 160 px card. Radius 16,
+48 px avatar at (12,12), title at y=68 (Semibold 15/22), description at y=90
+(Medium 13/18), and footer at 12 px from the left/bottom. The optional cover is
+64 px high; the rounded body starts at y=40. Its avatar has the source's 2 px
+body-colored clearance, without an identicon ring. Shadow is the source's
+Normal/Light/02 token in both themes. Body is White / Neutral 90.
+
+```clojure
+[xquo/profile.tile
+ {:title       "Wanderlight"
+  :description "Member"
+  :avatar      {:content {:type :image :image {:source portrait}}}
+  :cover       {:type :image :image {:source cover-photo}}
+  :footer      [xquo/tag.standard {:size 24} "Joined"]
+  :on-press    open!}]
+```
+
+Omit `:cover` for the account presentation; supply a rounded-square Avatar and
+`:description-props {:font :font/monospace-13}` for an account address. A color
+cover is `{:type :color}` (inherited accent at 20%) or has an explicit `:color`
+family. `:footer` accepts existing components or custom Hiccup, including the
+previously deferred network selector. No account/community enum, network asset
+registry, hidden options button, or notification dot is imposed on consumers.
+
+`:loading?` uses the measured avatar/title/description placeholders and, when a
+footer exists, its cover/plain reference placeholder. `:disabled?` dims the card;
+loading/disabled prevent interaction. Pressable cards use shared button motion.
+Avatar and image props retain their existing maps; `:description-props`, root
+`:style`, and native press callbacks pass through. The showcase includes both
+examples, image/color covers, semantic Joined/Permissions footers, editable text,
+loading, disabled and customization colors. Existing demo images are reused.
+
+Validation: scoped lint and the running Shadow compile pass. A short USB A14
+check captured the light community and dark account presentations and confirmed
+the card press callback. No runtime errors were recorded. Loading geometry was
+checked against Figma source/export; it was not separately captured on-device.
+
+## Profile card
+
+`profile.card` lives in `xquo.profile.card.*`. It reuses Avatar, standard Tag,
+Button and Text; the card owns no media loading or account state.
+
+```clojure
+[xquo/profile.card
+ {:name        "Alex Morgan"
+  :avatar      {:content {:type :image :image {:source portrait}}}
+  :description "zQ3k83euenmcikw7474hfu73t5N"
+  :name-icon   {:name :icon/keycard}
+  :tag         {:label "Logged in"
+                :content {:type :icon :icon {:name :icon/check}}}
+  :button      {:icon {:name :icon/options} :on-press options!}}]
+```
+
+Required `:name` and complete `:avatar` props; Avatar defaults to 48 px.
+Optional `:description`, complete `:name-icon` props (20 px / White 40% default),
+complete `:tag` props plus `:label`, and complete `:button` props plus `:label`.
+Tag and Button default to 32 px with blur treatment. A supplied tag and button
+can coexist; there is no special logged-in flag suppressing either control.
+`:color` overrides the inherited customization family. Root `:style` and native
+View props pass through. The root is display-only; the child controls own presses.
+
+Figma Profile card `14754:203615`: 335 px reference width, radius 16,
+12 px top/horizontal padding, 48 px header, 8 px before the text, 2 px between
+text lines, and 10 px bottom padding. This produces 104 px without a description
+and 128 px with one. Name uses Semibold 19 / 26 px; description uses the
+15/Regular Monospace token / 22 px, White 60%. The optional name icon has a 4 px
+horizontal gap and sits 4 px below the name-row top. Actions use an 8 px gap.
+
+The card always provides a dark content context and uses the inherited accent
+at intensity 50 / opacity 40. Its parent owns any blurred backdrop. It does not
+hardcode Figma's sample turquoise. Avatar content fills the full 48 px; the
+identicon ring and emoji-hash area are intentionally absent.
+
+The missing Keycard icon was ported from Figma `16949:193486` into the existing
+SVG icon map as `:icon/keycard`; no icon font rebuild or image dependency is needed.
+The showcase provides portrait, name, description, accent, tag, name-icon and
+button controls in the shared shell preview.
+
+Validation: scoped lint and development compilation pass. USB A14 captures cover
+the description and description-free layouts, the reused status tag and the
+registered Keycard SVG. No runtime errors were recorded in the final check.
+
+Profile-page queue: Community and Account cards now share `profile.tile`. Next
+review Link card, then implement Showcase card one at a time. Select-profile stacks,
+Asset and Collectible cards are outside this requested pass.
+
+## Profile input
+
+`xquo/profile-input` lives under `xquo.input.profile.*`. It accepts `:value` or
+`:default-value`, `:on-change-text`, `:placeholder` ("Type something"), optional
+`:max-length`, `:disabled?`, `:blur?`, `:input-ref`, `:auto-focus?`, `:style` for
+the root, and native single-line TextInput props/events. It shows an edit icon at
+rest and the current character count/limit while focused when `:max-length` is
+supplied. Native maxLength enforces the limit without rewriting typed text.
+
+Figma Inputs / Profile input `14754:207982` defines 20 variants: 42 px height,
+12 px horizontal/8 px vertical padding, semibold 19 px text in a 26 px line box,
+20 px trailing gap, 20 px edit icon, and regular 13 px counter. Focus changes the
+placeholder token; disabled opacity is 30%. Light/dark blur use the measured
+transparent neutral/white tokens. The cursor uses customization color on solid
+surfaces and foreground color on blur, as defined in this component; selection
+highlight follows customization color. The parent supplies backdrop blur.
+
+The existing `title-input` is a distinct 27 px heading field and remains intact.
+Profile Input reuses Text, Icon, typography, and native input layout styles.
+Uncontrolled text stays native; only its character count is retained in React state.
+
+Fold development verification: default/filled and focused counter presentations,
+native typing and 24-character enforcement, disabled editing, light and dark blur.
+The measured row occupies 335 × 42 logical pixels at the reference width. Scoped
+lint and the running Shadow compile pass; no runtime errors during the checks.
+Figma's 20 variants were inspected; platform-native caret/selection rendering is
+retained rather than duplicating the design tool's cursor layers.
+
+## Bottom nav
+
+```clojure
+[xquo/navigation.bottom-nav
+ {:items [{:icon     {:name :icon/wallet}
+           :active?  (= selected :wallet)
+           :on-press open-wallet!}
+          {:icon     {:name :icon/messages}
+           :badge    {:counter {:value 5}}
+           :active?  (= selected :messages)
+           :on-press open-messages!}]}]
+```
+
+`:items` accepts up to five complete Bottom Nav Tab props maps. The host controls
+selection, navigation callbacks, positioning, and safe-area clearance. The bar
+renders its own backdrop blur; no `:blur?` or extended mode is needed.
+Optional `:background-color` overrides the existing blur layer's tint with a
+resolved native color. `:blur-amount` defaults to 40. The app currently uses
+Neutral 80 at 70% opacity with blur 40 in both themes; no extra layer is added.
+
+Uses Figma `8972:155887` (non-extended, On scroll), retaining the 40 px tabs,
+8 px padding on every side, blur 40, and Neutral 100 at 70% regardless of app theme.
+The bar provides a dark context for its tabs while inheriting the customization
+color. It resolves Xquo palette tokens, not Figma hex samples.
+The OS reference area is omitted, leaving a 56 px bar. The requested floating
+shape uses radius 18 (tab radius 10 + inset 8).
+
+Responsive extension: equal flexible cells shrink with the available parent width.
+The centered width is capped at `16 + 68 × item-count`, using the existing app's
+68 px tab-center spacing, so five tabs cap at 356 px. Each pressed fill stays in
+its cell and reuses the tab's background-only animation. App-specific navbar
+movement and persistent cursor are not copied. Root `:style` remains available.
+The showcase uses an unblurred image behind the bar, with count, badge, narrow
+container, disabled, theme, and customization-color controls.
+
+## Bottom nav tab
+
+`navigation.bottom-nav-tab` lives under `xquo.navigation.bottom-nav-tab.*`.
+It implements only Nav Tab's `Position=Scroll` variants from `265:17944`;
+the `Soon`/Tag badge and Default-position variants are excluded.
+
+- `:icon` is the existing Icon props map, with size 24 by default.
+- `:active?`, `:disabled?`, native press callbacks, and root `:style`.
+- `:badge` is absent, `{:counter {... :value n}}` (default type `:counter`),
+  or `{:type :notification}`. Counter retains its existing props/API.
+- Reference size 90x40, radius10 when pressed; the host may override width/flex.
+  The icon is centered at24px. The 20px badge slot starts12px right and8px above
+  the icon. Notification dot is8px with a1px transparent clearance; Counter
+  clearance follows the actual measured width. Existing Icon and Counter render
+  the content; no placeholder asset or new icon is generated.
+- Dark Scroll colors: white40 inactive, white100 active, white5 pressed fill.
+  Light context resolves the matching neutral colors. Badge colors use the
+  customization context. Parent owns the blurred backdrop.
+- Press feedback animates only background color with the shared120/220ms timing;
+  there is no scale, translation, or movement.
 
 ## Search input
 
@@ -634,9 +1073,68 @@ implicit material tint. Theme and ordinary view props remain available.
 
 ## Page navigation
 
-Status: **internal button migration implemented; public API unchanged**.
-Action buttons no longer force glass and translate the page nav's existing `:background`
-mode to the button flags. Page-nav callers keep their current surface API.
+Implemented `navigation.page-nav` under `xquo.navigation.page-nav.*`.
+
+```clojure
+[xquo/navigation.page-nav
+ {:left   {:icon {:name :icon/arrow-left} :on-press back!}
+  :center {:title       "General"
+           :description "Online"
+           :content     {:type   :avatar
+                         :avatar {:size    32
+                                  :content {:type :image :image {:source profile}}}}
+           :icons       [{:name :icon/lock}]
+           :on-press    open-details!}
+  :right  [{:icon {:name :icon/options} :on-press menu!}]
+  :blur?  true}
+ [xquo/banner.standard {:title "Community information" :blur? true}]]
+```
+
+- `:left`: complete Button props (optional `:label`) or custom Hiccup.
+- `:right`: vector of the same. Buttons default to 32 px; complete props are
+  forwarded and actions are not silently truncated.
+- `:center`: omitted, a title configuration, or custom Hiccup. Title configuration
+  accepts `:title`, `:description`, inline `:caption`, `:content`, `:icons`,
+  `:text-align` (`:left` default / `:center`), `:on-press`, press-in/out callbacks,
+  `:disabled?`, and `:style`. Custom Hiccup is centered.
+- Content is one tagged Avatar/Image/Icon props map. Defaults: Avatar 32, Image 24,
+  Icon 20; override numeric `:size` in the nested props. Images retain `:source` /
+  `:url` / `:style`. Avatar retains its shape, content and badge APIs.
+- `:blur?` / `:photo?` select control treatment. The row is transparent and the
+  parent owns the overall backdrop. Photo buttons retain their own button blur.
+  Button `:type` overrides can match alternative solid surfaces.
+- Children render below the row; reuse Banner without separate Channel/Message
+  topbar components. The caller handles system safe-area/status-bar placement.
+
+The common row is 56 px high, with 20 px side padding, 12 px action/slot gaps and
+32 px buttons. Identity media under 24 px uses gap 4; larger media uses gap 8.
+Plain titles use Medium 15/22; identities use Semibold 15/22; descriptions and
+inline captions use Medium 13/18. Trailing icons are 16 px with gap 2.
+Centered content balances measured side widths, including custom content.
+
+Pressed-state examples `32179:55191` dim the title while side buttons remain
+Default: Neutral 80/70 in light, White/70 in dark. The title's own `:on-press`
+enables that feedback, using shared timing and animated text color. There is no
+public pressed-state prop or global bar press handler.
+
+Migration applied to active `src/fc` and demo callers:
+`page-nav` -> `navigation.page-nav`; `:background :blur/:photo` -> `:blur?/:photo?`;
+`:left-content` -> `:left`; omit `:center {:type :no-title}`; remove `:type :title`;
+replace `:center {:type :custom :custom-content ...}` with the Hiccup itself.
+Old left-action/title helpers were replaced with Button/Text. Legacy exports remain
+available for other consumers; they are not used by the migrated app.
+
+Figma references: Page Nav `159:6028` (304 variants), Channel Topbar `4551:179489`,
+Messages Topbar `10645:129952`, and pressed examples `32179:55191`. Wallet network
+selectors and account switchers remain custom slot content; no placeholder or
+network-specific dependency is introduced in this pass.
+
+Validation: targeted lint and the running Shadow watcher pass without warnings.
+USB A14 checks covered light/dark, blur/photo, title hold/release callback,
+centered identity with asymmetric actions, custom centered Dropdown, three actions,
+and an existing Banner below the row. No component runtime errors after the fresh
+bundle loaded. These are representative device checks, not exhaustive pixel diffs
+of all 304 source variants.
 
 ## Input
 
@@ -919,3 +1417,76 @@ Migration: the old bare `[xquo/notification props message]` becomes
 spacing belong to the notification host. Toasts keep 12 px side margins; in-app
 notifications keep 8 px. `:style` replaces the old `:container-style` override. There are
 no existing bare notification call sites in this checkout.
+
+## Link preview
+
+`xquo/link-preview` implements Links / Link Preview (`4219:99740`).
+
+```clojure
+[xquo/link-preview
+ {:title       "Example article"
+  :description "A short description of the linked content."
+  :url         "example.com"
+  :favicon     {:content {:type :initials :text "E"}}
+  :image       {:source image-source}
+  :on-press    open-link!}]
+```
+
+`:type` defaults to `:default`: landscape media height 139. `:detail` makes the image
+square; `:url` renders only a wrapping URL using the customization color. Video uses
+the default appearance: Figma's play control has zero opacity, so no visible play
+button is invented. Width follows the parent; the reference is 295 wide. The card
+uses radius 16, horizontal/bottom padding 12, top padding 10 (12 for URL-only),
+6px favicon/title gap, 2px title/description gap, 8px URL gap and 12px media gap.
+The 1px border is overlaid to preserve content geometry. Images use radius 12.
+Full favicon and image props are retained. The host supplies metadata and handles
+navigation; the component performs no requests. Press feedback reuses Button.
+Light and dark match the defined variants; no blur variant is defined here.
+
+## URL preview
+
+`xquo/url-preview` implements Links / URL Preview (`19128:198652`), not URL preview list.
+
+```clojure
+[xquo/url-preview
+ {:title     "Example article"
+  :url       "example.com"
+  :favicon   {:content {:type :initials :text "E"}}
+  :image     {:source image-source}
+  :on-remove remove-preview!}]
+```
+
+`:channel {:community "Community" :name "# design"}` replaces the title with the
+breadcrumb. `:image` is optional; `:on-remove` enables removal. `:loading?` renders
+the loading appearance, with `:loading-label` defaulting to "Generating preview".
+No type is required. Metadata fetching, loading and removal remain host-owned.
+The reference is 335×56, radius 12, horizontal padding 12, vertical padding 10,
+6px gaps, favicon 16, thumbnail 36/radius 8, clear control 20, and two 18px text
+lines. The existing 20px cross-circle icon matches Figma’s 14px disc and 1.2px
+cross; its disc uses neutral-50 in light and neutral-60 in dark, with a white cross.
+Loading uses the existing 12px animated loading icon and the exact 3/4 dash
+pattern with a 1px border; its gap is 8 in light and 6 in dark, as specified.
+The separate Profile Link card migration is documented under [Link card](#link-card).
+
+Preview showcases share two generated fictional publications through
+`xquo.demo.preview-assets`: Wanderlight (golden coastal travel photography) and
+Form & Field (cobalt ceramics on a sunlit studio table). Their `.example` domains
+are demonstration content. The two PNGs live in `resources/xquo-demo/previews/`;
+no real publication logos or additional product asset collection is bundled.
+
+Preview validation (2026-10-11): targeted lint passed with zero warnings/errors;
+running Shadow watcher compilation returned `:ok`. Fold checks covered the default,
+square-media and URL-only Link appearances; URL thumbnail, channel, loading and
+remove callback; light/dark themes; both generated images after restarting the app.
+Screenshots are visual evidence with demonstration assets, not an exhaustive pixel-diff
+of every Figma variant. Initial post-restart navigation was attempted before readiness;
+retrying after the navigation ref was ready succeeded. No component render errors occurred.
+
+Follow-up design audit (2026-10-11): corrected URL Preview’s dark close disc from
+neutral-40 to the source’s neutral-60. The existing icon already matches the source
+geometry. Rechecked all Profile Input, Markdown Text/List and Link/URL source variants;
+the Video play layer is transparent in both themes, and Markdown’s alternate wrapper
+structure yields the same marker alignment, so neither requires additional UI.
+Fold captures confirm the corrected close in dark/light and Profile’s 42px layout.
+This is a source audit plus representative device inspection, not an exhaustive
+pixel-diff across all variants.

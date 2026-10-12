@@ -16,11 +16,11 @@
    :bottom   0
    :right    0})
 
-(defstyle preview
-  {:height          "40%"
-   :align-items     :center
-   :justify-content :center
-   :gap             12})
+(defn preview [height]
+  (style {:height          height
+          :align-items     :center
+          :justify-content :center
+          :gap             12}))
 
 (defstyle blur-preview
   {:flex  1

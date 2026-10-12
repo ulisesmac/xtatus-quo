@@ -139,7 +139,8 @@
 
       (= action-type :selector)
       [:rn/view {:pointer-events :none}
-       [selector/selector (cond-> {:type (or selector-type :toggle)}
+       [selector/selector (cond-> {:type (or selector-type :toggle)
+                                  :blur? blur?}
                             action-disabled? (assoc :disabled? true)
                             (or selector-selected?
                                 (contains? action :selected?)) (assoc :selected? selector-selected?))]]

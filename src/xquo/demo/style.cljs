@@ -11,14 +11,17 @@
 (defstyle body
   {:flex 1 :min-height 0})
 
-(defstyle preview
-  {:height             "50%"
-   :flex-shrink        0
-   :min-height         0
-   :overflow           :hidden
-   :justify-content    :center
-   :padding-horizontal 10
-   :padding-vertical   20})
+(defn preview [height]
+  (style {:height             height
+          :flex-shrink        0
+          :min-height         0
+          :overflow           :hidden
+          :justify-content    :center
+          :padding-horizontal 10
+          :padding-vertical   20}))
+
+(defn scroll-content [top]
+  (style {:flex-grow 1 :padding-top (+ top 56)}))
 
 (defstyle background
   {:position :absolute :top 0 :right 0 :bottom 0 :left 0})
@@ -44,9 +47,7 @@
           :background-color (colors/themed theme :color/white :color/neutral-95)}))
 
 (defn panel [theme]
-  (style {:flex             1
-          :min-height       0
-          :border-top-width 1
+  (style {:border-top-width 1
           :border-top-color (colors/themed theme :color/neutral-20 :color/white-10)
           :background-color (colors/themed theme :color/white :color/neutral-95)}))
 

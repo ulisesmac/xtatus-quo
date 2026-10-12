@@ -1,58 +1,57 @@
 (ns xquo.demo.screen
   (:require [react-native.core :as rn]
             [react-native.react.core :as react]
-            [react-native.react-navigation.native :as navigation]
             [react-native.safe-area-context.core :as safe-area]
-            [react-native.utils :refer [asset-require]]
+            [react-native.utils :refer [asset-require style]]
             [xquo.context :as context]
-            [xquo.core :as xquo]
-            [xquo.demo.style :as style]))
+            [xquo.demo.navbar :as navbar]
+            [xquo.demo.style :as styles]))
 
 (def ^:private mountains (asset-require "xquo-demo/mountains.png"))
 
 (defn screen [{:keys [title preview preview-theme shell? blur? photo?]} & children]
   (let [top                         (safe-area/use-top)
         bottom                      (safe-area/use-bottom)
+        {:keys [height]}            (rn/use-window-dimensions)
         device-theme                (rn/use-color-scheme)
         [selected-theme set-theme!] (react/use-state nil)
-        {:keys [theme dark-theme?]} (context/use-theme-color (or selected-theme device-theme))
-        next-theme                  (if dark-theme? :theme/light :theme/dark)
+        {:keys [theme]}             (context/use-theme-color (or selected-theme device-theme))
         preview-theme               (or preview-theme (if shell? :theme/dark theme))
-        switch-theme!               (react/use-callback #(set-theme! next-theme) [next-theme])
-        {:keys [go-back]}           (navigation/use-navigation)]
+        preview-height              (/ (- height top bottom 56) 2)
+        preview-background          (if photo? :rn/view :effect/view)]
     [context/provider {:theme theme}
      [:rn/keyboard-avoiding-view {:behavior (when rn/ios? :padding)
-                                  :style    (style/root theme top bottom)}
-      [xquo/page-nav {:background :none
-                      :left       {:icon {:name :icon/arrow-left} :on-press go-back}
-                      :right      [{:icon     {:name (if dark-theme? :icon/light :icon/dark)}
-                                    :on-press switch-theme!}]
-                      :center     {:type :title :title title :text-align :center}}]
+                                  :style    (styles/root theme 0 bottom)}
       (if preview
-        [:rn/view {:style style/body}
+        [:rn/scroll-view {:style                             styles/body
+                          :content-container-style           (styles/scroll-content top)
+                          :keyboard-should-persist-taps      :handled
+                          :content-inset-adjustment-behavior :never}
          [context/provider {:theme preview-theme}
-          [:rn/view {:style style/preview}
+          [:rn/view {:style (styles/preview preview-height)}
            (if (or shell? blur? photo?)
-             [:rn/view {:style style/shell}
-              [:rn/image {:source mountains :resize-mode :cover :style style/background}]
-              [(if photo? :rn/view :effect/view)
-               (if photo?
-                 {:style style/body}
-                 {:effect      :blur
-                  :blur-amount 40
-                  :theme       preview-theme
-                  :style       (style/blur-overlay preview-theme)})
-               [:rn/scroll-view {:style                        style/body
-                                 :content-container-style      style/preview-content
-                                 :keyboard-should-persist-taps :handled}
+             [:rn/view {:style styles/shell}
+              [:rn/image {:source mountains :resize-mode :cover :style styles/background}]
+              [preview-background (if photo?
+                                    {:style styles/body}
+                                    {:effect      :blur
+                                     :blur-amount 40
+                                     :theme       preview-theme
+                                     :style       (styles/blur-overlay preview-theme)})
+               [:rn/scroll-view {:style                        styles/body
+                                 :content-container-style      styles/preview-content
+                                 :keyboard-should-persist-taps :handled
+                                 :nested-scroll-enabled        true}
                 preview]]]
              preview)]]
-         (into [:rn/scroll-view {:style                        (style/panel theme)
-                                 :content-container-style      style/content
-                                 :keyboard-should-persist-taps :handled}]
+         (into [:rn/view {:style [(styles/panel theme)
+                                  styles/content
+                                  (style {:min-height preview-height})]}]
                children)]
-        (into [:rn/scroll-view {:style style/body :content-container-style style/content}]
+        (into [:rn/scroll-view {:style                             styles/body
+                                :content-container-style           [styles/content (style {:padding-top (+ top 56 20)})]
+                                :keyboard-should-persist-taps      :handled
+                                :content-inset-adjustment-behavior :never}]
               children))
-      (when preview
-        [:rn/view {:pointer-events :none
-                   :style          (style/bottom-safe-area theme bottom)}])]]))
+      [:rn/view {:pointer-events :none :style (styles/bottom-safe-area theme bottom)}]
+      [navbar/view {:title title :top top :on-theme-change set-theme!}]]]))

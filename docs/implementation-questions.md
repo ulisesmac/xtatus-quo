@@ -13,6 +13,12 @@ when a decision is made; do not silently delete unresolved questions.
 | Q7 | Permissions tag | Is an optional semantic :background-color override acceptable for different dark parent surfaces? | Default theme/blur rules plus a token-based override; no hex lookup tables. | Awaiting API preference |
 | Q8 | Recorder | What drag thresholds/feel are intended? Figma provides states but no interaction timeline. | Component-owned transient feedback and thresholds between measured action positions. | Awaiting interaction review |
 
+## Deferred selector state
+
+Figma Selectors has Indeterminate-labelled variants for all four types, but their
+root opacity is zero. They are excluded from this pass; confirm whether they are
+intended product states before adding a public prop or making them visible.
+
 ## Resolved
 
 - Figma notification visuals (2026-10-10): PNG exports timed out; SVG exports

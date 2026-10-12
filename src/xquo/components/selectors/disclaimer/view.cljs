@@ -6,44 +6,23 @@
             [xquo.components.text.view :as text]
             [xquo.context :as context]))
 
-(defn disclaimer
-  "Disclaimer selector row.
-
-  API:
-  - `props` map
-    - `:selected?` optional boolean (`true`, `false`, or `nil`)
-    - `:background` one of `:none`, `:blur` (default `:none`)
-    - `:glass?` optional boolean; only the checkbox uses the glass effect
-    - `:icon` optional right icon props map
-    - `:on-select` optional callback invoked with next selected state boolean
-    - `:style` optional caller style (map/vector/js style)
-    - Any additional keys are forwarded to `:rn/view`.
-  - `content` label shown in the row."
-  [{:keys [selected? background glass? on-select icon]
-    :or   {background :none}
-    :as   props}
-   content]
-  (let [theme (context/use-theme)]
+(defn disclaimer [{:keys [selected? blur? disabled? on-select icon] :as props} content]
+  (let [theme-color (context/use-theme-color)]
     [:rn/view (-> props
-                  (dissoc :selected? :background :glass? :icon :on-select :disabled? :style)
-                  (assoc :style (rn.utils/add-styles
-                                 style/container-base
-                                 (style/container-color-style theme background)
-                                 (:style props))))
-     [selector/selector {:type       :checkbox
-                         :selected?  selected?
-                         :background background
-                         :glass?     glass?
-                         :on-select  on-select
-                         :style      style/selector-style}]
-     [:rn/view {:style style/text-wrapper}
-      (if (string? content)
-        [text/text {:font  :font/regular-13
-                    :style {:color (style/text-color theme)}}
-         content]
-        content)]
-     (when (:name icon)
-       [icon/view (merge {:size  20
-                          :color (style/icon-color theme background)
-                          :style style/icon-style}
-                         icon)])]))
+                  (dissoc :selected? :blur? :disabled? :icon :on-select)
+                  (assoc :style (rn.utils/add-styles style/container (:style props))))
+     [:rn/view {:style (style/surface theme-color blur? disabled?)}
+      [selector/selector (cond-> {:type      :checkbox
+                                  :blur?     blur?
+                                  :disabled? disabled?
+                                  :on-select on-select
+                                  :style     style/selector}
+                           (contains? props :selected?) (assoc :selected? selected?))]
+      [:rn/view {:style style/text-wrapper}
+       (if (string? content)
+         [text/text {:font :font/regular-13 :style style/text} content]
+         content)]
+      (when icon
+        [icon/view (assoc icon
+                          :size  (:size icon 20)
+                          :color (:color icon (style/icon-color theme-color blur?)))])]]))

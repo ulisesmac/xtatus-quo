@@ -38,7 +38,7 @@
     [:rn/view {:pointer-events :none
                :style          style/trailing-slot}
      [selector/selector (cond-> {:type       :toggle
-                                 :background background}
+                                 :blur?      (= background :blur)}
                           selected-provided? (assoc :selected? selected?)
                           on-select (assoc :on-select on-select))]]
 

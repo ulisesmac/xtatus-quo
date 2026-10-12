@@ -1,176 +1,89 @@
 (ns xquo.components.selectors.selector.style
-  (:require [react-native.utils :refer [defstyle]]
+  (:require [react-native.utils :refer [defstyle style]]
             [xquo.foundations.animations :as animations]
-            [xquo.foundations.borders :as borders]
             [xquo.foundations.colors :as colors]))
 
-(defn- dark-theme? [theme]
-  (= theme :theme/dark))
+(defn- active-color [{:keys [dark-theme? color]} blur?]
+  (colors/get-color color (if (and dark-theme? (not blur?)) 60 50)))
 
-(defn- blur-background? [background]
-  (= background :blur))
+(defn- off-border [{:keys [dark-theme?]} blur?]
+  (let [color (cond
+                (and dark-theme? blur?) :color/white-20
+                blur?                  :color/neutral-80-20
+                dark-theme?            :color/neutral-70
+                :else                  :color/neutral-30)]
+    (colors/get-color color)))
 
-(defn- active-color [theme background color]
-  (if (and (dark-theme? theme) (not (blur-background? background)))
-    (colors/get-color color 60)
-    (colors/get-color color 50)))
+(defn- off-fill [{:keys [dark-theme?]} type blur?]
+  (let [color (cond
+                (and dark-theme? blur?)      :color/white-10
+                (and blur? (= type :toggle)) :color/neutral-80-20
+                blur?                       :color/neutral-80-10
+                dark-theme?                 :color/neutral-80
+                :else                       :color/neutral-30)]
+    (colors/get-color color)))
 
-(defn- toggle-off-color [theme background]
-  (cond
-    (and (blur-background? background)
-         (dark-theme? theme))     (colors/get-color :color/white-10)
-    (blur-background? background) (colors/get-color :color/neutral-80-20)
-    (dark-theme? theme)           (colors/get-color :color/neutral-80)
-    :else                         (colors/get-color :color/neutral-30)))
+(defstyle ^:private toggle
+  {:width 30 :height 20 :padding 2 :border-radius 20 :justify-content :center})
 
-(defn- radio-off-border-color [theme background]
-  (cond
-    (and (blur-background? background) (dark-theme? theme)) (colors/get-color :color/white-20)
-    (blur-background? background) (colors/get-color :color/neutral-80-20)
-    (dark-theme? theme) (colors/get-color :color/neutral-70)
-    :else (colors/get-color :color/neutral-30)))
+(defstyle ^:private radio
+  {:width 20 :height 20 :border-radius 10 :justify-content :center :align-items :center})
 
-(defn- radio-off-background-color [theme background]
-  (cond
-    (blur-background? background) (colors/get-color :color/white-5)
-    (dark-theme? theme) (colors/get-color :color/neutral-80-40)
-    :else (colors/get-color :color/white-40)))
+(defstyle ^:private checkbox
+  {:width 20 :height 20 :border-radius 6 :justify-content :center :align-items :center})
 
-(defn- filled-background-color [theme background]
-  (cond
-    (and (blur-background? background)
-         (dark-theme? theme)) (colors/get-color :color/white-10)
-    (blur-background? background) (colors/get-color :color/neutral-80-10)
-    (dark-theme? theme) (colors/get-color :color/neutral-80)
-    :else (colors/get-color :color/neutral-30)))
+(def containers
+  {:toggle toggle :radio radio :checkbox checkbox :filled-checkbox checkbox})
 
-(defn- state-opacity [disabled?]
-  (if disabled? 0.3 1))
+(defn state-style [{:keys [light-theme? dark-theme?] :as theme-color} type blur? selected? disabled?]
+  (let [filled?      (= type :filled-checkbox)
+        toggle?      (= type :toggle)
+        radio?       (= type :radio)
+        active       (active-color theme-color blur?)
+        light-radio? (and radio? light-theme? (not blur?) (not selected?))
+        fill         (cond
+                       filled?                      (off-fill theme-color type blur?)
+                       (and toggle? (not selected?)) (off-fill theme-color type blur?)
+                       (and selected? (not radio?))  active
+                       light-radio?                 (colors/get-color :color/white-40)
+                       :else                        "transparent")
+        border-width (cond
+                       toggle?                                 0
+                       (and filled? dark-theme? (not blur?))    1.2
+                       filled?                                 0
+                       (and (not radio?) selected? (not blur?)) 0
+                       :else                                   1.2)
+        border-color (cond
+                       filled?   fill
+                       selected? active
+                       :else     (off-border theme-color blur?))]
+    (style {:background-color fill
+            :border-width     border-width
+            :border-color     border-color
+            :opacity          (if disabled? 0.3 1)})))
 
-(defstyle toggle-base
-  {:width          30
-   :height         20
-   :padding        2
-   :border-radius  (borders/radius :drawer)
-   :flex-direction :row
-   :align-items    :center})
-
-(defstyle radio-base
-  {:width           20
-   :height          20
-   :border-radius   (borders/radius :drawer)
-   :justify-content :center
-   :align-items     :center})
-
-(defstyle checkbox-base
-  {:width           20
-   :height          20
-   :border-radius   (borders/radius 16)
-   :justify-content :center
-   :align-items     :center})
-
-(defstyle filled-checkbox-base
-  {:width           20
-   :height          20
-   :border-radius   (borders/radius 16)
-   :justify-content :center
-   :align-items     :center
-   :overflow        :hidden})
-
-(defstyle toggle-handle-base
+(defstyle toggle-handle
   {:width                      16
    :height                     16
-   :border-radius              (borders/radius :drawer)
-   :background-color           (colors/get-color :color/white-100)
-   :transition-property        (:transition-property animations/state-change)
+   :border-radius              8
+   :background-color           (colors/get-color :color/white)
+   :transition-property        :transform
    :transition-duration        (:toggle-duration animations/state-change)
    :transition-timing-function (:transition-timing-function animations/state-change)})
 
-(defn toggle-handle-state-style [selected?]
-  {:transform [{:translate-x (if selected? 10 0)}]})
+(defn handle-position [selected?]
+  (style {:transform [{:translate-x (if selected? 10 0)}]}))
 
-(defstyle radio-dot-base
-  {:width                      14
-   :height                     14
-   :border-radius              (borders/radius :drawer)
-   :transition-property        (:transition-property animations/state-change)
-   :transition-timing-function (:transition-timing-function animations/state-change)})
+(defn radio-dot [theme-color blur? selected?]
+  (let [duration-key (if selected? :radio-expand-duration :radio-collapse-duration)]
+    (style {:width                      14
+            :height                     14
+            :border-radius              7
+            :background-color           (active-color theme-color blur?)
+            :transform                  [{:scale (if selected? 1 0)}]
+            :transition-property        :transform
+            :transition-duration        (get animations/state-change duration-key)
+            :transition-timing-function (:transition-timing-function animations/state-change)})))
 
-(defn radio-dot-state-style [selected?]
-  {:transform           [{:scale (if selected? 1 0)}]
-   :transition-duration (if selected?
-                          (:radio-expand-duration animations/state-change)
-                          (:radio-collapse-duration animations/state-change))})
-
-(defstyle checkmark-image-base
-  {:width     12
-   :height    12
-   :transform [{:rotate "180deg"}]})
-
-(defstyle pressable-default-state-style
-  {:transform                  [{:scale       (:default-scale animations/press-feedback)}
-                                {:translate-y (:default-translate-y animations/press-feedback)}]
-   :transition-property        (:transition-property animations/press-feedback)
-   :transition-duration        (:default-duration animations/press-feedback)
-   :transition-timing-function (:default-timing-function animations/press-feedback)})
-
-(defstyle pressable-pressed-state-style
-  {:transform                  [{:scale       (:pressed-scale animations/press-feedback)}
-                                {:translate-y (:pressed-translate-y animations/press-feedback)}]
-   :transition-property        (:transition-property animations/press-feedback)
-   :transition-duration        (:pressed-duration animations/press-feedback)
-   :transition-timing-function (:pressed-timing-function animations/press-feedback)})
-
-(defn container-style [type]
-  (case type
-    :toggle toggle-base
-    :radio radio-base
-    :checkbox checkbox-base
-    :filled-checkbox filled-checkbox-base
-    checkbox-base))
-
-(defn state-style [theme type background selected? disabled? color]
-  (cond
-    (= type :toggle)
-    {:background-color (if selected?
-                         (active-color theme background color)
-                         (toggle-off-color theme background))
-     :justify-content  :flex-start
-     :opacity          (state-opacity disabled?)}
-
-    (= type :radio)
-    {:background-color (if selected?
-                         :transparent
-                         (radio-off-background-color theme background))
-     :border-width     1.2
-     :border-color     (if selected?
-                         (active-color theme background color)
-                         (radio-off-border-color theme background))
-     :opacity          (state-opacity disabled?)}
-
-    (= type :checkbox)
-    {:background-color (if selected?
-                         (active-color theme background color)
-                         :transparent)
-     :border-width     (if selected?
-                         (if (blur-background? background) 1.2 0)
-                         1.2)
-     :border-color     (if selected?
-                         (if (blur-background? background)
-                           (active-color theme background color)
-                           :transparent)
-                         (radio-off-border-color theme background))
-     :opacity          (state-opacity disabled?)}
-
-    :else
-    (let [background-color (filled-background-color theme background)]
-      (if (and (dark-theme? theme) (not (blur-background? background)))
-        {:background-color background-color
-         :border-width     1.2
-         :border-color     background-color
-         :opacity          (state-opacity disabled?)}
-        {:background-color background-color
-         :opacity          (state-opacity disabled?)}))))
-
-(defn radio-dot-style [theme background color]
-  {:background-color (active-color theme background color)})
+(defstyle checkmark
+  {:transform [{:translate-x 0.5} {:translate-y 0.5}]})

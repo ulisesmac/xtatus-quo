@@ -1,99 +1,59 @@
 (ns xquo.components.selectors.selector.view
-  (:require [react-native.utils :as rn.utils]
+  (:require [react-native.react.core :as react]
+            [react-native.utils :as rn.utils]
+            [xquo.components.button.style :as button-style]
             [xquo.components.icon.view :as icon]
             [xquo.components.selectors.selector.style :as style]
             [xquo.context :as context]
-            [xquo.foundations.colors :as colors]
-            [react-native.core :as rn]))
+            [xquo.foundations.colors :as colors]))
 
-(defn selector
-  "Selectors component.
+(defn selector [{:keys [type selected? disabled? blur? on-select on-press on-press-in on-press-out]
+                 :or   {type :toggle}
+                 :as   props}]
+  (let [{:keys [light-theme?] :as theme-color} (context/use-theme-color)
+        controlled?                            (contains? props :selected?)
+        [internal? set-internal!]              (react/use-state false)
+        [pressed? set-pressed!]                (react/use-state false)
+        selected?                              (if controlled? selected? internal?)
+        pressed?                               (and pressed? (not disabled?))
+        press-in!                              (react/use-callback (fn [event]
+                                                                     (set-pressed! true)
+                                                                     (when on-press-in (on-press-in event)))
+                                                                   [on-press-in])
+        press-out!                             (react/use-callback (fn [event]
+                                                                     (set-pressed! false)
+                                                                     (when on-press-out (on-press-out event)))
+                                                                   [on-press-out])
+        press!                                 (react/use-callback (fn [event]
+                                                                     (let [next-selected? (not selected?)]
+                                                                       (when-not controlled? (set-internal! next-selected?))
+                                                                       (when on-select (on-select next-selected?))
+                                                                       (when on-press (on-press event))))
+                                                                   [selected? controlled? on-select on-press])]
+    [:animated/pressable (-> props
+                             (dissoc :type :selected? :disabled? :blur? :on-select)
+                             (assoc :disabled     disabled?
+                                    :hit-slop     (:hit-slop props 6)
+                                    :on-press     press!
+                                    :on-press-in  press-in!
+                                    :on-press-out press-out!
+                                    :style        (rn.utils/add-styles (style/containers type)
+                                                                       (style/state-style theme-color type blur? selected? disabled?)
+                                                                       (if pressed?
+                                                                         button-style/pressable-pressed-state-style
+                                                                         button-style/pressable-default-state-style)
+                                                                       (:style props))))
+     (case type
+       :toggle
+       [:animated/view {:style [style/toggle-handle (style/handle-position selected?)]}]
 
-  API:
-  - `props` map
-    - `:type` one of `:toggle`, `:radio`, `:checkbox`, `:filled-checkbox`
-      (default `:toggle`)
-    - `:selected?` optional boolean (`true`, `false`, or `nil`)
-    - `:disabled?` optional boolean (default `false`)
-    - `:background` one of `:none`, `:blur` (default `:none`)
-    - `:glass?` optional boolean; only applies when `:type` is `:checkbox`
-    - `:on-select` optional callback invoked with next selected state boolean
-    - `:on-press-in` optional callback `(fn [event] ...)`
-    - `:on-press-out` optional callback `(fn [event] ...)`
-    - `:style` optional caller style (map/vector/js style)
-    - Any additional keys are forwarded to `:rn/pressable` (for example
-      `:on-press`, `:accessibility-label`, `:testID`)."
-  [{:keys [type selected? disabled? background glass? on-select on-press on-press-in on-press-out]
-    :or   {type       :toggle
-           background :none}
-    :as   props}]
-  (let [theme            (context/use-theme)
-        color            (context/use-color)
-        controlled?      (some? selected?)
-        [internal-selected?
-         set-internal-selected?] (rn/use-state false)
-        [pressed? set-pressed?] (rn/use-state false)
-        selected-now?    (if controlled?
-                           selected?
-                           internal-selected?)
-        glass-checkbox?  (and glass?
-                              (= type :checkbox))
-        container-style  (style/container-style type)
-        state-style      (style/state-style theme type background selected-now? disabled? color)
-        on-press-in!     (rn/use-callback (fn [event]
-                                            (set-pressed? true)
-                                            (when on-press-in
-                                              (on-press-in event)))
-                                          [on-press-in])
-        on-press-out!    (rn/use-callback (fn [event]
-                                            (set-pressed? false)
-                                            (when on-press-out
-                                              (on-press-out event)))
-                                          [on-press-out])
-        on-press-toggle! (rn/use-callback (fn [event]
-                                            (let [next-selected? (not selected-now?)]
-                                              (when-not controlled?
-                                                (set-internal-selected? next-selected?))
-                                              (when on-select
-                                                (on-select next-selected?))
-                                              (when on-press
-                                                (on-press event))))
-                                          [selected-now? controlled? on-select on-press])]
-    [:animated/view {:style (if pressed?
-                              style/pressable-pressed-state-style
-                              style/pressable-default-state-style)}
-     [(if glass-checkbox? :effect/pressable :rn/pressable)
-      (cond-> (-> props
-                  (dissoc :type :selected? :disabled? :background :glass? :on-select
-                          :on-press-in :on-press-out :style :hit-slop)
-                  (assoc :disabled disabled?
-                         :hit-slop 6
-                         :on-press on-press-toggle!
-                         :on-press-in on-press-in!
-                         :on-press-out on-press-out!
-                         :style (rn.utils/add-styles
-                                 container-style
-                                 state-style
-                                 (:style props))))
-        glass-checkbox? (assoc :effect       :glass
-                               :intensity    :clear
-                               :theme        theme
-                               :interactive? true))
-      (cond
-        (= type :toggle)
-        [:animated/view {:style [style/toggle-handle-base
-                                 (style/toggle-handle-state-style selected-now?)]}]
+       :radio
+       [:animated/view {:style (style/radio-dot theme-color blur? selected?)}]
 
-        (= type :radio)
-        [:animated/view {:style [style/radio-dot-base
-                                 (style/radio-dot-style theme background color)
-                                 (style/radio-dot-state-style selected-now?)]}]
-
-        (and (or (= type :checkbox)
-                 (= type :filled-checkbox))
-             selected-now?)
-        [icon/view {:name  :icon/check-thick
-                    :size  12
-                    :color (if (and (= type :filled-checkbox) (= theme :theme/light))
-                             (colors/get-color :color/neutral-100)
-                             (colors/get-color :color/white-100))}])]]))
+       (when selected?
+         [icon/view {:name  :icon/check-thick
+                     :size  12
+                     :color (colors/get-color (if (and (= type :filled-checkbox) light-theme?)
+                                                :color/neutral-100
+                                                :color/white))
+                     :style style/checkmark}]))]))

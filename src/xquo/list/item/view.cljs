@@ -87,15 +87,16 @@
      label]))
 
 (defn- selector-slot [{:keys [blur? disabled? props]}]
-  (let [{:keys              [on-press background style]
+  (let [{:keys              [on-press style]
          selector-disabled? :disabled?
-         :or                {background (when blur? :blur)}} props
+         selector-blur?     :blur?
+         :or                {selector-blur? blur?}} props
         press! (react/use-callback (fn [event]
                                      (j/call event :stopPropagation)
                                      (when on-press (on-press event)))
                                    [on-press])]
     [selector/selector (assoc props
-                              :background background
+                              :blur?      selector-blur?
                               :disabled?  (or disabled? selector-disabled?)
                               :on-press   press!
                               :style      (rn.utils/add-styles (when disabled? styles/inherited-disabled) style))]))

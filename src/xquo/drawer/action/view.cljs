@@ -95,7 +95,7 @@
          [:rn/view {:pointer-events :none}
           [selector/selector {:type       :toggle
                               :selected?  selected?
-                              :background (when blur? :blur)}]]
+                              :blur?      blur?}]]
 
          selected?
          [icon/view {:name  :icon/check

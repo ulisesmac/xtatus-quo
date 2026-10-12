@@ -3,7 +3,7 @@
             [xquo.components.button.view :as button]
             [xquo.components.icon.view :as icon]
             [xquo.components.info.information-box.view :as information-box]
-            [xquo.components.page-top.view :as page-top]
+            [xquo.components.text.page-top.view :as page-top]
             [xquo.components.text.view :as text]
             [xquo.community.token-gating.style :as style]
             [xquo.context :as context]

@@ -1,95 +1,39 @@
 (ns xquo.components.selectors.filter.style
-  (:require [react-native.utils :refer [defstyle]]
-            [xquo.foundations.borders :as borders]
+  (:require [react-native.utils :refer [style]]
             [xquo.foundations.colors :as colors]))
 
-(defstyle container-base
-  {:border-width    1
-   :justify-content :center
-   :align-items     :center})
+(def ^:private radius {24 8, 32 10})
+(def icon-size {24 12, 32 20})
+(def label-font {24 :font/medium-13, 32 :font/medium-15})
+(def ^:private line-height {24 18, 32 22})
 
-(defstyle container-size-32-icon
-  {:width         32
-   :height        32
-   :padding       6
-   :border-radius (borders/radius 32)})
+(defn container [size label disabled?]
+  (style {:height          size
+          :width           (when-not label size)
+          :border-radius   (radius size)
+          :border-width    1
+          :padding-left    (when label 5)
+          :padding-right   (when label (if (= size 24) 7 9))
+          :flex-direction  :row
+          :align-items     :center
+          :justify-content :center
+          :gap             4
+          :opacity         (if disabled? 0.3 1)}))
 
-(defstyle container-size-24-icon
-  {:width         24
-   :height        24
-   :border-radius (borders/radius 24)})
+(defn surface [{:keys [dark-theme? color]} blur? selected?]
+  (let [border (cond
+                 (and dark-theme? (or blur? selected?)) :color/white-10
+                 dark-theme?                          :color/neutral-80
+                 (and blur? selected?)                :color/neutral-80-20
+                 (or blur? selected?)                 :color/neutral-80-10
+                 :else                                :color/neutral-20)]
+    (style {:background-color (if selected? (colors/get-color color (if dark-theme? 60 50)) "transparent")
+            :border-color     (colors/get-color border)})))
 
-(defstyle container-size-32-text
-  {:height         32
-   :padding-left   6
-   :padding-right  10
-   :padding-top    5
-   :padding-bottom 5
-   :gap            4
-   :border-radius  (borders/radius 32)
-   :flex-direction :row})
+(defn foreground [{:keys [dark-theme?]} selected?]
+  (colors/get-color (if (or selected? dark-theme?) :color/white :color/neutral-100)))
 
-(defstyle container-size-24-text
-  {:height         24
-   :padding-left   6
-   :padding-right  8
-   :padding-top    3
-   :padding-bottom 3
-   :gap            4
-   :border-radius  (borders/radius 24)
-   :flex-direction :row})
-
-(defn container-size-style [size text?]
-  (cond
-    (and text? (= size 24)) container-size-24-text
-    text?                   container-size-32-text
-    (= size 24)             container-size-24-icon
-    :else                   container-size-32-icon))
-
-(defn surface-color-style [theme background selected? color]
-  (cond
-    (and (= theme :theme/dark)
-         (= background :blur))
-    {:background-color (if selected?
-                         (colors/get-color color 60)
-                         :transparent)
-     :border-color     (colors/get-color :color/white-10)}
-
-    (= theme :theme/dark)
-    {:background-color (if selected?
-                         (colors/get-color color 60)
-                         :transparent)
-     :border-color     (if selected?
-                         (colors/get-color :color/white-10)
-                         (colors/get-color :color/neutral-80))}
-
-    (= background :blur)
-    {:background-color (if selected?
-                         (colors/get-color color 50)
-                         :transparent)
-     :border-color     (if selected?
-                         (colors/get-color :color/neutral-80-20)
-                         (colors/get-color :color/neutral-80-10))}
-
-    selected?
-    {:background-color (colors/get-color color 50)
-     :border-color     (colors/get-color :color/neutral-80-10)}
-
-    :else
-    {:background-color :transparent
-     :border-color     (colors/get-color :color/neutral-20)}))
-
-(defn text-color [theme selected?]
-  (if (or selected? (= theme :theme/dark))
-    (colors/get-color :color/white-100)
-    (colors/get-color :color/neutral-100)))
-
-(defn icon-color [theme selected?]
-  (if (or selected? (= theme :theme/dark))
-    (colors/get-color :color/white-100)
-    (colors/get-color :color/neutral-100)))
-
-(defn label-font [size]
-  (if (= size 24)
-    :font/medium-13
-    :font/medium-15))
+(defn label [size theme-color selected?]
+  (style {:line-height          (line-height size)
+          :include-font-padding false
+          :color                (foreground theme-color selected?)}))
